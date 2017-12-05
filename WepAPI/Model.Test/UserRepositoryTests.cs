@@ -1,0 +1,376 @@
+﻿using Entities;
+using Exceptions;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using Xunit;
+
+namespace Model.Test
+{
+    public class UserRepositoryTests
+    {
+        [Fact]
+        public async Task Create_given_User_adds_it()
+        {
+            var entity = default(User);
+            var context = new Mock<IRedditDBContext>();
+            context.Setup(c => c.Users.Add(It.IsAny<User>())).Callback<User>(t => entity = t);
+
+            using (var repository = new UserRepository(context.Object))
+            {
+                var user = new User
+                {
+                    Username = "name",
+
+                };
+                await repository.Create(user);
+            }
+
+            Assert.Equal("name", entity.Username);
+
+        }
+
+        [Fact]
+        public async Task Create_given_User_calls_SaveChangesAsync()
+        {
+            var context = new Mock<IRedditDBContext>();
+            context.Setup(c => c.Users.Add(It.IsAny<User>()));
+
+            using (var repository = new UserRepository(context.Object))
+            {
+                var user = new User{ Username = "name" };
+
+                await repository.Create(user);
+            }
+
+            context.Verify(c => c.SaveChangesAsync(default(CancellationToken)));
+        }
+
+        [Fact]
+        public async Task Create_given_already_existing_User_throws_AlreadyThereException()
+        {
+            using (var connection = new SqliteConnection("DataSource=:memory:"))
+            {
+                connection.Open();
+
+                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                                  .UseSqlite(connection);
+
+                var context = new RedditDBContext(builder.Options);
+                await context.Database.EnsureCreatedAsync();
+                var user = new User() { Username = "name" };
+                context.Users.Add(user);
+                using (var repository = new UserRepository(context))
+                {
+                    await Assert.ThrowsAsync<AlreadyThereException>(() => repository.Create(user));
+
+                }
+
+            }
+        }
+
+        [Fact]
+        public async Task Create_given_non_existing_User_returns_Key()
+        {
+            var entity = default(User);
+
+            var context = new Mock<IRedditDBContext>();
+            context.Setup(c => c.Users.Add(It.IsAny<User>()))
+                .Callback<User>(t => entity = t);
+            context.Setup(c => c.SaveChangesAsync(default(CancellationToken)))
+                .Returns(Task.FromResult(0))
+                .Callback(() => entity.Username = "name");
+
+            using (var repository = new UserRepository(context.Object))
+            {
+                var user = new User{ Username = "name" };
+
+                var username = await repository.Create(user);
+
+                Assert.Equal("name", username);
+            }
+        }
+
+        [Fact]
+        public async Task Find_given_non_existing_key_returns_null()
+        {
+            using (var connection = new SqliteConnection("DataSource=:memory:"))
+            {
+                connection.Open();
+
+                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                                  .UseSqlite(connection);
+
+                var context = new RedditDBContext(builder.Options);
+                await context.Database.EnsureCreatedAsync();
+
+                using (var repository = new UserRepository(context))
+                {
+                    var user = await repository.Find("asdasdsadsadsadsadsadsadsadsada");
+
+                    Assert.Null(user);
+                }
+            }
+        }
+
+        [Fact]
+        public async Task Find_given_existing_key_returns_mapped_User()
+        {
+            using (var connection = new SqliteConnection("DataSource=:memory:"))
+            {
+                connection.Open();
+
+                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                                  .UseSqlite(connection);
+
+                var context = new RedditDBContext(builder.Options);
+                await context.Database.EnsureCreatedAsync();
+
+                var entity = new User
+                {
+                    Username = "name",
+
+                };
+
+                context.Users.Add(entity);
+                await context.SaveChangesAsync();
+                var Username = entity.Username;
+
+                using (var repository = new UserRepository(context))
+                {
+                    var user = await repository.Find(entity.Username);
+
+                    Assert.Equal("name", user.Username);
+
+                }
+            }
+        }
+
+        [Fact]
+        public async Task Read_returns_mapped_User()
+        {
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+
+            var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                              .UseSqlite(connection);
+
+            var context = new RedditDBContext(builder.Options);
+            context.Database.EnsureCreated();
+
+            var entity = new User
+            {
+                Username = "name",
+
+            };
+
+            context.Users.Add(entity);
+            await context.SaveChangesAsync();
+            var Username = entity.Username;
+
+            using (var repository = new UserRepository(context))
+            {
+                var users = await repository.Read();
+                var user = users.First();
+                Assert.Equal("name", user.Username);
+
+            }
+        }
+
+
+
+        [Fact]
+        public async Task Update_given_existing_User_returns_true()
+        {
+            var context = new Mock<IRedditDBContext>();
+            var entity = new User { Username = "name" };
+            context.Setup(c => c.Users.FindAsync("name")).ReturnsAsync(entity);
+
+            using (var repository = new UserRepository(context.Object))
+            {
+                var user = new User { Username = "name" };
+
+                var success = await repository.Update(user);
+
+                Assert.True(success);
+            }
+        }
+
+        [Fact]
+        public async Task Update_given_non_existing_User_returns_false()
+        {
+            var context = new Mock<IRedditDBContext>();
+            context.Setup(c => c.Users.FindAsync("name")).ReturnsAsync(default(User));
+
+            using (var repository = new UserRepository(context.Object))
+            {
+                var user = new User { Username = "name" };
+
+                var success = await repository.Update(user);
+
+                Assert.False(success);
+            }
+        }
+
+        [Fact]
+        public async Task Update_given_existing_track_Updates_properties()
+        {
+            var context = new Mock<IRedditDBContext>();
+            var entity = new User { Username = "name" };
+            context.Setup(c => c.Users.FindAsync("name")).ReturnsAsync(entity);
+
+            using (var repository = new UserRepository(context.Object))
+            {
+                var user = new User
+                {
+                    Username = "name",
+                   
+                };
+
+                await repository.Update(user);
+            }
+
+            Assert.Equal("name", entity.Username);
+           
+        }
+
+        [Fact]
+        public async Task Update_given_existing_User_calls_SaveChangesAsync()
+        {
+            var context = new Mock<IRedditDBContext>();
+            var entity = new User { Username = "name" };
+            context.Setup(c => c.Users.FindAsync("name")).ReturnsAsync(entity);
+
+            using (var repository = new UserRepository(context.Object))
+            {
+                var user = new User { Username = "name" };
+
+                await repository.Update(user);
+            }
+
+            context.Verify(c => c.SaveChangesAsync(default(CancellationToken)));
+        }
+
+        [Fact]
+        public async Task Update_given_non_existing_User_does_not_call_SaveChangesAsync()
+        {
+            var context = new Mock<IRedditDBContext>();
+            context.Setup(c => c.Users.FindAsync("name")).ReturnsAsync(default(User));
+
+            using (var repository = new UserRepository(context.Object))
+            {
+                var user = new User { Username = "name" };
+
+                await repository.Update(user);
+            }
+
+            context.Verify(c => c.SaveChangesAsync(default(CancellationToken)), Times.Never);
+        }
+
+
+        [Fact]
+        public async Task Delete_given_existing_username_removes_it()
+        {
+            var context = new Mock<IRedditDBContext>();
+            var user = new User{ Username = "name" };
+            context.Setup(c => c.Users.FindAsync("name")).ReturnsAsync(user);
+
+            using (var repository = new UserRepository(context.Object))
+            {
+                await repository.Delete("name");
+            }
+
+            context.Verify(c => c.Users.Remove(user));
+        }
+
+        [Fact]
+        public async Task Delete_given_existing_username_calls_SaveChangesAsync()
+        {
+            var context = new Mock<IRedditDBContext>();
+            var user = new User{ Username = "name" };
+            context.Setup(c => c.Users.FindAsync("name")).ReturnsAsync(user);
+
+            using (var repository = new UserRepository(context.Object))
+            {
+                await repository.Delete("name");
+            }
+
+            context.Verify(c => c.SaveChangesAsync(default(CancellationToken)));
+        }
+
+        [Fact]
+        public async Task Delete_given_existing_username_returns_true()
+        {
+            var context = new Mock<IRedditDBContext>();
+            var user = new User{ Username = "name" };
+            context.Setup(c => c.Users.FindAsync("name")).ReturnsAsync(user);
+
+            using (var repository = new UserRepository(context.Object))
+            {
+                var success = await repository.Delete("name");
+
+                Assert.True(success);
+            }
+        }
+
+        [Fact]
+        public async Task Delete_given_non_existing_username_does_not_call_SaveChangesAsync()
+        {
+            var context = new Mock<IRedditDBContext>();
+            context.Setup(c => c.Users.FindAsync("name")).ReturnsAsync(default(User));
+
+            using (var repository = new UserRepository(context.Object))
+            {
+                await repository.Delete("name");
+            }
+
+            context.Verify(c => c.SaveChangesAsync(default(CancellationToken)), Times.Never);
+        }
+
+        [Fact]
+        public async Task Delete_given_non_existing_username_does_not_remove_it()
+        {
+            var context = new Mock<IRedditDBContext>();
+            context.Setup(c => c.Users.FindAsync("name")).ReturnsAsync(default(User));
+
+            using (var repository = new UserRepository(context.Object))
+            {
+                await repository.Delete("name");
+            }
+
+            context.Verify(c => c.Users.Remove(It.IsAny<User>()), Times.Never);
+        }
+
+        [Fact]
+        public async Task Delete_given_non_existing_username_returns_false()
+        {
+            var context = new Mock<IRedditDBContext>();
+            context.Setup(c => c.Users.FindAsync("name")).ReturnsAsync(default(User));
+
+            using (var repository = new UserRepository(context.Object))
+            {
+                var success = await repository.Delete("name");
+
+                Assert.False(success);
+            }
+        }
+
+        [Fact]
+        public void Dispose_disposes_context()
+        {
+            var context = new Mock<IRedditDBContext>();
+
+            using (var repository = new UserRepository(context.Object))
+            {
+            }
+
+            context.Verify(c => c.Dispose());
+        }
+    }
+}
