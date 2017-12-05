@@ -13084,7 +13084,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Jens\\.nuget\\packages\\": {},
+    "C:\\Users\\Jakob Roos\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
@@ -13093,17 +13093,17 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\Jens\\Source\\Repos\\Gorilla2\\WepAPI\\WebApplication2\\WebApplication2.csproj",
+      "projectUniqueName": "C:\\Users\\Jakob Roos\\Source\\Repos\\Gorilla\\WepAPI\\WebApplication2\\WebApplication2.csproj",
       "projectName": "WebApplication2",
-      "projectPath": "C:\\Users\\Jens\\Source\\Repos\\Gorilla2\\WepAPI\\WebApplication2\\WebApplication2.csproj",
-      "packagesPath": "C:\\Users\\Jens\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Jens\\Source\\Repos\\Gorilla2\\WepAPI\\WebApplication2\\obj\\",
+      "projectPath": "C:\\Users\\Jakob Roos\\Source\\Repos\\Gorilla\\WepAPI\\WebApplication2\\WebApplication2.csproj",
+      "packagesPath": "C:\\Users\\Jakob Roos\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Jakob Roos\\Source\\Repos\\Gorilla\\WepAPI\\WebApplication2\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Jens\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Jakob Roos\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

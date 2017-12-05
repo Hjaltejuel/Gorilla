@@ -1,8 +1,13 @@
-.csproj
-.cache
+*.csproj
+*.cache
+.csproj.*
+.cache.*
 .dll
 .pdb
 .ide
 .ide-shm
 .ide-wal
 .vs/
+/bin/
+.force
+.g.cs.bakcup
