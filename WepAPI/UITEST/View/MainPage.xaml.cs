@@ -47,6 +47,11 @@ namespace UITEST
             _vm.Initialize();
         }
 
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Frame.Navigate(typeof(PostPage), e.AddedItems[0]);
+        }
+
         private void ResizeListViewHeight(object sender, SizeChangedEventArgs e)
         {
             List.Height = e.NewSize.Height - (commandBar.Height + PageTitleText.Height + HorizontalSplitter.Height);
@@ -73,6 +78,7 @@ namespace UITEST
             }
         }
 
+
         private void PostVoteButton_Clicked(object sender, RoutedEventArgs e)
         {
             var btn = sender as Button;
@@ -86,5 +92,6 @@ namespace UITEST
                 post.NumOfVotes -= 1;
             }
         }
+
     }
 }
