@@ -8465,7 +8465,7 @@
       ]
     },
     "xunit.analyzers/0.7.0": {
-      "sha512": "pEjPJ/pd+r9blGBJ9bXg961phkAiCl4k2DwxwWGEZyYC/7Tb1xJ1az0H18uGANX7zFIkvE5ZO1eZZ4vU7gny7w==",
+      "sha512": "YLyB3zDIbuliqMPOeGNp4BbNKrAMmoU0RI3DqJrPIaHJ2u1l3c9hILxUgY2DoKN2nSRgaIhGVdZ4tNSDtnaZQg==",
       "type": "package",
       "path": "xunit.analyzers/0.7.0",
       "files": [
@@ -8569,7 +8569,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Jakob Roos\\.nuget\\packages\\": {},
+    "C:\\Users\\Jens\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
@@ -8578,17 +8578,17 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\Jakob Roos\\Source\\Repos\\Gorilla\\WepAPI\\Exceptions\\Exceptions.csproj",
+      "projectUniqueName": "C:\\Users\\Jens\\Source\\Repos\\Gorilla2\\WepAPI\\Exceptions\\Exceptions.csproj",
       "projectName": "Exceptions",
-      "projectPath": "C:\\Users\\Jakob Roos\\Source\\Repos\\Gorilla\\WepAPI\\Exceptions\\Exceptions.csproj",
-      "packagesPath": "C:\\Users\\Jakob Roos\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Jakob Roos\\Source\\Repos\\Gorilla\\WepAPI\\Exceptions\\obj\\",
+      "projectPath": "C:\\Users\\Jens\\Source\\Repos\\Gorilla2\\WepAPI\\Exceptions\\Exceptions.csproj",
+      "packagesPath": "C:\\Users\\Jens\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Jens\\Source\\Repos\\Gorilla2\\WepAPI\\Exceptions\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Jakob Roos\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Jens\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

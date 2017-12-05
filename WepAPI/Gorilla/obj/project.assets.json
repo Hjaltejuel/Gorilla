@@ -14255,7 +14255,7 @@
       ]
     },
     "xunit.analyzers/0.7.0": {
-      "sha512": "pEjPJ/pd+r9blGBJ9bXg961phkAiCl4k2DwxwWGEZyYC/7Tb1xJ1az0H18uGANX7zFIkvE5ZO1eZZ4vU7gny7w==",
+      "sha512": "YLyB3zDIbuliqMPOeGNp4BbNKrAMmoU0RI3DqJrPIaHJ2u1l3c9hILxUgY2DoKN2nSRgaIhGVdZ4tNSDtnaZQg==",
       "type": "package",
       "path": "xunit.analyzers/0.7.0",
       "files": [
@@ -14375,7 +14375,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Jakob Roos\\.nuget\\packages\\": {},
+    "C:\\Users\\Jens\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
@@ -14384,17 +14384,17 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\Jakob Roos\\Source\\Repos\\Gorilla\\WepAPI\\Gorilla\\Gorilla.csproj",
+      "projectUniqueName": "C:\\Users\\Jens\\Source\\Repos\\Gorilla2\\WepAPI\\Gorilla\\Gorilla.csproj",
       "projectName": "Gorilla",
-      "projectPath": "C:\\Users\\Jakob Roos\\Source\\Repos\\Gorilla\\WepAPI\\Gorilla\\Gorilla.csproj",
-      "packagesPath": "C:\\Users\\Jakob Roos\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Jakob Roos\\Source\\Repos\\Gorilla\\WepAPI\\Gorilla\\obj\\",
+      "projectPath": "C:\\Users\\Jens\\Source\\Repos\\Gorilla2\\WepAPI\\Gorilla\\Gorilla.csproj",
+      "packagesPath": "C:\\Users\\Jens\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Jens\\Source\\Repos\\Gorilla2\\WepAPI\\Gorilla\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Jakob Roos\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Jens\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -14407,11 +14407,11 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "C:\\Users\\Jakob Roos\\Source\\Repos\\Gorilla\\WepAPI\\Model\\Model.csproj": {
-              "projectPath": "C:\\Users\\Jakob Roos\\Source\\Repos\\Gorilla\\WepAPI\\Model\\Model.csproj"
+            "C:\\Users\\Jens\\Source\\Repos\\Gorilla2\\WepAPI\\Model\\Model.csproj": {
+              "projectPath": "C:\\Users\\Jens\\Source\\Repos\\Gorilla2\\WepAPI\\Model\\Model.csproj"
             },
-            "C:\\Users\\Jakob Roos\\Source\\Repos\\Gorilla\\WepAPI\\Entities\\Entities.csproj": {
-              "projectPath": "C:\\Users\\Jakob Roos\\Source\\Repos\\Gorilla\\WepAPI\\Entities\\Entities.csproj"
+            "C:\\Users\\Jens\\Source\\Repos\\Gorilla2\\WepAPI\\Entities\\Entities.csproj": {
+              "projectPath": "C:\\Users\\Jens\\Source\\Repos\\Gorilla2\\WepAPI\\Entities\\Entities.csproj"
             }
           }
         }
