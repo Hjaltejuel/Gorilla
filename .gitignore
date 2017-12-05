@@ -1,5 +1,7 @@
-.csproj
-.cache
+*.csproj
+*.cache
+.csproj.*
+.cache.*
 .dll
 .pdb
 .ide
