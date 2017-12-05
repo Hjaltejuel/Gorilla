@@ -1,0 +1,57 @@
+﻿<Page
+    x:Class="UITEST.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UITEST"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <CommandBar Name="commandBar" Style="{StaticResource StandardCommandBar}">
+            <AppBarButton Icon="Home" Label="Home" Command="{Binding GoToHomePageCommand}"/>
+            <AppBarButton Icon="ZeroBars" Label="Trending" Command="{Binding GoToTrendingPageCommand}"/>
+            <AppBarButton Icon="OutlineStar" Label="Discover" Command="{Binding GoToDiscoverPageCommand}"/>
+            <AppBarButton Icon="Contact" Label="Profile" Command="{Binding GoToProfilePageCommand}"/>
+        </CommandBar>
+
+        <TextBlock Name="PageTitleText" Grid.Column="0" Grid.Row="1" Text="Home" Style="{StaticResource PageTitleText}"/>
+        <Rectangle Name="HorizontalSplitter" Grid.Row="2" HorizontalAlignment="Stretch" Fill="Gray" Height="1"/>
+
+        <ListView Grid.Row="3" x:Name="List" Height="800" SelectionMode="Single" SelectionChanged="ListView_SelectionChanged" ItemsSource="{Binding Posts}" ScrollViewer.VerticalScrollBarVisibility="Visible">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <RelativePanel Margin="20, 20, 0, 0" Height="80">
+                        <RelativePanel  Name="OpOgNed" Margin="0, 10, 0, 0" Width="50">
+                            <SymbolIcon Symbol="Like"  Height="20" Width="20" Name="op" RelativePanel.AlignHorizontalCenterWithPanel="True"/>
+                            <TextBlock Text="{Binding NumOfVotes}" Name="Votes" RelativePanel.Below="op" RelativePanel.AlignHorizontalCenterWithPanel="True"/>
+                            <SymbolIcon Symbol="Dislike" Height="20" Width="20" Name="ned" RelativePanel.Below="Votes" RelativePanel.AlignHorizontalCenterWithPanel="True"/>
+                        </RelativePanel>
+
+                        <RelativePanel RelativePanel.RightOf="OpOgNed" Margin="10, 0, 0,0 " RelativePanel.AlignVerticalCenterWith="OpOgNed">
+                            <Rectangle Fill="Blue" Height="40" Width="40" Name="Box" Margin="0, 10, 5, 0"/>
+
+                            <!--FIXME ikke hele boxen skal være klikbar-->
+                            <Button Name="Title" RelativePanel.RightOf="Box" Style="{StaticResource TitleText}" Tag="{Binding Post}" Content="{Binding Post}"  Click="Title_Click"/>
+
+                            <TextBlock Text="{Binding Author}" RelativePanel.Below ="Title" RelativePanel.RightOf="Box" Style="{StaticResource AuthorText}" Name="Author"/>
+                            <TextBlock Text="{Binding NumOfComments}" RelativePanel.Below ="Author" RelativePanel.RightOf="Box" FontSize="10" Name="CommentsAmount"/>
+                            <TextBlock Text="share" RelativePanel.Below ="Author" RelativePanel.RightOf="CommentsAmount" Style="{StaticResource MiniNavigationText}" Name="ShareText" Margin="4, 0, 0, 0"/>
+                            <TextBlock Text="save" RelativePanel.Below ="Author" RelativePanel.RightOf="ShareText" Style="{StaticResource MiniNavigationText}" Name="SaveText" Margin="4, 0, 0, 0"/>
+                            <TextBlock Text="hide" RelativePanel.Below ="Author" RelativePanel.RightOf="SaveText" Style="{StaticResource MiniNavigationText}" Name="HideText" Margin="4, 0, 0, 0"/>
+                            <TextBlock Text="report" RelativePanel.Below ="Author" RelativePanel.RightOf="HideText" Style="{StaticResource MiniNavigationText}" Name="ReportTex" Margin="4, 0, 0, 0"/>
+                        </RelativePanel>
+                    </RelativePanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>
