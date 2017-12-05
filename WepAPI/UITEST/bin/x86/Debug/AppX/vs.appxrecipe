@@ -31,13 +31,13 @@
     <AppXManifest Include="C:\Users\Jens\Source\Repos\Gorilla2\WepAPI\UITEST\bin\x86\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-12-05T12:58:50.944</Modified>
+      <Modified>2017-12-05T14:00:58.508</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\Jens\Source\Repos\Gorilla2\WepAPI\UITEST\bin\x86\Debug\UITEST.exe">
       <PackagePath>entrypoint\UITEST.exe</PackagePath>
-      <Modified>2017-12-05T12:58:50.653</Modified>
+      <Modified>2017-12-05T14:00:57.537</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Jens\.nuget\packages\microsoft.csharp\4.0.1\lib\netcore50\Microsoft.CSharp.dll">
       <PackagePath>Microsoft.CSharp.dll</PackagePath>
@@ -547,7 +547,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Jens\Source\Repos\Gorilla2\WepAPI\UITEST\bin\x86\Debug\UITEST.xr.xml">
       <PackagePath>UITEST.xr.xml</PackagePath>
-      <Modified>2017-12-05T11:22:02.216</Modified>
+      <Modified>2017-12-05T13:59:35.008</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\UnionMetadata\10.0.16299.0\Windows.winmd">
       <PackagePath>WinMetadata\Windows.winmd</PackagePath>
@@ -556,11 +556,11 @@
     <AppxPackagedFile Include="C:\Users\Jens\Source\Repos\Gorilla2\WepAPI\UITEST\bin\x86\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-12-05T12:50:17.330</Modified>
+      <Modified>2017-12-05T14:00:58.186</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Jens\Source\Repos\Gorilla2\WepAPI\UITEST\bin\x86\Debug\Core\UITEST.exe">
       <PackagePath>UITEST.exe</PackagePath>
-      <Modified>2017-12-05T12:58:50.941</Modified>
+      <Modified>2017-12-05T14:00:58.501</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>
