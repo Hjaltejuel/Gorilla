@@ -13093,11 +13093,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\Mads\\Source\\Repos\\Gorilla\\WepAPI\\WebApplication2\\WebApplication2.csproj",
+      "projectUniqueName": "C:\\Users\\Mads\\source\\repos\\Gorilla\\WepAPI\\WebApplication2\\WebApplication2.csproj",
       "projectName": "WebApplication2",
-      "projectPath": "C:\\Users\\Mads\\Source\\Repos\\Gorilla\\WepAPI\\WebApplication2\\WebApplication2.csproj",
+      "projectPath": "C:\\Users\\Mads\\source\\repos\\Gorilla\\WepAPI\\WebApplication2\\WebApplication2.csproj",
       "packagesPath": "C:\\Users\\Mads\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Mads\\Source\\Repos\\Gorilla\\WepAPI\\WebApplication2\\obj\\",
+      "outputPath": "C:\\Users\\Mads\\source\\repos\\Gorilla\\WepAPI\\WebApplication2\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

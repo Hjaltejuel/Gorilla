@@ -13721,11 +13721,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\Mads\\Source\\Repos\\Gorilla\\WepAPI\\Entities\\Entities.csproj",
+      "projectUniqueName": "C:\\Users\\Mads\\source\\repos\\Gorilla\\WepAPI\\Entities\\Entities.csproj",
       "projectName": "Entities",
-      "projectPath": "C:\\Users\\Mads\\Source\\Repos\\Gorilla\\WepAPI\\Entities\\Entities.csproj",
+      "projectPath": "C:\\Users\\Mads\\source\\repos\\Gorilla\\WepAPI\\Entities\\Entities.csproj",
       "packagesPath": "C:\\Users\\Mads\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Mads\\Source\\Repos\\Gorilla\\WepAPI\\Entities\\obj\\",
+      "outputPath": "C:\\Users\\Mads\\source\\repos\\Gorilla\\WepAPI\\Entities\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

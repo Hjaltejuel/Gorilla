@@ -14384,11 +14384,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\Mads\\Source\\Repos\\Gorilla\\WepAPI\\Gorilla\\Gorilla.csproj",
+      "projectUniqueName": "C:\\Users\\Mads\\source\\repos\\Gorilla\\WepAPI\\Gorilla\\Gorilla.csproj",
       "projectName": "Gorilla",
-      "projectPath": "C:\\Users\\Mads\\Source\\Repos\\Gorilla\\WepAPI\\Gorilla\\Gorilla.csproj",
+      "projectPath": "C:\\Users\\Mads\\source\\repos\\Gorilla\\WepAPI\\Gorilla\\Gorilla.csproj",
       "packagesPath": "C:\\Users\\Mads\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Mads\\Source\\Repos\\Gorilla\\WepAPI\\Gorilla\\obj\\",
+      "outputPath": "C:\\Users\\Mads\\source\\repos\\Gorilla\\WepAPI\\Gorilla\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -14407,11 +14407,11 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "C:\\Users\\Mads\\Source\\Repos\\Gorilla\\WepAPI\\Model\\Model.csproj": {
-              "projectPath": "C:\\Users\\Mads\\Source\\Repos\\Gorilla\\WepAPI\\Model\\Model.csproj"
+            "C:\\Users\\Mads\\source\\repos\\Gorilla\\WepAPI\\Model\\Model.csproj": {
+              "projectPath": "C:\\Users\\Mads\\source\\repos\\Gorilla\\WepAPI\\Model\\Model.csproj"
             },
-            "C:\\Users\\Mads\\Source\\Repos\\Gorilla\\WepAPI\\Entities\\Entities.csproj": {
-              "projectPath": "C:\\Users\\Mads\\Source\\Repos\\Gorilla\\WepAPI\\Entities\\Entities.csproj"
+            "C:\\Users\\Mads\\source\\repos\\Gorilla\\WepAPI\\Entities\\Entities.csproj": {
+              "projectPath": "C:\\Users\\Mads\\source\\repos\\Gorilla\\WepAPI\\Entities\\Entities.csproj"
             }
           }
         }

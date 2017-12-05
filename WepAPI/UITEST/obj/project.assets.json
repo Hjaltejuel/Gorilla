@@ -25734,11 +25734,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Mads\\Source\\Repos\\Gorilla\\WepAPI\\UITEST\\UI.csproj",
+      "projectUniqueName": "C:\\Users\\Mads\\source\\repos\\Gorilla\\WepAPI\\UITEST\\UI.csproj",
       "projectName": "UI",
-      "projectPath": "C:\\Users\\Mads\\Source\\Repos\\Gorilla\\WepAPI\\UITEST\\UI.csproj",
+      "projectPath": "C:\\Users\\Mads\\source\\repos\\Gorilla\\WepAPI\\UITEST\\UI.csproj",
       "packagesPath": "C:\\Users\\Mads\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Mads\\Source\\Repos\\Gorilla\\WepAPI\\UITEST\\obj\\",
+      "outputPath": "C:\\Users\\Mads\\source\\repos\\Gorilla\\WepAPI\\UITEST\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "configFilePaths": [

@@ -47,11 +47,6 @@ namespace UITEST
             _vm.Initialize();
         }
 
-        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Frame.Navigate(typeof(PostPage), e.AddedItems[0]);
-        }
-
         private void ResizeListViewHeight(object sender, SizeChangedEventArgs e)
         {
             List.Height = e.NewSize.Height - (commandBar.Height + PageTitleText.Height + HorizontalSplitter.Height);
@@ -60,8 +55,36 @@ namespace UITEST
         private void Title_Click(object sender, RoutedEventArgs e)
         {
             var btn = sender as Button;
-            Post post = btn.Content as Post;
+            Post post = btn.DataContext as Post;
             Frame.Navigate(typeof(PostPage), post);
+        }
+
+        private void VoteButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            var post = btn.DataContext as Post;
+            if (btn.Content.Equals("Like"))
+            {
+                post.NumOfVotes += 1;
+            }
+            else if (btn.Content.Equals("Dislike"))
+            {
+                post.NumOfVotes -= 1;
+            }
+        }
+
+        private void PostVoteButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            var post = btn.DataContext as Post;
+            if (btn.Content.Equals("Like"))
+            {
+                post.NumOfVotes += 1;
+            }
+            else if (btn.Content.Equals("Dislike"))
+            {
+                post.NumOfVotes -= 1;
+            }
         }
     }
 }
