@@ -8,8 +8,8 @@
 .ide-shm
 .ide-wal
 .vs/
-/bin/
+bin/
 .force
 .g.cs.bakcup
-/Debug/
-/obj/
+Debug/
+obj/
