@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebApplication2.Models;
 using Newtonsoft.Json.Linq;
 using System.Net;
+using Newtonsoft.Json;
 
 namespace WebApplication2.Controllers
 {
@@ -15,17 +16,20 @@ namespace WebApplication2.Controllers
 
         public string BaseUrl { get => "https://reddit.com/"; set => throw new NotImplementedException(); }
 
-        //Brug enums til sortBy?
+        //Brug enums til sortBy? 
         public async Task<HttpResponseMessage> Get(Uri uri)
         {
             using (var client = new HttpClient())
             {
+
                 client.BaseAddress = uri;
                 client.DefaultRequestHeaders.Clear();
                 HttpResponseMessage response = await client.GetAsync(client.BaseAddress);
                 string responseBody = await response.Content.ReadAsStringAsync();
 
+
                 return response;
+
             }
         }
 
@@ -43,23 +47,22 @@ namespace WebApplication2.Controllers
             response.EnsureSuccessStatusCode();
             //if it goes wrong do this...
 
-            //KALD responseJsonBuilder(response)!
-            //string responseBody = await response.Content.ReadAsStringAsync();
-            return null;
+            return await ResponseJsonBuilderAsync<Subreddit>(response);
+
         }
         //t3 = comments on link / post & t5 = subreddit & t1 = comment
         public async Task<Post> GetPostAsync(string name_id)
         {
+
             Uri uri = new Uri(string.Format(BaseUrl + "comments/{0}.json?json_raw=1", name_id));
 
             HttpResponseMessage response = await Get(uri);
             response.EnsureSuccessStatusCode();
 
-            return null;
-            //KALD responseJsonBuilder(resonse)!
-            //string responseBody = await response.Content.ReadAsStringAsync();
+            return await ResponseJsonBuilderAsync<Post>(response);
         }
-        
+
+
         public async Task<HttpResponseMessage> Post(Uri uri, Object o)
         {
             using (var client = new HttpClient())
@@ -83,9 +86,8 @@ namespace WebApplication2.Controllers
         {
             Uri uri = new Uri(BaseUrl + "api/submit");
             HttpResponseMessage response = await Post(uri, p);
-            //KALD responseJsonBuilder(resonse)!
-            //string responseBody = await response.Content.ReadAsStringAsync();
-            return (0, null);
+
+            return await (ResponseStatusAsync(response));
         }
 
         public async Task<(HttpStatusCode, string)> PostCommentAsync(Comment c)
@@ -93,9 +95,7 @@ namespace WebApplication2.Controllers
             Uri uri = new Uri(BaseUrl + "api/comment");
             HttpResponseMessage response = await Post(uri, c);
 
-            //KALD responseJsonBuilder(resonse)!
-            //string responseBody = await response.Content.ReadAsStringAsync();
-            return (0, null);
+            return await (ResponseStatusAsync(response));
         }
 
         public async Task<(HttpStatusCode, string)> PostVoteAsync(Vote v)
@@ -103,14 +103,27 @@ namespace WebApplication2.Controllers
             Uri uri = new Uri(BaseUrl + "api/vote");
             HttpResponseMessage response = await Post(uri, v);
 
-
-            //KALD responseJsonBuilder(resonse)!
-            return (0, null);
+            return await (ResponseStatusAsync(response));
         }
-        public async Task<(HttpStatusCode, string)> ResponseJsonBuilder(HttpResponseMessage response)
+        public async Task<(HttpStatusCode, string)> ResponseStatusAsync(HttpResponseMessage response)
         {
             string responseBody = await response.Content.ReadAsStringAsync();
-            return (HttpStatusCode.Accepted,"");
+            HttpStatusCode statusCode = response.StatusCode;
+
+            return (statusCode, responseBody);
+        }
+
+        public async Task<T> ResponseJsonBuilderAsync<T>(HttpResponseMessage response)
+        {
+
+            var obj = Activator.CreateInstance(typeof(T));
+
+            string responseBody = await response.Content.ReadAsStringAsync();
+            string jResponseBody = JsonConvert.SerializeObject(responseBody);
+            JsonConvert.PopulateObject(jResponseBody, obj);
+
+
+            return (T)obj;
         }
     }
 }
