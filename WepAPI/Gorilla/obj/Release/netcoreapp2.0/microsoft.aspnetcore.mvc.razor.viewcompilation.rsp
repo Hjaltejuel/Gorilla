@@ -1,5 +1,5 @@
-C:\Users\Hjalte\Source\Repos\RedditServer\WepAPI\Gorilla
+C:\Users\Hjalte\Source\Repos\Gorilla\WepAPI\Gorilla
 --output-path=obj\Release\netcoreapp2.0\
 --application-name=Gorilla
---content-root=C:\Users\Hjalte\Source\Repos\RedditServer\WepAPI\Gorilla
+--content-root=C:\Users\Hjalte\Source\Repos\Gorilla\WepAPI\Gorilla
 --file=

@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WepAPI.Controllers
 {
-   
+    
     [Produces("application/json")]
     [Route("api/User")]
     public class UserController : Controller
@@ -23,9 +23,9 @@ namespace WepAPI.Controllers
         }
         // GET: api/User
         [HttpGet]
-        public async Task<IActionResult> Read()
+        public async Task<IActionResult> ReadAsync()
         {
-            var result = await repository.Read();
+            var result = await repository.ReadAsync();
             if (result == null)
             {
                 return NotFound();
@@ -39,9 +39,9 @@ namespace WepAPI.Controllers
 
         // GET: api/User/5
         [HttpGet("{username}", Name = "Get")]
-        public async Task<IActionResult> Get(string username)
+        public async Task<IActionResult> GetAsync(string username)
         {
-            var result = await repository.Find(username);
+            var result = await repository.FindAsync(username);
             if (result == null)
             {
                 return NotFound();
@@ -51,7 +51,7 @@ namespace WepAPI.Controllers
         
         // POST: api/User
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]User user)
+        public async Task<IActionResult> PostAsync([FromBody]User user)
         {
             if (!ModelState.IsValid)
             {
@@ -59,8 +59,8 @@ namespace WepAPI.Controllers
             }
             try
             {
-                var username = await repository.Create(user);
-                return CreatedAtAction(nameof(Get), new { username }, null);
+                var username = await repository.CreateAsync(user);
+                return CreatedAtAction(nameof(GetAsync), new { username }, null);
             } catch (AlreadyThereException)
             {
                return new StatusCodeResult(StatusCodes.Status409Conflict);
@@ -70,10 +70,10 @@ namespace WepAPI.Controllers
         
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{username}")]
-        public async Task<IActionResult> Delete(string username)
+        public async Task<IActionResult> DeleteAsync(string username)
         {
             
-                var deleted = await repository.Delete(username);
+                var deleted = await repository.DeleteAsync(username);
 
                 if (!deleted)
                 {
@@ -85,7 +85,7 @@ namespace WepAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody]User user)
+        public async Task<IActionResult> PutAsync([FromBody]User user)
         {
             
             if (!ModelState.IsValid)
@@ -93,7 +93,7 @@ namespace WepAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var updated = await repository.Update(user);
+            var updated = await repository.UpdateAsync(user);
 
             if (!updated)
             {

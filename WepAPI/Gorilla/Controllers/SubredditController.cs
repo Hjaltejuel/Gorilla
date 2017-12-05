@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WepAPI.Controllers
 {
-   
+    
     [Produces("application/json")]
     [Route("api/[controller]")]
     public class SubredditController : Controller
@@ -23,10 +23,10 @@ namespace WepAPI.Controllers
         }
         // GET api
         [HttpGet]
-        public async Task<IActionResult> Read()
+        public async Task<IActionResult> ReadAsync()
         {
 
-            var result = await repository.Read();
+            var result = await repository.ReadAsync();
             if(result == null)
             {
                 return NotFound();
@@ -39,10 +39,10 @@ namespace WepAPI.Controllers
         }
         // GET api/Reddit/5
         [HttpGet("{name}", Name = "GetSubreddit")]
-        public async Task<IActionResult> Get(string name)
+        public async Task<IActionResult> GetAsync(string name)
         {
             {
-                var result = await repository.Find(name);
+                var result = await repository.FindAsync(name);
                 if (result == null)
                 {
                     return NotFound();
@@ -53,7 +53,7 @@ namespace WepAPI.Controllers
 
         // POST api/Reddit
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]Subreddit subreddit)
+        public async Task<IActionResult> PostAsync([FromBody]Subreddit subreddit)
         {
             if (!ModelState.IsValid)
             {
@@ -62,8 +62,8 @@ namespace WepAPI.Controllers
            
             try
             {
-                var id = await repository.Create(subreddit);
-                return CreatedAtAction(nameof(Get), new { id }, null);
+                var id = await repository.CreateAsync(subreddit);
+                return CreatedAtAction(nameof(GetAsync), new { id }, null);
             } catch (AlreadyThereException)
             {
                 return new StatusCodeResult(StatusCodes.Status409Conflict);
@@ -75,10 +75,10 @@ namespace WepAPI.Controllers
 
         // DELETE api/Reddit/5
         [HttpDelete("{name}")]
-        public async Task<IActionResult> Delete(string name)
+        public async Task<IActionResult> DeleteAsync(string name)
         {
             {
-                var deleted = await repository.Delete(name);
+                var deleted = await repository.DeleteAsync(name);
 
                 if (!deleted)
                 {

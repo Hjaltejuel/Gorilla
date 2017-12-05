@@ -14375,7 +14375,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Jens\\.nuget\\packages\\": {},
+    "C:\\Users\\Hjalte\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
@@ -14384,17 +14384,17 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\Jens\\Source\\Repos\\Gorilla2\\WepAPI\\Gorilla\\Gorilla.csproj",
+      "projectUniqueName": "C:\\Users\\Hjalte\\Source\\Repos\\Gorilla\\WepAPI\\Gorilla\\Gorilla.csproj",
       "projectName": "Gorilla",
-      "projectPath": "C:\\Users\\Jens\\Source\\Repos\\Gorilla2\\WepAPI\\Gorilla\\Gorilla.csproj",
-      "packagesPath": "C:\\Users\\Jens\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Jens\\Source\\Repos\\Gorilla2\\WepAPI\\Gorilla\\obj\\",
+      "projectPath": "C:\\Users\\Hjalte\\Source\\Repos\\Gorilla\\WepAPI\\Gorilla\\Gorilla.csproj",
+      "packagesPath": "C:\\Users\\Hjalte\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Hjalte\\Source\\Repos\\Gorilla\\WepAPI\\Gorilla\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Jens\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Hjalte\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -14407,11 +14407,11 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "C:\\Users\\Jens\\Source\\Repos\\Gorilla2\\WepAPI\\Model\\Model.csproj": {
-              "projectPath": "C:\\Users\\Jens\\Source\\Repos\\Gorilla2\\WepAPI\\Model\\Model.csproj"
+            "C:\\Users\\Hjalte\\Source\\Repos\\Gorilla\\WepAPI\\Model\\Model.csproj": {
+              "projectPath": "C:\\Users\\Hjalte\\Source\\Repos\\Gorilla\\WepAPI\\Model\\Model.csproj"
             },
-            "C:\\Users\\Jens\\Source\\Repos\\Gorilla2\\WepAPI\\Entities\\Entities.csproj": {
-              "projectPath": "C:\\Users\\Jens\\Source\\Repos\\Gorilla2\\WepAPI\\Entities\\Entities.csproj"
+            "C:\\Users\\Hjalte\\Source\\Repos\\Gorilla\\WepAPI\\Entities\\Entities.csproj": {
+              "projectPath": "C:\\Users\\Hjalte\\Source\\Repos\\Gorilla\\WepAPI\\Entities\\Entities.csproj"
             }
           }
         }

@@ -17,7 +17,7 @@ namespace Model.Test
     public class SubredditConnectionTest
     {
         [Fact]
-        public async Task Create_given_SubredditConnection_adds_it()
+        public async Task CreateAsync_given_SubredditConnection_adds_it()
         {
             using (var connection = new SqliteConnection("DataSource=:memory:"))
             {
@@ -51,7 +51,7 @@ namespace Model.Test
                 using (var repository = new SubredditConnectionRepository(context))
                 {
                     var db = context.SubredditConnections;
-                    await repository.Create(subredditConnection);
+                    await repository.CreateAsync(subredditConnection);
                     Assert.Equal(subredditConnection, context.SubredditConnections.FirstOrDefault());
 
                 }
@@ -63,7 +63,7 @@ namespace Model.Test
 
 
         [Fact]
-        public async Task Create_given_already_existing_SubredditConnection_throws_AlreadyThereException()
+        public async Task CreateAsync_given_already_existing_SubredditConnection_throws_AlreadyThereException()
         {
             using (var connection = new SqliteConnection("DataSource=:memory:"))
             {
@@ -94,14 +94,14 @@ namespace Model.Test
 
                 using (var repository = new SubredditConnectionRepository(context))
                 {
-                    await Assert.ThrowsAsync<AlreadyThereException>(() => repository.Create(subredditConnection));
+                    await Assert.ThrowsAsync<AlreadyThereException>(() => repository.CreateAsync(subredditConnection));
 
                 }
 
             }
         }
         [Fact]
-        public async Task Create_given_non_existing_User_throws_NotFoundException()
+        public async Task CreateAsync_given_non_existing_User_throws_NotFoundException()
         {
             using (var connection = new SqliteConnection("DataSource=:memory:"))
             {
@@ -128,7 +128,7 @@ namespace Model.Test
 
                 using (var repository = new SubredditConnectionRepository(context))
                 {
-                    await Assert.ThrowsAsync<NotFoundException>(() => repository.Create(subredditConnection));
+                    await Assert.ThrowsAsync<NotFoundException>(() => repository.CreateAsync(subredditConnection));
 
                 }
 
@@ -136,7 +136,7 @@ namespace Model.Test
         }
 
         [Fact]
-        public async Task Create_given_non_existing_Subreddit_throws_NotFoundException()
+        public async Task CreateAsync_given_non_existing_Subreddit_throws_NotFoundException()
         {
             using (var connection = new SqliteConnection("DataSource=:memory:"))
             {
@@ -162,7 +162,7 @@ namespace Model.Test
                 await context.SaveChangesAsync();
                 using (var repository = new SubredditConnectionRepository(context))
                 {
-                    await Assert.ThrowsAsync<NotFoundException>(() => repository.Create(subredditConnection));
+                    await Assert.ThrowsAsync<NotFoundException>(() => repository.CreateAsync(subredditConnection));
 
                 }
 
@@ -171,7 +171,7 @@ namespace Model.Test
        
 
         [Fact]
-        public async Task Find_given_non_existing_SubredditFromName_returns_null()
+        public async Task FindAsync_given_non_existing_SubredditFromName_returns_null()
         {
             using (var connection = new SqliteConnection("DataSource=:memory:"))
             {
@@ -185,14 +185,14 @@ namespace Model.Test
 
                 using (var repository = new SubredditConnectionRepository(context))
                 {
-                    var subredditConnection = await repository.Find("asdasdsadsadsadsadsadsadsadsada");
+                    var subredditConnection = await repository.FindAsync("asdasdsadsadsadsadsadsadsadsada");
 
                     Assert.Null(subredditConnection);
                 }
             }
         }
         [Fact]
-        public async Task Create_given_non_existing_SubredditConnection_returns_Keys()
+        public async Task CreateAsync_given_non_existing_SubredditConnection_returns_Keys()
         {
             using (var connection = new SqliteConnection("DataSource=:memory:"))
             {
@@ -226,7 +226,7 @@ namespace Model.Test
                 using (var repository = new SubredditConnectionRepository(context))
                 {
 
-                    Assert.Equal((subredditConnection.SubredditFromName, subredditConnection.SubredditToName), await repository.Create(subredditConnection));
+                    Assert.Equal((subredditConnection.SubredditFromName, subredditConnection.SubredditToName), await repository.CreateAsync(subredditConnection));
 
                 }
 
@@ -248,7 +248,7 @@ namespace Model.Test
 
                 using (var repository = new SubredditConnectionRepository(context))
                 {
-                    var subredditConnection = await repository.Get("asdasdsadsadsadsadsadsadsadsada","asdas");
+                    var subredditConnection = await repository.GetAsync("asdasdsadsadsadsadsadsadsadsada","asdas");
 
                     Assert.Null(subredditConnection);
                 }
@@ -288,14 +288,14 @@ namespace Model.Test
      
                 context.SubredditConnections.Add(entity);
      
-                context.SaveChangesAsync();
+                await context.SaveChangesAsync();
 
 
                 var SubredditFromName = entity.SubredditFromName;
 
                 using (var repository = new SubredditConnectionRepository(context))
                 {
-                    var subredditConnection = await repository.Get(entity.SubredditFromName,entity.SubredditToName);
+                    var subredditConnection = await repository.GetAsync(entity.SubredditFromName,entity.SubredditToName);
 
                     Assert.Equal(entity, subredditConnection);
 
@@ -304,7 +304,7 @@ namespace Model.Test
         }
 
         [Fact]
-        public async Task Read_returns_mapped_SubredditConnections()
+        public async Task ReadAsync_returns_mapped_SubredditConnections()
         {
             var connection = new SqliteConnection("DataSource=:memory:");
             connection.Open();
@@ -313,7 +313,7 @@ namespace Model.Test
                               .UseSqlite(connection);
 
             var context = new RedditDBContext(builder.Options);
-            context.Database.EnsureCreated();
+            await context.Database.EnsureCreatedAsync();
 
             var entity = new SubredditConnection
             {
@@ -338,7 +338,7 @@ namespace Model.Test
 
             using (var repository = new SubredditConnectionRepository(context))
             {
-                var subredditConnections = await repository.Read();
+                var subredditConnections = await repository.ReadAsync();
                 var subredditConnection = subredditConnections.First();
                 Assert.Equal(FromName, subredditConnection.SubredditFromName);
                 Assert.Equal(ToName, subredditConnection.SubredditToName);
@@ -359,7 +359,7 @@ namespace Model.Test
             {
                 var subredditConnection = new SubredditConnection { SubredditFromName = "name", SubredditToName = "TestSub" };
 
-                var success = await repository.Update(subredditConnection);
+                var success = await repository.UpdateAsync(subredditConnection);
 
                 Assert.True(success);
             }
@@ -375,7 +375,7 @@ namespace Model.Test
             {
                 var subredditConnection = new SubredditConnection { SubredditFromName = "name", SubredditToName = "TestSub" };
 
-                var success = await repository.Update(subredditConnection);
+                var success = await repository.UpdateAsync(subredditConnection);
 
                 Assert.False(success);
             }
@@ -399,7 +399,7 @@ namespace Model.Test
 
                 };
 
-                await repository.Update(subredditConnection);
+                await repository.UpdateAsync(subredditConnection);
             }
 
             Assert.Equal(5, entity.PPMI);
@@ -417,7 +417,7 @@ namespace Model.Test
             {
                 var subredditConnection = new SubredditConnection { SubredditFromName = "name", SubredditToName = "TestSub" };
 
-                await repository.Update(subredditConnection);
+                await repository.UpdateAsync(subredditConnection);
             }
 
             context.Verify(c => c.SaveChangesAsync(default(CancellationToken)));
@@ -437,7 +437,7 @@ namespace Model.Test
                     SubredditToName = "TestSub"
                 };
 
-                await repository.Update(subredditConnection);
+                await repository.UpdateAsync(subredditConnection);
             }
 
             context.Verify(c => c.SaveChangesAsync(default(CancellationToken)), Times.Never);
@@ -478,7 +478,7 @@ namespace Model.Test
 
                 using (var repository = new SubredditConnectionRepository(context))
                 {
-                    await repository.Delete("name", "TestSub");
+                    await repository.DeleteAsync("name", "TestSub");
                     Assert.Equal(0,context.SubredditConnections.Count());
 
                 }
@@ -525,7 +525,7 @@ namespace Model.Test
                 using (var repository = new SubredditConnectionRepository(context))
                 {
 
-                    Assert.True(await repository.Delete("name", "TestSub"));
+                    Assert.True(await repository.DeleteAsync("name", "TestSub"));
 
                 }
 
@@ -551,7 +551,7 @@ namespace Model.Test
                 using (var repository = new SubredditConnectionRepository(context))
                 {
 
-                    Assert.False(await repository.Delete("name", "TestSub"));
+                    Assert.False(await repository.DeleteAsync("name", "TestSub"));
 
                 }
 

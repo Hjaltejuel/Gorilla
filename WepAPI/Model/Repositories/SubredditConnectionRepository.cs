@@ -18,7 +18,7 @@ namespace Model.Repositories
 
         }
 
-        public async Task<(string, string)> Create(SubredditConnection subredditConnection)
+        public async Task<(string, string)> CreateAsync(SubredditConnection subredditConnection)
         {
 
 
@@ -42,7 +42,7 @@ namespace Model.Repositories
 
         }
 
-        public async Task<bool> Delete(string SubredditFromName, string SubredditToName)
+        public async Task<bool> DeleteAsync(string SubredditFromName, string SubredditToName)
         {
             var preference = (from a in context.SubredditConnections.AsParallel()
                               where a.SubredditFromName.Equals(SubredditFromName) && a.SubredditToName.Equals(SubredditToName)
@@ -56,7 +56,7 @@ namespace Model.Repositories
             return false;
         }
 
-        public async Task<SubredditConnection> Get(string subredditFromName, string subredditToName)
+        public async Task<SubredditConnection> GetAsync(string subredditFromName, string subredditToName)
         {
             var connection =  (from a in context.SubredditConnections
                                    where a.SubredditFromName.Equals(subredditFromName) && a.SubredditToName.Equals(subredditToName)
@@ -69,13 +69,13 @@ namespace Model.Repositories
                                   
         }
 
-        public async Task<IReadOnlyCollection<SubredditConnection>> Read()
+        public async Task<IReadOnlyCollection<SubredditConnection>> ReadAsync()
         {
             return (from u in context.SubredditConnections
                           select u).ToList();
         }
 
-        public async Task<IReadOnlyCollection<SubredditConnection>> Find(string SubredditFromName)
+        public async Task<IReadOnlyCollection<SubredditConnection>> FindAsync(string SubredditFromName)
         {
 
             var prefs =  (from a in context.SubredditConnections
@@ -92,7 +92,7 @@ namespace Model.Repositories
 
         }
 
-        public async Task<bool> Update(SubredditConnection subredditConnection)
+        public async Task<bool> UpdateAsync(SubredditConnection subredditConnection)
         {
             SubredditConnection connection = await context.SubredditConnections.FindAsync(subredditConnection.SubredditFromName, subredditConnection.SubredditToName);
             if (connection != null)

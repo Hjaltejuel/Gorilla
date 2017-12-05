@@ -9,9 +9,9 @@ namespace Model
 {
     public interface IUserPreferenceRepository: IDisposable
     {
-        Task<IReadOnlyCollection<UserPreference>> FindAll(string username);
-        Task<(string,string)> Create(UserPreference userPreference);
-        Task<bool> Delete(string username, string subredditName);
-        Task<bool> Update(UserPreference userPreference);
+        Task<IReadOnlyCollection<UserPreference>> FindAsync(string username);
+        Task<(string,string)> CreateAsync(UserPreference userPreference);
+        Task<bool> DeleteAsync(string username, string subredditName);
+        Task<bool> UpdateAsync(UserPreference userPreference);
     }
 }

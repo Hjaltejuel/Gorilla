@@ -33,11 +33,11 @@ namespace WebApi.Test
             var SubredditConnections = new UserPreference[1] { new UserPreference {Username = "test", SubredditName = "name" } };
 
             var repository = new Mock<IUserPreferenceRepository>();
-            repository.Setup(r => r.FindAll("test")).ReturnsAsync(SubredditConnections);
+            repository.Setup(r => r.FindAsync("test")).ReturnsAsync(SubredditConnections);
 
             var controller = new UserPreferenceController(repository.Object);
 
-            var result = await controller.Find("test") as OkObjectResult;
+            var result = await controller.FindAsync("test") as OkObjectResult;
 
             Assert.Equal(SubredditConnections, result.Value);
         }
@@ -48,11 +48,11 @@ namespace WebApi.Test
             var SubredditConnections = new UserPreference[0];
 
             var repository = new Mock<IUserPreferenceRepository>();
-            repository.Setup(r => r.FindAll("test")).ReturnsAsync(SubredditConnections);
+            repository.Setup(r => r.FindAsync("test")).ReturnsAsync(SubredditConnections);
 
             var controller = new UserPreferenceController(repository.Object);
 
-            var result = await controller.Find("test");
+            var result = await controller.FindAsync("test");
 
             Assert.IsType<NoContentResult>(result) ;
         }
@@ -61,11 +61,11 @@ namespace WebApi.Test
         public async Task Get_given_non_existing_id_returns_NotFound()
         {
             var repository = new Mock<IUserPreferenceRepository>();
-            repository.Setup(r => r.FindAll("test")).ReturnsAsync(default(UserPreference[]));
+            repository.Setup(r => r.FindAsync("test")).ReturnsAsync(default(UserPreference[]));
 
             var controller = new UserPreferenceController(repository.Object);
 
-            var result = await controller.Find("test");
+            var result = await controller.FindAsync("test");
 
             Assert.IsType<NotFoundResult>(result);
         }
@@ -79,7 +79,7 @@ namespace WebApi.Test
             controller.ModelState.AddModelError(string.Empty, "Error");
 
             var userPreference = new UserPreference();
-            var result = await controller.Post(userPreference);
+            var result = await controller.PostAsync(userPreference);
 
             Assert.IsType<BadRequestObjectResult>(result);
         }
@@ -90,11 +90,11 @@ namespace WebApi.Test
         {
             var userPreference = new UserPreference();
             var repository = new Mock<IUserPreferenceRepository>();
-            repository.Setup(r => r.Create(userPreference)).Throws(new AlreadyThereException(""));
+            repository.Setup(r => r.CreateAsync(userPreference)).Throws(new AlreadyThereException(""));
             var controller = new UserPreferenceController(repository.Object);
 
             
-            var result = await controller.Post(userPreference);
+            var result = await controller.PostAsync(userPreference);
  
 
             Assert.IsType<StatusCodeResult>(result);
@@ -109,9 +109,9 @@ namespace WebApi.Test
             controller.ModelState.AddModelError(string.Empty, "Error");
 
             var userPreference = new UserPreference();
-            await controller.Post(userPreference);
+            await controller.PostAsync(userPreference);
 
-            repository.Verify(r => r.Create(It.IsAny<UserPreference>()), Times.Never);
+            repository.Verify(r => r.CreateAsync(It.IsAny<UserPreference>()), Times.Never);
         }
 
         [Fact(DisplayName = "Post given valid userPreference calls CreateAsync")]
@@ -122,22 +122,22 @@ namespace WebApi.Test
             var controller = new UserPreferenceController(repository.Object);
 
             var userPreference = new UserPreference();
-            await controller.Post(userPreference);
+            await controller.PostAsync(userPreference);
 
-            repository.Verify(r => r.Create(userPreference));
+            repository.Verify(r => r.CreateAsync(userPreference));
         }
 
         [Fact(DisplayName = "Post given valid userPreference returns CreatedAtAction")]
         public async Task Post_given_valid_track_returns_CreatedAtAction()
         {
             var repository = new Mock<IUserPreferenceRepository>();
-            repository.Setup(r => r.Create(It.IsAny<UserPreference>())).ReturnsAsync(("test","test"));
+            repository.Setup(r => r.CreateAsync(It.IsAny<UserPreference>())).ReturnsAsync(("test","test"));
             var controller = new UserPreferenceController(repository.Object);
 
             var userPreference = new UserPreference();
-            var result = await controller.Post(userPreference) as CreatedAtActionResult;
+            var result = await controller.PostAsync(userPreference) as CreatedAtActionResult;
 
-            Assert.Equal(nameof(UserPreferenceController.Find), result.ActionName);
+            Assert.Equal(nameof(UserPreferenceController.FindAsync), result.ActionName);
             Assert.Equal(("test","test"), result.RouteValues["usernameAndSub"]);
         }
 
@@ -152,9 +152,9 @@ namespace WebApi.Test
             controller.ModelState.AddModelError(string.Empty, "Error");
 
             var userPreference = new UserPreference();
-            await controller.Put( userPreference);
+            await controller.PutAsync( userPreference);
 
-            repository.Verify(r => r.Update(It.IsAny<UserPreference>()), Times.Never);
+            repository.Verify(r => r.UpdateAsync(It.IsAny<UserPreference>()), Times.Never);
         }
 
         [Fact(DisplayName = "Put given valid userPreference calls UpdateAsync")]
@@ -165,21 +165,21 @@ namespace WebApi.Test
             var controller = new UserPreferenceController(repository.Object);
 
             var userPreference = new UserPreference { Username = "test" };
-            await controller.Put( userPreference);
+            await controller.PutAsync( userPreference);
 
-            repository.Verify(r => r.Update(userPreference));
+            repository.Verify(r => r.UpdateAsync(userPreference));
         }
 
         [Fact(DisplayName = "Put given non-existing userPreference returns NotFound")]
         public async Task Put_given_non_existing_track_returns_NotFound()
         {
             var repository = new Mock<IUserPreferenceRepository>();
-            repository.Setup(r => r.Update(It.IsAny<UserPreference>())).ReturnsAsync(false);
+            repository.Setup(r => r.UpdateAsync(It.IsAny<UserPreference>())).ReturnsAsync(false);
 
             var controller = new UserPreferenceController(repository.Object);
 
             var userPreference = new UserPreference { Username = "test" };
-            var result = await controller.Put(userPreference);
+            var result = await controller.PutAsync(userPreference);
 
             Assert.IsType<NotFoundResult>(result);
         }
@@ -188,12 +188,12 @@ namespace WebApi.Test
         public async Task Put_given_valid_track_returns_NoContent()
         {
             var repository = new Mock<IUserPreferenceRepository>();
-            repository.Setup(r => r.Update(It.IsAny<UserPreference>())).ReturnsAsync(true);
+            repository.Setup(r => r.UpdateAsync(It.IsAny<UserPreference>())).ReturnsAsync(true);
 
             var controller = new UserPreferenceController(repository.Object);
 
             var userPreference = new UserPreference { Username = "test" };
-            var result = await controller.Put(userPreference);
+            var result = await controller.PutAsync(userPreference);
 
             Assert.IsType<OkResult>(result);
         }
@@ -202,12 +202,12 @@ namespace WebApi.Test
         public async Task Delete_given_non_existing_track_returns_NotFound()
         {
             var repository = new Mock<IUserPreferenceRepository>();
-            repository.Setup(r => r.Delete("test","test")).ReturnsAsync(false);
+            repository.Setup(r => r.DeleteAsync("test","test")).ReturnsAsync(false);
 
             var controller = new UserPreferenceController(repository.Object);
 
             var userPreference = new UserPreference();
-            var result = await controller.Delete("test","test");
+            var result = await controller.DeleteAsync("test","test");
 
             Assert.IsType<NotFoundResult>(result);
         }
@@ -216,12 +216,12 @@ namespace WebApi.Test
         public async Task Delete_given_valid_track_returns_NoContent()
         {
             var repository = new Mock<IUserPreferenceRepository>();
-            repository.Setup(r => r.Delete("test","test")).ReturnsAsync(true);
+            repository.Setup(r => r.DeleteAsync("test","test")).ReturnsAsync(true);
 
             var controller = new UserPreferenceController(repository.Object);
 
             var userPreference = new UserPreference();
-            var result = await controller.Delete("test","test");
+            var result = await controller.DeleteAsync("test","test");
 
             Assert.IsType<NoContentResult>(result);
         }
@@ -233,9 +233,9 @@ namespace WebApi.Test
 
             var controller = new UserPreferenceController(repository.Object);
 
-            await controller.Delete("test","test");
+            await controller.DeleteAsync("test","test");
 
-            repository.Verify(r => r.Delete("test","test"));
+            repository.Verify(r => r.DeleteAsync("test","test"));
         }
     }
 }

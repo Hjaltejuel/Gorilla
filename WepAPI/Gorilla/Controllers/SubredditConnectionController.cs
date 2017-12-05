@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Model;
 using Entities;
 using Exceptions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Gorilla.Controllers
 {
+    
     [Produces("application/json")]
     [Route("api/SubredditConnection")]
     public class SubredditConnectionController : Controller
@@ -23,9 +25,9 @@ namespace Gorilla.Controllers
 
         // GET: api/UserPreference/5
         [HttpGet("{subredditFromName}", Name = "Find")]
-        public async Task<IActionResult> Find(string subredditFromName)
+        public async Task<IActionResult> FindAsync(string subredditFromName)
         {
-            var result = await repository.Find(subredditFromName);
+            var result = await repository.FindAsync(subredditFromName);
             if (result == null)
             {
                 return NotFound();
@@ -37,9 +39,9 @@ namespace Gorilla.Controllers
         }
 
         [HttpGet(Name = "Read")]
-        public async Task<IActionResult> Read()
+        public async Task<IActionResult> ReadAsync()
         {
-            var result = await repository.Read();
+            var result = await repository.ReadAsync();
             if (result == null)
             {
                 return NotFound();
@@ -52,9 +54,9 @@ namespace Gorilla.Controllers
         }
 
         [HttpGet("{subredditFromName}, {subredditToName}", Name = "GetSubredditConnection")]
-        public async Task<IActionResult> Get(string subredditFromName, string subredditToName)
+        public async Task<IActionResult> GetAsync(string subredditFromName, string subredditToName)
         {
-            var result = await repository.Get(subredditFromName,subredditToName);
+            var result = await repository.GetAsync(subredditFromName,subredditToName);
             if (result == null)
             {
                 return NotFound();
@@ -65,7 +67,7 @@ namespace Gorilla.Controllers
 
         // POST: api/UserPreference
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]SubredditConnection subredditConnection)
+        public async Task<IActionResult> PostAsync([FromBody]SubredditConnection subredditConnection)
         {
 
             if (!ModelState.IsValid)
@@ -75,7 +77,7 @@ namespace Gorilla.Controllers
 
             try
             {
-                var result = await repository.Create(subredditConnection);
+                var result = await repository.CreateAsync(subredditConnection);
                 return CreatedAtAction("GetSubredditConnection", new { result }, null);
             }
             catch (AlreadyThereException)
@@ -90,13 +92,13 @@ namespace Gorilla.Controllers
 
         // PUT: api/UserPreference/
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody]SubredditConnection subredditConnection)
+        public async Task<IActionResult> PutAsync([FromBody]SubredditConnection subredditConnection)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var updated = await repository.Update(subredditConnection);
+            var updated = await repository.UpdateAsync(subredditConnection);
             if (!updated)
             {
                 return NotFound();
@@ -105,10 +107,10 @@ namespace Gorilla.Controllers
         }
 
         // DELETE: api/ApiWithActions/5
-        [HttpDelete]
-        public async Task<IActionResult> Delete(string subredditFromName, string subredditToName)
+        [HttpDelete("{subredditFromName},{subredditToName}")]
+        public async Task<IActionResult> DeleteAsync(string subredditFromName, string subredditToName)
         {
-            var deleted = await repository.Delete(subredditFromName, subredditToName);
+            var deleted = await repository.DeleteAsync(subredditFromName, subredditToName);
             if (!deleted)
             {
                 return NotFound();

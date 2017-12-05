@@ -19,7 +19,7 @@ namespace Model
             
         }
 
-        public async Task<(string,string)> Create(UserPreference userPreference)
+        public async Task<(string,string)> CreateAsync(UserPreference userPreference)
         {
           
             
@@ -43,7 +43,7 @@ namespace Model
 
         }
 
-        public async Task<bool> Delete(string username, string subredditName)
+        public async Task<bool> DeleteAsync(string username, string subredditName)
         {
             var preference = (from a in context.UserPreferences.AsParallel()
                               where a.Username.Equals(username) && a.SubredditName.Equals(subredditName)
@@ -58,7 +58,7 @@ namespace Model
         }
 
 
-        public async Task<IReadOnlyCollection<UserPreference>> FindAll(string username)
+        public async Task<IReadOnlyCollection<UserPreference>> FindAsync(string username)
         {
            
             var prefs = await (from a in context.UserPreferences
@@ -75,7 +75,7 @@ namespace Model
  
         }
 
-        public async Task<bool> Update(UserPreference userPreference)
+        public async Task<bool> UpdateAsync(UserPreference userPreference)
         {
             UserPreference preference = await context.UserPreferences.FindAsync(userPreference.Username, userPreference.SubredditName);
             if (preference != null)

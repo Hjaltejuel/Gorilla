@@ -9,10 +9,10 @@ namespace Model
 {
     public interface IUserRepository: IDisposable
     {
-        Task<User> Find(string username);
-        Task<String> Create(User user);
-        Task<bool> Delete(string username);
-        Task<IReadOnlyCollection<User>> Read();
-        Task<bool> Update(User user);
+        Task<User> FindAsync(string username);
+        Task<String> CreateAsync(User user);
+        Task<bool> DeleteAsync(string username);
+        Task<IReadOnlyCollection<User>> ReadAsync();
+        Task<bool> UpdateAsync(User user);
     }
 }
