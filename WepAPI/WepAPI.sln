@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi.Test", "WebApi.Test\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gorilla", "Gorilla\Gorilla.csproj", "{3D7029D6-A4ED-4163-9C48-027D58C2475C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UITEST", "UITEST\UITEST.csproj", "{E1BD4360-1F27-4E2D-AA3C-655467FCE5F0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "UITEST\UI.csproj", "{E1BD4360-1F27-4E2D-AA3C-655467FCE5F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
