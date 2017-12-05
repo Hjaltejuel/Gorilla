@@ -9,3 +9,5 @@
 .ide-wal
 .vs/
 /bin/
+.force
+.g.cs.bakcup
