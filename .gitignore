@@ -1,0 +1,8 @@
+.csproj
+.cache
+.dll
+.pdb
+.ide
+.ide-shm
+.ide-wal
+.lock
