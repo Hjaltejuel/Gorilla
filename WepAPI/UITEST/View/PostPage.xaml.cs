@@ -52,7 +52,7 @@ namespace UITEST.View
 
             if (_vm.CurrentPost.Comments.Count > 0)
             {
-                FillComments();
+                CreateComments();
             }
         }
 
@@ -114,15 +114,39 @@ namespace UITEST.View
         {
             if (!CommentTextBox.Text.Equals(""))
             {
-                abstractCommentableToCommentOn.InsertComment(new Comment() { Text = CommentTextBox.Text, Author = "Unidentified User" });
+                abstractCommentableToCommentOn.InsertComment(new Comment()
+                {
+                    Text = CommentTextBox.Text,
+                    Author = "Unidentified User"
+                });
                 CommentTextBox.Text = "";
                 //Refresh comments
                 CommentsView.Items.Clear();
-                FillComments();
+                CreateComments();
             }
         }
+        private StackPanel CreateCommentPanel(Comment comment)
+        {
+            var SingleCommentStackPanel = new StackPanel();
+            var SingleCommentPanel = new RelativePanel()
+            {
+                Padding = new Thickness(0, 0, 0, 0)
+            };
 
-        private void FillComments()
+            RelativePanel TextPanel = SetupCommentTextPanel(comment);
+            RelativePanel OpOgNedPanel = SetUpLikeAndDislikePanel(comment);
+            RelativePanel TextExtraPanel = SetUpExtraCommentInfo(comment);
+            SingleCommentPanel.Children.Add(OpOgNedPanel);
+            SingleCommentPanel.Children.Add(TextPanel);
+            SingleCommentPanel.Children.Add(TextExtraPanel);
+
+            RelativePanel.SetRightOf(TextPanel, OpOgNedPanel);
+            RelativePanel.SetBelow(TextExtraPanel, TextPanel);
+
+            SingleCommentStackPanel.Children.Add(SingleCommentPanel);
+            return SingleCommentStackPanel;
+        }
+        private void CreateComments()
         {
             foreach (var comment in _vm.CurrentPost.Comments)
             {
@@ -131,18 +155,10 @@ namespace UITEST.View
                 {
                     BorderThickness = new Thickness(1),
                     BorderBrush = new SolidColorBrush(Colors.Gray),
-                    Margin = new Thickness(0, 0, 0, 10),
+                    Margin = new Thickness(0, 0, 0, 10)
                 };
 
-                var SingleCommentPanel = new RelativePanel() { Padding = new Thickness(0, 0, 0, 0) };
-                RelativePanel TextPanel = SetupCommentTextPanel(comment);
-                RelativePanel OpOgNedPanel = SetUpLikeAndDislikePanel(comment);
-                RelativePanel TextExtraPanel = SetUpExtraCommentInfo(comment);
-                SingleCommentPanel.Children.Add(OpOgNedPanel);
-                SingleCommentPanel.Children.Add(TextPanel);
-                SingleCommentPanel.Children.Add(TextExtraPanel);
-                RelativePanel.SetRightOf(TextPanel, OpOgNedPanel);
-                RelativePanel.SetBelow(TextExtraPanel, TextPanel);
+                var SingleCommentPanel = CreateCommentPanel(comment);
 
                 CommentPanel.Children.Add(SingleCommentPanel);
                 CommentsView.Items.Add(CommentPanel);
@@ -150,35 +166,24 @@ namespace UITEST.View
                 // Indsætte subcomments rekusivt
                 if (comment.Comments.Count > 0)
                 {
-                    FillSubComments(comment.Comments, 1, CommentPanel);
+                    FillSubComments(comment.Comments, 1, SingleCommentPanel);
                 }
             }
         }
-
-        private void FillSubComments(ObservableCollection<Comment> subComments, int index, StackPanel CommentPanel)
+        //Panel parent, ObservableCollection<Comment> subComments, int depth
+        private void FillSubComments(ObservableCollection<Comment> subComments, int depth, StackPanel parentPanel)
         {
             foreach (var subComment in subComments)
             {
-                var SingleCommentPanel = new RelativePanel() { Margin = new Thickness(30 * index, 0, 0, 0) };
-                RelativePanel TextPanel = SetupCommentTextPanel(subComment);
+                var SingleCommentPanel = CreateCommentPanel(subComment);
+                var newIndentation = parentPanel.Margin.Left + 30;
+                SingleCommentPanel.Margin = new Thickness(newIndentation, 0, 0, 0);
 
-                //OP og NED knapper
-                RelativePanel OpOgNedPanel = SetUpLikeAndDislikePanel(subComment);
-
-                //Ekstra comment stuff
-                RelativePanel TextExtraPanel = SetUpExtraCommentInfo(subComment);
-
-                SingleCommentPanel.Children.Add(OpOgNedPanel);
-                SingleCommentPanel.Children.Add(TextPanel);
-                SingleCommentPanel.Children.Add(TextExtraPanel);
-                RelativePanel.SetRightOf(TextPanel, OpOgNedPanel);
-                RelativePanel.SetBelow(TextExtraPanel, TextPanel);
-
-                CommentPanel.Children.Add(SingleCommentPanel);
+                parentPanel.Children.Add(SingleCommentPanel);
 
                 if (subComment.Comments.Count > 0)
                 {
-                    FillSubComments(subComment.Comments, ++index, CommentPanel);
+                    FillSubComments(subComment.Comments, ++depth, SingleCommentPanel);
                 }
             }
         }

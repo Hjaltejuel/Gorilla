@@ -117,10 +117,10 @@ namespace WebApplication2.Controllers
             //KALD responseJsonBuilder(resonse)!
             return (0, null);
         }
-        public async (HttpStatusCode, string) ResponseJsonBuilder(HttpResponseMessage response)
+        public async Task<(HttpStatusCode, string)> ResponseJsonBuilder(HttpResponseMessage response)
         {
             string responseBody = await response.Content.ReadAsStringAsync();
-            
+            return (HttpStatusCode.Accepted,"");
         }
     }
 }

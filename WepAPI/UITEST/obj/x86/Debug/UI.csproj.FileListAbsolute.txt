@@ -230,3 +230,4 @@ C:\Users\Jens\Source\Repos\Gorilla2\WepAPI\UITEST\obj\x86\Debug\qualifiers.txt
 C:\Users\Jens\Source\Repos\Gorilla2\WepAPI\UITEST\obj\x86\Debug\qualifiers.txt.intermediate
 C:\Users\Jens\Source\Repos\Gorilla2\WepAPI\UITEST\obj\x86\Debug\MultipleQualifiersPerDimensionFound.txt
 C:\Users\Jens\Source\Repos\Gorilla2\WepAPI\UITEST\obj\x86\Debug\ProjectArchitectures.txt
+C:\Users\Jens\Source\Repos\Gorilla2\WepAPI\UITEST\obj\x86\Debug\UI.csprojResolveAssemblyReference.cache
