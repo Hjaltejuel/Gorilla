@@ -79,6 +79,8 @@ namespace UITEST
         }
 
 
+        //hemmelig besked til jens
+
         private void PostVoteButton_Clicked(object sender, RoutedEventArgs e)
         {
             var btn = sender as Button;
