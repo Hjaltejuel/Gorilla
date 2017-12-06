@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WebApplication2.Models
 {
-    public class Subreddit
+    public class Subreddit : ICommentable
     {
         ObservableCollection<Post> posts;
 
