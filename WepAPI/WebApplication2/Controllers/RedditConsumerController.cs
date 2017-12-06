@@ -113,14 +113,25 @@ namespace WebApplication2.Controllers
             return (statusCode, responseBody);
         }
 
+        public T ResponseObjectBuilder<T>(string responseBody)
+        {
+            JObject json = JObject.Parse(responseBody);
+
+            var value = (string)json[""]["data"]["children"];
+            List<Child> deserialized = JsonConvert.DeserializeObject<List<Child>>(responseBody);
+            Post p = new Post();
+            //OMFORM NODE LISTEN TIL OBJECT FORMAT PÅ BAGGRUND AF T
+            throw new NotImplementedException();
+        }
+        
         public async Task<T> ResponseJsonBuilderAsync<T>(HttpResponseMessage response)
         {
 
             var obj = Activator.CreateInstance(typeof(T));
 
             string responseBody = await response.Content.ReadAsStringAsync();
-            string jResponseBody = JsonConvert.SerializeObject(responseBody);
-            JsonConvert.PopulateObject(jResponseBody, obj);
+            //string jResponseBody = JsonConvert.SerializeObject(responseBody);
+            ResponseObjectBuilder<Post>(responseBody);
 
 
             return (T)obj;
