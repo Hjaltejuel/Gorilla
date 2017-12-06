@@ -9,7 +9,7 @@ namespace WebApplication2.Models
 {
     // TODO: FIX STRING LENGTHS
 
-    public class Post : Commentable
+    public class Post 
     {
 
         public bool Ad { get; set; }

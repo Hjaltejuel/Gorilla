@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace WebApplication2.Controllers
 {
-    public class RedditConsumerController : IRedditAPIConsumer
+    public class RedditConsumerController : Controller, IRedditAPIConsumer
     {
 
         public string BaseUrl { get => "https://reddit.com/"; set => throw new NotImplementedException(); }
@@ -25,7 +25,8 @@ namespace WebApplication2.Controllers
                 client.BaseAddress = uri;
                 client.DefaultRequestHeaders.Clear();
                 HttpResponseMessage response = await client.GetAsync(client.BaseAddress);
-               
+                string responseBody = await response.Content.ReadAsStringAsync();
+
 
                 return response;
 
@@ -58,7 +59,6 @@ namespace WebApplication2.Controllers
             HttpResponseMessage response = await Get(uri);
             response.EnsureSuccessStatusCode();
 
-
             return await ResponseJsonBuilderAsync<Post>(response);
         }
 
@@ -76,6 +76,10 @@ namespace WebApplication2.Controllers
 
                 return request;
             }
+        }
+        public IActionResult Index()
+        {
+            return View();
         }
 
         public async Task<(HttpStatusCode, string)> PostPostAsync(Post p)
@@ -109,6 +113,7 @@ namespace WebApplication2.Controllers
             return (statusCode, responseBody);
         }
 
+<<<<<<< HEAD
         public T ResponseObjectBuilder<T>(string responseBody)
         {
             JObject json = JObject.Parse(responseBody);
@@ -120,6 +125,8 @@ namespace WebApplication2.Controllers
             throw new NotImplementedException();
         }
 
+=======
+>>>>>>> f626af6b8fd63f60bb36ead1df2be7e9abf73c0f
         public async Task<T> ResponseJsonBuilderAsync<T>(HttpResponseMessage response)
         {
 
