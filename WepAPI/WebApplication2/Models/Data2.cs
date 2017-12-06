@@ -46,7 +46,7 @@ namespace WebApplication2.Models
         public int num_comments { get; set; }
         public object num_reports { get; set; }
         public object distinguished { get; set; }
-        public SubChild replies { get; set; }
+        public Node replies { get; set; }
         public int? gilded { get; set; }
         public string parent_id { get; set; }
         public string body { get; set; }
@@ -54,12 +54,6 @@ namespace WebApplication2.Models
         public string link_id { get; set; }
     }
 
-    public class SubChild
-    {
-        public string kind { get; set; }
-        public Data data  { get; set; }
-      
-    }
     public class Child
     {
         public string kind { get; set; }
@@ -74,7 +68,7 @@ namespace WebApplication2.Models
         public object before { get; set; }
     }
 
-    public class RootObject
+    public class Node
     {
         public string kind { get; set; }
         public Data data { get; set; }

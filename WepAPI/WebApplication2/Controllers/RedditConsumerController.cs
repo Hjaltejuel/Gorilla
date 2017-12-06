@@ -111,10 +111,13 @@ namespace WebApplication2.Controllers
 
         public T ResponseObjectBuilder<T>(string responseBody)
         {
+            JObject json = JObject.Parse(responseBody);
 
-            List<RootObject> reddThread = JsonConvert.DeserializeObject<List<RootObject>>(responseBody);
-            T temp = JsonConvert.DeserializeObject<T>(JToken.Parse(responseBody).ToString());
-
+            var value = (string)json[""]["data"]["children"];
+            List<Child> deserialized = JsonConvert.DeserializeObject<List<Child>>(responseBody);
+            Post p = new Post();
+            //OMFORM NODE LISTEN TIL OBJECT FORMAT PÅ BAGGRUND AF T
+            throw new NotImplementedException();
         }
 
         public async Task<T> ResponseJsonBuilderAsync<T>(HttpResponseMessage response)
@@ -123,8 +126,8 @@ namespace WebApplication2.Controllers
             var obj = Activator.CreateInstance(typeof(T));
 
             string responseBody = await response.Content.ReadAsStringAsync();
-            string jResponseBody = JsonConvert.SerializeObject(responseBody);
-            JsonConvert.PopulateObject(jResponseBody, obj);
+            //string jResponseBody = JsonConvert.SerializeObject(responseBody);
+            ResponseObjectBuilder<Post>(responseBody);
 
 
             return (T)obj;

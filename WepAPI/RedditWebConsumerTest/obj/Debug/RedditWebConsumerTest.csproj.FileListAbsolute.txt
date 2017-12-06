@@ -1,2 +1,0 @@
-C:\Users\Jakob Roos\source\repos\Gorilla\WepAPI\RedditWebConsumerTest\obj\Debug\RedditWebConsumerTest.csprojResolveAssemblyReference.cache
-C:\Users\Jakob Roos\source\repos\Gorilla\WepAPI\RedditWebConsumerTest\obj\Debug\RedditWebConsumerTest.csproj.CoreCompileInputs.cache
