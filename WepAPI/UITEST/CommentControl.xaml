@@ -12,22 +12,25 @@
     <Grid>
         <RelativePanel Name="CommentPanel" DataContext="{x:Bind Path = currentComment}">
             <RelativePanel Margin="10,10,15,0" Name="VotePanel">
-                <Button Content="Like" Style="{StaticResource VoteButton}" Name="UpvoteButton" Click="UpvoteButton_Click" Width="20" Height="20">
+                <Button Content="Like" Style="{StaticResource LikeButton}" Name="UpvoteButton" Click="UpvoteButton_Click" Width="20" Height="20">
 
                 </Button>
-                <Button Content="Dislike" Style="{StaticResource VoteButton}" RelativePanel.Below="UpvoteButton" Name="DownvoteButton" Click="DownvoteButton_Click" Width="20" Height="20">
+                <Button Content="Dislike" Style="{StaticResource DislikeButton}" RelativePanel.Below="UpvoteButton" Name="DownvoteButton" Click="DownvoteButton_Click" Width="20" Height="20" Margin="0,-5,0,0">
 
                 </Button>
             </RelativePanel>
-            
-            <RelativePanel Name="TextPanel" RelativePanel.RightOf="VotePanel">
-                <TextBlock Name="AuthorTextBlock" Text="{Binding Author}" FontSize="10"  Margin="10,0,0,0">
+
+            <RelativePanel Name="TextPanel" RelativePanel.RightOf="VotePanel" Margin="0,7,3,0">
+                <TextBlock Name="AuthorTextBlock" Text="{Binding Author}" FontSize="10" Width="Auto">
 
                 </TextBlock>
-                <TextBlock Name="PointsTextBlock" RelativePanel.RightOf="AuthorTextBlock" Text="{Binding NumOfVotes}" FontSize="10" Margin="7,0,0,0">
+                <TextBlock Name="DotSeparator" Text="•" FontSize="10" RelativePanel.RightOf="AuthorTextBlock" Margin="2,0,0,0">
 
                 </TextBlock>
-                <TextBlock Name="CommentTextBlock" RelativePanel.Below="AuthorTextBlock" Text="{Binding Text}" Margin="0,10,10,0">
+                <TextBlock Name="PointsTextBlock" RelativePanel.RightOf="DotSeparator" Text="{Binding NumOfVotes}" Width="Auto" FontSize="10" Margin="2,0,0,0">
+
+                </TextBlock>
+                <TextBlock Name="CommentTextBlock" RelativePanel.Below="AuthorTextBlock" Text="{Binding Text}" Width="Auto" Margin="0,5,0,0" TextWrapping="Wrap">
 
                 </TextBlock>
             </RelativePanel>

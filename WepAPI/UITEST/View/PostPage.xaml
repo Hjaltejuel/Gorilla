@@ -26,11 +26,11 @@
 
         <ListView Grid.Row="4" Name="PostView" SelectionMode="None" HorizontalAlignment="Stretch">
             <RelativePanel Name="TopInfo"  Margin="20, 20, 0, 0" Height="Auto" Grid.Row="1" DataContext="{x:Bind Path = _vm.CurrentPost}">
-                <RelativePanel  Name="OpOgNed" Width="100">
-                    <Button Content="Like" Height="20" Width="20" Name="op" Style="{StaticResource VoteButton}" Click="PostVoteButton_Clicked"/>
-                    <TextBlock Text="{Binding NumOfVotes}" Name="Votes" RelativePanel.Below="op" RelativePanel.AlignHorizontalCenterWith="op" VerticalAlignment="Center" Margin="-10.8,-10,-13.6,0"/>
-                    <Button Content="Dislike" Height="20" FontSize="30" Name="ned" RelativePanel.Below="Votes" Style="{StaticResource VoteButton}" Click="PostVoteButton_Clicked"/>
-                    <Rectangle Fill="Blue" Height="40" Width="40" Name="Box" Margin="20, 0, 0, 0" RelativePanel.RightOf="op"/>
+                <RelativePanel Name="OpOgNed" Width="Auto" Margin="0,0,10,0">
+                    <Button Content="Like" Height="20" Width="20" Name="Upvote" Style="{StaticResource LikeButton}" Click="Upvote_Click"/>
+                    <TextBlock Text="{Binding NumOfVotes}" Name="Votes" HorizontalAlignment="Left" Margin="0, 8, 0, 0"/>
+                    <Button Content="Dislike" Height="20" FontSize="30" Name="Downvote" RelativePanel.Below="Upvote" Style="{StaticResource DislikeButton}" Click="Downvote_Click"/>
+                    <Rectangle Fill="Blue" Height="40" Width="40" Name="Box" Margin="20, 0, 0, 0" RelativePanel.RightOf="Upvote"/>
                 </RelativePanel>
                 <RelativePanel Name="TitlePanel" RelativePanel.RightOf="OpOgNed">
                     <TextBlock Text="{Binding Title}" FontSize="20" Name="Title"/>

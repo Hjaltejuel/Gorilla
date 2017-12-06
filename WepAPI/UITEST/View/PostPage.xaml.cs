@@ -125,11 +125,6 @@ namespace UITEST.View
         private void CommentSaveClick(object sender, RoutedEventArgs e)
         {
             InsertComment(_vm.FocusedAbstractCommentable);
-
-            //if (CommentPanel.Visibility == Visibility.Visible)
-            //{
-            //    CommentPanel.Visibility = Visibility.Collapsed;
-            //}
         }
         private void InsertComment(AbstractCommentable abstractCommentableToCommentOn)
         {
@@ -151,12 +146,13 @@ namespace UITEST.View
         {
             var SingleCommentStackPanel = new StackPanel()
             {
-                Margin = new Thickness(30, 0, 0, 30)
+                Margin = new Thickness(20, 5, 0, 5),
+                Padding = new Thickness(0, 0, 0, 5)
             };
             var SingleCommentPanel = new CommentControl(comment);
             
             if (ColorBoolean)
-                SingleCommentStackPanel.Background = new SolidColorBrush(Color.FromArgb(255, 220, 220, 220));
+                SingleCommentStackPanel.Background = new SolidColorBrush(Color.FromArgb(255, 240, 240, 240));
             else
                 SingleCommentStackPanel.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
 
@@ -176,16 +172,13 @@ namespace UITEST.View
                     Margin = new Thickness(0, 0, 0, 10)
                 };
                 
-
                 var TopCommentPanel = CreateCommentPanel(comment, false);
                 TopCommentPanel.Margin = new Thickness(0, 0, 0, 0); //Reset margin for first comment
                 RootCommentPanel.Children.Add(TopCommentPanel);
                 CommentsView.Children.Add(RootCommentPanel);
                 // Indsætte subcomments rekusivt
                 if (comment.Comments.Count > 0)
-                {
                     FillSubComments(comment.Comments, TopCommentPanel, true);
-                }
             }
         }
         //Panel parent, ObservableCollection<Comment> subComments, int depth
@@ -198,23 +191,18 @@ namespace UITEST.View
                 parentPanel.Children.Add(SubCommentPanel);
 
                 if (subComment.Comments.Count > 0)
-                {
                     FillSubComments(subComment.Comments, SubCommentPanel, !ColorBoolean);
-                }
             }
         }
-        
-        private void PostVoteButton_Clicked(object sender, RoutedEventArgs e)
+
+        private void Upvote_Click(object sender, RoutedEventArgs e)
         {
-            var btn = sender as Button;
-            if (btn.Content.Equals("Like"))
-            {
-                _vm.CurrentPost.NumOfVotes += 1;
-            }
-            else if (btn.Content.Equals("Dislike"))
-            {
-                _vm.CurrentPost.NumOfVotes -= 1;
-            }
+            _vm.CurrentPost.NumOfVotes += 1;
+        }
+
+        private void Downvote_Click(object sender, RoutedEventArgs e)
+        {
+            _vm.CurrentPost.NumOfVotes -= 1;
         }
     }
 }
