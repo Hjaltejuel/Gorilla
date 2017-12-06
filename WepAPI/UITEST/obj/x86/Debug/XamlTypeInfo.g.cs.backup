@@ -13,7 +13,7 @@ namespace UITEST
 {
     public partial class App : global::Windows.UI.Xaml.Markup.IXamlMetadataProvider
     {
-    private global::UITEST.UITEST_XamlTypeInfo.XamlTypeInfoProvider _provider;
+    private global::UITEST.UI_XamlTypeInfo.XamlTypeInfoProvider _provider;
 
         /// <summary>
         /// GetXamlType(Type)
@@ -22,7 +22,7 @@ namespace UITEST
         {
             if(_provider == null)
             {
-                _provider = new global::UITEST.UITEST_XamlTypeInfo.XamlTypeInfoProvider();
+                _provider = new global::UITEST.UI_XamlTypeInfo.XamlTypeInfoProvider();
             }
             return _provider.GetXamlTypeByType(type);
         }
@@ -34,7 +34,7 @@ namespace UITEST
         {
             if(_provider == null)
             {
-                _provider = new global::UITEST.UITEST_XamlTypeInfo.XamlTypeInfoProvider();
+                _provider = new global::UITEST.UI_XamlTypeInfo.XamlTypeInfoProvider();
             }
             return _provider.GetXamlTypeByName(fullName);
         }
@@ -49,7 +49,7 @@ namespace UITEST
     }
 }
 
-namespace UITEST.UITEST_XamlTypeInfo
+namespace UITEST.UI_XamlTypeInfo
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Windows.UI.Xaml.Build.Tasks"," 14.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -191,8 +191,8 @@ namespace UITEST.UITEST_XamlTypeInfo
 
         private global::Windows.UI.Xaml.Markup.IXamlType CreateXamlType(int typeIndex)
         {
-            global::UITEST.UITEST_XamlTypeInfo.XamlSystemBaseType xamlType = null;
-            global::UITEST.UITEST_XamlTypeInfo.XamlUserType userType;
+            global::UITEST.UI_XamlTypeInfo.XamlSystemBaseType xamlType = null;
+            global::UITEST.UI_XamlTypeInfo.XamlUserType userType;
             string typeName = _typeNameTable[typeIndex];
             global::System.Type type = _typeTable[typeIndex];
 
@@ -200,43 +200,43 @@ namespace UITEST.UITEST_XamlTypeInfo
             {
 
             case 0:   //  UITEST.View.DiscoverPage
-                userType = new global::UITEST.UITEST_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
+                userType = new global::UITEST.UI_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
                 userType.Activator = Activate_0_DiscoverPage;
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
             case 1:   //  Windows.UI.Xaml.Controls.Page
-                xamlType = new global::UITEST.UITEST_XamlTypeInfo.XamlSystemBaseType(typeName, type);
+                xamlType = new global::UITEST.UI_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
             case 2:   //  Windows.UI.Xaml.Controls.UserControl
-                xamlType = new global::UITEST.UITEST_XamlTypeInfo.XamlSystemBaseType(typeName, type);
+                xamlType = new global::UITEST.UI_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
             case 3:   //  UITEST.MainPage
-                userType = new global::UITEST.UITEST_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
+                userType = new global::UITEST.UI_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
                 userType.Activator = Activate_3_MainPage;
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
             case 4:   //  UITEST.View.PostPage
-                userType = new global::UITEST.UITEST_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
+                userType = new global::UITEST.UI_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
                 userType.Activator = Activate_4_PostPage;
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
             case 5:   //  UITEST.View.ProfilePage
-                userType = new global::UITEST.UITEST_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
+                userType = new global::UITEST.UI_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
                 userType.Activator = Activate_5_ProfilePage;
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
             case 6:   //  UITEST.View.TrendingPage
-                userType = new global::UITEST.UITEST_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
+                userType = new global::UITEST.UI_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
                 userType.Activator = Activate_6_TrendingPage;
                 userType.SetIsLocalType();
                 xamlType = userType;
@@ -249,7 +249,7 @@ namespace UITEST.UITEST_XamlTypeInfo
 
         private global::Windows.UI.Xaml.Markup.IXamlMember CreateXamlMember(string longMemberName)
         {
-            global::UITEST.UITEST_XamlTypeInfo.XamlMember xamlMember = null;
+            global::UITEST.UI_XamlTypeInfo.XamlMember xamlMember = null;
             // No Local Properties
             return xamlMember;
         }
@@ -304,9 +304,9 @@ namespace UITEST.UITEST_XamlTypeInfo
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Windows.UI.Xaml.Build.Tasks"," 14.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    internal class XamlUserType : global::UITEST.UITEST_XamlTypeInfo.XamlSystemBaseType
+    internal class XamlUserType : global::UITEST.UI_XamlTypeInfo.XamlSystemBaseType
     {
-        global::UITEST.UITEST_XamlTypeInfo.XamlTypeInfoProvider _provider;
+        global::UITEST.UI_XamlTypeInfo.XamlTypeInfoProvider _provider;
         global::Windows.UI.Xaml.Markup.IXamlType _baseType;
         bool _isArray;
         bool _isMarkupExtension;
@@ -320,7 +320,7 @@ namespace UITEST.UITEST_XamlTypeInfo
         global::System.Collections.Generic.Dictionary<string, string> _memberNames;
         global::System.Collections.Generic.Dictionary<string, object> _enumValues;
 
-        public XamlUserType(global::UITEST.UITEST_XamlTypeInfo.XamlTypeInfoProvider provider, string fullName, global::System.Type fullType, global::Windows.UI.Xaml.Markup.IXamlType baseType)
+        public XamlUserType(global::UITEST.UI_XamlTypeInfo.XamlTypeInfoProvider provider, string fullName, global::System.Type fullType, global::Windows.UI.Xaml.Markup.IXamlType baseType)
             :base(fullName, fullType)
         {
             _provider = provider;
@@ -512,7 +512,7 @@ namespace UITEST.UITEST_XamlTypeInfo
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     internal class XamlMember : global::Windows.UI.Xaml.Markup.IXamlMember
     {
-        global::UITEST.UITEST_XamlTypeInfo.XamlTypeInfoProvider _provider;
+        global::UITEST.UI_XamlTypeInfo.XamlTypeInfoProvider _provider;
         string _name;
         bool _isAttachable;
         bool _isDependencyProperty;
@@ -521,7 +521,7 @@ namespace UITEST.UITEST_XamlTypeInfo
         string _typeName;
         string _targetTypeName;
 
-        public XamlMember(global::UITEST.UITEST_XamlTypeInfo.XamlTypeInfoProvider provider, string name, string typeName)
+        public XamlMember(global::UITEST.UI_XamlTypeInfo.XamlTypeInfoProvider provider, string name, string typeName)
         {
             _name = name;
             _typeName = typeName;

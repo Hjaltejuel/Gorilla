@@ -25729,20 +25729,20 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Jens\\.nuget\\packages\\": {}
+    "C:\\Users\\Michelle\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Jens\\Source\\Repos\\Gorilla2\\WepAPI\\UITEST\\UI.csproj",
+      "projectUniqueName": "C:\\Users\\Michelle\\Source\\Repos\\Gorilla2\\WepAPI\\UITEST\\UI.csproj",
       "projectName": "UI",
-      "projectPath": "C:\\Users\\Jens\\Source\\Repos\\Gorilla2\\WepAPI\\UITEST\\UI.csproj",
-      "packagesPath": "C:\\Users\\Jens\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Jens\\Source\\Repos\\Gorilla2\\WepAPI\\UITEST\\obj\\",
+      "projectPath": "C:\\Users\\Michelle\\Source\\Repos\\Gorilla2\\WepAPI\\UITEST\\UI.csproj",
+      "packagesPath": "C:\\Users\\Michelle\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Michelle\\Source\\Repos\\Gorilla2\\WepAPI\\UITEST\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "configFilePaths": [
-        "C:\\Users\\Jens\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Michelle\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

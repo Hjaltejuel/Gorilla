@@ -37,9 +37,14 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
             return (null,null);
         }
 
-        public Task<IReadOnlyCollection<SubredditConnection>> FindAsync(string subredditFromName)
+        public async Task<IReadOnlyCollection<SubredditConnection>> FindAsync(string subredditFromName)
         {
-            throw new NotImplementedException();
+            var response = await _client.GetAsync($"api/subredditConnection/{subredditFromName }");
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.To<IReadOnlyCollection<SubredditConnection>>();
+            }
+            return null;
         }
 
         public async Task<bool> DeleteAsync(string subredditFromName, string subredditToName)
