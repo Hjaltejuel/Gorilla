@@ -105,6 +105,7 @@ namespace WebApplication2.Controllers
 
             return await (ResponseStatusAsync(response));
         }
+
         public async Task<(HttpStatusCode, string)> ResponseStatusAsync(HttpResponseMessage response)
         {
             string responseBody = await response.Content.ReadAsStringAsync();
@@ -133,8 +134,12 @@ namespace WebApplication2.Controllers
             //string jResponseBody = JsonConvert.SerializeObject(responseBody);
             ResponseObjectBuilder<Post>(responseBody);
 
-
             return (T)obj;
+        }
+
+        public Task<(HttpStatusCode, string)> LoginToReddit(string username, string password)
+        {
+            throw new NotImplementedException();
         }
     }
 }
