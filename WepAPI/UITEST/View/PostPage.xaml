@@ -25,9 +25,9 @@
         </CommandBar>
         <RelativePanel Name="TopInfo"  Margin="20, 20, 0, 0" Height="Auto" Grid.Row="1" DataContext="{x:Bind Path = _vm.CurrentPost}">
             <RelativePanel  Name="OpOgNed" Width="100">
-                <Button Content="Like" Height="20" Width="20" Name="op" Style="{StaticResource LikeDisLikeButtonStyle}" Click="PostVoteButton_Clicked"/>
+                <Button Content="Like" Height="20" Width="20" Name="op" Style="{StaticResource VoteButton}" Click="PostVoteButton_Clicked"/>
                 <TextBlock Text="{Binding NumOfVotes}" Name="Votes" Width="50" RelativePanel.Below="op" RelativePanel.AlignHorizontalCenterWith="op"/>
-                <Button Content="Dislike" Height="20" FontSize="30" Name="ned" RelativePanel.Below="Votes" Style="{StaticResource LikeDisLikeButtonStyle}" Click="PostVoteButton_Clicked"/>
+                <Button Content="Dislike" Height="20" FontSize="30" Name="ned" RelativePanel.Below="Votes" Style="{StaticResource VoteButton}" Click="PostVoteButton_Clicked"/>
                 <Rectangle Fill="Blue" Height="40" Width="40" Name="Box" Margin="20, 0, 0, 0" RelativePanel.RightOf="op"/>
             </RelativePanel>
 
@@ -35,22 +35,20 @@
                 <TextBlock Text="{Binding Title}" FontSize="20" Name="Title"/>
             </RelativePanel>
 
-
             <RelativePanel Name="TextPanel" RelativePanel.Below="TitlePanel" RelativePanel.RightOf="OpOgNed" Width="Auto" Margin="0, 4, 10, 0">
                 <Border BorderThickness="1" BorderBrush="Gray" Padding="10, 10, 10, 10">
                     <TextBlock Text="{Binding Text}" Name="PostText" TextWrapping="Wrap"/>
                 </Border>
             </RelativePanel>
 
-
             <RelativePanel Name="ExtraStuff" RelativePanel.RightOf="OpOgNed" RelativePanel.Below="TextPanel">
                 <TextBlock Text="{Binding Author}" Style="{StaticResource AuthorText}" Name="Author"/>
-                <TextBlock Text="{Binding NumOfComments}" RelativePanel.Below ="Author" FontSize="10" Name="CommentsAmount"/>
-                <Button Click="CommentText_Click" Content="comment" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="CommentsAmount" Name="CommentButton" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
-                <Button Content="share" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="CommentButton" Name="ShareText" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
-                <Button Content="save" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="ShareText" Name="SaveText" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
-                <Button Content="hide" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="SaveText" Name="HideText" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
-                <Button Content="report" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="HideText" Name="ReportText" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
+                <TextBlock Text="{Binding Comments.Count}" RelativePanel.Below ="Author" FontSize="10" Name="CommentsAmount"/>
+                <Button Click="CommentText_Click" Content="comment" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="CommentsAmount" RelativePanel.Below="Author" Name="CommentButton" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
+                <Button Content="share" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="CommentButton" RelativePanel.Below="Author" Name="ShareText" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
+                <Button Content="save" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="ShareText" RelativePanel.Below="Author" Name="SaveText" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
+                <Button Content="hide" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="SaveText" RelativePanel.Below="Author" Name="HideText" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
+                <Button Content="report" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="HideText" RelativePanel.Below="Author" Name="ReportText" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
             </RelativePanel>
         </RelativePanel>
 
