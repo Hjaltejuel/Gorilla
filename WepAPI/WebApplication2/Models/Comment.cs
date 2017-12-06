@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 
 namespace WebApplication2.Models
 {
-    public class Comment
+    public class Comment : Commentable
     {
+
         public string Api_type{ get; set; }
         public JToken Richtext_json { get; set; }
         public string Thing_id { get; set; }
         public string Text { get; set; }
         public string Modhash { get; set; }
+        public string Parent_id { get; set; }
+        public List<Comment> comments { get; set; }
     }
 }

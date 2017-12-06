@@ -1,0 +1,16 @@
+C:\Users\Jakob Roos\source\repos\Gorilla\WepAPI\UnitTestProject1\bin\Debug\netcoreapp2.0\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\Jakob Roos\source\repos\Gorilla\WepAPI\UnitTestProject1\bin\Debug\netcoreapp2.0\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\Jakob Roos\source\repos\Gorilla\WepAPI\UnitTestProject1\bin\Debug\netcoreapp2.0\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\Jakob Roos\source\repos\Gorilla\WepAPI\UnitTestProject1\bin\Debug\netcoreapp2.0\UnitTestProject1.deps.json
+C:\Users\Jakob Roos\source\repos\Gorilla\WepAPI\UnitTestProject1\bin\Debug\netcoreapp2.0\UnitTestProject1.runtimeconfig.json
+C:\Users\Jakob Roos\source\repos\Gorilla\WepAPI\UnitTestProject1\bin\Debug\netcoreapp2.0\UnitTestProject1.runtimeconfig.dev.json
+C:\Users\Jakob Roos\source\repos\Gorilla\WepAPI\UnitTestProject1\bin\Debug\netcoreapp2.0\UnitTestProject1.dll
+C:\Users\Jakob Roos\source\repos\Gorilla\WepAPI\UnitTestProject1\bin\Debug\netcoreapp2.0\UnitTestProject1.pdb
+C:\Users\Jakob Roos\source\repos\Gorilla\WepAPI\UnitTestProject1\bin\Debug\netcoreapp2.0\WebApplication2.dll
+C:\Users\Jakob Roos\source\repos\Gorilla\WepAPI\UnitTestProject1\bin\Debug\netcoreapp2.0\WebApplication2.pdb
+C:\Users\Jakob Roos\source\repos\Gorilla\WepAPI\UnitTestProject1\obj\Debug\netcoreapp2.0\UnitTestProject1.csprojResolveAssemblyReference.cache
+C:\Users\Jakob Roos\source\repos\Gorilla\WepAPI\UnitTestProject1\obj\Debug\netcoreapp2.0\UnitTestProject1.csproj.CoreCompileInputs.cache
+C:\Users\Jakob Roos\source\repos\Gorilla\WepAPI\UnitTestProject1\obj\Debug\netcoreapp2.0\UnitTestProject1.AssemblyInfoInputs.cache
+C:\Users\Jakob Roos\source\repos\Gorilla\WepAPI\UnitTestProject1\obj\Debug\netcoreapp2.0\UnitTestProject1.AssemblyInfo.cs
+C:\Users\Jakob Roos\source\repos\Gorilla\WepAPI\UnitTestProject1\obj\Debug\netcoreapp2.0\UnitTestProject1.dll
+C:\Users\Jakob Roos\source\repos\Gorilla\WepAPI\UnitTestProject1\obj\Debug\netcoreapp2.0\UnitTestProject1.pdb
