@@ -5655,6 +5655,7 @@
           "Entities": "1.0.0",
           "Exceptions": "1.0.0",
           "Microsoft.AspNetCore.All": "2.0.3",
+          "Microsoft.AspNetCore.Mvc.ViewFeatures": "2.0.1",
           "Microsoft.EntityFrameworkCore": "2.0.1",
           "Microsoft.EntityFrameworkCore.SqlServer": "2.0.1",
           "Microsoft.EntityFrameworkCore.Tools": "2.0.1",

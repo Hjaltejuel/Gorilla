@@ -2931,7 +2931,7 @@
     "xunit.analyzers/0.7.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-YLyB3zDIbuliqMPOeGNp4BbNKrAMmoU0RI3DqJrPIaHJ2u1l3c9hILxUgY2DoKN2nSRgaIhGVdZ4tNSDtnaZQg==",
+      "sha512": "sha512-pEjPJ/pd+r9blGBJ9bXg961phkAiCl4k2DwxwWGEZyYC/7Tb1xJ1az0H18uGANX7zFIkvE5ZO1eZZ4vU7gny7w==",
       "path": "xunit.analyzers/0.7.0",
       "hashPath": "xunit.analyzers.0.7.0.nupkg.sha512"
     },
