@@ -1,4 +1,4 @@
-.cache
+*.csproj
 *.cache
 .csproj.*
 .cache.*
@@ -8,13 +8,6 @@
 .ide-shm
 .ide-wal
 .vs/
-bin/
+/bin/
 .force
 .g.cs.bakcup
-Debug/
-obj/
-*.suo
-*.user
-*.ncb
-Release/
-CodeAnalyst/
