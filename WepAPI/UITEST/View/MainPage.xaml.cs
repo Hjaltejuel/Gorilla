@@ -8,6 +8,7 @@ using UITEST.View;
 using UITEST.ViewModel;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -64,23 +65,6 @@ namespace UITEST
             Frame.Navigate(typeof(PostPage), post);
         }
 
-        private void VoteButton_Clicked(object sender, RoutedEventArgs e)
-        {
-            var btn = sender as Button;
-            var post = btn.DataContext as Post;
-            if (btn.Content.Equals("Like"))
-            {
-                post.NumOfVotes += 1;
-            }
-            else if (btn.Content.Equals("Dislike"))
-            {
-                post.NumOfVotes -= 1;
-            }
-        }
-
-
-        //hemmelig besked til jens
-
         private void PostVoteButton_Clicked(object sender, RoutedEventArgs e)
         {
             var btn = sender as Button;
@@ -88,12 +72,25 @@ namespace UITEST
             if (btn.Content.Equals("Like"))
             {
                 post.NumOfVotes += 1;
+                btn.Style = App.Current.Resources["LikeButtonClicked"] as Style;
             }
             else if (btn.Content.Equals("Dislike"))
             {
                 post.NumOfVotes -= 1;
+                btn.Style = App.Current.Resources["DislikeButtonClicked"] as Style;
             }
         }
+        
+        private void TextButton_PointerEntered(object sender, PointerRoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            btn.FontWeight = FontWeights.SemiBold;
+        }
 
+        private void TextButton_PointerLeaved(object sender, PointerRoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            btn.FontWeight = FontWeights.Normal;
+        }
     }
 }

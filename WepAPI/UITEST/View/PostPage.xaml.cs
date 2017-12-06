@@ -190,10 +190,9 @@ namespace UITEST.View
         private RelativePanel SetUpLikeAndDislikePanel(Comment comment)
         {
             var OpOgNedPanel = new RelativePanel() { Margin = new Thickness(10, 10, 15, 0) };
-            var style = App.Current.Resources["LikeDisLikeButtonStyle"] as Style;
-            var LikeButton = new CustomButton(comment) {Content = "Like", Style = App.Current.Resources["LikeDisLikeButtonStyle"] as Style, Width = 20 , Height = 20};
+            var LikeButton = new CustomButton(comment) {Content = "Like", Style = App.Current.Resources["VoteButton"] as Style, Width = 20 , Height = 20};
             LikeButton.Click += VoteButton_Clicked;
-            var DisLikeButton = new CustomButton(comment) { Content = "Dislike", Style = App.Current.Resources["LikeDisLikeButtonStyle"] as Style, Width = 20, Height = 20 };
+            var DisLikeButton = new CustomButton(comment) { Content = "Dislike", Style = App.Current.Resources["VoteButton"] as Style, Width = 20, Height = 20 };
             DisLikeButton.Click += VoteButton_Clicked;
             RelativePanel.SetBelow(DisLikeButton, LikeButton); ;
             OpOgNedPanel.Children.Add(LikeButton);
@@ -204,7 +203,7 @@ namespace UITEST.View
         private RelativePanel SetUpExtraCommentInfo(Comment comment)
         {
             var TextInfoPanel = new RelativePanel() { Margin = new Thickness(20, 0, 0, 0) };
-            var CommentButton = new CustomButton(comment) { Content = "comment",  };
+            var CommentButton = new CustomButton(comment) { Content = "comment", Style = App.Current.Resources["MiniNavigationButton"] as Style };
             CommentButton.Click += CommentText_Click;
             TextInfoPanel.Children.Add(CommentButton);
             return TextInfoPanel;
@@ -216,9 +215,11 @@ namespace UITEST.View
             var AuthorTextBlock = new TextBlock() { Text = comment.Author, FontSize = 10, Margin = new Thickness(0, 0, 0, 0) };
             var PointsTextBlock = new TextBlock() { FontSize = 10, Margin = new Thickness(7, 0, 0, 0) };
 
-            Binding binding = new Binding();
-            binding.Path = new PropertyPath("NumOfVotes");
-            binding.Source = comment; 
+            Binding binding = new Binding
+            {
+                Path = new PropertyPath("NumOfVotes"),
+                Source = comment
+            };
             BindingOperations.SetBinding(PointsTextBlock, TextBlock.TextProperty, binding);
 
             var CommentTextBlock = new TextBlock() { Text = comment.Text, Margin = new Thickness(0, 10, 10, 10) };

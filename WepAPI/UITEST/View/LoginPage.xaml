@@ -1,0 +1,32 @@
+﻿<Page
+    x:Class="UITEST.View.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UITEST.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <RelativePanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Image Name="Logo" Source="/Assets/GorillaTextLogo.png" Width="500" Opacity="0"/>
+            <RelativePanel Name="UsernamePanel" RelativePanel.Below="Logo" RelativePanel.AlignHorizontalCenterWith="Logo" Margin="0, 0, 0, 10">
+                <TextBlock Text="Username" Name="UsernameBlock"  Margin="0, 0, 10, 0" RelativePanel.AlignHorizontalCenterWith=""/>
+                <TextBox Width="200" RelativePanel.RightOf="UsernameBlock"/>
+            </RelativePanel>
+            
+            <RelativePanel Name="PassworkPanel" RelativePanel.Below="UsernamePanel" RelativePanel.AlignHorizontalCenterWith="Logo">
+                <TextBlock Text="Password" Name="PasswordBlock" Margin="0, 0, 10, 0"/>
+                <PasswordBox Width="200" RelativePanel.RightOf="PasswordBlock"/>
+            </RelativePanel>
+
+            <Button Content="Login" RelativePanel.Below="PassworkPanel" RelativePanel.AlignHorizontalCenterWith="PassworkPanel" Margin="0, 20, 0, 0"/>
+        </RelativePanel>
+    </Grid>
+
+    <Page.Resources>
+        <Storyboard x:Key="FadeIn">
+            <DoubleAnimation From="0" To="1" Storyboard.TargetName="Logo" Storyboard.TargetProperty="(UIElement.Opacity)" Duration="0:0:3"/>
+        </Storyboard>
+    </Page.Resources>
+</Page>

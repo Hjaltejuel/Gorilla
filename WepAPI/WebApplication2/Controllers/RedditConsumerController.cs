@@ -106,6 +106,7 @@ namespace WebApplication2.Controllers
 
             return await (ResponseStatusAsync(response));
         }
+
         public async Task<(HttpStatusCode, string)> ResponseStatusAsync(HttpResponseMessage response)
         {
             string responseBody = await response.Content.ReadAsStringAsync();
@@ -114,7 +115,11 @@ namespace WebApplication2.Controllers
             return (statusCode, responseBody);
         }
 
+<<<<<<< HEAD
         public List<T> PopulateTypedObject<T>(string kind_id, JArray json)
+=======
+        public T ResponseObjectBuilder<T>(string responseBody)
+>>>>>>> 9953640a60b8459b9978d44c252208641583e257
         {
 
             List<T> list = new List<T>();
@@ -169,7 +174,11 @@ namespace WebApplication2.Controllers
             else return null;
             //OMFORM NODE LISTEN TIL OBJECT FORMAT PÅ BAGGRUND AF 
         }
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 9953640a60b8459b9978d44c252208641583e257
         public async Task<T> ResponseJsonBuilderAsync<T>(HttpResponseMessage response)
         {
 
@@ -179,8 +188,12 @@ namespace WebApplication2.Controllers
             //string jResponseBody = JsonConvert.SerializeObject(responseBody);
             ResponseObjectBuilder<T>(responseBody);
 
-
             return (T)obj;
+        }
+
+        public Task<(HttpStatusCode, string)> LoginToReddit(string username, string password)
+        {
+            throw new NotImplementedException();
         }
     }
 }

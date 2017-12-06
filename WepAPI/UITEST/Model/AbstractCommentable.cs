@@ -16,20 +16,8 @@ namespace UITEST.Model
         {
             Comments = new ObservableCollection<Comment>();
         }
+
         public string Author { get; set; }
-
-        private int numOfComments;
-
-        public int NumOfComments
-        {
-            get { return numOfComments; }
-            set
-            {
-                numOfComments = value;
-                OnPropertyChanged("NumOfComments");
-            }
-        }
-
 
         private int numOfVotes;
 

@@ -12,6 +12,8 @@ namespace WebApplication2.Models
 
         Task<Subreddit> GetSubredditAsync(string subredditName, string sortBy);
 
+        Task<(HttpStatusCode, string)> LoginToReddit(string username, string password);
+
         Task<(HttpStatusCode, string)> PostPostAsync(Post p);
 
         Task<(HttpStatusCode, string)> PostCommentAsync(Comment c);
