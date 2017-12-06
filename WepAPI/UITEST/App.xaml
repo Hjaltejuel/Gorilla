@@ -72,6 +72,7 @@
             </Setter>
         </Style>
 
+        <!--Skal slettes-->
         <Style TargetType="Button" x:Key="VoteButton">
             <Setter Property="Control.Template">
                 <Setter.Value>
@@ -82,5 +83,46 @@
             </Setter>
         </Style>
 
+        <Style TargetType="Button" x:Key="LikeButton">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Image Source="/Assets/greyup.png"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!--SKal kun bruges når der er blevet klikket-->
+        <Style TargetType="Button" x:Key="LikeButtonClicked">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Image Source="/Assets/purpleup.png"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Button" x:Key="DislikeButton">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Image Source="/Assets/greydown.png"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--SKal kun bruges når der er blevet klikket-->
+        <Style TargetType="Button" x:Key="DislikeButtonClicked">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Image Source="/Assets/purpledown.png"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Application.Resources>
 </Application>

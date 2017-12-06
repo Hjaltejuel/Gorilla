@@ -72,10 +72,12 @@ namespace UITEST
             if (btn.Content.Equals("Like"))
             {
                 post.NumOfVotes += 1;
+                btn.Style = App.Current.Resources["LikeButtonClicked"] as Style;
             }
             else if (btn.Content.Equals("Dislike"))
             {
                 post.NumOfVotes -= 1;
+                btn.Style = App.Current.Resources["DislikeButtonClicked"] as Style;
             }
         }
         
