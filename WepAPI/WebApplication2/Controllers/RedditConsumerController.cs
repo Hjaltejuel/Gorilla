@@ -113,7 +113,6 @@ namespace WebApplication2.Controllers
             return (statusCode, responseBody);
         }
 
-<<<<<<< HEAD
         public T ResponseObjectBuilder<T>(string responseBody)
         {
             JObject json = JObject.Parse(responseBody);
@@ -124,9 +123,7 @@ namespace WebApplication2.Controllers
             //OMFORM NODE LISTEN TIL OBJECT FORMAT PÅ BAGGRUND AF T
             throw new NotImplementedException();
         }
-
-=======
->>>>>>> f626af6b8fd63f60bb36ead1df2be7e9abf73c0f
+        
         public async Task<T> ResponseJsonBuilderAsync<T>(HttpResponseMessage response)
         {
 
