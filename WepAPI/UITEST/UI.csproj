@@ -132,6 +132,10 @@
     <None Include="UITEST_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\greydown.png" />
+    <Content Include="Assets\greyup.png" />
+    <Content Include="Assets\purpledown.png" />
+    <Content Include="Assets\purpleup.png" />
     <Content Include="MockUpPictures\CarsBanner.png" />
     <Content Include="MockUpPictures\Destiny2Banner.png" />
     <Content Include="MockUpPictures\profilePicture.jpg" />
