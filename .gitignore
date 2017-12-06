@@ -18,3 +18,11 @@ obj/
 *.ncb
 Release/
 CodeAnalyst/
+Entities/obj/
+Exceptions/obj/
+Gorilla/obj/
+Model/obj/
+Model.Test/obj/
+UITest/obj/
+WebApi.Test/obj/
+WebApplication2/obj/
