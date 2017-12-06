@@ -1,0 +1,42 @@
+﻿<UserControl
+    x:Class="UITEST.CommentControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UITEST"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid>
+        <RelativePanel Name="CommentPanel" DataContext="{x:Bind Path = currentComment}">
+            <RelativePanel Margin="10,10,15,0" Name="VotePanel">
+                <Button Content="Like" Style="{StaticResource VoteButton}" Name="UpvoteButton" Click="UpvoteButton_Click" Width="20" Height="20">
+
+                </Button>
+                <Button Content="Dislike" Style="{StaticResource VoteButton}" RelativePanel.Below="UpvoteButton" Name="DownvoteButton" Click="DownvoteButton_Click" Width="20" Height="20">
+
+                </Button>
+            </RelativePanel>
+            
+            <RelativePanel Name="TextPanel" RelativePanel.RightOf="VotePanel">
+                <TextBlock Name="AuthorTextBlock" Text="{Binding Author}" FontSize="10"  Margin="10,0,0,0">
+
+                </TextBlock>
+                <TextBlock Name="PointsTextBlock" RelativePanel.RightOf="AuthorTextBlock" Text="{Binding NumOfVotes}" FontSize="10" Margin="7,0,0,0">
+
+                </TextBlock>
+                <TextBlock Name="CommentTextBlock" RelativePanel.Below="AuthorTextBlock" Text="{Binding Text}" Margin="0,10,10,0">
+
+                </TextBlock>
+            </RelativePanel>
+            
+            <RelativePanel Name="TextInfoPanel" RelativePanel.Below="TextPanel" RelativePanel.RightOf="VotePanel" Margin="0,0,0,0">
+                <Button Content="comment" Style="{StaticResource MiniNavigationButton}" Click="Button_Click">
+
+                </Button>
+            </RelativePanel>
+        </RelativePanel>
+    </Grid>
+</UserControl>

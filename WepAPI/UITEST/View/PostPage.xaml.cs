@@ -28,6 +28,8 @@ namespace UITEST.View
     public sealed partial class PostPage : Page
     {
         private readonly PostPageViewModel _vm;
+        private RelativePanel CommentPanel;
+        private TextBox CommentTextBox;
         public PostPage()
         {
             this.InitializeComponent();
@@ -57,14 +59,7 @@ namespace UITEST.View
 
         private void ChangeListViewWhenSizedChanged(object sender, SizeChangedEventArgs e)
         {
-            if (CommentField.Visibility == Visibility.Collapsed)
-            {
-                CommentsView.Height = e.NewSize.Height - (50 + commandBar.ActualHeight + TopInfo.ActualHeight + verticalSplitter.Height);
-            }
-            else
-            {
-                CommentsView.Height = e.NewSize.Height - (50 + commandBar.ActualHeight + TopInfo.ActualHeight + verticalSplitter.Height + CommentField.ActualHeight);
-            }
+            PostView.Height = e.NewSize.Height-commandBar.ActualHeight;
         }
 
         private void TextButton_PointerEntered(object sender, PointerRoutedEventArgs e)
@@ -79,36 +74,63 @@ namespace UITEST.View
             btn.FontWeight = FontWeights.SemiBold;
         }
 
+        /*
+         * <RelativePanel Grid.Row="3" Margin="10,0, 0, 10" Visibility="Collapsed" Name="CommentField">
+                <TextBox Name="CommentTextBox" Height="200" Width="600" AcceptsReturn="True" TextWrapping="Wrap" IsSpellCheckEnabled="True" Language="en-US"/>
+                <Button Content="Save" Click="CommentSaveClick"  RelativePanel.Below="  " Margin="0, 10, 10, 0"/>
+            </RelativePanel>
+         */
+        private void CreateCommentPanel()
+        {
+            if (CommentPanel != null)
+            {
+                CommentPanel = null;
+            }
+            CommentPanel = new RelativePanel();
+
+            CommentTextBox = new TextBox()
+            {
+                Height = 200,
+                Width = 600,
+                AcceptsReturn = true,
+                TextWrapping = TextWrapping.Wrap,
+                IsSpellCheckEnabled = true,
+                Language = "en-US"
+            };
+
+            Button SubmitButton = new Button()
+            {
+                Content = "Save",
+                Margin = new Thickness(0, 10, 10, 0)
+            };
+            SubmitButton.Click += CommentSaveClick;
+            
+            CommentPanel.Children.Add(CommentTextBox);
+            CommentPanel.Children.Add(SubmitButton);
+        }
         private void CommentText_Click(object sender, RoutedEventArgs e)
         {
             var CommentBtn = sender as CustomButton;
-            if (_vm.FocusedAbstractCommentable == null)
-                _vm.FocusedAbstractCommentable = CommentBtn.AbstractCommentable;
 
-            if (CommentField.Visibility == Visibility.Collapsed)
-            {
-                CommentField.Visibility = Visibility.Visible;
-                CommentsView.Height -= CommentField.ActualHeight;
-            }
-            else if (CommentField.Visibility == Visibility.Visible)
-            {
-                if (_vm.FocusedAbstractCommentable.Equals(CommentBtn.AbstractCommentable))
-                { 
-                    CommentsView.Height += CommentField.ActualHeight;
-                    CommentField.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    _vm.FocusedAbstractCommentable = CommentBtn.AbstractCommentable;
-                }
-            }
+            CreateCommentPanel();
+
+            _vm.FocusedAbstractCommentable = CommentBtn.AbstractCommentable;
+            var CommentExtraTextPanel = CommentBtn.Parent as RelativePanel;
+            var CommentPanel = CommentExtraTextPanel.Parent as RelativePanel;
+            var CommentStackPanel = CommentPanel.Parent as StackPanel;
+
+            CommentStackPanel.Children.Add(CommentPanel);
         }
 
         private void CommentSaveClick(object sender, RoutedEventArgs e)
         {
             InsertComment(_vm.FocusedAbstractCommentable);
-        }
 
+            //if (CommentPanel.Visibility == Visibility.Visible)
+            //{
+            //    CommentPanel.Visibility = Visibility.Collapsed;
+            //}
+        }
         private void InsertComment(AbstractCommentable abstractCommentableToCommentOn)
         {
             if (!CommentTextBox.Text.Equals(""))
@@ -118,31 +140,28 @@ namespace UITEST.View
                     Text = CommentTextBox.Text,
                     Author = "Unidentified User"
                 });
+
                 CommentTextBox.Text = "";
                 //Refresh comments
-                CommentsView.Items.Clear();
+                CommentsView.Children.Clear();
                 CreateComments();
             }
         }
-        private StackPanel CreateCommentPanel(Comment comment)
+        private StackPanel CreateCommentPanel(Comment comment, bool ColorBoolean)
         {
-            var SingleCommentStackPanel = new StackPanel();
-            var SingleCommentPanel = new RelativePanel()
+            var SingleCommentStackPanel = new StackPanel()
             {
-                Padding = new Thickness(0, 0, 0, 0)
+                Margin = new Thickness(30, 0, 0, 30)
             };
-
-            RelativePanel TextPanel = SetupCommentTextPanel(comment);
-            RelativePanel OpOgNedPanel = SetUpLikeAndDislikePanel(comment);
-            RelativePanel TextExtraPanel = SetUpExtraCommentInfo(comment);
-            SingleCommentPanel.Children.Add(OpOgNedPanel);
-            SingleCommentPanel.Children.Add(TextPanel);
-            SingleCommentPanel.Children.Add(TextExtraPanel);
-
-            RelativePanel.SetRightOf(TextPanel, OpOgNedPanel);
-            RelativePanel.SetBelow(TextExtraPanel, TextPanel);
+            var SingleCommentPanel = new CommentControl(comment);
+            
+            if (ColorBoolean)
+                SingleCommentStackPanel.Background = new SolidColorBrush(Color.FromArgb(255, 220, 220, 220));
+            else
+                SingleCommentStackPanel.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
 
             SingleCommentStackPanel.Children.Add(SingleCommentPanel);
+
             return SingleCommentStackPanel;
         }
         private void CreateComments()
@@ -150,100 +169,41 @@ namespace UITEST.View
             foreach (var comment in _vm.CurrentPost.Comments)
             {
                 //Tegne Posten i gui
-                var CommentPanel = new StackPanel
+                var RootCommentPanel = new StackPanel
                 {
                     BorderThickness = new Thickness(1),
                     BorderBrush = new SolidColorBrush(Colors.Gray),
                     Margin = new Thickness(0, 0, 0, 10)
                 };
+                
 
-                var SingleCommentPanel = CreateCommentPanel(comment);
-
-                CommentPanel.Children.Add(SingleCommentPanel);
-                CommentsView.Items.Add(CommentPanel);
-
+                var TopCommentPanel = CreateCommentPanel(comment, false);
+                TopCommentPanel.Margin = new Thickness(0, 0, 0, 0); //Reset margin for first comment
+                RootCommentPanel.Children.Add(TopCommentPanel);
+                CommentsView.Children.Add(RootCommentPanel);
                 // Indsætte subcomments rekusivt
                 if (comment.Comments.Count > 0)
                 {
-                    FillSubComments(comment.Comments, 1, SingleCommentPanel);
+                    FillSubComments(comment.Comments, TopCommentPanel, true);
                 }
             }
         }
         //Panel parent, ObservableCollection<Comment> subComments, int depth
-        private void FillSubComments(ObservableCollection<Comment> subComments, int depth, StackPanel parentPanel)
+        private void FillSubComments(ObservableCollection<Comment> subComments, StackPanel parentPanel, bool ColorBoolean)
         {
             foreach (var subComment in subComments)
             {
-                var SingleCommentPanel = CreateCommentPanel(subComment);
-                var newIndentation = parentPanel.Margin.Left + 30;
-                SingleCommentPanel.Margin = new Thickness(newIndentation, 0, 0, 0);
+                var SubCommentPanel = CreateCommentPanel(subComment, ColorBoolean);
 
-                parentPanel.Children.Add(SingleCommentPanel);
+                parentPanel.Children.Add(SubCommentPanel);
 
                 if (subComment.Comments.Count > 0)
                 {
-                    FillSubComments(subComment.Comments, ++depth, SingleCommentPanel);
+                    FillSubComments(subComment.Comments, SubCommentPanel, !ColorBoolean);
                 }
             }
         }
-
-        private RelativePanel SetUpLikeAndDislikePanel(Comment comment)
-        {
-            var OpOgNedPanel = new RelativePanel() { Margin = new Thickness(10, 10, 15, 0) };
-            var LikeButton = new CustomButton(comment) {Content = "Like", Style = App.Current.Resources["VoteButton"] as Style, Width = 20 , Height = 20};
-            LikeButton.Click += VoteButton_Clicked;
-            var DisLikeButton = new CustomButton(comment) { Content = "Dislike", Style = App.Current.Resources["VoteButton"] as Style, Width = 20, Height = 20 };
-            DisLikeButton.Click += VoteButton_Clicked;
-            RelativePanel.SetBelow(DisLikeButton, LikeButton); ;
-            OpOgNedPanel.Children.Add(LikeButton);
-            OpOgNedPanel.Children.Add(DisLikeButton);
-            return OpOgNedPanel;
-        }
-
-        private RelativePanel SetUpExtraCommentInfo(Comment comment)
-        {
-            var TextInfoPanel = new RelativePanel() { Margin = new Thickness(20, 0, 0, 0) };
-            var CommentButton = new CustomButton(comment) { Content = "comment", Style = App.Current.Resources["MiniNavigationButton"] as Style };
-            CommentButton.Click += CommentText_Click;
-            TextInfoPanel.Children.Add(CommentButton);
-            return TextInfoPanel;
-        }
-
-        private RelativePanel SetupCommentTextPanel(Comment comment)
-        {
-            var TextPanel = new RelativePanel() { Margin = new Thickness(0, 0, 0, 0) };
-            var AuthorTextBlock = new TextBlock() { Text = comment.Author, FontSize = 10, Margin = new Thickness(0, 0, 0, 0) };
-            var PointsTextBlock = new TextBlock() { FontSize = 10, Margin = new Thickness(7, 0, 0, 0) };
-
-            Binding binding = new Binding
-            {
-                Path = new PropertyPath("NumOfVotes"),
-                Source = comment
-            };
-            BindingOperations.SetBinding(PointsTextBlock, TextBlock.TextProperty, binding);
-
-            var CommentTextBlock = new TextBlock() { Text = comment.Text, Margin = new Thickness(0, 10, 10, 10) };
-            RelativePanel.SetBelow(CommentTextBlock, AuthorTextBlock);
-            RelativePanel.SetRightOf(PointsTextBlock, AuthorTextBlock);
-            TextPanel.Children.Add(AuthorTextBlock);
-            TextPanel.Children.Add(CommentTextBlock);
-            TextPanel.Children.Add(PointsTextBlock);
-            return TextPanel;
-        }
-
-        private void VoteButton_Clicked(object sender, RoutedEventArgs e)
-        {
-            var btn = sender as CustomButton;
-            if (btn.Content.Equals("Like"))
-            {
-                btn.AbstractCommentable.NumOfVotes += 1;
-            }
-            else if (btn.Content.Equals("Dislike"))
-            {
-                btn.AbstractCommentable.NumOfVotes -= 1;
-            }
-        }
-
+        
         private void PostVoteButton_Clicked(object sender, RoutedEventArgs e)
         {
             var btn = sender as Button;
