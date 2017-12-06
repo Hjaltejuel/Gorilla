@@ -1,0 +1,56 @@
+C:\Users\Hjalte\Source\Repos\RedditServer\WepAPI\Entities\bin\Debug\netcoreapp2.0\xunit.runner.visualstudio.dotnetcore.testadapter.dll
+C:\Users\Hjalte\Source\Repos\RedditServer\WepAPI\Entities\bin\Debug\netcoreapp2.0\xunit.runner.reporters.netcoreapp10.dll
+C:\Users\Hjalte\Source\Repos\RedditServer\WepAPI\Entities\bin\Debug\netcoreapp2.0\xunit.runner.utility.netcoreapp10.dll
+C:\Users\Hjalte\Source\Repos\RedditServer\WepAPI\Entities\bin\Debug\netcoreapp2.0\Entities.deps.json
+C:\Users\Hjalte\Source\Repos\RedditServer\WepAPI\Entities\bin\Debug\netcoreapp2.0\Entities.runtimeconfig.json
+C:\Users\Hjalte\Source\Repos\RedditServer\WepAPI\Entities\bin\Debug\netcoreapp2.0\Entities.runtimeconfig.dev.json
+C:\Users\Hjalte\Source\Repos\RedditServer\WepAPI\Entities\bin\Debug\netcoreapp2.0\Entities.dll
+C:\Users\Hjalte\Source\Repos\RedditServer\WepAPI\Entities\bin\Debug\netcoreapp2.0\Entities.pdb
+C:\Users\Hjalte\Source\Repos\RedditServer\WepAPI\Entities\obj\Debug\netcoreapp2.0\Entities.csprojResolveAssemblyReference.cache
+C:\Users\Hjalte\Source\Repos\RedditServer\WepAPI\Entities\obj\Debug\netcoreapp2.0\Entities.csproj.CoreCompileInputs.cache
+C:\Users\Hjalte\Source\Repos\RedditServer\WepAPI\Entities\obj\Debug\netcoreapp2.0\Entities.AssemblyInfoInputs.cache
+C:\Users\Hjalte\Source\Repos\RedditServer\WepAPI\Entities\obj\Debug\netcoreapp2.0\Entities.AssemblyInfo.cs
+C:\Users\Hjalte\Source\Repos\RedditServer\WepAPI\Entities\obj\Debug\netcoreapp2.0\Entities.dll
+C:\Users\Hjalte\Source\Repos\RedditServer\WepAPI\Entities\obj\Debug\netcoreapp2.0\Entities.pdb
+C:\Users\Hjalte\Source\Repos\Gorilla\WepAPI\Entities\bin\Debug\netcoreapp2.0\xunit.runner.visualstudio.dotnetcore.testadapter.dll
+C:\Users\Hjalte\Source\Repos\Gorilla\WepAPI\Entities\bin\Debug\netcoreapp2.0\xunit.runner.reporters.netcoreapp10.dll
+C:\Users\Hjalte\Source\Repos\Gorilla\WepAPI\Entities\bin\Debug\netcoreapp2.0\xunit.runner.utility.netcoreapp10.dll
+C:\Users\Hjalte\Source\Repos\Gorilla\WepAPI\Entities\bin\Debug\netcoreapp2.0\Entities.deps.json
+C:\Users\Hjalte\Source\Repos\Gorilla\WepAPI\Entities\bin\Debug\netcoreapp2.0\Entities.runtimeconfig.json
+C:\Users\Hjalte\Source\Repos\Gorilla\WepAPI\Entities\bin\Debug\netcoreapp2.0\Entities.runtimeconfig.dev.json
+C:\Users\Hjalte\Source\Repos\Gorilla\WepAPI\Entities\bin\Debug\netcoreapp2.0\Entities.dll
+C:\Users\Hjalte\Source\Repos\Gorilla\WepAPI\Entities\bin\Debug\netcoreapp2.0\Entities.pdb
+C:\Users\Hjalte\Source\Repos\Gorilla\WepAPI\Entities\obj\Debug\netcoreapp2.0\Entities.csprojResolveAssemblyReference.cache
+C:\Users\Hjalte\Source\Repos\Gorilla\WepAPI\Entities\obj\Debug\netcoreapp2.0\Entities.csproj.CoreCompileInputs.cache
+C:\Users\Hjalte\Source\Repos\Gorilla\WepAPI\Entities\obj\Debug\netcoreapp2.0\Entities.AssemblyInfoInputs.cache
+C:\Users\Hjalte\Source\Repos\Gorilla\WepAPI\Entities\obj\Debug\netcoreapp2.0\Entities.AssemblyInfo.cs
+C:\Users\Hjalte\Source\Repos\Gorilla\WepAPI\Entities\obj\Debug\netcoreapp2.0\Entities.dll
+C:\Users\Hjalte\Source\Repos\Gorilla\WepAPI\Entities\obj\Debug\netcoreapp2.0\Entities.pdb
+C:\Users\Jens\Source\Repos\Gorilla2\WepAPI\Entities\bin\Debug\netcoreapp2.0\xunit.runner.visualstudio.dotnetcore.testadapter.dll
+C:\Users\Jens\Source\Repos\Gorilla2\WepAPI\Entities\bin\Debug\netcoreapp2.0\xunit.runner.reporters.netcoreapp10.dll
+C:\Users\Jens\Source\Repos\Gorilla2\WepAPI\Entities\bin\Debug\netcoreapp2.0\xunit.runner.utility.netcoreapp10.dll
+C:\Users\Jens\Source\Repos\Gorilla2\WepAPI\Entities\bin\Debug\netcoreapp2.0\Entities.deps.json
+C:\Users\Jens\Source\Repos\Gorilla2\WepAPI\Entities\bin\Debug\netcoreapp2.0\Entities.runtimeconfig.json
+C:\Users\Jens\Source\Repos\Gorilla2\WepAPI\Entities\bin\Debug\netcoreapp2.0\Entities.runtimeconfig.dev.json
+C:\Users\Jens\Source\Repos\Gorilla2\WepAPI\Entities\bin\Debug\netcoreapp2.0\Entities.dll
+C:\Users\Jens\Source\Repos\Gorilla2\WepAPI\Entities\bin\Debug\netcoreapp2.0\Entities.pdb
+C:\Users\Jens\Source\Repos\Gorilla2\WepAPI\Entities\obj\Debug\netcoreapp2.0\Entities.csprojResolveAssemblyReference.cache
+C:\Users\Jens\Source\Repos\Gorilla2\WepAPI\Entities\obj\Debug\netcoreapp2.0\Entities.csproj.CoreCompileInputs.cache
+C:\Users\Jens\Source\Repos\Gorilla2\WepAPI\Entities\obj\Debug\netcoreapp2.0\Entities.AssemblyInfoInputs.cache
+C:\Users\Jens\Source\Repos\Gorilla2\WepAPI\Entities\obj\Debug\netcoreapp2.0\Entities.AssemblyInfo.cs
+C:\Users\Jens\Source\Repos\Gorilla2\WepAPI\Entities\obj\Debug\netcoreapp2.0\Entities.dll
+C:\Users\Jens\Source\Repos\Gorilla2\WepAPI\Entities\obj\Debug\netcoreapp2.0\Entities.pdb
+C:\Users\Jakob Roos\Source\Repos\Gorilla\WepAPI\Entities\bin\Debug\netcoreapp2.0\xunit.runner.visualstudio.dotnetcore.testadapter.dll
+C:\Users\Jakob Roos\Source\Repos\Gorilla\WepAPI\Entities\bin\Debug\netcoreapp2.0\xunit.runner.reporters.netcoreapp10.dll
+C:\Users\Jakob Roos\Source\Repos\Gorilla\WepAPI\Entities\bin\Debug\netcoreapp2.0\xunit.runner.utility.netcoreapp10.dll
+C:\Users\Jakob Roos\Source\Repos\Gorilla\WepAPI\Entities\bin\Debug\netcoreapp2.0\Entities.deps.json
+C:\Users\Jakob Roos\Source\Repos\Gorilla\WepAPI\Entities\bin\Debug\netcoreapp2.0\Entities.runtimeconfig.json
+C:\Users\Jakob Roos\Source\Repos\Gorilla\WepAPI\Entities\bin\Debug\netcoreapp2.0\Entities.runtimeconfig.dev.json
+C:\Users\Jakob Roos\Source\Repos\Gorilla\WepAPI\Entities\bin\Debug\netcoreapp2.0\Entities.dll
+C:\Users\Jakob Roos\Source\Repos\Gorilla\WepAPI\Entities\bin\Debug\netcoreapp2.0\Entities.pdb
+C:\Users\Jakob Roos\Source\Repos\Gorilla\WepAPI\Entities\obj\Debug\netcoreapp2.0\Entities.csprojResolveAssemblyReference.cache
+C:\Users\Jakob Roos\Source\Repos\Gorilla\WepAPI\Entities\obj\Debug\netcoreapp2.0\Entities.csproj.CoreCompileInputs.cache
+C:\Users\Jakob Roos\Source\Repos\Gorilla\WepAPI\Entities\obj\Debug\netcoreapp2.0\Entities.AssemblyInfoInputs.cache
+C:\Users\Jakob Roos\Source\Repos\Gorilla\WepAPI\Entities\obj\Debug\netcoreapp2.0\Entities.AssemblyInfo.cs
+C:\Users\Jakob Roos\Source\Repos\Gorilla\WepAPI\Entities\obj\Debug\netcoreapp2.0\Entities.dll
+C:\Users\Jakob Roos\Source\Repos\Gorilla\WepAPI\Entities\obj\Debug\netcoreapp2.0\Entities.pdb
