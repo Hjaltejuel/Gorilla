@@ -3,8 +3,13 @@
     "additionalProbingPaths": [
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       "C:\\Users\\Jens\\.dotnet\\store\\|arch|\\|tfm|",
       "C:\\Users\\Jens\\.nuget\\packages",
+=======
+      "C:\\Users\\Jakob Roos\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\Jakob Roos\\.nuget\\packages",
+>>>>>>> 073a873b0afe6d5a55cc299fe6e32adf39c025c4
 =======
       "C:\\Users\\Jakob Roos\\.dotnet\\store\\|arch|\\|tfm|",
       "C:\\Users\\Jakob Roos\\.nuget\\packages",
