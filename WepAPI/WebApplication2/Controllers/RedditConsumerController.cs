@@ -8,6 +8,7 @@ using WebApplication2.Models;
 using Newtonsoft.Json.Linq;
 using System.Net;
 using Newtonsoft.Json;
+using System.Collections.ObjectModel;
 
 namespace WebApplication2.Controllers
 {
@@ -114,17 +115,70 @@ namespace WebApplication2.Controllers
             return (statusCode, responseBody);
         }
 
+<<<<<<< HEAD
+        public List<T> PopulateTypedObject<T>(string kind_id, JArray json)
+=======
         public T ResponseObjectBuilder<T>(string responseBody)
+>>>>>>> 9953640a60b8459b9978d44c252208641583e257
         {
-            JObject json = JObject.Parse(responseBody);
 
-            var value = (string)json[""]["data"]["children"];
-            List<Child> deserialized = JsonConvert.DeserializeObject<List<Child>>(responseBody);
-            Post p = new Post();
-            //OMFORM NODE LISTEN TIL OBJECT FORMAT PÅ BAGGRUND AF T
-            throw new NotImplementedException();
+            List<T> list = new List<T>();
+            for (int i = 0; i < json.Count; i++)
+            {
+                
+
+                foreach (JObject item in json[i]["data"]["children"])
+                {
+                    Child c = item.ToObject<Child>();
+                    if(c.kind == kind_id)
+                    {
+                        var hest = item["data"].ToObject<T>();
+                        list.Add(hest);
+                    }
+                }
+            }
+            return list;
         }
+
+        public ICommentable ResponseObjectBuilder<T>(string responseBody)
+        {
+
+            JArray json = JArray.Parse(responseBody);
+            
+            if (typeof(T) == typeof(Comment))
+            {
+
+                throw new NotImplementedException();
+                new Comment()
+                {
+
+                };
+            }
+
+            if (typeof(T) == typeof(Post)) {
+
+                List<Comment> Commentslist = PopulateTypedObject<Comment>("t1", json);
+                List<Post> Postlist = PopulateTypedObject<Post>("t3", json);
+                Post post = Postlist[0];
+                post.comments = new ObservableCollection<Comment>(Commentslist);
+                return post;
+            }
+            if (typeof(T) == typeof(Subreddit))
+            {
+                List<Post> PostsList = PopulateTypedObject<Post>("t3", json);
+                //List<Subreddit> list2 = PopulateTypedObject<Post>("t3", json);
+                Subreddit subreddit = new Subreddit(new ObservableCollection<Post>(PostsList));
+
+                return subreddit;
+            }
+            else return null;
+            //OMFORM NODE LISTEN TIL OBJECT FORMAT PÅ BAGGRUND AF 
+        }
+<<<<<<< HEAD
+
+=======
         
+>>>>>>> 9953640a60b8459b9978d44c252208641583e257
         public async Task<T> ResponseJsonBuilderAsync<T>(HttpResponseMessage response)
         {
 
@@ -132,7 +186,7 @@ namespace WebApplication2.Controllers
 
             string responseBody = await response.Content.ReadAsStringAsync();
             //string jResponseBody = JsonConvert.SerializeObject(responseBody);
-            ResponseObjectBuilder<Post>(responseBody);
+            ResponseObjectBuilder<T>(responseBody);
 
             return (T)obj;
         }

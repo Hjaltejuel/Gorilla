@@ -4,27 +4,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft;
 using Newtonsoft.Json;
+using System.Collections.ObjectModel;
 
 namespace WebApplication2.Models
 {
     // TODO: FIX STRING LENGTHS
 
-    public class Post 
+    public class Post : ICommentable
     {
 
-        public bool Ad { get; set; }
-        public string Api_type = "json";
-        public string Flair_id { get; set; } // only 36 chars
-        public string Flair_text { get; set; } // only 64 chars
-        public string Kind { get; set; }
-        public bool Nsfw { get; set; }
-        public bool Resubmit { get; set; }
-        public bool SendReplies { get; set; }
-        public bool Spoiler { get; set; }
-        public string SubredditName { get; set; }
-        public string Title { get; set; } // only 300 chars 
-        public string Url { get; set; }
-
+        public bool ad { get; set; }
+        public string api_type = "json";
+        public string flair_id { get; set; } // only 36 chars
+        public string flair_text { get; set; } // only 64 chars
+        public string kind { get; set; }
+        public bool nsfw { get; set; }
+        public bool resubmit { get; set; }
+        public bool sendReplies { get; set; }
+        public bool spoiler { get; set; }
+        public string subredditName { get; set; }
+        public string title { get; set; } // only 300 chars 
+        public string url { get; set; }
+        public ObservableCollection<Comment> comments { get; set; }
 
         // er det saadan det skal virke? 
         public string postSerialize() {
