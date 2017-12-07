@@ -1,11 +1,10 @@
-﻿    using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApplication2.Models
+namespace Subreddit.Entities
 {
     public class Comment : ICommentable
     {

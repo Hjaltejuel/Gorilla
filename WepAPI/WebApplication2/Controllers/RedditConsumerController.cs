@@ -35,10 +35,8 @@ namespace WebApplication2.Controllers
         }
 
         //CONVENTION: IF SORTBY STRING IS EMPTY, HOT IS DEFAULTED TO
-        public async Task<Subreddit> GetSubredditAsync(string subredditName, string sortBy)
+        public async Task<Subreddit> GetSubredditAsync(string subredditName, string sortBy="hot")
         {
-            if (sortBy.Equals("")) sortBy = "hot";
-
             Uri uri = new Uri(string.Format
                (BaseUrl +
                "r/{0}/{1}/.json?json_raw=1",
@@ -114,12 +112,8 @@ namespace WebApplication2.Controllers
 
             return (statusCode, responseBody);
         }
-
-<<<<<<< HEAD
+        
         public List<T> PopulateTypedObject<T>(string kind_id, JArray json)
-=======
-        public T ResponseObjectBuilder<T>(string responseBody)
->>>>>>> 9953640a60b8459b9978d44c252208641583e257
         {
 
             List<T> list = new List<T>();
@@ -174,11 +168,6 @@ namespace WebApplication2.Controllers
             else return null;
             //OMFORM NODE LISTEN TIL OBJECT FORMAT PÅ BAGGRUND AF 
         }
-<<<<<<< HEAD
-
-=======
-        
->>>>>>> 9953640a60b8459b9978d44c252208641583e257
         public async Task<T> ResponseJsonBuilderAsync<T>(HttpResponseMessage response)
         {
 
