@@ -8,10 +8,10 @@ namespace Model
 {
     public interface ISubredditRepository : IDisposable
     {
-        Task<Subreddit> Find(string subredditName);
-        Task<string> Create(Subreddit subreddit);
-        Task<bool> Delete(string subredditName);
-        Task<IReadOnlyCollection<Subreddit>> Read();
+        Task<Subreddit> FindAsync(string subredditName);
+        Task<string> CreateAsync(Subreddit subreddit);
+        Task<bool> DeleteAsync(string subredditName);
+        Task<IReadOnlyCollection<Subreddit>> ReadAsync();
 
     }
 }

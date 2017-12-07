@@ -17,9 +17,9 @@ namespace Model
         {
             context = _context;
         }
-        public async Task<string> Create(User user) 
+        public async Task<string> CreateAsync(User user) 
         {
-            if ((await Find(user.Username)) != null)
+            if ((await FindAsync(user.Username)) != null)
             {
                 throw new AlreadyThereException("A user witht that username alreay exist");
             }
@@ -28,7 +28,7 @@ namespace Model
             return user.Username;
         }
 
-        public async Task<bool> Delete(string username)
+        public async Task<bool> DeleteAsync(string username)
         {
             var User = await context.Users.FindAsync(username);
 
@@ -44,7 +44,7 @@ namespace Model
             return true;
         }
 
-        public async Task<bool> Update(User user)
+        public async Task<bool> UpdateAsync(User user)
         {
             User userTest = await context.Users.FindAsync(user.Username);
             if (userTest != null)
@@ -56,12 +56,12 @@ namespace Model
             return false;
         }
 
-        public async Task<User> Find(string username)
+        public async Task<User> FindAsync(string username)
         {
             return await context.Users.FindAsync(username);
         }
 
-        public async Task<IReadOnlyCollection<User>> Read()
+        public async Task<IReadOnlyCollection<User>> ReadAsync()
         {
             return await (from u in context.Users
                     select u).ToListAsync();

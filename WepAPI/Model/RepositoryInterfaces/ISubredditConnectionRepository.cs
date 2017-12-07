@@ -8,11 +8,11 @@ namespace Model
 {
     public interface ISubredditConnectionRepository : IDisposable
     {
-        Task<SubredditConnection> Get(string subredditFromName, string subredditToName);
-        Task<IReadOnlyCollection<SubredditConnection>> Find(string subredditFromName);
-        Task<(string,string)> Create(SubredditConnection connection);
-        Task<bool> Delete(string subredditFromName, string subredditToName);
-        Task<IReadOnlyCollection<SubredditConnection>> Read();
-        Task<bool> Update(SubredditConnection user);
+        Task<SubredditConnection> GetAsync(string subredditFromName, string subredditToName);
+        Task<IReadOnlyCollection<SubredditConnection>> FindAsync(string subredditFromName);
+        Task<(string,string)> CreateAsync(SubredditConnection connection);
+        Task<bool> DeleteAsync(string subredditFromName, string subredditToName);
+        Task<IReadOnlyCollection<SubredditConnection>> ReadAsync();
+        Task<bool> UpdateAsync(SubredditConnection user);
     }
 }

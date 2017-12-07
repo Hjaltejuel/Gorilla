@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WepAPI.Controllers
 {
-   // [Authorize]
+    
     [Produces("application/json")]
     [Route("api/UserPreference")]
     public class UserPreferenceController : Controller
@@ -24,9 +24,9 @@ namespace WepAPI.Controllers
 
         // GET: api/UserPreference/5
         [HttpGet("{username}", Name = "FindUserPreference")]
-        public async Task<IActionResult> Find(string username)
+        public async Task<IActionResult> FindAsync(string username)
         {
-            var result = await repository.FindAll(username);
+            var result = await repository.FindAsync(username);
             if (result == null)
             {
                 return NotFound();
@@ -40,7 +40,7 @@ namespace WepAPI.Controllers
 
         // POST: api/UserPreference
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]UserPreference userPreference)
+        public async Task<IActionResult> PostAsync([FromBody]UserPreference userPreference)
         {
             
             if (!ModelState.IsValid)
@@ -50,7 +50,7 @@ namespace WepAPI.Controllers
             
             try
             {
-                var usernameAndSub = await repository.Create(userPreference);
+                var usernameAndSub = await repository.CreateAsync(userPreference);
                 return CreatedAtAction("Find", new { usernameAndSub }, null);
             } catch (AlreadyThereException)
             {
@@ -63,13 +63,13 @@ namespace WepAPI.Controllers
 
         // PUT: api/UserPreference/
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody]UserPreference userPreference)
+        public async Task<IActionResult> PutAsync([FromBody]UserPreference userPreference)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var updated = await repository.Update(userPreference);
+            var updated = await repository.UpdateAsync(userPreference);
             if (!updated)
             {
                 return NotFound();
@@ -79,9 +79,9 @@ namespace WepAPI.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete]
-        public async Task<IActionResult> Delete(string username, string subreddit)
+        public async Task<IActionResult> DeleteAsync(string username, string subreddit)
         {
-            var deleted = await repository.Delete(username, subreddit);
+            var deleted = await repository.DeleteAsync(username, subreddit);
             if (!deleted)
             {
                 return NotFound();
