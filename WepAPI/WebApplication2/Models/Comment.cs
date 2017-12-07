@@ -14,6 +14,7 @@ namespace WebApplication2.Models
         public string parent_id { get; set; }
         public string body { get; set; }
         public string modhash { get; set; }
-        public ObservableCollection<Comment> children { get; set; }
+        Node replies { get; set; }
+        public ObservableCollection<Comment> data { get; set; }
     }
 }

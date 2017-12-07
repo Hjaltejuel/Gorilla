@@ -115,18 +115,20 @@ namespace WebApplication2.Controllers
             return (statusCode, responseBody);
         }
 
-<<<<<<< HEAD
+        public T PopulateNestedObjects<T>(string kind_i, JToken jtoken)
+        {
+            if (item["data"]["replies"] != null)
+            {
+                PopulateNestedObjects<T>(kind_id, json[i]["data"]["children"]);
+            }
+        }
+
         public List<T> PopulateTypedObject<T>(string kind_id, JArray json)
-=======
-        public T ResponseObjectBuilder<T>(string responseBody)
->>>>>>> 9953640a60b8459b9978d44c252208641583e257
         {
 
             List<T> list = new List<T>();
             for (int i = 0; i < json.Count; i++)
             {
-                
-
                 foreach (JObject item in json[i]["data"]["children"])
                 {
                     Child c = item.ToObject<Child>();
@@ -134,6 +136,9 @@ namespace WebApplication2.Controllers
                     {
                         var hest = item["data"].ToObject<T>();
                         list.Add(hest);
+                    }
+                    if (item["data"]["replies"] != null) {
+                        PopulateNestedObjects<T>(kind_id, json[i]["data"]["children"]);
                     }
                 }
             }
@@ -174,11 +179,7 @@ namespace WebApplication2.Controllers
             else return null;
             //OMFORM NODE LISTEN TIL OBJECT FORMAT PÅ BAGGRUND AF 
         }
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> 9953640a60b8459b9978d44c252208641583e257
         public async Task<T> ResponseJsonBuilderAsync<T>(HttpResponseMessage response)
         {
 

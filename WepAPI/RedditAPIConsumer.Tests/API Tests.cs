@@ -15,5 +15,16 @@ namespace RedditAPIConsumer.Tests
 
             Assert.IsNotNull(p);
         }
+
+        [TestMethod]
+        public async System.Threading.Tasks.Task Test_subreddits()
+        {
+            RedditConsumerController rcc = new RedditConsumerController();
+            Subreddit s = await rcc.GetSubredditAsync("2qh0u", "hot");
+
+            Assert.IsNotNull(s);
+        }
+
+
     }
 }

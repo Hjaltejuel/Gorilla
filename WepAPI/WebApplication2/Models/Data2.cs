@@ -57,7 +57,7 @@ namespace WebApplication2.Models
     public class Child
     {
         public string kind { get; set; }
-        public Commentable data { get; set; }
+        public Comment data { get; set; }
     }
 
     public class Data
