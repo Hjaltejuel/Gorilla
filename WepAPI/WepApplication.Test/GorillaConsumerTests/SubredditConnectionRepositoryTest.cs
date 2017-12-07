@@ -3,7 +3,7 @@ using Xunit;
 
 namespace WepApplication.Test
 {
-    public class UnitTest1
+    public class SubredditConnectionRepositoryTest
     {
         [Fact]
         public void Test1()
