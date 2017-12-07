@@ -49,7 +49,7 @@ namespace Model.Test
 
                 using (var repository = new UserPreferenceRepository(context))
                 {
-                    await repository.Create(userPreference);
+                    await repository.CreateAsync(userPreference);
                     Assert.Equal(userPreference, context.UserPreferences.FirstOrDefault());
 
                 }
@@ -92,7 +92,7 @@ namespace Model.Test
                
                 using (var repository = new UserPreferenceRepository(context))
                 {
-                    await Assert.ThrowsAsync<AlreadyThereException>(() => repository.Create(userPreference));
+                    await Assert.ThrowsAsync<AlreadyThereException>(() => repository.CreateAsync(userPreference));
 
                 }
 
@@ -126,7 +126,7 @@ namespace Model.Test
 
                 using (var repository = new UserPreferenceRepository(context))
                 {
-                    await Assert.ThrowsAsync<NotFoundException>(() => repository.Create(userPreference));
+                    await Assert.ThrowsAsync<NotFoundException>(() => repository.CreateAsync(userPreference));
 
                 }
 
@@ -160,7 +160,7 @@ namespace Model.Test
                 await context.SaveChangesAsync();
                 using (var repository = new UserPreferenceRepository(context))
                 {
-                    await Assert.ThrowsAsync<NotFoundException>(() => repository.Create(userPreference));
+                    await Assert.ThrowsAsync<NotFoundException>(() => repository.CreateAsync(userPreference));
 
                 }
 
@@ -201,7 +201,7 @@ namespace Model.Test
                 using (var repository = new UserPreferenceRepository(context))
                 {
                     
-                    Assert.Equal((userPreference.Username,userPreference.SubredditName), await repository.Create(userPreference));
+                    Assert.Equal((userPreference.Username,userPreference.SubredditName), await repository.CreateAsync(userPreference));
 
                 }
 
@@ -223,7 +223,7 @@ namespace Model.Test
 
                 using (var repository = new UserPreferenceRepository(context))
                 {
-                    var userPreference =  await repository.FindAll("asdasdsadsadsadsadsadsadsadsada");
+                    var userPreference =  await repository.FindAsync("asdasdsadsadsadsadsadsadsadsada");
 
                     Assert.Null(userPreference);
                 }
@@ -282,7 +282,7 @@ namespace Model.Test
 
                 using (var repository = new UserPreferenceRepository(context))
                 {
-                    var userPreference = await repository.FindAll(entity.Username);
+                    var userPreference = await repository.FindAsync(entity.Username);
 
                     Assert.Equal(preference.Count,userPreference.Count());
 
@@ -303,7 +303,7 @@ namespace Model.Test
             {
                 var userPreference = new UserPreference { Username = "name", SubredditName = "TestSub" };
 
-                var success = await repository.Update(userPreference);
+                var success = await repository.UpdateAsync(userPreference);
 
                 Assert.True(success);
             }
@@ -319,7 +319,7 @@ namespace Model.Test
             {
                 var userPreference = new UserPreference { Username = "name", SubredditName = "TestSub" };
 
-                var success = await repository.Update(userPreference);
+                var success = await repository.UpdateAsync(userPreference);
 
                 Assert.False(success);
             }
@@ -342,7 +342,7 @@ namespace Model.Test
 
                 };
 
-                await repository.Update(userPreference);
+                await repository.UpdateAsync(userPreference);
             }
 
             Assert.Equal(1, entity.PriorityMultiplier);
@@ -360,7 +360,7 @@ namespace Model.Test
             {
                 var userPreference = new UserPreference { Username = "name", SubredditName = "TestSub" };
 
-                await repository.Update(userPreference);
+                await repository.UpdateAsync(userPreference);
             }
 
             context.Verify(c => c.SaveChangesAsync(default(CancellationToken)));
@@ -380,7 +380,7 @@ namespace Model.Test
                     SubredditName = "TestSub"
                 };
 
-                await repository.Update(userPreference);
+                await repository.UpdateAsync(userPreference);
             }
 
             context.Verify(c => c.SaveChangesAsync(default(CancellationToken)), Times.Never);
@@ -421,7 +421,7 @@ namespace Model.Test
 
                 using (var repository = new UserPreferenceRepository(context))
                 {
-                    await repository.Delete("name", "TestSub");
+                    await repository.DeleteAsync("name", "TestSub");
                     Assert.Equal(0,context.UserPreferences.Count());
 
                 }
@@ -468,7 +468,7 @@ namespace Model.Test
                 using (var repository = new UserPreferenceRepository(context))
                 {
                    
-                    Assert.True(await repository.Delete("name", "TestSub"));
+                    Assert.True(await repository.DeleteAsync("name", "TestSub"));
 
                 }
 
@@ -494,7 +494,7 @@ namespace Model.Test
                 using (var repository = new UserPreferenceRepository(context))
                 {
 
-                    Assert.False(await repository.Delete("name", "TestSub"));
+                    Assert.False(await repository.DeleteAsync("name", "TestSub"));
 
                 }
 

@@ -18,15 +18,15 @@ namespace Model
             context = _context;
         }
 
-        public async Task<Subreddit> Find(string subredditName)
+        public async Task<Subreddit> FindAsync(string subredditName)
         {
             return await context.Subreddits.FindAsync(subredditName);
             
         }
 
-        public async Task<string> Create(Subreddit subreddit)
+        public async Task<string> CreateAsync(Subreddit subreddit)
         {
-            if((await Find(subreddit.SubredditName)) != null)
+            if((await FindAsync(subreddit.SubredditName)) != null)
             {
                 throw new AlreadyThereException("A subreddit with that name already exist");
             }
@@ -34,7 +34,7 @@ namespace Model
             await context.SaveChangesAsync();
             return subreddit.SubredditName;
         }
-        public async Task<bool> Delete(string subredditName)
+        public async Task<bool> DeleteAsync(string subredditName)
         {
             var subreddit = await context.Subreddits.FindAsync(subredditName);
 
@@ -50,7 +50,7 @@ namespace Model
             return true;
         }
 
-        public async Task<IReadOnlyCollection<Subreddit>> Read()
+        public async Task<IReadOnlyCollection<Subreddit>> ReadAsync()
         {
             return await (from s in context.Subreddits
                    select s).ToListAsync();

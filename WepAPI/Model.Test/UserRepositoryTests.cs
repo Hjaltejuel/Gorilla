@@ -29,7 +29,7 @@ namespace Model.Test
                     Username = "name",
 
                 };
-                await repository.Create(user);
+                await repository.CreateAsync(user);
             }
 
             Assert.Equal("name", entity.Username);
@@ -46,7 +46,7 @@ namespace Model.Test
             {
                 var user = new User{ Username = "name" };
 
-                await repository.Create(user);
+                await repository.CreateAsync(user);
             }
 
             context.Verify(c => c.SaveChangesAsync(default(CancellationToken)));
@@ -68,7 +68,7 @@ namespace Model.Test
                 context.Users.Add(user);
                 using (var repository = new UserRepository(context))
                 {
-                    await Assert.ThrowsAsync<AlreadyThereException>(() => repository.Create(user));
+                    await Assert.ThrowsAsync<AlreadyThereException>(() => repository.CreateAsync(user));
 
                 }
 
@@ -91,7 +91,7 @@ namespace Model.Test
             {
                 var user = new User{ Username = "name" };
 
-                var username = await repository.Create(user);
+                var username = await repository.CreateAsync(user);
 
                 Assert.Equal("name", username);
             }
@@ -112,7 +112,7 @@ namespace Model.Test
 
                 using (var repository = new UserRepository(context))
                 {
-                    var user = await repository.Find("asdasdsadsadsadsadsadsadsadsada");
+                    var user = await repository.FindAsync("asdasdsadsadsadsadsadsadsadsada");
 
                     Assert.Null(user);
                 }
@@ -144,7 +144,7 @@ namespace Model.Test
 
                 using (var repository = new UserRepository(context))
                 {
-                    var user = await repository.Find(entity.Username);
+                    var user = await repository.FindAsync(entity.Username);
 
                     Assert.Equal("name", user.Username);
 
@@ -176,7 +176,7 @@ namespace Model.Test
 
             using (var repository = new UserRepository(context))
             {
-                var users = await repository.Read();
+                var users = await repository.ReadAsync();
                 var user = users.First();
                 Assert.Equal("name", user.Username);
 
@@ -196,7 +196,7 @@ namespace Model.Test
             {
                 var user = new User { Username = "name" };
 
-                var success = await repository.Update(user);
+                var success = await repository.UpdateAsync(user);
 
                 Assert.True(success);
             }
@@ -212,7 +212,7 @@ namespace Model.Test
             {
                 var user = new User { Username = "name" };
 
-                var success = await repository.Update(user);
+                var success = await repository.UpdateAsync(user);
 
                 Assert.False(success);
             }
@@ -233,7 +233,7 @@ namespace Model.Test
                    
                 };
 
-                await repository.Update(user);
+                await repository.UpdateAsync(user);
             }
 
             Assert.Equal("name", entity.Username);
@@ -251,7 +251,7 @@ namespace Model.Test
             {
                 var user = new User { Username = "name" };
 
-                await repository.Update(user);
+                await repository.UpdateAsync(user);
             }
 
             context.Verify(c => c.SaveChangesAsync(default(CancellationToken)));
@@ -267,7 +267,7 @@ namespace Model.Test
             {
                 var user = new User { Username = "name" };
 
-                await repository.Update(user);
+                await repository.UpdateAsync(user);
             }
 
             context.Verify(c => c.SaveChangesAsync(default(CancellationToken)), Times.Never);
@@ -283,7 +283,7 @@ namespace Model.Test
 
             using (var repository = new UserRepository(context.Object))
             {
-                await repository.Delete("name");
+                await repository.DeleteAsync("name");
             }
 
             context.Verify(c => c.Users.Remove(user));
@@ -298,7 +298,7 @@ namespace Model.Test
 
             using (var repository = new UserRepository(context.Object))
             {
-                await repository.Delete("name");
+                await repository.DeleteAsync("name");
             }
 
             context.Verify(c => c.SaveChangesAsync(default(CancellationToken)));
@@ -313,7 +313,7 @@ namespace Model.Test
 
             using (var repository = new UserRepository(context.Object))
             {
-                var success = await repository.Delete("name");
+                var success = await repository.DeleteAsync("name");
 
                 Assert.True(success);
             }
@@ -327,7 +327,7 @@ namespace Model.Test
 
             using (var repository = new UserRepository(context.Object))
             {
-                await repository.Delete("name");
+                await repository.DeleteAsync("name");
             }
 
             context.Verify(c => c.SaveChangesAsync(default(CancellationToken)), Times.Never);
@@ -341,7 +341,7 @@ namespace Model.Test
 
             using (var repository = new UserRepository(context.Object))
             {
-                await repository.Delete("name");
+                await repository.DeleteAsync("name");
             }
 
             context.Verify(c => c.Users.Remove(It.IsAny<User>()), Times.Never);
@@ -355,7 +355,7 @@ namespace Model.Test
 
             using (var repository = new UserRepository(context.Object))
             {
-                var success = await repository.Delete("name");
+                var success = await repository.DeleteAsync("name");
 
                 Assert.False(success);
             }

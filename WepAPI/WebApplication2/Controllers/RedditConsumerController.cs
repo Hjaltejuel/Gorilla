@@ -104,8 +104,13 @@ namespace WebApplication2.Controllers
 
             return await (ResponseStatusAsync(response));
         }
+<<<<<<< HEAD
 
         public async Task<(HttpStatusCode, string)> ResponseStatusAsync(HttpResponseMessage response)
+=======
+        /*
+        public async (HttpStatusCode, string) ResponseJsonBuilder(HttpResponseMessage response)
+>>>>>>> GorillaApiConsumerPlusRenaming
         {
             string responseBody = await response.Content.ReadAsStringAsync();
             HttpStatusCode statusCode = response.StatusCode;
@@ -184,5 +189,6 @@ namespace WebApplication2.Controllers
         {
             throw new NotImplementedException();
         }
+        */
     }
 }

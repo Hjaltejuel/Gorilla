@@ -30,11 +30,11 @@ namespace WebApi.Test
             var users = new User[1] { new User { Username = "test" } };
 
             var repository = new Mock<IUserRepository>();
-            repository.Setup(r => r.Read()).ReturnsAsync(users);
+            repository.Setup(r => r.ReadAsync()).ReturnsAsync(users);
 
             var controller = new UserController(repository.Object);
 
-            var result = await controller.Read() as OkObjectResult;
+            var result = await controller.ReadAsync() as OkObjectResult;
 
             Assert.Equal(users, result.Value);
         }
@@ -44,11 +44,11 @@ namespace WebApi.Test
             var users = new User[0];
 
             var repository = new Mock<IUserRepository>();
-            repository.Setup(r => r.Read()).ReturnsAsync(users);
+            repository.Setup(r => r.ReadAsync()).ReturnsAsync(users);
 
             var controller = new UserController(repository.Object);
 
-            var result = await controller.Read();
+            var result = await controller.ReadAsync();
 
             Assert.IsType<NoContentResult>(result); 
         }
@@ -59,11 +59,11 @@ namespace WebApi.Test
             var user = new User();
 
             var repository = new Mock<IUserRepository>();
-            repository.Setup(r => r.Find("test")).ReturnsAsync(user);
+            repository.Setup(r => r.FindAsync("test")).ReturnsAsync(user);
 
             var controller = new UserController(repository.Object);
 
-            var result = await controller.Get("test") as OkObjectResult;
+            var result = await controller.GetAsync("test") as OkObjectResult;
 
             Assert.Equal(user, result.Value);
         }
@@ -72,11 +72,11 @@ namespace WebApi.Test
         public async Task Get_given_non_existing_id_returns_NotFound()
         {
             var repository = new Mock<IUserRepository>();
-            repository.Setup(r => r.Find("test")).ReturnsAsync(default(User));
+            repository.Setup(r => r.FindAsync("test")).ReturnsAsync(default(User));
 
             var controller = new UserController(repository.Object);
 
-            var result = await controller.Get("test");
+            var result = await controller.GetAsync("test");
 
             Assert.IsType<NotFoundResult>(result);
         }
@@ -90,7 +90,7 @@ namespace WebApi.Test
             controller.ModelState.AddModelError(string.Empty, "Error");
 
             var user = new User();
-            var result = await controller.Post(user);
+            var result = await controller.PostAsync(user);
 
             Assert.IsType<BadRequestObjectResult>(result);
         }
@@ -99,11 +99,11 @@ namespace WebApi.Test
         {
             var user = new User();
             var repository = new Mock<IUserRepository>();
-            repository.Setup(r => r.Create(user)).Throws(new AlreadyThereException(""));
+            repository.Setup(r => r.CreateAsync(user)).Throws(new AlreadyThereException(""));
             var controller = new UserController(repository.Object);
 
 
-            var result = await controller.Post(user);
+            var result = await controller.PostAsync(user);
 
 
             Assert.IsType<StatusCodeResult>(result);
@@ -118,9 +118,9 @@ namespace WebApi.Test
             controller.ModelState.AddModelError(string.Empty, "Error");
 
             var user = new User();
-            await controller.Post(user);
+            await controller.PostAsync(user);
 
-            repository.Verify(r => r.Create(It.IsAny<User>()), Times.Never);
+            repository.Verify(r => r.CreateAsync(It.IsAny<User>()), Times.Never);
         }
 
         [Fact(DisplayName = "Post given valid user calls CreateAsync")]
@@ -131,22 +131,22 @@ namespace WebApi.Test
             var controller = new UserController(repository.Object);
 
             var user = new User();
-            await controller.Post(user);
+            await controller.PostAsync(user);
 
-            repository.Verify(r => r.Create(user));
+            repository.Verify(r => r.CreateAsync(user));
         }
 
         [Fact(DisplayName = "Post given valid user returns CreatedAtAction")]
         public async Task Post_given_valid_track_returns_CreatedAtAction()
         {
             var repository = new Mock<IUserRepository>();
-            repository.Setup(r => r.Create(It.IsAny<User>())).ReturnsAsync("test");
+            repository.Setup(r => r.CreateAsync(It.IsAny<User>())).ReturnsAsync("test");
             var controller = new UserController(repository.Object);
 
             var user = new User();
-            var result = await controller.Post(user) as CreatedAtActionResult;
+            var result = await controller.PostAsync(user) as CreatedAtActionResult;
 
-            Assert.Equal(nameof(UserController.Get), result.ActionName);
+            Assert.Equal(nameof(UserController.GetAsync), result.ActionName);
             Assert.Equal("test", result.RouteValues["username"]);
         }
 
@@ -159,7 +159,7 @@ namespace WebApi.Test
             controller.ModelState.AddModelError(string.Empty, "Error");
 
             var user = new User { Username = "test" };
-            var result = await controller.Put( user);
+            var result = await controller.PutAsync( user);
 
             Assert.IsType<BadRequestObjectResult>(result);
         }
@@ -175,9 +175,9 @@ namespace WebApi.Test
             controller.ModelState.AddModelError(string.Empty, "Error");
 
             var user = new User();
-            await controller.Put( user);
+            await controller.PutAsync( user);
 
-            repository.Verify(r => r.Update(It.IsAny<User>()), Times.Never);
+            repository.Verify(r => r.UpdateAsync(It.IsAny<User>()), Times.Never);
         }
 
         [Fact(DisplayName = "Put given valid user calls UpdateAsync")]
@@ -188,21 +188,21 @@ namespace WebApi.Test
             var controller = new UserController(repository.Object);
 
             var user = new User { Username = "test" };
-            await controller.Put( user);
+            await controller.PutAsync( user);
 
-            repository.Verify(r => r.Update(user));
+            repository.Verify(r => r.UpdateAsync(user));
         }
 
         [Fact(DisplayName = "Put given non-existing user returns NotFound")]
         public async Task Put_given_non_existing_track_returns_NotFound()
         {
             var repository = new Mock<IUserRepository>();
-            repository.Setup(r => r.Update(It.IsAny<User>())).ReturnsAsync(false);
+            repository.Setup(r => r.UpdateAsync(It.IsAny<User>())).ReturnsAsync(false);
 
             var controller = new UserController(repository.Object);
 
             var user = new User { Username = "test" };
-            var result = await controller.Put( user);
+            var result = await controller.PutAsync( user);
 
             Assert.IsType<NotFoundResult>(result);
         }
@@ -211,12 +211,12 @@ namespace WebApi.Test
         public async Task Put_given_valid_track_returns_NoContent()
         {
             var repository = new Mock<IUserRepository>();
-            repository.Setup(r => r.Update(It.IsAny<User>())).ReturnsAsync(true);
+            repository.Setup(r => r.UpdateAsync(It.IsAny<User>())).ReturnsAsync(true);
 
             var controller = new UserController(repository.Object);
 
             var user = new User { Username = "test" };
-            var result = await controller.Put( user);
+            var result = await controller.PutAsync( user);
 
             Assert.IsType<NoContentResult>(result);
         }
@@ -225,12 +225,12 @@ namespace WebApi.Test
         public async Task Delete_given_non_existing_track_returns_NotFound()
         {
             var repository = new Mock<IUserRepository>();
-            repository.Setup(r => r.Delete("test")).ReturnsAsync(false);
+            repository.Setup(r => r.DeleteAsync("test")).ReturnsAsync(false);
 
             var controller = new UserController(repository.Object);
 
             var user = new User();
-            var result = await controller.Delete("test");
+            var result = await controller.DeleteAsync("test");
 
             Assert.IsType<NotFoundResult>(result);
         }
@@ -239,12 +239,12 @@ namespace WebApi.Test
         public async Task Delete_given_valid_track_returns_NoContent()
         {
             var repository = new Mock<IUserRepository>();
-            repository.Setup(r => r.Delete("test")).ReturnsAsync(true);
+            repository.Setup(r => r.DeleteAsync("test")).ReturnsAsync(true);
 
             var controller = new UserController(repository.Object);
 
             var user = new User();
-            var result = await controller.Delete("test");
+            var result = await controller.DeleteAsync("test");
 
             Assert.IsType<NoContentResult>(result);
         }
@@ -256,9 +256,9 @@ namespace WebApi.Test
 
             var controller = new UserController(repository.Object);
 
-            await controller.Delete("test");
+            await controller.DeleteAsync("test");
 
-            repository.Verify(r => r.Delete("test"));
+            repository.Verify(r => r.DeleteAsync("test"));
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Model.Test
                     SubredditName = "name",
                    
                 };
-                await repository.Create(subreddit);
+                await repository.CreateAsync(subreddit);
             }
 
             Assert.Equal("name", entity.SubredditName);
@@ -44,7 +44,7 @@ namespace Model.Test
             {
                 var user = new Subreddit { SubredditName = "name" };
 
-                await repository.Create(user);
+                await repository.CreateAsync(user);
             }
 
             context.Verify(c => c.SaveChangesAsync(default(CancellationToken)));
@@ -66,7 +66,7 @@ namespace Model.Test
                 context.Subreddits.Add(subreddit);
                 using (var repository = new SubredditRepository(context))
                 {
-                   await Assert.ThrowsAsync<AlreadyThereException>(() => repository.Create(subreddit));
+                   await Assert.ThrowsAsync<AlreadyThereException>(() => repository.CreateAsync(subreddit));
 
                 }
 
@@ -89,7 +89,7 @@ namespace Model.Test
             {
                 var subreddit = new Subreddit { SubredditName = "name" };
 
-                var subredditName = await repository.Create(subreddit);
+                var subredditName = await repository.CreateAsync(subreddit);
 
                 Assert.Equal("name", subredditName);
             }
@@ -110,7 +110,7 @@ namespace Model.Test
 
                 using (var repository = new SubredditRepository(context))
                 {
-                    var user = await repository.Find("asdasdsadsadsadsadsadsadsadsada");
+                    var user = await repository.FindAsync("asdasdsadsadsadsadsadsadsadsada");
 
                     Assert.Null(user);
                 }
@@ -142,7 +142,7 @@ namespace Model.Test
 
                 using (var repository = new SubredditRepository(context))
                 {
-                    var user = await repository.Find(entity.SubredditName);
+                    var user = await repository.FindAsync(entity.SubredditName);
 
                     Assert.Equal("name", user.SubredditName);
            
@@ -174,7 +174,7 @@ namespace Model.Test
 
             using (var repository = new SubredditRepository(context))
             {
-                var Subreddits = await repository.Read();
+                var Subreddits = await repository.ReadAsync();
                 var subreddit = Subreddits.FirstOrDefault();
                 Assert.Equal("name", subreddit.SubredditName);
             
@@ -191,7 +191,7 @@ namespace Model.Test
 
             using (var repository = new SubredditRepository(context.Object))
             {
-                await repository.Delete("name");
+                await repository.DeleteAsync("name");
             }
 
             context.Verify(c => c.Subreddits.Remove(subreddit));
@@ -206,7 +206,7 @@ namespace Model.Test
 
             using (var repository = new SubredditRepository(context.Object))
             {
-                await repository.Delete("name");
+                await repository.DeleteAsync("name");
             }
 
             context.Verify(c => c.SaveChangesAsync(default(CancellationToken)));
@@ -221,7 +221,7 @@ namespace Model.Test
 
             using (var repository = new SubredditRepository(context.Object))
             {
-                var success = await repository.Delete("name");
+                var success = await repository.DeleteAsync("name");
 
                 Assert.True(success);
             }
@@ -235,7 +235,7 @@ namespace Model.Test
 
             using (var repository = new SubredditRepository(context.Object))
             {
-                await repository.Delete("name");
+                await repository.DeleteAsync("name");
             }
 
             context.Verify(c => c.SaveChangesAsync(default(CancellationToken)), Times.Never);
@@ -249,7 +249,7 @@ namespace Model.Test
 
             using (var repository = new SubredditRepository(context.Object))
             {
-                await repository.Delete("name");
+                await repository.DeleteAsync("name");
             }
 
             context.Verify(c => c.Subreddits.Remove(It.IsAny<Subreddit>()), Times.Never);
@@ -263,7 +263,7 @@ namespace Model.Test
 
             using (var repository = new SubredditRepository(context.Object))
             {
-                var success = await repository.Delete("name");
+                var success = await repository.DeleteAsync("name");
 
                 Assert.False(success);
             }
