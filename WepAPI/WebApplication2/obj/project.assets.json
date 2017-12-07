@@ -14341,9 +14341,9 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\Michelle\\Source\\Repos\\Gorilla2\\WepAPI\\WebApplication2\\WebApplication2.csproj",
-      "projectName": "WebApplication2",
-      "projectPath": "C:\\Users\\Michelle\\Source\\Repos\\Gorilla2\\WepAPI\\WebApplication2\\WebApplication2.csproj",
+      "projectUniqueName": "C:\\Users\\Michelle\\Source\\Repos\\Gorilla2\\WepAPI\\WebApplication2\\WepApplication.csproj",
+      "projectName": "WepApplication",
+      "projectPath": "C:\\Users\\Michelle\\Source\\Repos\\Gorilla2\\WepAPI\\WebApplication2\\WepApplication.csproj",
       "packagesPath": "C:\\Users\\Michelle\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Michelle\\Source\\Repos\\Gorilla2\\WepAPI\\WebApplication2\\obj\\",
       "projectStyle": "PackageReference",

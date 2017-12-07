@@ -14530,9 +14530,9 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\Michelle\\Source\\Repos\\Gorilla2\\WepAPI\\WebApi.Test\\WebApi.Test.csproj",
-      "projectName": "WebApi.Test",
-      "projectPath": "C:\\Users\\Michelle\\Source\\Repos\\Gorilla2\\WepAPI\\WebApi.Test\\WebApi.Test.csproj",
+      "projectUniqueName": "C:\\Users\\Michelle\\Source\\Repos\\Gorilla2\\WepAPI\\WebApi.Test\\Gorilla.Test.csproj",
+      "projectName": "Gorilla.Test",
+      "projectPath": "C:\\Users\\Michelle\\Source\\Repos\\Gorilla2\\WepAPI\\WebApi.Test\\Gorilla.Test.csproj",
       "packagesPath": "C:\\Users\\Michelle\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Michelle\\Source\\Repos\\Gorilla2\\WepAPI\\WebApi.Test\\obj\\",
       "projectStyle": "PackageReference",

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2010
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model.csproj", "{787E1345-6F76-40EB-94F7-CF67693F7FF4}"
 EndProject
@@ -11,13 +11,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entiti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exceptions", "Exceptions\Exceptions.csproj", "{7B13FBB0-C2BD-433C-A3E7-719F001E0A95}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi.Test", "WebApi.Test\WebApi.Test.csproj", "{51EF3962-4277-4F56-9BEB-AE7FEED6758C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gorilla.Test", "WebApi.Test\Gorilla.Test.csproj", "{51EF3962-4277-4F56-9BEB-AE7FEED6758C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gorilla", "Gorilla\Gorilla.csproj", "{3D7029D6-A4ED-4163-9C48-027D58C2475C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "UITEST\UI.csproj", "{E1BD4360-1F27-4E2D-AA3C-655467FCE5F0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication2", "WebApplication2\WebApplication2.csproj", "{C21EA8EB-5936-4602-800E-932E62AF56C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WepApplication", "WebApplication2\WepApplication.csproj", "{C21EA8EB-5936-4602-800E-932E62AF56C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WepApplication.Test", "WepApplication.Test\WepApplication.Test.csproj", "{C2927AB8-7313-4823-8727-52F2B96B90D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -163,6 +165,22 @@ Global
 		{C21EA8EB-5936-4602-800E-932E62AF56C2}.Release|x64.Build.0 = Release|Any CPU
 		{C21EA8EB-5936-4602-800E-932E62AF56C2}.Release|x86.ActiveCfg = Release|Any CPU
 		{C21EA8EB-5936-4602-800E-932E62AF56C2}.Release|x86.Build.0 = Release|Any CPU
+		{C2927AB8-7313-4823-8727-52F2B96B90D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2927AB8-7313-4823-8727-52F2B96B90D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2927AB8-7313-4823-8727-52F2B96B90D4}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{C2927AB8-7313-4823-8727-52F2B96B90D4}.Debug|ARM.Build.0 = Debug|Any CPU
+		{C2927AB8-7313-4823-8727-52F2B96B90D4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C2927AB8-7313-4823-8727-52F2B96B90D4}.Debug|x64.Build.0 = Debug|Any CPU
+		{C2927AB8-7313-4823-8727-52F2B96B90D4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C2927AB8-7313-4823-8727-52F2B96B90D4}.Debug|x86.Build.0 = Debug|Any CPU
+		{C2927AB8-7313-4823-8727-52F2B96B90D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2927AB8-7313-4823-8727-52F2B96B90D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2927AB8-7313-4823-8727-52F2B96B90D4}.Release|ARM.ActiveCfg = Release|Any CPU
+		{C2927AB8-7313-4823-8727-52F2B96B90D4}.Release|ARM.Build.0 = Release|Any CPU
+		{C2927AB8-7313-4823-8727-52F2B96B90D4}.Release|x64.ActiveCfg = Release|Any CPU
+		{C2927AB8-7313-4823-8727-52F2B96B90D4}.Release|x64.Build.0 = Release|Any CPU
+		{C2927AB8-7313-4823-8727-52F2B96B90D4}.Release|x86.ActiveCfg = Release|Any CPU
+		{C2927AB8-7313-4823-8727-52F2B96B90D4}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
