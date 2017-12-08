@@ -9,9 +9,9 @@ namespace Gorilla.AuthenticationGorillaAPI
 {
     public class Settings : ISettings
     {
-        public string Tenant => "ondfisk.onmicrosoft.com";
+        public string Tenant => "ituniversity.onmicrosoft.com";
 
-        public string ClientId => "48ad45dd-7c9c-4e94-b2e2-c3b09aae44a3";
+        public string ClientId => "a562a247-2010-4e1e-82dd-8133a37b346a";
 
         public string RedirectUri => $"ms-appx-web://Microsoft.AAD.BrokerPlugIn/{WebAuthenticationBroker.GetCurrentApplicationCallbackUri().Host.ToUpper()}";
 
@@ -19,9 +19,9 @@ namespace Gorilla.AuthenticationGorillaAPI
 
         public string WebAccountProviderId => "https://login.microsoft.com";
 
-        public string ApiResource => "https://ondfisk.onmicrosoft.com/BDSA2017.Lecture11.Web";
+        public string ApiResource => "https://ituniversity.onmicrosoft.com/GorillaAPI";
 
-        public Uri ApiBaseAddress => new Uri("https://bdsa2017.azurewebsites.net/");
+        public Uri ApiBaseAddress => new Uri("http://gorillaapi.azurewebsites.net");
 
         public string Authority => $"{Instance}{Tenant}";
     }
