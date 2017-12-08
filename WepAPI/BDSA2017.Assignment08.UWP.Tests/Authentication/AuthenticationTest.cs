@@ -1,5 +1,4 @@
-﻿
-using Gorilla.AuthenticationGorillaAPI;
+﻿using Gorilla.AuthenticationGorillaAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace UI.Test
+
+namespace BDSA2017.Assignment08.UWP.Tests.Authentication
 {
     public class AuthenticationTest
     {
-        
         private readonly IAuthenticationHelper _helper;
         public AuthenticationTest(IAuthenticationHelper helper)
         {
@@ -24,12 +23,12 @@ namespace UI.Test
             var _account = await _helper.SignInAsync();
             Assert.NotNull(_account);
         }
-        
+
         [Fact]
         public void TestAll()
         {
             var d = 5;
-            Assert.Equal(5,d);
+            Assert.Equal(5, d);
         }
     }
 }
