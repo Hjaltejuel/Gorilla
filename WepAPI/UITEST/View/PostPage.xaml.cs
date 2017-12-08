@@ -74,20 +74,14 @@ namespace UITEST.View
             btn.FontWeight = FontWeights.SemiBold;
         }
 
-        /*
-         * <RelativePanel Grid.Row="3" Margin="10,0, 0, 10" Visibility="Collapsed" Name="CommentField">
-                <TextBox Name="CommentTextBox" Height="200" Width="600" AcceptsReturn="True" TextWrapping="Wrap" IsSpellCheckEnabled="True" Language="en-US"/>
-                <Button Content="Save" Click="CommentSaveClick"  RelativePanel.Below="  " Margin="0, 10, 10, 0"/>
-            </RelativePanel>
-         */
+       
         private void CreateCommentPanel()
         {
             if (CommentPanel != null)
             {
                 CommentPanel = null;
             }
-            CommentPanel = new RelativePanel();
-
+            CommentPanel = new RelativePanel() { Margin = new Thickness(0, 40, 0, 0)};
             CommentTextBox = new TextBox()
             {
                 Height = 200,
@@ -103,6 +97,7 @@ namespace UITEST.View
                 Content = "Save",
                 Margin = new Thickness(0, 10, 10, 0)
             };
+            RelativePanel.SetBelow(SubmitButton, CommentTextBox);
             SubmitButton.Click += CommentSaveClick;
             
             CommentPanel.Children.Add(CommentTextBox);
@@ -110,22 +105,27 @@ namespace UITEST.View
         }
         private void CommentText_Click(object sender, RoutedEventArgs e)
         {
-            var CommentBtn = sender as CustomButton;
+            var CommentBtn = sender as Button;
 
-            CreateCommentPanel();
-
-            _vm.FocusedAbstractCommentable = CommentBtn.AbstractCommentable;
-            var CommentExtraTextPanel = CommentBtn.Parent as RelativePanel;
-            var CommentPanel = CommentExtraTextPanel.Parent as RelativePanel;
-            var CommentStackPanel = CommentPanel.Parent as StackPanel;
-
-            CommentStackPanel.Children.Add(CommentPanel);
+            if (CommentPanel == null)
+            {
+                CreateCommentPanel();
+                _vm.FocusedAbstractCommentable = CommentBtn.DataContext as Post;
+                var CommentExtraTextPanel = CommentBtn.Parent as RelativePanel;
+                ExtraStuff.Children.Add(CommentPanel);
+            }
+            else
+            {
+                ExtraStuff.Children.Remove(CommentPanel);
+                CommentPanel = null;
+            }
         }
 
         private void CommentSaveClick(object sender, RoutedEventArgs e)
         {
             InsertComment(_vm.FocusedAbstractCommentable);
         }
+
         private void InsertComment(AbstractCommentable abstractCommentableToCommentOn)
         {
             if (!CommentTextBox.Text.Equals(""))
@@ -140,8 +140,11 @@ namespace UITEST.View
                 //Refresh comments
                 CommentsView.Children.Clear();
                 CreateComments();
+                ExtraStuff.Children.Remove(CommentPanel);
+                CommentPanel = null;
             }
         }
+        
         private StackPanel CreateCommentPanel(Comment comment, bool ColorBoolean)
         {
             var SingleCommentStackPanel = new StackPanel()
