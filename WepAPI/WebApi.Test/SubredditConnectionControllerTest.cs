@@ -193,7 +193,7 @@ namespace WebApi.Test
             var SubredditConnection = new SubredditConnection();
             var result = await controller.PostAsync(SubredditConnection) as CreatedAtActionResult;
 
-            Assert.Equal(nameof(SubredditConnectionController.FindAsync), result.ActionName);
+            Assert.Equal(nameof(SubredditConnectionController.GetAsync), result.ActionName);
             Assert.Equal(("test", "test"), result.RouteValues["result"]);
         }
 

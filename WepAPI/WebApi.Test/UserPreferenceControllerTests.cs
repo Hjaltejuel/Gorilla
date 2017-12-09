@@ -136,7 +136,7 @@ namespace WebApi.Test
 
             var userPreference = new UserPreference();
             var result = await controller.PostAsync(userPreference) as CreatedAtActionResult;
-
+            var strid = nameof(UserPreferenceController.FindAsync);
             Assert.Equal(nameof(UserPreferenceController.FindAsync), result.ActionName);
             Assert.Equal(("test","test"), result.RouteValues["usernameAndSub"]);
         }

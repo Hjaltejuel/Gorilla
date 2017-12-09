@@ -63,7 +63,7 @@ namespace Gorilla
           })
           .AddJwtBearer(o =>
           {
-              o.Authority = options.Authority;
+              o.Authority = options.Authority;  
               o.TokenValidationParameters = new TokenValidationParameters
               {
                   ValidateAudience = true,

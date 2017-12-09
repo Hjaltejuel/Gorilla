@@ -1,4 +1,5 @@
 ﻿using Gorilla.AuthenticationGorillaAPI;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,21 +14,25 @@ namespace UITEST.ViewModel
     {
 
         public ObservableCollection<Post> Posts { get; set; }
-        private IAuthenticationHelper _helper;
-        public MainPageViewModel()
+        private readonly IAuthenticationHelper _helper;
+        private readonly ISubredditRepository _repository;
+        public MainPageViewModel(ISubredditRepository repository, IAuthenticationHelper helper)
         {
             
             Initialize();
+            _repository = repository;
+            _helper = helper;
+
         }
 
         public async void Initialize()
         {
-            _helper = new AuthenticationHelper(new Settings());
+            
                 
             var _account = await _helper.SignInAsync();
             if (_account != null)
             {
-
+                var subreddits = await _repository.ReadAsync();
                 Posts = new ObservableCollection<Post>
             {
                 new Post {Title = "hej", Author = "Raaaasmusss", NumOfVotes = -100, Text = "FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. hej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gid"

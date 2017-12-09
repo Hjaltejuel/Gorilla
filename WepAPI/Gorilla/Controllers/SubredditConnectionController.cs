@@ -78,7 +78,7 @@ namespace Gorilla.Controllers
             try
             {
                 var result = await repository.CreateAsync(subredditConnection);
-                return CreatedAtAction("GetSubredditConnection", new { result }, null);
+                return CreatedAtAction(nameof(GetAsync), new { result }, null);
             }
             catch (AlreadyThereException)
             {

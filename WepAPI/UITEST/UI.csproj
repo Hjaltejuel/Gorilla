@@ -110,8 +110,16 @@
     <Compile Include="CustomUI\CustomButton.cs" />
     <Compile Include="Model\AbstractCommentable.cs" />
     <Compile Include="Model\Comment.cs" />
+    <Compile Include="Model\GorillaAPIConsumers\RestSubredditRepository.cs" />
+    <Compile Include="Model\GorillaAPIConsumers\RestUserPreferenceRepository.cs" />
+    <Compile Include="Model\GorillaAPIConsumers\RestUserRepository.cs" />
+    <Compile Include="Model\GorillaAPIInterfaces\ISubredditConnectionRepository.cs" />
+    <Compile Include="Model\GorillaAPIInterfaces\ISubredditRepository.cs" />
+    <Compile Include="Model\GorillaAPIInterfaces\IUserPreferenceRepository.cs" />
+    <Compile Include="Model\GorillaAPIInterfaces\IUserRepository.cs" />
     <Compile Include="Model\IoCContainer.cs" />
     <Compile Include="Model\Profile.cs" />
+    <Compile Include="Model\GorillaAPIConsumers\RestSubredditConnectionRepository.cs" />
     <Compile Include="Model\SubReddit.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\DiscoverPageViewModel.cs" />
@@ -257,6 +265,7 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
