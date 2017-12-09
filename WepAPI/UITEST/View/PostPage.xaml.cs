@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities.RedditEntities;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -33,6 +34,7 @@ namespace UITEST.View
         public PostPage()
         {
             this.InitializeComponent();
+            LoadingRing.IsActive = true;
             _vm = new PostPageViewModel()
             {
                 GoToHomePageCommand = new RelayCommand(o => Frame.Navigate(typeof(MainPage))),
@@ -42,19 +44,20 @@ namespace UITEST.View
             };
             DataContext = _vm;
             SizeChanged += ChangeListViewWhenSizedChanged;
+            _vm.CommentsReadyEvent += _vm_CommentsReadyEvent;
+        }
+
+        private void _vm_CommentsReadyEvent()
+        {
+            LoadingRing.IsActive = false;
+            DrawComments();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-
             var post = e.Parameter as Post;
             _vm.Initialize(post);
-
-            if (_vm.CurrentPost.Comments.Count > 0)
-            {
-                CreateComments();
-            }
         }
 
         private void ChangeListViewWhenSizedChanged(object sender, SizeChangedEventArgs e)
@@ -73,8 +76,7 @@ namespace UITEST.View
             var btn = sender as Button;
             btn.FontWeight = FontWeights.SemiBold;
         }
-
-       
+        
         private void CreateCommentPanel()
         {
             if (CommentPanel != null)
@@ -105,6 +107,7 @@ namespace UITEST.View
         }
         private void CommentText_Click(object sender, RoutedEventArgs e)
         {
+            /*
             var CommentBtn = sender as Button;
 
             if (CommentPanel == null)
@@ -119,93 +122,51 @@ namespace UITEST.View
                 ExtraStuff.Children.Remove(CommentPanel);
                 CommentPanel = null;
             }
+            */
         }
 
         private void CommentSaveClick(object sender, RoutedEventArgs e)
         {
-            InsertComment(_vm.FocusedAbstractCommentable);
+            //InsertComment(_vm.FocusedAbstractCommentable);
         }
-
-        private void InsertComment(AbstractCommentable abstractCommentableToCommentOn)
+        private void InsertComment(Comment abstractCommentableToCommentOn)
         {
             if (!CommentTextBox.Text.Equals(""))
             {
-                abstractCommentableToCommentOn.InsertComment(new Comment()
-                {
-                    Text = CommentTextBox.Text,
-                    Author = "Unidentified User"
-                });
+                abstractCommentableToCommentOn.Replies.Add(
+                    new Comment()
+                    {
+                        name = CommentTextBox.Text,
+                        author = "ASD"
+                    });
 
                 CommentTextBox.Text = "";
                 //Refresh comments
-                CommentsView.Children.Clear();
-                CreateComments();
                 ExtraStuff.Children.Remove(CommentPanel);
                 CommentPanel = null;
+                PostView.Items.Clear();
+                DrawComments();
             }
         }
-        
-        private StackPanel CreateCommentPanel(Comment comment, bool ColorBoolean)
+
+        private void DrawComments()
         {
-            var SingleCommentStackPanel = new StackPanel()
+            foreach (var comment in _vm.CurrentPost.comments)
             {
-                Margin = new Thickness(20, 5, 0, 5),
-                Padding = new Thickness(0, 0, 0, 5)
-            };
-            var SingleCommentPanel = new CommentControl(comment);
-            
-            if (ColorBoolean)
-                SingleCommentStackPanel.Background = new SolidColorBrush(Color.FromArgb(255, 240, 240, 240));
-            else
-                SingleCommentStackPanel.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
-
-            SingleCommentStackPanel.Children.Add(SingleCommentPanel);
-
-            return SingleCommentStackPanel;
-        }
-        private void CreateComments()
-        {
-            foreach (var comment in _vm.CurrentPost.Comments)
-            {
-                //Tegne Posten i gui
-                var RootCommentPanel = new StackPanel
-                {
-                    BorderThickness = new Thickness(1),
-                    BorderBrush = new SolidColorBrush(Colors.Gray),
-                    Margin = new Thickness(0, 0, 0, 10)
-                };
-                
-                var TopCommentPanel = CreateCommentPanel(comment, false);
-                TopCommentPanel.Margin = new Thickness(0, 0, 0, 0); //Reset margin for first comment
-                RootCommentPanel.Children.Add(TopCommentPanel);
-                CommentsView.Children.Add(RootCommentPanel);
-                // Indsætte subcomments rekusivt
-                if (comment.Comments.Count > 0)
-                    FillSubComments(comment.Comments, TopCommentPanel, true);
-            }
-        }
-        //Panel parent, ObservableCollection<Comment> subComments, int depth
-        private void FillSubComments(ObservableCollection<Comment> subComments, StackPanel parentPanel, bool ColorBoolean)
-        {
-            foreach (var subComment in subComments)
-            {
-                var SubCommentPanel = CreateCommentPanel(subComment, ColorBoolean);
-
-                parentPanel.Children.Add(SubCommentPanel);
-
-                if (subComment.Comments.Count > 0)
-                    FillSubComments(subComment.Comments, SubCommentPanel, !ColorBoolean);
+                if (comment.body == null) { continue; }
+                var TopCommentPanel = new CommentControl(comment);
+                PostView.Items.Add(TopCommentPanel);
             }
         }
 
         private void Upvote_Click(object sender, RoutedEventArgs e)
         {
-            _vm.CurrentPost.NumOfVotes += 1;
+            _vm.CurrentPost.score += 1;
         }
 
         private void Downvote_Click(object sender, RoutedEventArgs e)
         {
-            _vm.CurrentPost.NumOfVotes -= 1;
+            _vm.CurrentPost.score -= 1;
         }
     }
 }

@@ -15,4 +15,9 @@
     <ProjectReference Include="..\WebApplication2\WepApplication.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Entities\Entities.csproj" />
+    <ProjectReference Include="..\WebApplication2\WepApplication.csproj" />
+  </ItemGroup>
+
 </Project>

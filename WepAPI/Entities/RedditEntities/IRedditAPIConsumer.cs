@@ -5,13 +5,13 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace WebApplication2.Models
+namespace Entities.RedditEntities
 {
-    interface IRedditAPIConsumer : IWebConsumer
+    public interface IRedditAPIConsumer : IWebConsumer
     {
         Task<Post> GetPostAndCommentsByIdAsync(string name_id);
 
-        Task<Subreddit> GetSubredditAsync(string subredditName, string sortBy);
+        Task<Subreddit> GetSubredditAsync(string subredditName, string sortBy="hot");
 
         Task<(HttpStatusCode, string)> LoginToReddit(string username, string password);
 

@@ -10,6 +10,7 @@
     d:DesignWidth="400">
 
     <Grid>
+        <StackPanel Name="CommentStackPanel" Margin = "20, 5, 0, 5">
         <RelativePanel Name="CommentPanel" DataContext="{x:Bind Path = currentComment}">
             <RelativePanel Margin="10,10,15,0" Name="VotePanel">
                 <Button Content="Like" Style="{StaticResource LikeButton}" Name="UpvoteButton" Click="UpvoteButton_Click" Width="20" Height="20">
@@ -21,16 +22,16 @@
             </RelativePanel>
 
             <RelativePanel Name="TextPanel" RelativePanel.RightOf="VotePanel" Margin="0,7,3,0">
-                <TextBlock Name="AuthorTextBlock" Text="{Binding Author}" FontSize="10" Width="Auto">
+                <TextBlock Name="AuthorTextBlock" Text="{Binding author}" FontSize="10" Width="Auto">
 
                 </TextBlock>
                 <TextBlock Name="DotSeparator" Text="•" FontSize="10" RelativePanel.RightOf="AuthorTextBlock" Margin="2,0,0,0">
 
                 </TextBlock>
-                <TextBlock Name="PointsTextBlock" RelativePanel.RightOf="DotSeparator" Text="{Binding NumOfVotes}" Width="Auto" FontSize="10" Margin="2,0,0,0">
+                <TextBlock Name="PointsTextBlock" RelativePanel.RightOf="DotSeparator" Text="{Binding score}" Width="Auto" FontSize="10" Margin="2,0,0,0">
 
                 </TextBlock>
-                <TextBlock Name="CommentTextBlock" RelativePanel.Below="AuthorTextBlock" Text="{Binding Text}" Width="Auto" Margin="0,5,0,0" TextWrapping="Wrap">
+                <TextBlock Name="CommentTextBlock" RelativePanel.Below="AuthorTextBlock" Text="{Binding body}" Width="Auto" Margin="0,5,0,0" TextWrapping="Wrap">
 
                 </TextBlock>
             </RelativePanel>
@@ -41,5 +42,6 @@
                 </Button>
             </RelativePanel>
         </RelativePanel>
+        </StackPanel>
     </Grid>
 </UserControl>

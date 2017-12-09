@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities.RedditEntities;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,6 +31,7 @@ namespace UITEST
         public MainPage()
         {
             this.InitializeComponent();
+            PostsList.Visibility = Visibility.Collapsed;
             _vm = new MainPageViewModel()
             {
                 GoToHomePageCommand = new RelayCommand(o => Frame.Navigate(typeof(MainPage))),
@@ -55,7 +57,7 @@ namespace UITEST
 
         private void ResizeListViewHeight(object sender, SizeChangedEventArgs e)
         {
-            List.Height = e.NewSize.Height - (commandBar.Height + PageTitleText.Height + HorizontalSplitter.Height);
+            //PostsList.Height = e.NewSize.Height - (commandBar.Height + PageTitleText.Height + HorizontalSplitter.Height);
         }
 
         private void Title_Click(object sender, RoutedEventArgs e)
@@ -71,12 +73,12 @@ namespace UITEST
             var post = btn.DataContext as Post;
             if (btn.Content.Equals("Like"))
             {
-                post.NumOfVotes += 1;
+                post.score += 1;
                 btn.Style = App.Current.Resources["LikeButtonClicked"] as Style;
             }
             else if (btn.Content.Equals("Dislike"))
             {
-                post.NumOfVotes -= 1;
+                post.score -= 1;
                 btn.Style = App.Current.Resources["DislikeButtonClicked"] as Style;
             }
         }
@@ -91,6 +93,21 @@ namespace UITEST
         {
             var btn = sender as Button;
             btn.FontWeight = FontWeights.Normal;
+        }
+
+        private void RelativePanel_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var a = "";
+        }
+
+        private void List_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        {
+            PostsList.Visibility = Visibility.Visible;
+        }
+
+        private void List_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

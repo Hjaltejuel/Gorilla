@@ -109,7 +109,6 @@
     </Compile>
     <Compile Include="CustomUI\CustomButton.cs" />
     <Compile Include="Model\AbstractCommentable.cs" />
-    <Compile Include="Model\Comment.cs" />
     <Compile Include="Model\IoCContainer.cs" />
     <Compile Include="Model\Profile.cs" />
     <Compile Include="Model\SubReddit.cs" />
@@ -117,7 +116,6 @@
     <Compile Include="ViewModel\DiscoverPageViewModel.cs" />
     <Compile Include="ViewModel\MainPageViewModel.cs" />
     <Compile Include="ViewModel\PostPageViewModel.cs" />
-    <Compile Include="Model\Post.cs" />
     <Compile Include="ViewModel\ProfilePageViewModel.cs" />
     <Compile Include="ViewModel\RelayCommand.cs" />
     <Compile Include="ViewModel\TrendingPageViewModel.cs" />
@@ -255,7 +253,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
+    <ProjectReference Include="..\Entities\Entities.csproj">
+      <Project>{CF14D305-4981-4992-B0F5-EC293867A83B}</Project>
+      <Name>Entities</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

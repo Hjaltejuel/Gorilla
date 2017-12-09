@@ -28,23 +28,23 @@
             <RelativePanel Name="TopInfo"  Margin="20, 20, 0, 0" Height="Auto" Grid.Row="1" DataContext="{x:Bind Path = _vm.CurrentPost}">
                 <RelativePanel Name="OpOgNed" Width="Auto" Margin="0,0,10,0">
                     <Button Content="Like" Height="20" Width="20" Name="Upvote" Style="{StaticResource LikeButton}" Click="Upvote_Click"/>
-                    <TextBlock Text="{Binding NumOfVotes}" Name="Votes" HorizontalAlignment="Left" Margin="0, 8, 0, 0"/>
+                    <TextBlock Text="{Binding score}" Name="Votes" HorizontalAlignment="Left" Margin="0, 8, 0, 0"/>
                     <Button Content="Dislike" Height="20" FontSize="30" Name="Downvote" RelativePanel.Below="Upvote" Style="{StaticResource DislikeButton}" Click="Downvote_Click"/>
                     <Rectangle Fill="Blue" Height="40" Width="40" Name="Box" Margin="20, 0, 0, 0" RelativePanel.RightOf="Upvote"/>
                 </RelativePanel>
                 <RelativePanel Name="TitlePanel" RelativePanel.RightOf="OpOgNed">
-                    <TextBlock Text="{Binding Title}" FontSize="20" Name="Title"/>
+                    <TextBlock Text="{Binding title}" FontSize="20" Name="Title"/>
                 </RelativePanel>
 
                 <RelativePanel Name="TextPanel" RelativePanel.Below="TitlePanel" RelativePanel.RightOf="OpOgNed" Width="Auto" Margin="0, 4, 10, 0">
                     <Border BorderThickness="1" BorderBrush="Gray" Padding="10, 10, 10, 10">
-                        <TextBlock Text="{Binding Text}" Name="PostText" TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding selftext}" Name="PostText" TextWrapping="Wrap"/>
                     </Border>
                 </RelativePanel>
 
                 <RelativePanel Name="ExtraStuff" RelativePanel.RightOf="OpOgNed" RelativePanel.Below="TextPanel">
-                    <TextBlock Text="{Binding Author}" Style="{StaticResource AuthorText}" Name="Author"/>
-                    <TextBlock Text="{Binding Comments.Count}" RelativePanel.Below ="Author" FontSize="10" Name="CommentsAmount"/>
+                    <TextBlock Text="{Binding author}" Style="{StaticResource AuthorText}" Name="Author"/>
+                    <TextBlock Text="{Binding num_comments}" RelativePanel.Below ="Author" FontSize="10" Name="CommentsAmount"/>
                     <Button Click="CommentText_Click" Content="comment" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="CommentsAmount" RelativePanel.Below="Author" Name="CommentButton" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
                     <Button Content="share" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="CommentButton" RelativePanel.Below="Author" Name="ShareText" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
                     <Button Content="save" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="ShareText" RelativePanel.Below="Author" Name="SaveText" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
@@ -55,8 +55,6 @@
 
             <Rectangle Grid.Row="2" Name="verticalSplitter" HorizontalAlignment="Stretch" Fill="Gray" Height="1" Margin="0, 5, 0, 10"/>
 
-            <StackPanel Name="CommentsView">
-            </StackPanel>
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="VerticalAlignment" Value="Stretch" />
@@ -64,5 +62,6 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
+        <ProgressRing Name="LoadingRing" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4" Height="100" Width="100"/>
     </Grid>
 </Page>

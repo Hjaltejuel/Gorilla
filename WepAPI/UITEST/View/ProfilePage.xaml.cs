@@ -1,4 +1,5 @@
-﻿    using System;
+﻿using Entities.RedditEntities;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,7 +26,6 @@ namespace UITEST.View
     public sealed partial class ProfilePage : Page
     {
         private readonly ProfilePageViewModel _vm;
-        Post selectedPost = null;
 
         public ProfilePage()
         {

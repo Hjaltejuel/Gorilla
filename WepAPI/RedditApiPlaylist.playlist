@@ -1,0 +1,1 @@
+<Playlist Version="1.0"><Add Test="RedditAPIConsumer.Tests.UnitTest1.Test_JSON_Async" /><Add Test="RedditAPIConsumer.Tests.UnitTest1.Test_Get_Posts_From_Subreddit" /><Add Test="RedditAPIConsumer.Tests.UnitTest1.TestDeserialization" /></Playlist>
