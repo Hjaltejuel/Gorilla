@@ -10,4 +10,8 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WebApplication2\WepApplication.csproj" />
+  </ItemGroup>
+
 </Project>
