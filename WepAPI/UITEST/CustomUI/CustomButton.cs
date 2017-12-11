@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities.RedditEntities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,11 +11,11 @@ namespace UITEST.CustomUI
 {
     public class CustomButton : Button
     {
-        public AbstractCommentable AbstractCommentable { get; private set; }
+        public AbstractCommentable Commentable { get; private set; }
 
         public CustomButton(AbstractCommentable _abstractCommentable)
         {
-            AbstractCommentable = _abstractCommentable;
+            Commentable = _abstractCommentable;
         }
     }
 }

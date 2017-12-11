@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 namespace Entities.RedditEntities
 {
     // TODO: FIX STRING LENGTHS
-    public class Post : ICommentable
+    public class Post : AbstractCommentable
     {
         public string domain { get; set; }
         public string approved_at_utc { get; set; }
@@ -80,28 +80,16 @@ namespace Entities.RedditEntities
         public string subreddit_type { get; set; }
         public bool is_video { get; set; }
         public int ups { get; set; }
-        public ObservableCollection<Comment> comments { get; set; }
 
         public Post()
         {
-            comments = new ObservableCollection<Comment>();
+            Replies = new ObservableCollection<Comment>();
         }
         // er det saadan det skal virke? 
         public string PostSerialize() {
             
             string output = JsonConvert.SerializeObject(this);
             return output;
-        }
-
-        public void InsertComments(ChildNode[] children)
-        {
-            if (children != null)
-            {
-                foreach (ChildNode child in children)
-                {
-                    comments.Add(child.data.ToObject<Comment>());
-                }
-            }
         }
     }
 }

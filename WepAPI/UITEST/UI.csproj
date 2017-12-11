@@ -108,10 +108,8 @@
       <DependentUpon>CommentControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomUI\CustomButton.cs" />
-    <Compile Include="Model\AbstractCommentable.cs" />
     <Compile Include="Model\IoCContainer.cs" />
     <Compile Include="Model\Profile.cs" />
-    <Compile Include="Model\SubReddit.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\DiscoverPageViewModel.cs" />
     <Compile Include="ViewModel\MainPageViewModel.cs" />

@@ -31,9 +31,9 @@
                 <DataTemplate>
                     <RelativePanel Margin="10, 10, 0, 10">
                         <Rectangle Fill="RoyalBlue" Height="150" Width="1000" Stretch="UniformToFill"  HorizontalAlignment="Center"/>
-                        <Image Source="{Binding PathToPicture}" Height="150" Width="Auto" HorizontalAlignment="Center" Stretch="UniformToFill"/>
+                        <Image Source="{Binding banner_img}" Height="150" Width="Auto" HorizontalAlignment="Center" Stretch="UniformToFill"/>
 
-                        <TextBlock Text="{Binding Name}" Style="{StaticResource DiscoverSubRedditText}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding title}" Style="{StaticResource DiscoverSubRedditText}" HorizontalAlignment="Center"/>
                     </RelativePanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

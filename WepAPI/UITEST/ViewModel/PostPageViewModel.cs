@@ -23,7 +23,6 @@ namespace UITEST.ViewModel
             }
         }
 
-        public AbstractCommentable FocusedAbstractCommentable { get; set; }
 
         public PostPageViewModel()
         {
@@ -39,6 +38,11 @@ namespace UITEST.ViewModel
         {
             CurrentPost = post;
             GetCurrentPost(post);
+        }
+
+        public void AddComment(AbstractCommentable commentableToCommentOn, Comment newComment)
+        {
+
         }
     }
 }

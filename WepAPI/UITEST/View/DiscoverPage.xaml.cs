@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities.RedditEntities;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace UITEST.View
     public sealed partial class DiscoverPage : Page
     {
         private readonly DiscoverPageViewModel _vm;
-        private SubReddit selectedSubReddit = null;
+        private Subreddit selectedSubReddit = null;
 
         public DiscoverPage()
         {
@@ -50,7 +51,7 @@ namespace UITEST.View
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var list = sender as ListView;
-            selectedSubReddit = list.SelectedItem as SubReddit;
+            selectedSubReddit = list.SelectedItem as Subreddit;
             _vm.GoToSubRedditPage.Execute(selectedSubReddit);
         }
     }
