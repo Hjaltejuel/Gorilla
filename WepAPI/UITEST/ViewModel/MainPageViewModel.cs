@@ -14,7 +14,6 @@ namespace UITEST.ViewModel
     {
         IRedditAPIConsumer _consumer;
         public ObservableCollection<Post> Posts { get; set; }
-        private IAuthenticationHelper _helper;
 
         public delegate void PostsReady();
         public event PostsReady PostsReadyEvent;
@@ -30,17 +29,13 @@ namespace UITEST.ViewModel
             Authorize();
 
             Initialize();
-
-           
-                
+         
             
         }
 
         public async void GeneratePosts()
         {
-          
-           
-            
+
           
             Subreddit subreddit = await _consumer.GetSubredditAsync("AskReddit");
             PostsReadyEvent.Invoke();
@@ -53,8 +48,7 @@ namespace UITEST.ViewModel
  
           GeneratePosts();
          
-            
-        
+
         }
     }
 }

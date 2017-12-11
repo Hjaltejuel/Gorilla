@@ -35,7 +35,7 @@ namespace UITEST.ViewModel
         {
            
 
-           
+         
         }
 
         public async void GetCurrentPost(Post post)

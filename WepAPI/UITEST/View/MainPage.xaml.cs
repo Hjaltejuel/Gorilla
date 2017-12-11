@@ -33,7 +33,7 @@ namespace UITEST
         {
             this.InitializeComponent();
             PostsList.Visibility = Visibility.Collapsed;
-
+            LoadingRing.IsActive = true;
            
             _vm = App.ServiceProvider.GetService<MainPageViewModel>();
 

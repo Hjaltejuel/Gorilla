@@ -108,8 +108,6 @@
     <Compile Include="GorillaAuthentication\IAuthenticationHelper.cs" />
     <Compile Include="GorillaAuthentication\ISettings.cs" />
     <Compile Include="GorillaAuthentication\Settings.cs" />
-    <Compile Include="Model\AbstractCommentable.cs" />
-    <Compile Include="Model\CommentControl.cs" />
     <Compile Include="Model\GorillaRepositories\Extensions.cs" />
     <Compile Include="Model\GorillaRepositories\RestSubredditConnectionRepository.cs" />
     <Compile Include="Model\GorillaRepositories\RestSubredditRepository.cs" />
@@ -119,7 +117,6 @@
     <Compile Include="Model\IoCContainer.cs" />
     <Compile Include="Model\NavigationService.cs" />
     <Compile Include="Model\Profile.cs" />
-    <Compile Include="Model\SubReddit.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\DiscoverPageViewModel.cs" />
     <Compile Include="ViewModel\MainPageViewModel.cs" />

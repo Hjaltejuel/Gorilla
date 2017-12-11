@@ -1,4 +1,5 @@
 ﻿using Entities.RedditEntities;
+using Gorilla.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
