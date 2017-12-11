@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UITEST.CustomUI;
@@ -35,13 +36,9 @@ namespace UITEST.View
         {
             this.InitializeComponent();
             LoadingRing.IsActive = true;
-            _vm = new PostPageViewModel()
-            {
-                GoToHomePageCommand = new RelayCommand(o => Frame.Navigate(typeof(MainPage))),
-                GoToDiscoverPageCommand = new RelayCommand(o => Frame.Navigate(typeof(DiscoverPage))),
-                GoToProfilePageCommand = new RelayCommand(o => Frame.Navigate(typeof(ProfilePage))),
-                GoToTrendingPageCommand = new RelayCommand(o => Frame.Navigate(typeof(TrendingPage)))
-            };
+
+            _vm = App.ServiceProvider.GetService<PostPageViewModel>();
+
             DataContext = _vm;
             SizeChanged += ChangeListViewWhenSizedChanged;
             _vm.CommentsReadyEvent += _vm_CommentsReadyEvent;
@@ -129,12 +126,12 @@ namespace UITEST.View
         {
             //InsertComment(_vm.FocusedAbstractCommentable);
         }
-        private void InsertComment(Comment abstractCommentableToCommentOn)
+        private void InsertComment(Entities.RedditEntities.Comment abstractCommentableToCommentOn)
         {
             if (!CommentTextBox.Text.Equals(""))
             {
                 abstractCommentableToCommentOn.Replies.Add(
-                    new Comment()
+                    new Entities.RedditEntities.Comment()
                     {
                         name = CommentTextBox.Text,
                         author = "ASD"

@@ -15,10 +15,7 @@ namespace Entities
         [Key, ForeignKey("Subreddit")]
         [StringLength(100)]
         public string SubredditToName { get; set; }
-        [NotMapped]
-        public virtual Subreddit FromSubreddit { get; set; }
-        [NotMapped]
-        public virtual Subreddit ToSubreddit { get; set; }
+        
 
         public decimal PPMI { get; set; }
 

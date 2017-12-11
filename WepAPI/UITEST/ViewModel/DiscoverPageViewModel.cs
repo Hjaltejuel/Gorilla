@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gorilla.Model;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using UITEST.Model;
+using UITEST.View;
 
 namespace UITEST.ViewModel
 {
@@ -15,8 +17,11 @@ namespace UITEST.ViewModel
 
         public ICommand GoToSubRedditPage { get; set; }
 
-        public DiscoverPageViewModel()
+
+        public DiscoverPageViewModel(INavigationService service) :base(service)
         {
+          
+            GoToSubRedditPage = new RelayCommand(o => _service.Navigate(typeof(MainPage), o));
             Initialize();
         }
 

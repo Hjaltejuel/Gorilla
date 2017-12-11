@@ -19,8 +19,7 @@ namespace Entities
         [StringLength(100)]
         public string PathToProfilePicture { get; set; }
 
-        [NotMapped]
-        public virtual ICollection<UserPreference> SubredditConnections { get; set; }
+   
 
     }
 }

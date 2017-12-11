@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UITEST.Model;
 using UITEST.ViewModel;
@@ -30,14 +31,8 @@ namespace UITEST.View
         public DiscoverPage()
         {
             this.InitializeComponent();
-            _vm = new DiscoverPageViewModel()
-            {
-                GoToHomePageCommand = new RelayCommand(o => Frame.Navigate(typeof(MainPage))),
-                GoToDiscoverPageCommand = new RelayCommand(o => Frame.Navigate(typeof(DiscoverPage))),
-                GoToProfilePageCommand = new RelayCommand(o => Frame.Navigate(typeof(ProfilePage))),
-                GoToTrendingPageCommand = new RelayCommand(o => Frame.Navigate(typeof(TrendingPage))),
-                GoToSubRedditPage = new RelayCommand(o => Frame.Navigate(typeof(MainPage)))
-            };
+
+            _vm = App.ServiceProvider.GetService<DiscoverPageViewModel>();
 
             DataContext = _vm;
         }

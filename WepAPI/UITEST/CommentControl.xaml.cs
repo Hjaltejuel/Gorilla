@@ -22,10 +22,10 @@ namespace UITEST
 {
     public sealed partial class CommentControl : UserControl
     {
-        private readonly Comment currentComment;
+        private readonly Entities.RedditEntities.Comment currentComment;
         public List<CommentControl> subComments { get; set; }
         int c;
-        public CommentControl(Comment comment)
+        public CommentControl(Entities.RedditEntities.Comment comment)
         {
             this.InitializeComponent();
             c = 0;
@@ -48,7 +48,7 @@ namespace UITEST
 
         public void CreateChildComments()
         {
-            foreach (Comment comment in currentComment.Replies)
+            foreach (Entities.RedditEntities.Comment comment in currentComment.Replies)
             {
                 if (comment.body == null)
                 {
