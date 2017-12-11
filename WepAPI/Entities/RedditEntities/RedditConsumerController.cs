@@ -83,7 +83,7 @@ namespace Entities.RedditEntities
             string responseBody = await response.Content.ReadAsStringAsync();
             Listing[] listings = JArray.Parse(responseBody).ToObject<Listing[]>();
             Post post = listings[0].data.children[0].data.ToObject<Post>();
-            post.InsertComments(listings[1].data.children);
+            post.BuildReplies(listings[1]);
             return post;
         }
 

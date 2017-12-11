@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Entities.RedditEntities;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UITEST.Model;
 using UITEST.ViewModel;
@@ -25,19 +27,13 @@ namespace UITEST.View
     public sealed partial class DiscoverPage : Page
     {
         private readonly DiscoverPageViewModel _vm;
-        private SubReddit selectedSubReddit = null;
+        private Subreddit selectedSubReddit = null;
 
         public DiscoverPage()
         {
             this.InitializeComponent();
-            _vm = new DiscoverPageViewModel()
-            {
-                GoToHomePageCommand = new RelayCommand(o => Frame.Navigate(typeof(MainPage))),
-                GoToDiscoverPageCommand = new RelayCommand(o => Frame.Navigate(typeof(DiscoverPage))),
-                GoToProfilePageCommand = new RelayCommand(o => Frame.Navigate(typeof(ProfilePage))),
-                GoToTrendingPageCommand = new RelayCommand(o => Frame.Navigate(typeof(TrendingPage))),
-                GoToSubRedditPage = new RelayCommand(o => Frame.Navigate(typeof(MainPage)))
-            };
+
+            _vm = App.ServiceProvider.GetService<DiscoverPageViewModel>();
 
             DataContext = _vm;
         }
@@ -50,7 +46,7 @@ namespace UITEST.View
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var list = sender as ListView;
-            selectedSubReddit = list.SelectedItem as SubReddit;
+            selectedSubReddit = list.SelectedItem as Subreddit;
             _vm.GoToSubRedditPage.Execute(selectedSubReddit);
         }
     }

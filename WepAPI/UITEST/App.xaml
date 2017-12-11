@@ -51,7 +51,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <TextBlock Text="{Binding Title}"/>
+                        <TextBlock Text="{TemplateBinding Content}"/>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>

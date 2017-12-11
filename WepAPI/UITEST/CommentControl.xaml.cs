@@ -8,6 +8,7 @@ using UITEST.Model;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
+using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -23,12 +24,12 @@ namespace UITEST
     public sealed partial class CommentControl : UserControl
     {
         private readonly Comment currentComment;
-        public List<CommentControl> subComments { get; set; }
-        int c;
+        private TextBox CommentTextBox;
+        private RelativePanel InsertCommentPanel;
+
         public CommentControl(Comment comment)
         {
             this.InitializeComponent();
-            c = 0;
             //Make root comment bordered
             if (comment.depth == 0)
             {
@@ -75,7 +76,6 @@ namespace UITEST
         private void UpvoteButton_Click(object sender, RoutedEventArgs e)
         {
             currentComment.score++;
-
         }
 
         private void DownvoteButton_Click(object sender, RoutedEventArgs e)
@@ -83,9 +83,88 @@ namespace UITEST
             currentComment.score--;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void TextButton_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
+            var btn = sender as Button;
+            btn.FontWeight = FontWeights.Bold;
+        }
 
+        private void TextButton_PointerLeaved(object sender, PointerRoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            btn.FontWeight = FontWeights.SemiBold;
+        }
+
+        private void CommentButton_Click(object sender, RoutedEventArgs e)
+        {
+            var CommentBtn = sender as Button;
+
+            if (InsertCommentPanel == null)
+            {
+                CreateCommentPanel();
+                var CommentExtraTextPanel = CommentBtn.Parent as RelativePanel;
+                TextInfoPanel.Children.Add(InsertCommentPanel);
+            }
+            else
+            {
+                TextInfoPanel.Children.Remove(InsertCommentPanel);
+                InsertCommentPanel = null;
+            }
+        }
+
+        private void CreateCommentPanel()
+        {
+            if (InsertCommentPanel != null)
+            {
+                InsertCommentPanel = null;
+            }
+            InsertCommentPanel = new RelativePanel() { Margin = new Thickness(0, 40, 0, 0) };
+            CommentTextBox = new TextBox()
+            {
+                Height = 200,
+                Width = 600,
+                AcceptsReturn = true,
+                TextWrapping = TextWrapping.Wrap,
+                IsSpellCheckEnabled = true,
+                Language = "en-US"
+            };
+
+            Button SubmitButton = new Button()
+            {
+                Content = "Save",
+                Margin = new Thickness(0, 10, 10, 0)
+            };
+            RelativePanel.SetBelow(SubmitButton, CommentTextBox);
+            SubmitButton.Click += CommentSaveClick;
+
+            InsertCommentPanel.Children.Add(CommentTextBox);
+            InsertCommentPanel.Children.Add(SubmitButton);
+        }
+
+        private void CommentSaveClick(object sender, RoutedEventArgs e)
+        {
+            InsertComment(currentComment);
+        }
+
+        private void InsertComment(AbstractCommentable abstractCommentableToCommentOn)
+        {
+            if (!CommentTextBox.Text.Equals(""))
+            {
+                var newComment = new Comment()
+                {
+                    body = CommentTextBox.Text,
+                    author = "ASD",
+                    depth = currentComment.depth + 1
+                };
+
+                currentComment.Replies.Insert(0, newComment);
+
+                CommentTextBox.Text = "";
+                TextInfoPanel.Children.Remove(InsertCommentPanel);
+                InsertCommentPanel = null;
+
+                CommentStackPanel.Children.Insert(1, new CommentControl(newComment));
+            }
         }
     }
 }

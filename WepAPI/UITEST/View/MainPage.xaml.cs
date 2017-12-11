@@ -1,22 +1,22 @@
-﻿using Entities.RedditEntities;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using UITEST.Model;
-using UITEST.View;
-using UITEST.ViewModel;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Text;
+﻿
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Microsoft.Extensions.DependencyInjection;
+using Windows.UI.Core;
+
+using System;
+using Windows.Security.Credentials;
+using Windows.Storage;
+using Windows.Security.Authentication.Web.Core;
+using Windows.UI.Popups;
+using System.Threading.Tasks;
+using UITEST.ViewModel;
+using Entities.RedditEntities;
+using UITEST.View;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Text;
+
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -28,20 +28,24 @@ namespace UITEST
     public sealed partial class MainPage : Page
     {
         private readonly MainPageViewModel _vm;
+
         public MainPage()
         {
             this.InitializeComponent();
             PostsList.Visibility = Visibility.Collapsed;
-            _vm = new MainPageViewModel()
-            {
-                GoToHomePageCommand = new RelayCommand(o => Frame.Navigate(typeof(MainPage))),
-                GoToDiscoverPageCommand = new RelayCommand(o => Frame.Navigate(typeof(DiscoverPage))),
-                GoToProfilePageCommand = new RelayCommand(o => Frame.Navigate(typeof(ProfilePage))),
-                GoToTrendingPageCommand = new RelayCommand(o => Frame.Navigate(typeof(TrendingPage)))
-            };
-            DataContext = _vm;
+            LoadingRing.IsActive = true;
+           
+            _vm = App.ServiceProvider.GetService<MainPageViewModel>();
 
+           
+            DataContext = _vm;
+            _vm.PostsReadyEvent += PostReadyEvent;
             SizeChanged += ResizeListViewHeight;
+        }
+
+        private void PostReadyEvent()
+        {
+            LoadingRing.IsActive = false;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

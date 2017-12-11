@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Entities.RedditEntities
 {
-    public class Comment
+    public class Comment : AbstractCommentable
     {
         public string subreddit_id { get; set; }
         public string approved_at_utc { get; set; }
@@ -57,21 +57,11 @@ namespace Entities.RedditEntities
         public string[] mod_reports { get; set; }
         public string num_reports { get; set; }
         public string distinguished { get; set; }
-        public ObservableCollection<Comment> Replies { get; set; }
 
         public Comment()
         {
             Replies = new ObservableCollection<Comment>();
         }
-        public void BuildReplies(Listing listing)
-        {
-            if (listing != null)
-            {
-                foreach (ChildNode ch in listing.data.children)
-                {
-                    Replies.Add(ch.data.ToObject<Comment>());
-                }
-            }
-        }
+        
     }
 }

@@ -8,6 +8,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Microsoft.Extensions.DependencyInjection;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
@@ -28,13 +29,7 @@ namespace UITEST.View
         {
             this.InitializeComponent();
 
-            _vm = new TrendingPageViewModel()
-            {
-                GoToHomePageCommand = new RelayCommand(o => Frame.Navigate(typeof(MainPage))),
-                GoToDiscoverPageCommand = new RelayCommand(o => Frame.Navigate(typeof(DiscoverPage))),
-                GoToProfilePageCommand = new RelayCommand(o => Frame.Navigate(typeof(ProfilePage))),
-                GoToTrendingPageCommand = new RelayCommand(o => Frame.Navigate(typeof(TrendingPage)))
-            };
+            _vm = App.ServiceProvider.GetService<TrendingPageViewModel>();
 
             DataContext = _vm;
         }

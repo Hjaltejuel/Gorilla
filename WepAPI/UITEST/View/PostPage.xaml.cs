@@ -3,10 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UITEST.CustomUI;
-using UITEST.Model;
 using UITEST.ViewModel;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -31,17 +31,14 @@ namespace UITEST.View
         private readonly PostPageViewModel _vm;
         private RelativePanel CommentPanel;
         private TextBox CommentTextBox;
+
         public PostPage()
         {
             this.InitializeComponent();
             LoadingRing.IsActive = true;
-            _vm = new PostPageViewModel()
-            {
-                GoToHomePageCommand = new RelayCommand(o => Frame.Navigate(typeof(MainPage))),
-                GoToDiscoverPageCommand = new RelayCommand(o => Frame.Navigate(typeof(DiscoverPage))),
-                GoToProfilePageCommand = new RelayCommand(o => Frame.Navigate(typeof(ProfilePage))),
-                GoToTrendingPageCommand = new RelayCommand(o => Frame.Navigate(typeof(TrendingPage)))
-            };
+
+            _vm = App.ServiceProvider.GetService<PostPageViewModel>();
+
             DataContext = _vm;
             SizeChanged += ChangeListViewWhenSizedChanged;
             _vm.CommentsReadyEvent += _vm_CommentsReadyEvent;
@@ -105,15 +102,14 @@ namespace UITEST.View
             CommentPanel.Children.Add(CommentTextBox);
             CommentPanel.Children.Add(SubmitButton);
         }
-        private void CommentText_Click(object sender, RoutedEventArgs e)
+
+        private void PostTextComment_Click(object sender, RoutedEventArgs e)
         {
-            /*
             var CommentBtn = sender as Button;
 
             if (CommentPanel == null)
             {
                 CreateCommentPanel();
-                _vm.FocusedAbstractCommentable = CommentBtn.DataContext as Post;
                 var CommentExtraTextPanel = CommentBtn.Parent as RelativePanel;
                 ExtraStuff.Children.Add(CommentPanel);
             }
@@ -122,36 +118,36 @@ namespace UITEST.View
                 ExtraStuff.Children.Remove(CommentPanel);
                 CommentPanel = null;
             }
-            */
         }
 
         private void CommentSaveClick(object sender, RoutedEventArgs e)
         {
-            //InsertComment(_vm.FocusedAbstractCommentable);
+            InsertComment(_vm.CurrentPost);
         }
-        private void InsertComment(Comment abstractCommentableToCommentOn)
+
+        private void InsertComment(AbstractCommentable abstractCommentableToCommentOn)
         {
             if (!CommentTextBox.Text.Equals(""))
             {
-                abstractCommentableToCommentOn.Replies.Add(
-                    new Comment()
-                    {
-                        name = CommentTextBox.Text,
-                        author = "ASD"
-                    });
+                var newComment = new Comment()
+                {
+                    body = CommentTextBox.Text,
+                    author = "ASD"
+                };
+
+                _vm.AddComment(abstractCommentableToCommentOn, newComment);
 
                 CommentTextBox.Text = "";
-                //Refresh comments
                 ExtraStuff.Children.Remove(CommentPanel);
                 CommentPanel = null;
-                PostView.Items.Clear();
-                DrawComments();
+
+                PostView.Items.Insert(2, new CommentControl(newComment));
             }
         }
 
         private void DrawComments()
         {
-            foreach (var comment in _vm.CurrentPost.comments)
+            foreach (var comment in _vm.CurrentPost.Replies)
             {
                 if (comment.body == null) { continue; }
                 var TopCommentPanel = new CommentControl(comment);

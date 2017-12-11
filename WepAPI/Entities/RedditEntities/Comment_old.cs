@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entities.RedditEntities
 {
-    public class Comment_old : ICommentable
+    public class Comment_old : AbstractCommentable
     {
         public string subreddit_id { get; set; }
         public string Api_type{ get; set; }

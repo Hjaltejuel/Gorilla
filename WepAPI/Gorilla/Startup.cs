@@ -49,30 +49,19 @@ namespace Gorilla
 
             var options = new AzureAdOptions();
             Configuration.Bind("AzureAd", options);
-            services.AddAuthentication(o =>
-            {
-                o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                o.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-            })
-          .AddOpenIdConnect(o =>
-          {
-              o.ClientId = options.ClientId;
-              o.Authority = $"{options.Instance}{options.TenantId}";
-              o.UseTokenLifetime = true;
-              o.CallbackPath = options.CallbackPath;
-          })
-          .AddJwtBearer(o =>
-          {
-              o.Authority = options.Authority;
-              o.TokenValidationParameters = new TokenValidationParameters
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+              .AddJwtBearer(o =>
               {
-                  ValidateAudience = true,
-                  ValidAudiences = new[] { options.ClientId, options.Audience }
-              };
-          })
-          .AddCookie();
-            
-         
+                //o.Audience = options.Audience;
+                o.Authority = options.Authority;
+                  o.TokenValidationParameters = new TokenValidationParameters
+                  {
+                      ValidateAudience = true,
+                      ValidAudiences = new[] { options.ClientId, options.Audience }
+                  };
+              });
+
+
             services.AddRouting(o =>
             {
                 o.LowercaseUrls = true;
