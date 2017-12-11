@@ -28,9 +28,11 @@ namespace Entities.RedditEntities
         {
             using (var client = new HttpClient())
             {
+                //YAzEEEEEEEES
+                //12341234
+                //WUF6RUVFRUVFRUVTOjEyMzQxMjM0
                 client.BaseAddress = uri;
                 //VED IKKE OM DET VIRKER SÅDAN HER
-
                 JToken jToken = JToken.FromObject(o);
                 client.DefaultRequestHeaders.Clear();
                 HttpResponseMessage request = await client.PostAsJsonAsync<JToken>(client.BaseAddress, jToken);
@@ -87,7 +89,7 @@ namespace Entities.RedditEntities
 
         public void DeserializeCommentListing(JToken JSONCommentListing)
         {
-
+            
         }
 
         public async Task<(HttpStatusCode, string)> PostPostAsync(Post p)
