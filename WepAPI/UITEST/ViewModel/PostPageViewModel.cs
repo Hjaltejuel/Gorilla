@@ -28,6 +28,7 @@ namespace UITEST.ViewModel
         public PostPageViewModel()
         {
         }
+
         public async void GetCurrentPost(Post post)
         {
             IRedditAPIConsumer redditAPIConsumer = new RedditConsumerController();
@@ -36,6 +37,7 @@ namespace UITEST.ViewModel
         }
         public void Initialize(Post post)
         {
+            CurrentPost = post;
             GetCurrentPost(post);
         }
     }
