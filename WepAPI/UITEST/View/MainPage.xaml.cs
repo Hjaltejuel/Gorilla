@@ -32,6 +32,7 @@ namespace UITEST
         {
             this.InitializeComponent();
             PostsList.Visibility = Visibility.Collapsed;
+            LoadingRing.IsActive = true;
             _vm = new MainPageViewModel()
             {
                 GoToHomePageCommand = new RelayCommand(o => Frame.Navigate(typeof(MainPage))),
@@ -40,8 +41,13 @@ namespace UITEST
                 GoToTrendingPageCommand = new RelayCommand(o => Frame.Navigate(typeof(TrendingPage)))
             };
             DataContext = _vm;
-
+            _vm.PostsReadyEvent += PostReadyEvent;
             SizeChanged += ResizeListViewHeight;
+        }
+
+        private void PostReadyEvent()
+        {
+            LoadingRing.IsActive = false;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

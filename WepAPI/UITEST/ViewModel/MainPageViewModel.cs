@@ -16,9 +16,12 @@ namespace UITEST.ViewModel
         IRedditAPIConsumer APIConsumer;
         public ObservableCollection<Post> Posts { get; set; }
         private IAuthenticationHelper _helper;
+
+        public delegate void PostsReady();
+        public event PostsReady PostsReadyEvent;
+
         public MainPageViewModel()
         {
-            
             Initialize();
         }
 
@@ -26,9 +29,11 @@ namespace UITEST.ViewModel
         {
             APIConsumer = new RedditConsumerController();
             Subreddit subreddit = await APIConsumer.GetSubredditAsync("AskReddit");
+            PostsReadyEvent.Invoke();
             Posts = subreddit.posts;
             OnPropertyChanged("Posts");
         }
+
         public void Initialize()
         {
             GeneratePosts();

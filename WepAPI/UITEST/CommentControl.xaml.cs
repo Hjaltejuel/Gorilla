@@ -135,7 +135,6 @@ namespace UITEST
                 Margin = new Thickness(0, 10, 10, 0)
             };
             RelativePanel.SetBelow(SubmitButton, CommentTextBox);
-            //RelativePanel.SetBelow(SubmitButton, CommentTextBox);
             SubmitButton.Click += CommentSaveClick;
 
             InsertCommentPanel.Children.Add(CommentTextBox);
