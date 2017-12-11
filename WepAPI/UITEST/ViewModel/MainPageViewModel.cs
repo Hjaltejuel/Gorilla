@@ -1,42 +1,60 @@
 ﻿using Entities.RedditEntities;
 using Gorilla.AuthenticationGorillaAPI;
-using System;
-using System.Collections.Generic;
+using Gorilla.Model;
+using Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UITEST.Model;
+using UITEST.View;
+using Windows.Security.Credentials;
+using Windows.UI.Xaml.Controls;
 
 namespace UITEST.ViewModel
 {
     public class MainPageViewModel : BaseViewModel, INotifyPropertyChanged
     {
-        IRedditAPIConsumer APIConsumer;
+        IRedditAPIConsumer _consumer;
         public ObservableCollection<Post> Posts { get; set; }
         private IAuthenticationHelper _helper;
 
         public delegate void PostsReady();
         public event PostsReady PostsReadyEvent;
 
-        public MainPageViewModel()
+        public MainPageViewModel(ISubredditRepository repository, IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer) : base(service)
         {
+            _consumer = consumer;
+            _repository = repository;
+            _helper = helper;
+
+    
+
+            Authorize();
+
             Initialize();
+
+           
+                
+            
         }
 
         public async void GeneratePosts()
         {
-            APIConsumer = new RedditConsumerController();
-            Subreddit subreddit = await APIConsumer.GetSubredditAsync("AskReddit");
+          
+           
+            
+          
+            Subreddit subreddit = await _consumer.GetSubredditAsync("AskReddit");
             PostsReadyEvent.Invoke();
             Posts = subreddit.posts;
             OnPropertyChanged("Posts");
         }
 
-        public void Initialize()
-        {
-            GeneratePosts();
-        }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+        public  void Initialize()
+        {  
+ 
+          GeneratePosts();
+         
+            
+        
+        }
     }
 }

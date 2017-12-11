@@ -13,10 +13,7 @@ namespace Entities
         [StringLength(100)]
         public string SubredditName { get; set; }
 
-        [NotMapped]
-        public virtual ICollection<SubredditConnection> SubredditFromConnections { get; set; }
-        [NotMapped]
-        public virtual ICollection<SubredditConnection> SubredditToConnections { get; set; }
+       
 
 
     }

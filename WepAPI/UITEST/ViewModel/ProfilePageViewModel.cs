@@ -1,4 +1,5 @@
 ﻿using Entities.RedditEntities;
+using Gorilla.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using UITEST.Model;
+using UITEST.View;
 
 namespace UITEST.ViewModel
 {
@@ -18,8 +20,12 @@ namespace UITEST.ViewModel
 
         public ICommand GoToPostPageCommand { get; set; }
 
-        public ProfilePageViewModel()
+     
+
+        public ProfilePageViewModel(INavigationService service) : base(service)
         {
+            
+
             Initialize();
         }
 

@@ -99,17 +99,27 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AuthenticationGorillaAPI\AuthenticationHelper.cs" />
-    <Compile Include="AuthenticationGorillaAPI\AuthorizedHandler.cs" />
-    <Compile Include="AuthenticationGorillaAPI\IAuthenticationHelper.cs" />
-    <Compile Include="AuthenticationGorillaAPI\ISettings.cs" />
-    <Compile Include="AuthenticationGorillaAPI\Settings.cs" />
     <Compile Include="CommentControl.xaml.cs">
       <DependentUpon>CommentControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomUI\CustomButton.cs" />
+    <Compile Include="GorillaAuthentication\AuthenticationHelper.cs" />
+    <Compile Include="GorillaAuthentication\AuthorizedHandler.cs" />
+    <Compile Include="GorillaAuthentication\IAuthenticationHelper.cs" />
+    <Compile Include="GorillaAuthentication\ISettings.cs" />
+    <Compile Include="GorillaAuthentication\Settings.cs" />
+    <Compile Include="Model\AbstractCommentable.cs" />
+    <Compile Include="Model\CommentControl.cs" />
+    <Compile Include="Model\GorillaRepositories\Extensions.cs" />
+    <Compile Include="Model\GorillaRepositories\RestSubredditConnectionRepository.cs" />
+    <Compile Include="Model\GorillaRepositories\RestSubredditRepository.cs" />
+    <Compile Include="Model\GorillaRepositories\RestUserPreferenceRepository.cs" />
+    <Compile Include="Model\GorillaRepositories\RestUserRepository.cs" />
+    <Compile Include="Model\INavigationService.cs" />
     <Compile Include="Model\IoCContainer.cs" />
+    <Compile Include="Model\NavigationService.cs" />
     <Compile Include="Model\Profile.cs" />
+    <Compile Include="Model\SubReddit.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\DiscoverPageViewModel.cs" />
     <Compile Include="ViewModel\MainPageViewModel.cs" />
