@@ -1,4 +1,5 @@
 ﻿using Entities.RedditEntities;
+using Gorilla.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -44,7 +45,22 @@ namespace UITEST
                 CommentStackPanel.Background = new SolidColorBrush(Color.FromArgb(255, 240, 240, 240));
 
             currentComment = comment;
+            CheckNumberOfPointsIsOnlyOne();
+            SetUpTimeText();
             CreateChildComments();
+        }
+
+        private void CheckNumberOfPointsIsOnlyOne()
+        {
+            if (currentComment.score == 1)
+            {
+                PointsOrPoint.Text = "point";
+            }
+        }
+
+        private void SetUpTimeText()
+        {
+            TimeText.Text = TimeHelper.CalcCreationDate(currentComment);
         }
 
         public void CreateChildComments()

@@ -68,8 +68,6 @@ namespace Entities.RedditEntities
         public string url { get; set; }
         public string author_flair_text { get; set; }
         public bool quarantine { get; set; }
-        public string author { get; set; }
-        public int created_utc { get; set; }
         public string subreddit_name_prefixed { get; set; }
         public string distinguished { get; set; }
         public string media { get; set; }

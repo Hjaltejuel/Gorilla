@@ -27,7 +27,6 @@ namespace Entities.RedditEntities
         public int gilded { get; set; }
         public bool archived { get; set; }
         public string report_reasons { get; set; }
-        public string author { get; set; }
         public bool can_mod_post { get; set; }
         public int ups { get; set; }
         public string parent_id { get; set; }
@@ -50,7 +49,6 @@ namespace Entities.RedditEntities
         public string name { get; set; }
         public int created { get; set; }
         public string author_flair_text { get; set; }
-        public int created_utc { get; set; }
         public string subreddit_name_prefixed { get; set; }
         public int controversiality { get; set; }
         public int depth { get; set; }

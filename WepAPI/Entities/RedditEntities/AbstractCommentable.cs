@@ -5,6 +5,9 @@ namespace Entities.RedditEntities
     public abstract class AbstractCommentable
     {
         public ObservableCollection<Comment> Replies { get; set; }
+        public int created_utc { get; set; }
+        public string author { get; set; }
+
 
         public void BuildReplies(Listing listing)
         {
