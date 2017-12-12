@@ -5,8 +5,10 @@
     xmlns:local="using:UITEST"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:a="Windows.UI.XAML.Media.Animations"
     mc:Ignorable="d">
 
+    
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
         </Grid.ColumnDefinitions>
@@ -23,6 +25,7 @@
             <AppBarButton Icon="Contact" Label="Profile" Command="{Binding GoToProfilePageCommand}"/>
         </CommandBar>
         <TextBlock Name="PageTitleText" Grid.Column="0" Grid.Row="1" Text="Home" Style="{StaticResource PageTitleText}"/>
+        <Button Content="Create post" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" Command="{Binding GoToMakePostPage}"/>
         <Rectangle Name="HorizontalSplitter" Grid.Row="2" HorizontalAlignment="Stretch" Fill="Gray" Height="1"/>
         <ListView Grid.Row="3" x:Name="PostsList" Height="800" SelectionMode="None" ItemsSource="{Binding Posts}" ScrollViewer.VerticalScrollBarVisibility="Visible" DataContextChanged="List_DataContextChanged" SelectionChanged="List_SelectionChanged">
             <ListView.ItemTemplate>

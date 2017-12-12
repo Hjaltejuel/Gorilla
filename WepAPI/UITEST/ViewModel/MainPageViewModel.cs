@@ -1,9 +1,11 @@
 ﻿using Entities.RedditEntities;
 using Gorilla.AuthenticationGorillaAPI;
 using Gorilla.Model;
+using Gorilla.View;
 using Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 using UITEST.View;
 using Windows.Security.Credentials;
 using Windows.UI.Xaml.Controls;
@@ -12,6 +14,8 @@ namespace UITEST.ViewModel
 {
     public class MainPageViewModel : BaseViewModel, INotifyPropertyChanged
     {
+        public ICommand GoToMakePostPage { get; set; }
+
         IRedditAPIConsumer _consumer;
         public ObservableCollection<Post> Posts { get; set; }
 
@@ -24,19 +28,14 @@ namespace UITEST.ViewModel
             _repository = repository;
             _helper = helper;
 
-    
+            GoToMakePostPage = new RelayCommand(o => _service.Navigate(typeof(MakePostPage), o));
 
             Authorize();
-
             Initialize();
-         
-            
         }
 
         public async void GeneratePosts()
         {
-
-          
             Subreddit subreddit = await _consumer.GetSubredditAsync("AskReddit");
             PostsReadyEvent.Invoke();
             Posts = subreddit.posts;
@@ -45,10 +44,7 @@ namespace UITEST.ViewModel
 
         public  void Initialize()
         {  
- 
           GeneratePosts();
-         
-
         }
     }
 }

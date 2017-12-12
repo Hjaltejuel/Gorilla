@@ -22,7 +22,17 @@ namespace Entities.RedditEntities
         public string banned_by { get; set; }
         public string subreddit { get; set; }
         public string[] user_reports { get; set; }
-
+        public string id { get; set; }
+        public string banned_at_utc { get; set; }
+        public string approved_by { get; set; }
+        public string author_flair_css_class { get; set; }
+        public string author_flair_text { get; set; }
+        public int gilded { get; set; }
+        public string stickied { get; set; }
+        public string subreddit_name_prefixed { get; set; }
+        public string subreddit_type { get; set; }
+        public string distinguished { get; set; }
+        public string[] mod_reports { get; set; }
 
         public void BuildReplies(Listing listing)
         {

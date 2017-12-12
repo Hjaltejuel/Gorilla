@@ -15,15 +15,12 @@ namespace Entities.RedditEntities
         public string secure_media { get; set; }
         public bool is_reddit_media_domain { get; set; }
         public string link_flair_text { get; set; }
-        public string id { get; set; }
-        public string banned_at_utc { get; set; }
         public string view_count { get; set; }
         public bool clicked { get; set; }
         public string title { get; set; }
         public int num_crossposts { get; set; }
         public bool is_crosspostable { get; set; }
         public bool pinned { get; set; }
-        public string approved_by { get; set; }
         public bool over_18 { get; set; }
         public bool hidden { get; set; }
         public int num_comments { get; set; }
@@ -31,9 +28,7 @@ namespace Entities.RedditEntities
         public string subreddit_id { get; set; }
         public bool hide_score { get; set; }
         public string link_flair_css_class { get; set; }
-        public string author_flair_css_class { get; set; }
         public bool contest_mode { get; set; }
-        public int gilded { get; set; }
         public bool locked { get; set; }
         public bool brand_safe { get; set; }
         public object secure_media_embed { get; set; }
@@ -45,18 +40,12 @@ namespace Entities.RedditEntities
         public string permalink { get; set; }
         public string num_reports { get; set; }
         public string whitelist_status { get; set; }
-        public string stickied { get; set; }
         public string url { get; set; }
-        public string author_flair_text { get; set; }
         public bool quarantine { get; set; }
-        public string subreddit_name_prefixed { get; set; }
-        public string distinguished { get; set; }
         public string media { get; set; }
         public double upvote_ratio { get; set; }
-        public string[] mod_reports { get; set; }
         public bool is_self { get; set; }
         public bool visited { get; set; }
-        public string subreddit_type { get; set; }
         public bool is_video { get; set; }
 
         public Post()
