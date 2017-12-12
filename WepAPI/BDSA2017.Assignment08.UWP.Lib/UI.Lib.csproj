@@ -125,6 +125,12 @@
       <Version>1.2.0</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UITEST\UI.csproj">
+      <Project>{e1bd4360-1f27-4e2d-aa3c-655467fce5f0}</Project>
+      <Name>UI</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

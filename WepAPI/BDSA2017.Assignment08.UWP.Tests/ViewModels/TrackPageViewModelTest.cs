@@ -1,5 +1,4 @@
 ﻿
-using BDSA2017.Assignment08.UWP.ViewModels;
 using Moq;
 using System;
 using System.Collections.Generic;
