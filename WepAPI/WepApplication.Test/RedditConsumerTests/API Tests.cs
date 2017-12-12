@@ -1,6 +1,7 @@
 using Entities.RedditEntities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -41,7 +42,6 @@ namespace RedditAPIConsumer.Tests
             Assert.Equal((HttpStatusCode.OK, "Logged in successfully"), loginResponse);
         }
 
-
         [Fact]
         public async Task Login_To_Reddit_And_Get_Information()
         {
@@ -50,6 +50,42 @@ namespace RedditAPIConsumer.Tests
 
             User asd = await rcc.GetAccountDetails();
             string a = "";
+        }
+
+        [Fact]
+        public async Task Post_Comment()
+        {
+            IRedditAPIConsumer rcc = new RedditConsumerController();
+            //(HttpStatusCode, string) loginResponse = await rcc.LoginToReddit("YAzEEEEEEEES", "12341234");
+            Post pretendPost = new Post()
+            {
+                name = "t3_6q7512"
+            };
+            var reponse = await rcc.PostComment(pretendPost, "YoYoYo!");
+            var a = "";
+        }
+
+        [Fact]
+        public async Task Cast_Vote()
+        {
+            IRedditAPIConsumer rcc = new RedditConsumerController();
+            //(HttpStatusCode, string) loginResponse = await rcc.LoginToReddit("YAzEEEEEEEES", "12341234");
+            Post pretendPost = new Post()
+            {
+                name = "t3_6q7512"
+            };
+            var reponse = await rcc.PostVoteAsync(pretendPost, 1);
+            var a = "";
+        }
+
+        [Fact]
+        public async Task Get_My_Subreddit_Subscriptions()
+        {
+            IRedditAPIConsumer rcc = new RedditConsumerController();
+            //(HttpStatusCode, string) loginResponse = await rcc.LoginToReddit("YAzEEEEEEEES", "12341234");
+            List<Subreddit> subreddits = await rcc.GetSubscribedSubreddits();
+            
+            Assert.Equal(typeof(Subreddit), subreddits[0].GetType());
         }
     }
 }

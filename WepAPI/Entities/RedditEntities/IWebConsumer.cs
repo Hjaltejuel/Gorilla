@@ -8,7 +8,7 @@ namespace Entities.RedditEntities
 {
     public interface IWebConsumer
     {
-        string BaseUrl { get; set; }
+        string BaseUrl { get; }
         Task<HttpResponseMessage> Get(string uri);
         Task<HttpResponseMessage> Post(string uri, HttpContent o);
         //HttpResponseMessage Delete();

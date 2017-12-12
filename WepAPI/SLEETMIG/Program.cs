@@ -1,11 +1,7 @@
 ﻿using Entities.RedditEntities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SLET_MIG
+namespace SLEETMIG
 {
     class Program
     {
@@ -27,7 +23,11 @@ namespace SLET_MIG
             //(HttpStatusCode, string) loginResponse = await rcc.LoginToReddit("YAzEEEEEEEES", "12341234");
 
             //User asd = await rcc.GetAccountDetails();
-            var str = await rcc.CreateComment(null, null);
+            Post pretendPost = new Post()
+            {
+                name = "t3_6q7512"
+            };
+            var str = await rcc.PostComment(pretendPost, "Teeest");
 
             string a = "";
         }
@@ -41,6 +41,6 @@ namespace SLET_MIG
             rcc.RefreshToken();
             string a = "";
         }
-
     }
 }
+    
