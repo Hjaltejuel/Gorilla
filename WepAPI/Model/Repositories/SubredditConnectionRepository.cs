@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Exceptions;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +25,9 @@ namespace Model.Repositories
 
             Subreddit subredditFrom= await context.Subreddits.FindAsync(subredditConnection.SubredditFromName);
             Subreddit subredditTo = await context.Subreddits.FindAsync(subredditConnection.SubredditToName);
-            var pref = (from a in context.SubredditConnections
+            var pref = await (from a in context.SubredditConnections
                               where a.SubredditFromName.Equals(subredditConnection.SubredditFromName) && a.SubredditToName.Equals(subredditConnection.SubredditToName)
-                              select a).FirstOrDefault();
+                              select a).FirstOrDefaultAsync();
 
             if (subredditFrom != null && subredditTo != null)
             {
@@ -58,9 +59,9 @@ namespace Model.Repositories
 
         public async Task<SubredditConnection> GetAsync(string subredditFromName, string subredditToName)
         {
-            var connection =  (from a in context.SubredditConnections
+            var connection = await (from a in context.SubredditConnections
                                    where a.SubredditFromName.Equals(subredditFromName) && a.SubredditToName.Equals(subredditToName)
-                                   select a).FirstOrDefault();
+                                   select a).FirstOrDefaultAsync();
 
             if(connection == null)
             {
@@ -71,16 +72,16 @@ namespace Model.Repositories
 
         public async Task<IReadOnlyCollection<SubredditConnection>> ReadAsync()
         {
-            return (from u in context.SubredditConnections
-                          select u).ToList();
+            return await (from u in context.SubredditConnections
+                          select u).ToListAsync();
         }
 
         public async Task<IReadOnlyCollection<SubredditConnection>> FindAsync(string SubredditFromName)
         {
 
-            var prefs =  (from a in context.SubredditConnections
+            var prefs =  await (from a in context.SubredditConnections
                                where a.SubredditFromName.Equals(SubredditFromName)
-                               select a).ToList();
+                               select a).ToListAsync();
 
             if (prefs.Count() == 0)
             {

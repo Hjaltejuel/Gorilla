@@ -33,11 +33,11 @@
                         <Rectangle Fill="RoyalBlue" Height="150" Width="1000" Stretch="UniformToFill"  HorizontalAlignment="Center"/>
                         <Image Source="{Binding banner_img}" Height="150" Width="Auto" HorizontalAlignment="Center" Stretch="UniformToFill"/>
 
-                        <TextBlock Text="{Binding title}" Style="{StaticResource DiscoverSubRedditText}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding name}" Style="{StaticResource DiscoverSubRedditText}" HorizontalAlignment="Center"/>
                     </RelativePanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-
+        <ProgressRing Name="LoadingRing" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4" Height="100" Width="100"/>
     </Grid>
 </Page>

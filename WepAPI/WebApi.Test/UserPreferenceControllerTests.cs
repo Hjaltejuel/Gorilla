@@ -17,16 +17,7 @@ namespace WebApi.Test
 {
     public class UserPreferenceControllerTest
     {
-        [Fact(DisplayName = "Controller has AuthorizeAttribute")]
-        public void Controller_has_AuthorizeAttribute()
-        {
-            var type = typeof(UserPreferenceController);
-
-            var authorizeAttribute = type.CustomAttributes.FirstOrDefault(c => c.AttributeType == typeof(AuthorizeAttribute));
-
-            Assert.NotNull(authorizeAttribute);
-        }
-
+  
         [Fact(DisplayName = "Find returns Ok with UserPreference")]
         public async Task Find_returns_Ok_with_tracks()
         {

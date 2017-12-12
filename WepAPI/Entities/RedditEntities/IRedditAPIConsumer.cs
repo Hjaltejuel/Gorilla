@@ -15,6 +15,8 @@ namespace Entities.RedditEntities
 
         Task<(HttpStatusCode, string)> LoginToReddit(string username, string password);
 
+        Task<User> GetAccountDetails(); 
+
         Task<(HttpStatusCode, string)> PostPostAsync(Post p);
 
         Task<(HttpStatusCode, string)> PostCommentAsync(Comment_old c);

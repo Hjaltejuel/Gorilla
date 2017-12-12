@@ -17,15 +17,7 @@ namespace WebApi.Test
 {
     public class SubredditControllerTests
     {
-        [Fact(DisplayName = "Controller has AuthorizeAttribute")]
-        public void Controller_has_AuthorizeAttribute()
-        {
-            var type = typeof(SubredditController);
-
-            var authorizeAttribute = type.CustomAttributes.FirstOrDefault(c => c.AttributeType == typeof(AuthorizeAttribute));
-
-            Assert.NotNull(authorizeAttribute);
-        }
+      
 
         [Fact(DisplayName = "Read returns Ok with subreddits")]
         public async Task Read_returns_Ok_with_subreddits()

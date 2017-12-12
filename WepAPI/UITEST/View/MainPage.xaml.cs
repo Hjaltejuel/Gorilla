@@ -32,13 +32,16 @@ namespace UITEST
         public MainPage()
         {
             this.InitializeComponent();
+
             PostsList.Visibility = Visibility.Collapsed;
+
             LoadingRing.IsActive = true;
            
             _vm = App.ServiceProvider.GetService<MainPageViewModel>();
 
            
             DataContext = _vm;
+
             _vm.PostsReadyEvent += PostReadyEvent;
             SizeChanged += ResizeListViewHeight;
         }
