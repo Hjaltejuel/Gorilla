@@ -24,10 +24,10 @@
         </CommandBar>
         <TextBlock Name="PageTitleText" Grid.Column="0" Grid.Row="1" Text="Home" Style="{StaticResource PageTitleText}"/>
         <Rectangle Name="HorizontalSplitter" Grid.Row="2" HorizontalAlignment="Stretch" Fill="Gray" Height="1"/>
-        <ListView Grid.Row="3" x:Name="PostsList" Height="800" SelectionMode="None" ItemsSource="{Binding Posts}" ScrollViewer.VerticalScrollBarVisibility="Visible" DataContextChanged="List_DataContextChanged" SelectionChanged="List_SelectionChanged">
+        <ListView Grid.Row="3" x:Name="PostsList" Height="800" SelectionMode="None" ItemsSource="{Binding Posts}" ScrollViewer.VerticalScrollBarVisibility="Visible" DataContextChanged="List_DataContextChanged">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <RelativePanel Margin="20, 20, 0, 0" Tapped="RelativePanel_Tapped">
+                    <RelativePanel Margin="20, 20, 0, 0">
                         <RelativePanel  Name="OpOgNed" Margin="0, 10, 0, 0" Width="50">
                             <TextBlock Text="{Binding score}" RelativePanel.AlignHorizontalCenterWithPanel="True"/>
                         </RelativePanel>

@@ -16,7 +16,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <CommandBar Style="{StaticResource StandardCommandBar}">
+        <CommandBar OverflowButtonVisibility="Collapsed" Style="{StaticResource StandardCommandBar}">
             <AppBarButton Icon="Home" Label="Home" Command="{Binding GoToHomePageCommand}"/>
             <AppBarButton Icon="ZeroBars" Label="Trending" Command="{Binding GoToTrendingPageCommand}"/>
             <AppBarButton Icon="OutlineStar" Label="Discover" Command="{Binding GoToDiscoverPageCommand}"/>

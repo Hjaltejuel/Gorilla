@@ -40,7 +40,6 @@ namespace UITEST
            
             DataContext = _vm;
             _vm.PostsReadyEvent += PostReadyEvent;
-            SizeChanged += ResizeListViewHeight;
         }
 
         private void PostReadyEvent()
@@ -58,11 +57,7 @@ namespace UITEST
         {
             Frame.Navigate(typeof(PostPage), e.AddedItems[0]);
         }
-
-        private void ResizeListViewHeight(object sender, SizeChangedEventArgs e)
-        {
-            //PostsList.Height = e.NewSize.Height - (commandBar.Height + PageTitleText.Height + HorizontalSplitter.Height);
-        }
+        
 
         private void Title_Click(object sender, RoutedEventArgs e)
         {
@@ -98,20 +93,10 @@ namespace UITEST
             var btn = sender as Button;
             btn.FontWeight = FontWeights.Normal;
         }
-
-        private void RelativePanel_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            var a = "";
-        }
-
+        
         private void List_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
             PostsList.Visibility = Visibility.Visible;
-        }
-
-        private void List_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
     }
 }
