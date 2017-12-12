@@ -39,9 +39,14 @@ namespace UITEST.View
 
             DataContext = _vm;
 
+            SizeChanged += ChangeListViewWhenSizedChanged;
+
             _vm.DiscoverReadyEvent += DiscoverReadyEvent;
         }
-
+        private void ChangeListViewWhenSizedChanged(object sender, SizeChangedEventArgs e)
+        {
+            DiscoverList.Height = e.NewSize.Height - (commandBar.ActualHeight+75);
+        }
         private void DiscoverReadyEvent()
         {
             LoadingRing.IsActive = false;
@@ -50,6 +55,7 @@ namespace UITEST.View
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            _vm.Initialize();
         }
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

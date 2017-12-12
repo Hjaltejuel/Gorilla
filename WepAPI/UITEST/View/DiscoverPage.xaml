@@ -16,7 +16,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <CommandBar OverflowButtonVisibility="Collapsed" Style="{StaticResource StandardCommandBar}">
+        <CommandBar OverflowButtonVisibility="Collapsed" Name="commandBar" Style="{StaticResource StandardCommandBar}">
             <AppBarButton Icon="Home" Label="Home" Command="{Binding GoToHomePageCommand}"/>
             <AppBarButton Icon="ZeroBars" Label="Trending" Command="{Binding GoToTrendingPageCommand}"/>
             <AppBarButton Icon="OutlineStar" Label="Discover" Command="{Binding GoToDiscoverPageCommand}"/>
@@ -26,7 +26,7 @@
         <TextBlock Grid.Column="0" Grid.Row="1" Text="Discover" Style="{StaticResource PageTitleText}"></TextBlock>
         <Rectangle Grid.Row="2" HorizontalAlignment="Stretch" Fill="Black" Height="1"/>
 
-        <ListView Grid.Row="3" ItemsSource="{Binding SubReddits}" SelectionMode="Single" SelectionChanged="ListView_SelectionChanged" ScrollViewer.VerticalScrollBarVisibility="Visible">
+        <ListView Grid.Row="3" Name ="DiscoverList"  Height="800" ItemsSource="{Binding SubReddits}" SelectionMode="Single" SelectionChanged="ListView_SelectionChanged" ScrollViewer.VerticalScrollBarVisibility="Visible">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <RelativePanel Margin="10, 10, 0, 10">

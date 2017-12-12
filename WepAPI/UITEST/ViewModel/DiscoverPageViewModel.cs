@@ -35,7 +35,7 @@ namespace UITEST.ViewModel
            
         }
 
-        private async void Initialize()
+        public async void Initialize()
         {
 
 
@@ -43,10 +43,10 @@ namespace UITEST.ViewModel
             
             var userPreferences = (await _userPreferenceRepository.FindAsync(user.username)).ToArray();
 
-            var subreddits = new string[15];
+            var subreddits = new HashSet<string>();
             if (userPreferences.Count() < 15)
             {
-                int k = 0;
+               
                 int reps = (15/userPreferences.Count());
 
                 for (int j = 0; j < userPreferences.Count(); j++)
@@ -54,8 +54,8 @@ namespace UITEST.ViewModel
                     var SubredditConnections = await _repository.FindAsync(userPreferences[j].SubredditName);
                     for (int i = 0; i < reps && i< SubredditConnections.Count(); i++)
                     {
-                        subreddits[k] = SubredditConnections.ElementAt(i).SubredditToName;
-                        k++;
+                        subreddits.Add(SubredditConnections.ElementAt(i).SubredditToName);
+                   
                     }
                 }
 
@@ -65,9 +65,9 @@ namespace UITEST.ViewModel
               
                 for (int i = 0; i < 15; i++)
                 {
-                    subreddits[i] = ((await _repository.FindAsync(userPreferences[i]
+                    subreddits.Add(((await _repository.FindAsync(userPreferences[i]
                                                         .SubredditName)).
-                                                        FirstOrDefault()).SubredditToName;
+                                                        FirstOrDefault()).SubredditToName);
                 }
             }
 

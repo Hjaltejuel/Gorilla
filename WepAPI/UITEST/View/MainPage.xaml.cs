@@ -39,12 +39,18 @@ namespace UITEST
            
             _vm = App.ServiceProvider.GetService<MainPageViewModel>();
 
-           
+          
+
             DataContext = _vm;
+
+            SizeChanged += ChangeListViewWhenSizedChanged;
 
             _vm.PostsReadyEvent += PostReadyEvent;
         }
-
+        private void ChangeListViewWhenSizedChanged(object sender, SizeChangedEventArgs e)
+        {
+            PostsList.Height = e.NewSize.Height - (commandBar.ActualHeight+75);
+        }
         private void PostReadyEvent()
         {
             LoadingRing.IsActive = false;
