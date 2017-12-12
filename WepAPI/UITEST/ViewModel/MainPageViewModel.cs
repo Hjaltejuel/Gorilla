@@ -34,8 +34,6 @@ namespace UITEST.ViewModel
 
         public async void GeneratePosts()
         {
-
-          
             Subreddit subreddit = await _consumer.GetSubredditAsync("AskReddit");
             PostsReadyEvent.Invoke();
             Posts = subreddit.posts;

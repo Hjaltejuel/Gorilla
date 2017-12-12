@@ -152,6 +152,16 @@
       <Version>2.3.1</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BDSA2017.Assignment08.UWP.Lib\UI.Lib.csproj">
+      <Project>{0d77cc78-f88c-4c05-a0da-6d105d0d07fe}</Project>
+      <Name>UI.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Entities\Entities.csproj">
+      <Project>{CF14D305-4981-4992-B0F5-EC293867A83B}</Project>
+      <Name>Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

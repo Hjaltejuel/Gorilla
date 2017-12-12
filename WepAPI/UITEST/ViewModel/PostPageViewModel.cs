@@ -20,7 +20,7 @@ namespace UITEST.ViewModel
 
         public Post CurrentPost
         {
-
+ 
             get { return currentpost; }
             set {
                 currentpost = value;
