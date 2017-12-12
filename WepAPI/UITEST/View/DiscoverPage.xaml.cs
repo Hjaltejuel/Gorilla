@@ -33,9 +33,18 @@ namespace UITEST.View
         {
             this.InitializeComponent();
 
+            LoadingRing.IsActive = true;
+
             _vm = App.ServiceProvider.GetService<DiscoverPageViewModel>();
 
             DataContext = _vm;
+
+            _vm.DiscoverReadyEvent += DiscoverReadyEvent;
+        }
+
+        private void DiscoverReadyEvent()
+        {
+            LoadingRing.IsActive = false;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

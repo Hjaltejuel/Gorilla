@@ -127,5 +127,10 @@ namespace Entities.RedditEntities
         {
             throw new NotImplementedException();
         }
+
+        public async Task<User> GetAccountDetails()
+        {
+            return new User { username = "Hjalte" };
+        }
     }
 }

@@ -17,16 +17,7 @@ namespace WebApi.Test
 {
     public class SubredditConnectionControllerTest
     { 
-    
-        [Fact(DisplayName = "Controller has AuthorizeAttribute")]
-        public void Controller_has_AuthorizeAttribute()
-        {
-            var type = typeof(SubredditConnectionController);
-
-            var authorizeAttribute = type.CustomAttributes.FirstOrDefault(c => c.AttributeType == typeof(AuthorizeAttribute));
-
-            Assert.NotNull(authorizeAttribute);
-        }
+   
 
         [Fact(DisplayName = "FindAsync returns Ok with SubredditConnections")]
         public async Task Find_returns_Ok_with_tracks()
@@ -193,7 +184,7 @@ namespace WebApi.Test
             var SubredditConnection = new SubredditConnection();
             var result = await controller.PostAsync(SubredditConnection) as CreatedAtActionResult;
 
-            Assert.Equal(nameof(SubredditConnectionController.FindAsync), result.ActionName);
+            Assert.Equal(nameof(SubredditConnectionController.GetAsync), result.ActionName);
             Assert.Equal(("test", "test"), result.RouteValues["result"]);
         }
 

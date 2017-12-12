@@ -51,7 +51,7 @@ namespace WepAPI.Controllers
             try
             {
                 var usernameAndSub = await repository.CreateAsync(userPreference);
-                return CreatedAtAction("Find", new { usernameAndSub }, null);
+                return CreatedAtAction(nameof(FindAsync), new { usernameAndSub }, null);
             } catch (AlreadyThereException)
             {
                 return new StatusCodeResult(StatusCodes.Status409Conflict);
