@@ -10,16 +10,14 @@ namespace Entities.RedditEntities
     public interface IRedditAPIConsumer : IWebConsumer
     {
         Task<Post> GetPostAndCommentsByIdAsync(string name_id);
-
         Task<Subreddit> GetSubredditAsync(string subredditName, string sortBy="hot");
-
         Task<(HttpStatusCode, string)> LoginToReddit(string username, string password);
-
-        Task<(HttpStatusCode, string)> PostPostAsync(Post p);
-
-        Task<(HttpStatusCode, string)> PostCommentAsync(Comment_old c);
-
-        Task<(HttpStatusCode, string)> PostVoteAsync(Vote v);
+        Task<(HttpStatusCode, string)> CreateComment(AbstractCommentable thing, string commentText);
+        Task<(HttpStatusCode, string)> SubscribeToSubreddit(Subreddit subreddit);
+        Task<(HttpStatusCode, string)> CreatePostAsync(Post post);
+        Task<(HttpStatusCode, string)> PostVoteAsync(AbstractCommentable commentable, int direction);
+        Task<User> GetAccountDetails();
+        Task RefreshToken();
 
     }
 }

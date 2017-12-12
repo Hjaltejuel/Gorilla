@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27128.1
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model.csproj", "{787E1345-6F76-40EB-94F7-CF67693F7FF4}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WepApplication.Test", "WepApplication.Test\WepApplication.Test.csproj", "{C2927AB8-7313-4823-8727-52F2B96B90D4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{CF14D305-4981-4992-B0F5-EC293867A83B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SLET MIG", "SLET MIG\SLET MIG.csproj", "{12BDAE18-EE5A-4574-AFAB-BB692FFCA348}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -183,6 +185,22 @@ Global
 		{CF14D305-4981-4992-B0F5-EC293867A83B}.Release|x64.Build.0 = Release|Any CPU
 		{CF14D305-4981-4992-B0F5-EC293867A83B}.Release|x86.ActiveCfg = Release|Any CPU
 		{CF14D305-4981-4992-B0F5-EC293867A83B}.Release|x86.Build.0 = Release|Any CPU
+		{12BDAE18-EE5A-4574-AFAB-BB692FFCA348}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12BDAE18-EE5A-4574-AFAB-BB692FFCA348}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12BDAE18-EE5A-4574-AFAB-BB692FFCA348}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{12BDAE18-EE5A-4574-AFAB-BB692FFCA348}.Debug|ARM.Build.0 = Debug|Any CPU
+		{12BDAE18-EE5A-4574-AFAB-BB692FFCA348}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{12BDAE18-EE5A-4574-AFAB-BB692FFCA348}.Debug|x64.Build.0 = Debug|Any CPU
+		{12BDAE18-EE5A-4574-AFAB-BB692FFCA348}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{12BDAE18-EE5A-4574-AFAB-BB692FFCA348}.Debug|x86.Build.0 = Debug|Any CPU
+		{12BDAE18-EE5A-4574-AFAB-BB692FFCA348}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12BDAE18-EE5A-4574-AFAB-BB692FFCA348}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12BDAE18-EE5A-4574-AFAB-BB692FFCA348}.Release|ARM.ActiveCfg = Release|Any CPU
+		{12BDAE18-EE5A-4574-AFAB-BB692FFCA348}.Release|ARM.Build.0 = Release|Any CPU
+		{12BDAE18-EE5A-4574-AFAB-BB692FFCA348}.Release|x64.ActiveCfg = Release|Any CPU
+		{12BDAE18-EE5A-4574-AFAB-BB692FFCA348}.Release|x64.Build.0 = Release|Any CPU
+		{12BDAE18-EE5A-4574-AFAB-BB692FFCA348}.Release|x86.ActiveCfg = Release|Any CPU
+		{12BDAE18-EE5A-4574-AFAB-BB692FFCA348}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
