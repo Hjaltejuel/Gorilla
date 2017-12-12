@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Gorilla.AuthenticationGorillaAPI;
 
 namespace WebApplication2.Models.GorillaApiConsumeRepositories
 {
@@ -15,9 +16,12 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
 
         private readonly HttpClient _client;
 
-        public RestSubredditConnectionRepository(HttpClient client)
+        public RestSubredditConnectionRepository(ISettings settings, DelegatingHandler handler)
         {
-            client.BaseAddress = _baseAddress;
+            var client = new HttpClient(handler)
+            {
+                BaseAddress = settings.ApiBaseAddress
+            };
             client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 

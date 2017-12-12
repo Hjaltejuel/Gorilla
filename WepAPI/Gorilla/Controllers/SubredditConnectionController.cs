@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -7,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Model;
 using Entities;
 using Exceptions;
-using Microsoft.AspNetCore.Authorization;
+
 
 namespace Gorilla.Controllers
 {
@@ -78,7 +77,7 @@ namespace Gorilla.Controllers
             try
             {
                 var result = await repository.CreateAsync(subredditConnection);
-                return CreatedAtAction("GetSubredditConnection", new { result }, null);
+                return CreatedAtAction(nameof(GetAsync), new { result }, null);
             }
             catch (AlreadyThereException)
             {

@@ -22,8 +22,7 @@ namespace Gorilla.AuthenticationGorillaAPI
 
         public async Task<WebAccount> SignInAsync()
         {
-            _appSettings.Values.Remove("userId");
-            _appSettings.Values.Remove("login_hint");
+    
 
 
             var webAccountProvider = await WebAuthenticationCoreManager.FindAccountProviderAsync(_settings.WebAccountProviderId, _settings.Authority);
@@ -68,7 +67,8 @@ namespace Gorilla.AuthenticationGorillaAPI
                 if (webTokenRequestResult.ResponseStatus == WebTokenRequestStatus.Success)
                 {
                     account = webTokenRequestResult.ResponseData[0].WebAccount;
-                }
+                } 
+                
             }
 
             if (account == null) // sign in not successfull

@@ -32,17 +32,25 @@ namespace UITEST
         public MainPage()
         {
             this.InitializeComponent();
+
             PostsList.Visibility = Visibility.Collapsed;
+
             LoadingRing.IsActive = true;
            
             _vm = App.ServiceProvider.GetService<MainPageViewModel>();
 
-           
-            DataContext = _vm;
-            _vm.PostsReadyEvent += PostReadyEvent;
-            SizeChanged += ResizeListViewHeight;
-        }
+          
 
+            DataContext = _vm;
+
+            SizeChanged += ChangeListViewWhenSizedChanged;
+
+            _vm.PostsReadyEvent += PostReadyEvent;
+        }
+        private void ChangeListViewWhenSizedChanged(object sender, SizeChangedEventArgs e)
+        {
+            PostsList.Height = e.NewSize.Height - (commandBar.ActualHeight+75);
+        }
         private void PostReadyEvent()
         {
             LoadingRing.IsActive = false;
@@ -58,11 +66,7 @@ namespace UITEST
         {
             Frame.Navigate(typeof(PostPage), e.AddedItems[0]);
         }
-
-        private void ResizeListViewHeight(object sender, SizeChangedEventArgs e)
-        {
-            //PostsList.Height = e.NewSize.Height - (commandBar.Height + PageTitleText.Height + HorizontalSplitter.Height);
-        }
+        
 
         private void Title_Click(object sender, RoutedEventArgs e)
         {
@@ -98,20 +102,10 @@ namespace UITEST
             var btn = sender as Button;
             btn.FontWeight = FontWeights.Normal;
         }
-
-        private void RelativePanel_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            var a = "";
-        }
-
+        
         private void List_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
             PostsList.Visibility = Visibility.Visible;
-        }
-
-        private void List_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
     }
 }

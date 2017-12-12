@@ -21,7 +21,7 @@ namespace UITEST.ViewModel
         public ICommand GoToDiscoverPageCommand { get; set; }
         public ICommand GoToProfilePageCommand { get; set; }
 
-        protected ISubredditRepository _repository;
+        
         protected IAuthenticationHelper _helper;
         protected INavigationService _service;
 
@@ -44,16 +44,17 @@ namespace UITEST.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public async void Authorize()
+        public async Task<WebAccount> Authorize()
         {
             if (_account != null)
             {
-                return;
+                return _account;
             }
             else
             {
                 _account = await _helper.SignInAsync();
             }
+            return _account;
         }
     }
 }

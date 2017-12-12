@@ -19,6 +19,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Gorilla.Model;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 namespace UITEST.View
@@ -55,6 +56,13 @@ namespace UITEST.View
             base.OnNavigatedTo(e);
             var post = e.Parameter as Post;
             _vm.Initialize(post);
+
+            SetUpTimeText();
+        }
+
+        private void SetUpTimeText()
+        {
+            TimeText.Text = TimeHelper.CalcCreationDateByUser(_vm.CurrentPost);
         }
 
         private void ChangeListViewWhenSizedChanged(object sender, SizeChangedEventArgs e)
