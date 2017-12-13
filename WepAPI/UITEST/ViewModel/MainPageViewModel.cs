@@ -21,7 +21,16 @@ namespace UITEST.ViewModel
         IRedditAPIConsumer _consumer;
         protected ISubredditRepository _repository;
         public Subreddit subreddit;
-        public ObservableCollection<Post> Posts { get; set; }
+        public ObservableCollection<Post> posts;
+        public ObservableCollection<Post> Posts
+        {
+            get => posts;
+            set
+            {
+                posts = value;
+                OnPropertyChanged("Posts");
+            }
+        }
 
         public delegate void PostsReady();
         public event PostsReady PostsReadyEvent;
@@ -47,7 +56,6 @@ namespace UITEST.ViewModel
             subreddit = await _consumer.GetSubredditAsync("AskReddit");
             PostsReadyEvent.Invoke();
             Posts = subreddit.posts;
-            OnPropertyChanged("Posts");
         }
 
         public async Task Initialize()
