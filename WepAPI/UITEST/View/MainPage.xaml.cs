@@ -108,7 +108,17 @@ namespace UITEST
         private async void SearchForSubreddit(string SubredditToSearchFor)
         {
             await _vm.GeneratePosts(SubredditToSearchFor);
-            PageTitleText.Text = _vm.subreddit.display_name;
+            if (_vm.subreddit.display_name == null)
+            {
+                PageTitleText.Text = "";
+                var NothingFoundTextBlock = new TextBlock() { Text = "Nothing Found", FontSize = 50, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center};
+                Grid.Children.Add(NothingFoundTextBlock);
+                Grid.SetRow(NothingFoundTextBlock, 3);
+            }
+            else
+            {
+                PageTitleText.Text = _vm.subreddit.display_name;
+            }
         }
     }
 }
