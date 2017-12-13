@@ -80,41 +80,7 @@ namespace Entities.RedditEntities
         {
             return request;
         }
-        //public async Task<HttpResponseMessage> Get(string uri)
-        //{
-        //    using (var client = new HttpClient())
-        //    {
-        //        client.BaseAddress = new Uri(BaseUrl);
-        //        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        //        client.DefaultRequestHeaders.Add("User-Agent", "Gorilla");
-        //        HttpResponseMessage response = await client.GetAsync(uri);
-        //        return response;
-        //    }
-        //}
-        //public async Task<HttpResponseMessage> BasicGet(string uri)
-        //{
-        //    using (var client = new HttpClient())
-        //    {
-        //        client.BaseAddress = new Uri(BaseUrl);
-        //        client.DefaultRequestHeaders.Add("User-Agent", "Gorilla");
-        //        HttpResponseMessage response = await client.GetAsync(uri);
-        //        return response;
-        //    }
-        //}
-        //public async Task<HttpResponseMessage> Post(string uri, HttpContent content)
-        //{
-        //    using (var client = new HttpClient())
-        //    {
-        //        client.BaseAddress = new Uri(BaseUrl);
-        //        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        //        client.DefaultRequestHeaders.Add("User-Agent", "Gorilla");
-        //        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, uri);
-        //        request.Content = content;
-        //        HttpResponseMessage response = await client.SendAsync(request);
-        //        return response;
-        //    }
-        //}
-
+        
         //CONVENTION: IF SORTBY STRING IS EMPTY, HOT IS DEFAULTED TO
         public async Task<Subreddit> GetSubredditAsync(string subredditName, string sortBy = "hot")
         {
@@ -226,7 +192,6 @@ namespace Entities.RedditEntities
                 return (HttpStatusCode.BadRequest, "Could not post comment");
 
         }
-
         public async Task<(HttpStatusCode, string)> SubscribeToSubreddit(Subreddit subreddit, bool IsSubscribing)
         {
             string action = IsSubscribing ? "sub" : "unsub";

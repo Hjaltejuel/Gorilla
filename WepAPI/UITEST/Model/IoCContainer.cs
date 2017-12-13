@@ -21,8 +21,7 @@ namespace Gorilla.Model
         {
 
             IServiceCollection services = new ServiceCollection();
-
-
+            
             services.AddScoped<ISettings, Settings>();
             services.AddScoped<DelegatingHandler, AuthorizedHandler>();
             services.AddScoped<IAuthenticationHelper, AuthenticationHelper>();
