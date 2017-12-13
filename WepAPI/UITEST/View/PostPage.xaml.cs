@@ -43,6 +43,8 @@ namespace UITEST.View
             DataContext = _vm;
             SizeChanged += ChangeListViewWhenSizedChanged;
             _vm.CommentsReadyEvent += _vm_CommentsReadyEvent;
+            _vm.Like += LikeSuccesful;
+            _vm.Dislike += DislikeSuccesful;
         }
 
         private void _vm_CommentsReadyEvent()
@@ -165,12 +167,38 @@ namespace UITEST.View
 
         private void Upvote_Click(object sender, RoutedEventArgs e)
         {
-            _vm.CurrentPost.score += 1;
+            _vm.PostLikedAsync();
         }
 
         private void Downvote_Click(object sender, RoutedEventArgs e)
         {
-            _vm.CurrentPost.score -= 1;
+            _vm.PostDislikedAsync();
+        }
+
+        private void LikeSuccesful()
+        {
+            var UpvoteClickedStyle = App.Current.Resources["LikeButtonClicked"] as Style;
+            var UpvoteNotClickedStyle = App.Current.Resources["LikeButton"] as Style;
+
+            if (Upvote.Style.Equals(UpvoteClickedStyle))
+                Upvote.Style = UpvoteNotClickedStyle;
+            else
+                Upvote.Style = UpvoteClickedStyle;
+
+            Downvote.Style = App.Current.Resources["DislikeButton"] as Style;
+        }
+
+        private void DislikeSuccesful()
+        {
+            var DownvoteClickedStyle = App.Current.Resources["DislikeButtonClicked"] as Style;
+            var DownvoteNotClickedStyle = App.Current.Resources["DislikeButton"] as Style;
+
+            if (Downvote.Style.Equals(DownvoteClickedStyle))
+                Downvote.Style = DownvoteNotClickedStyle;
+            else
+                Downvote.Style = DownvoteClickedStyle;
+
+            Upvote.Style = App.Current.Resources["LikeButton"] as Style;
         }
     }
 }
