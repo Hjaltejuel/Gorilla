@@ -243,14 +243,9 @@ namespace Entities.RedditEntities
             else
                 return null;
         }
-<<<<<<< HEAD
-
-        public async Task<(HttpStatusCode, string)> CreatePostAsync(string title, string kind, Subreddit ToSubreddit, string text = "", string url = "")
-=======
         //Kind: self | link
         // if kind is link, then url must be specified
         public async Task<(HttpStatusCode, string)> CreatePostAsync(Subreddit ToSubreddit, string title, string kind, string text, string url="")
->>>>>>> a2b0bdba7b065039a13f9ae5b31325ea0ecd2285
         {
             string data;
             if (kind.Equals("link"))
