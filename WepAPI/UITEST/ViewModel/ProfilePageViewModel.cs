@@ -52,8 +52,6 @@ namespace UITEST.ViewModel
             };
             */
             GetCurrentProfile();
-
-            //CurrentProfile = 
         }
 
         private async void GetCurrentProfile()
