@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Controls;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Net;
 
 namespace UITEST.ViewModel
 {
@@ -68,6 +69,11 @@ namespace UITEST.ViewModel
 
             //}
             PostsReadyEvent.Invoke();
+        }
+
+        public async Task SubscribeToSubreddit()
+        {
+            await _consumer.SubscribeToSubreddit(subreddit, true);
         }
 
         public async Task Initialize()

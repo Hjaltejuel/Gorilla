@@ -264,7 +264,7 @@ namespace UITEST
                 Margin = new Thickness(0, 10, 10, 0)
             };
             RelativePanel.SetBelow(SubmitButton, CommentTextBox);
-            errorText = new TextBlock() { Visibility = Visibility.Collapsed, Margin = new Thickness(10, 7, 0, 0), FontSize = 100 };
+            errorText = new TextBlock() { Visibility = Visibility.Collapsed, Margin = new Thickness(10, 7, 0, 0), FontSize = 14 };
             RelativePanel.SetRightOf(errorText, SubmitButton);
             RelativePanel.SetBelow(errorText, CommentTextBox);
             RelativePanel.SetAlignVerticalCenterWith(errorText, SubmitButton);

@@ -120,5 +120,11 @@ namespace UITEST
                 PageTitleText.Text = _vm.subreddit.display_name;
             }
         }
+
+        private void SubsribeToSubredditButton_Click(object sender, RoutedEventArgs e)
+        {
+            _vm.SubscribeToSubreddit();
+            string s = _vm.subreddit.user_is_subscriber;
+        }
     }
 }
