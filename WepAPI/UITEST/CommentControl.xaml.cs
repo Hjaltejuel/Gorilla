@@ -165,7 +165,7 @@ namespace UITEST
         {
             var UpvoteClickedStyle = App.Current.Resources["LikeButtonClicked"] as Style;
             var UpvoteNotClickedStyle = App.Current.Resources["LikeButton"] as Style;
-
+        
             if (Upvote.Style.Equals(UpvoteClickedStyle))
                 Upvote.Style = UpvoteNotClickedStyle;
             else
