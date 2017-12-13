@@ -31,6 +31,10 @@ namespace Entities.RedditEntities
         private string _token = "";
         private const string refresh_token = "51999737725-OYI8KJ5T56KSO4xAyvoVhA8t5TM";
 
+        public RedditConsumerController()
+        {
+            RefreshTokenAsync();
+        }
         private HttpRequestMessage CreateRequest(string stringUri, string method)
         {
             Uri uri;
