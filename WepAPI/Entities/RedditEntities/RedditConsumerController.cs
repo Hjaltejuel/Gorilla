@@ -24,14 +24,29 @@ namespace Entities.RedditEntities
         private const string SubscribedSubredditsUrl = "subreddits/mine";
 
         private const string Client_id = "ephxxGR7ZA77nA";
-
+        private bool IsAuthenticated = false;
         private string token = "";
-        private string refresh_token = "51999737725-OYI8KJ5T56KSO4xAyvoVhA8t5TM";
+        private string refresh_token = "";//"51999737725-OYI8KJ5T56KSO4xAyvoVhA8t5TM";
 
+        public async Task Authenticate(string code)
+        {
+            var request = CreateRequest(AccessTokenUrl, "POST");
+            var BasicAuth = Convert.ToBase64String(Encoding.UTF8.GetBytes(Client_id + ":"));
+            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", BasicAuth);
+            request.Content = new StringContent($"grant_type=authorization_code&code={code}&redirect_uri=https://gorillaapi.azurewebsites.net/",
+                Encoding.UTF8,
+                "application/x-www-form-urlencoded");
+            var responseBody = await SendRequest(request);
+            if (responseBody["error"] == null)
+            {
+                token = responseBody["access_token"].ToObject<string>();
+                refresh_token = responseBody["refresh_token"].ToObject<string>();
+            }
+        }
         private HttpRequestMessage CreateRequest(string stringUri, string method)
         {
             Uri uri;
-            bool IsOAuth = false;
+            var IsOAuth = false;
             if (!stringUri.StartsWith("https"))
             {
                 uri = new Uri(BaseUrl + stringUri + ".json?json_raw=1");

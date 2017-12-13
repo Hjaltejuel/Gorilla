@@ -11,6 +11,8 @@ namespace Entities.RedditEntities
     {
         Task<Post> GetPostAndCommentsByIdAsync(string name_id);
         Task<Subreddit> GetSubredditAsync(string subredditName, string sortBy = "hot");
+
+        Task Authenticate(string code);
         Task<List<Subreddit>> GetSubscribedSubredditsAsync();
         Task<(HttpStatusCode, string)> LoginToReddit(string username, string password);
         Task<(HttpStatusCode, string)> CreateCommentAsync(AbstractCommentable thing, string commentText);

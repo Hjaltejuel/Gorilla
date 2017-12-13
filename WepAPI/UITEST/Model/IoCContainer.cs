@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Gorilla.ViewModel;
 using UITEST.ViewModel;
 using WebApplication2.Models.GorillaApiConsumeRepositories;
 
@@ -36,6 +37,7 @@ namespace Gorilla.Model
             services.AddScoped<ProfilePageViewModel>();
             services.AddScoped<TrendingPageViewModel>();
             services.AddScoped<CreatePostPageViewModel>();
+            services.AddScoped<LoginPageViewModel>();
 
 
 

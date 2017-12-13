@@ -13,9 +13,11 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using Gorilla.Authentication;
+using Gorilla.ViewModel;
+using Microsoft.Extensions.DependencyInjection;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace UITEST.View
 {
     /// <summary>
@@ -23,13 +25,24 @@ namespace UITEST.View
     /// </summary>
     public sealed partial class LoginPage : Page
     {
+        private readonly LoginPageViewModel _vm;
         public LoginPage()
         {
             this.InitializeComponent();
+            _vm = App.ServiceProvider.GetService<LoginPageViewModel>();
+            DataContext = _vm;
+        }
+        public void HasAuthenticated()
+        {
+            Frame.Navigate(typeof(MainPage));
         }
 
-        public string startURL = "https://www.reddit.com/api/v1/authorize?client_id=ephxxGR7ZA77nA&response_type=code&state=assasdsdadsa4125&redirect_uri=https://gorillaapi.azurewebsites.net/&duration=permanent&scope=*";
+        public string startURL =
+                "https://www.reddit.com/api/v1/authorize?client_id=ephxxGR7ZA77nA&response_type=code&state=assasdsdadsa4125&redirect_uri=https://gorillaapi.azurewebsites.net/&duration=permanent&scope=*"
+            ;
+
         public string endURL = "https://gorillaapi.azurewebsites.net/";
+
         public async void AuthBrokerAsync()
         {
             Uri startURI = new Uri(startURL);
@@ -41,15 +54,18 @@ namespace UITEST.View
             {
                 var webAuthenticationResult =
                     await Windows.Security.Authentication.Web.WebAuthenticationBroker.AuthenticateAsync(
-                    Windows.Security.Authentication.Web.WebAuthenticationOptions.None,
-                    startURI,
-                    endURI);
+                        Windows.Security.Authentication.Web.WebAuthenticationOptions.None,
+                        startURI,
+                        endURI);
 
                 switch (webAuthenticationResult.ResponseStatus)
                 {
                     case Windows.Security.Authentication.Web.WebAuthenticationStatus.Success:
-                        // Successful authentication. 
+                        // Successful authentication.
                         result = webAuthenticationResult.ResponseData.ToString();
+                        var a = new RedditAuthHandler();
+                        await a.Authenticate(result);
+                        HasAuthenticated();
                         break;
                     case Windows.Security.Authentication.Web.WebAuthenticationStatus.ErrorHttp:
                         // HTTP error. 
@@ -67,12 +83,13 @@ namespace UITEST.View
                 result = ex.Message;
             }
         }
-    
 
-    protected override void OnNavigatedTo(NavigationEventArgs e)
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             Storyboard fadeIn = this.Resources["FadeIn"] as Storyboard;
             fadeIn.Begin();
+            AuthBrokerAsync();
         }
     }
 }
