@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace Entities.RedditEntities
 {
-    public class Subreddit : AbstractCommentable
+    public class Subreddit
     {
         public string user_is_contributor { get; set; }
         public string banner_img { get; set; }

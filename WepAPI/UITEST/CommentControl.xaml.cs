@@ -115,6 +115,7 @@ namespace UITEST
 
 
         //Hvor skal det her stå? vi har ikke en viewmodel
+        //TODO hvis vi ikke kan få observer pattern til at virke kan vi slette de der currentcomment.score - og + statements
         public async Task CommentLikedAsync()
         {
             int direction;
@@ -161,30 +162,52 @@ namespace UITEST
             DislikeSuccesful();
         }
 
+        //Grimt i know.. what to do? det er et midlertidligt workaround
+        private Style UpvoteClickedStyle = App.Current.Resources["LikeButtonClicked"] as Style;
+        private Style UpvoteNotClickedStyle = App.Current.Resources["LikeButton"] as Style;
+        private Style DownvoteClickedStyle = App.Current.Resources["DislikeButtonClicked"] as Style;
+        private Style DownvoteNotClickedStyle = App.Current.Resources["DislikeButton"] as Style;
+
         private void LikeSuccesful()
         {
-            var UpvoteClickedStyle = App.Current.Resources["LikeButtonClicked"] as Style;
-            var UpvoteNotClickedStyle = App.Current.Resources["LikeButton"] as Style;
-        
-            if (Upvote.Style.Equals(UpvoteClickedStyle))
-                Upvote.Style = UpvoteNotClickedStyle;
-            else
-                Upvote.Style = UpvoteClickedStyle;
+            int votes;
+            int.TryParse(PointsTextBlock.Text, out votes);
 
-            Downvote.Style = App.Current.Resources["DislikeButton"] as Style;
+            if (Upvote.Style.Equals(UpvoteClickedStyle)) {
+                Upvote.Style = UpvoteNotClickedStyle;
+                PointsTextBlock.Text = (votes - 1).ToString();
+            }else{
+                if (Downvote.Style.Equals(DownvoteClickedStyle))
+                {
+                    PointsTextBlock.Text = (votes + 2).ToString();
+
+                }else{
+                    PointsTextBlock.Text = (votes + 1).ToString();
+                }
+                Upvote.Style = UpvoteClickedStyle;
+            }
+            Downvote.Style = DownvoteNotClickedStyle;
         }
 
         private void DislikeSuccesful()
         {
-            var DownvoteClickedStyle = App.Current.Resources["DislikeButtonClicked"] as Style;
-            var DownvoteNotClickedStyle = App.Current.Resources["DislikeButton"] as Style;
+            int votes;
+            int.TryParse(PointsTextBlock.Text, out votes);
 
             if (Downvote.Style.Equals(DownvoteClickedStyle))
+            {
                 Downvote.Style = DownvoteNotClickedStyle;
-            else
+                PointsTextBlock.Text = (votes + 1).ToString();
+            }else
+            {
+                if (Upvote.Style.Equals(UpvoteClickedStyle))
+                    PointsTextBlock.Text = (votes - 2).ToString();
+                else {
+                    PointsTextBlock.Text = (votes - 1).ToString();
+                }
                 Downvote.Style = DownvoteClickedStyle;
-
-            Upvote.Style = App.Current.Resources["LikeButton"] as Style;
+            }
+            Upvote.Style = UpvoteNotClickedStyle;
         }
 
 

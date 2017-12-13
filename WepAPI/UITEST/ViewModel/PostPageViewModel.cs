@@ -3,6 +3,7 @@ using Gorilla.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using UITEST.Model;
@@ -12,8 +13,8 @@ namespace UITEST.ViewModel
 {
     public class PostPageViewModel : BaseViewModel
     {
-        public delegate void CommentsReady();
-        public event CommentsReady CommentsReadyEvent;
+        public delegate void Comments();
+        public event Comments CommentsReadyEvent;
         private Post currentpost;
         IRedditAPIConsumer redditAPIConsumer;
         private bool IsLiked;
@@ -45,15 +46,17 @@ namespace UITEST.ViewModel
             GetCurrentPost(post);
         }
 
-        public void AddComment(AbstractCommentable commentableToCommentOn, Comment newComment)
+        public async Task AddCommentAsync(AbstractCommentable commentableToCommentOn, Comment newComment)
         {
-            redditAPIConsumer.CreateCommentAsync(commentableToCommentOn, newComment.body);
+            await redditAPIConsumer.CreateCommentAsync(commentableToCommentOn, newComment.body);
         }
 
         public delegate void Vote();
         public event Vote Like;
         public event Vote Dislike;
 
+
+        //TODO hvis vi ikke kan få observer pattern til at virke kan vi slette de der currentcomment.score - og + statements
         public async Task PostLikedAsync()
         {
             int direction;

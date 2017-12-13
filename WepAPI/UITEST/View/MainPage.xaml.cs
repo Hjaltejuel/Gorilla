@@ -32,17 +32,13 @@ namespace UITEST
         public MainPage()
         {
             this.InitializeComponent();
-
             PostsList.Visibility = Visibility.Collapsed;
-
             LoadingRing.IsActive = true;
            
             _vm = App.ServiceProvider.GetService<MainPageViewModel>();
-
             DataContext = _vm;
 
             SizeChanged += ChangeListViewWhenSizedChanged;
-
             _vm.PostsReadyEvent += PostReadyEvent;
         }
         private void ChangeListViewWhenSizedChanged(object sender, SizeChangedEventArgs e)
@@ -65,7 +61,6 @@ namespace UITEST
             Frame.Navigate(typeof(PostPage), e.AddedItems[0]);
         }
         
-
         private void Title_Click(object sender, RoutedEventArgs e)
         {
             var btn = sender as Button;
@@ -104,6 +99,16 @@ namespace UITEST
         private void List_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
             PostsList.Visibility = Visibility.Visible;
+        }
+
+        private void SearchBox_QuerySubmitted(SearchBox sender, SearchBoxQuerySubmittedEventArgs args)
+        {
+            SearchForSubreddit(args.QueryText);
+        }
+        private async void SearchForSubreddit(string SubredditToSearchFor)
+        {
+            await _vm.GeneratePosts(SubredditToSearchFor);
+            PageTitleText.Text = _vm.subreddit.display_name;
         }
     }
 }

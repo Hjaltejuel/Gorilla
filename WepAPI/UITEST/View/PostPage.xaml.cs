@@ -32,6 +32,7 @@ namespace UITEST.View
         private readonly PostPageViewModel _vm;
         private RelativePanel CommentPanel;
         private TextBox CommentTextBox;
+        private TextBlock errorText;
 
         public PostPage()
         {
@@ -39,18 +40,22 @@ namespace UITEST.View
             LoadingRing.IsActive = true;
 
             _vm = App.ServiceProvider.GetService<PostPageViewModel>();
-
             DataContext = _vm;
-            SizeChanged += ChangeListViewWhenSizedChanged;
-            _vm.CommentsReadyEvent += _vm_CommentsReadyEvent;
-            _vm.Like += LikeSuccesful;
-            _vm.Dislike += DislikeSuccesful;
+            SetEventMethods();
         }
 
-        private void _vm_CommentsReadyEvent()
+        private void CommentsReadyEvent()
         {
             LoadingRing.IsActive = false;
             DrawComments();
+        }
+
+        private void SetEventMethods()
+        {
+            SizeChanged += ChangeListViewWhenSizedChanged;
+            _vm.CommentsReadyEvent += CommentsReadyEvent;
+            _vm.Like += LikeSuccesful;
+            _vm.Dislike += DislikeSuccesful;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -107,20 +112,22 @@ namespace UITEST.View
                 Margin = new Thickness(0, 10, 10, 0)
             };
             RelativePanel.SetBelow(SubmitButton, CommentTextBox);
+            errorText = new TextBlock() { Visibility = Visibility.Collapsed, Margin = new Thickness(10, 7, 0, 0), FontSize = 14};
+            RelativePanel.SetRightOf(errorText, SubmitButton);
+            RelativePanel.SetBelow(errorText, CommentTextBox);
+            RelativePanel.SetAlignVerticalCenterWith(errorText, SubmitButton);
             SubmitButton.Click += CommentSaveClick;
             
             CommentPanel.Children.Add(CommentTextBox);
             CommentPanel.Children.Add(SubmitButton);
+            CommentPanel.Children.Add(errorText);
         }
 
         private void PostTextComment_Click(object sender, RoutedEventArgs e)
         {
-            var CommentBtn = sender as Button;
-
             if (CommentPanel == null)
             {
                 CreateCommentPanel();
-                var CommentExtraTextPanel = CommentBtn.Parent as RelativePanel;
                 ExtraStuff.Children.Add(CommentPanel);
             }
             else
@@ -137,23 +144,25 @@ namespace UITEST.View
 
         private void InsertComment(AbstractCommentable abstractCommentableToCommentOn)
         {
-            if (!CommentTextBox.Text.Equals(""))
+            if (CommentTextBox.Text.Equals(""))
+            {
+                errorText.Text = "We need something in the textbox";
+                errorText.Visibility = Visibility.Visible;
+            }
+            else
             {
                 var newComment = new Comment()
                 {
                     body = CommentTextBox.Text,
                     author = "ASD"
                 };
-
-                _vm.AddComment(abstractCommentableToCommentOn, newComment);
-
-                CommentTextBox.Text = "";
+                _vm.AddCommentAsync(abstractCommentableToCommentOn, newComment);
+                PostView.Items.Insert(2, new CommentControl(newComment));
                 ExtraStuff.Children.Remove(CommentPanel);
                 CommentPanel = null;
-
-                PostView.Items.Insert(2, new CommentControl(newComment));
             }
         }
+        
 
         private void DrawComments()
         {
@@ -188,24 +197,20 @@ namespace UITEST.View
             int votes;
             int.TryParse(Votes.Text, out votes);
 
-            if (Upvote.Style.Equals(UpvoteClickedStyle))
-            {
+            if (Upvote.Style.Equals(UpvoteClickedStyle))  {
                 Upvote.Style = UpvoteNotClickedStyle;
                 Votes.Text = (votes - 1).ToString();
             }
-            else
-            {
+            else {
                 if (Downvote.Style.Equals(DownvoteClickedStyle))
                 {
                     Votes.Text = (votes + 2).ToString();
 
                 }
-                else
-                {
+                else {
                     Votes.Text = (votes + 1).ToString();
                 }
                 Upvote.Style = UpvoteClickedStyle;
-
             }
             Downvote.Style = DownvoteNotClickedStyle;
         }
@@ -215,17 +220,14 @@ namespace UITEST.View
             int votes;
             int.TryParse(Votes.Text, out votes);
 
-            if (Downvote.Style.Equals(DownvoteClickedStyle))
-            {
+            if (Downvote.Style.Equals(DownvoteClickedStyle)) {
                 Downvote.Style = DownvoteNotClickedStyle;
                 Votes.Text = (votes + 1).ToString();
             }
-            else
-            {
+            else {
                 if (Upvote.Style.Equals(UpvoteClickedStyle))
                     Votes.Text = (votes - 2).ToString();
-                else
-                {
+                else {
                     Votes.Text = (votes - 1).ToString();
                 }
                 Downvote.Style = DownvoteClickedStyle;

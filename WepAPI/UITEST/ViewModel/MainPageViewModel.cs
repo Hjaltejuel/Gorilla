@@ -11,6 +11,8 @@ using UITEST.View;
 using Windows.Security.Credentials;
 using Windows.UI.Xaml.Controls;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace UITEST.ViewModel
 {
@@ -20,6 +22,7 @@ namespace UITEST.ViewModel
         bool firstTime = true;
         IRedditAPIConsumer _consumer;
         protected ISubredditRepository _repository;
+        public string subredditString;
         public Subreddit subreddit;
         public ObservableCollection<Post> posts;
         public ObservableCollection<Post> Posts
@@ -51,11 +54,20 @@ namespace UITEST.ViewModel
             GoToCreatePostPageCommand = new RelayCommand(o => _service.Navigate(typeof(CreatePostPage), subreddit));
         }
         
-        public async void GeneratePosts()
+        public async Task GeneratePosts(string s = "sircmpwn")
         {
-            subreddit = await _consumer.GetSubredditAsync("AskReddit");
+            //try
+            //{
+                subreddit = await _consumer.GetSubredditAsync(s);
+                Posts = subreddit.posts;
+            //}
+            //catch (JsonReaderException e)
+            //{
+            //    Debug.WriteLine(e.StackTrace);
+            //    Debug.WriteLine("WHAT?");
+
+            //}
             PostsReadyEvent.Invoke();
-            Posts = subreddit.posts;
         }
 
         public async Task Initialize()
