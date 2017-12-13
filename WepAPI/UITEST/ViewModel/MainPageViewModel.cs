@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using UITEST.View;
 using Windows.Security.Credentials;
 using Windows.UI.Xaml.Controls;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace UITEST.ViewModel
 {
@@ -34,7 +35,7 @@ namespace UITEST.ViewModel
             _repository = repository;
             _helper = helper;
         }
-
+        
         public async void GeneratePosts()
         {
             Subreddit subreddit = await _consumer.GetSubredditAsync("AskReddit");

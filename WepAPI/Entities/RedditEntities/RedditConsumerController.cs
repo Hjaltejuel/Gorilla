@@ -13,6 +13,7 @@ namespace Entities.RedditEntities
 {
     public class RedditConsumerController : IRedditAPIConsumer
     {
+        
         public string BaseUrl { get => "https://oauth.reddit.com/"; }
 
         private const string CommentUrl = "api/comment";
@@ -80,7 +81,6 @@ namespace Entities.RedditEntities
         {
             return request;
         }
-        
         //CONVENTION: IF SORTBY STRING IS EMPTY, HOT IS DEFAULTED TO
         public async Task<Subreddit> GetSubredditAsync(string subredditName, string sortBy = "hot")
         {
@@ -110,7 +110,6 @@ namespace Entities.RedditEntities
                 return null;
             }
         }
-
         //t3 = comments on link / post & t5 = subreddit & t1 = comment
         public async Task<Post> GetPostAndCommentsByIdAsync(string post_id)
         {
@@ -128,14 +127,12 @@ namespace Entities.RedditEntities
             else
                 return null;
         }
-
         public async Task<(HttpStatusCode, string)> ResponseStatusAsync(HttpResponseMessage response)
         {
             string responseBody = await response.Content.ReadAsStringAsync();
             HttpStatusCode statusCode = response.StatusCode;
             return (statusCode, responseBody);
         }
-
         public async Task<(HttpStatusCode, string)> LoginToReddit(string username, string password)
         {
             /*
@@ -145,7 +142,6 @@ namespace Entities.RedditEntities
             "refresh_token": "51999737725-OYI8KJ5T56KSO4xAyvoVhA8t5TM",
             "scope": "*"
             */
-
             return (0, null);
         }
 
@@ -190,7 +186,6 @@ namespace Entities.RedditEntities
             }
             else
                 return (HttpStatusCode.BadRequest, "Could not post comment");
-
         }
         public async Task<(HttpStatusCode, string)> SubscribeToSubreddit(Subreddit subreddit, bool IsSubscribing)
         {
@@ -205,7 +200,6 @@ namespace Entities.RedditEntities
             else
                 return (HttpStatusCode.BadRequest, $"Could not subscribe");
         }
-
         public async Task<bool> RefreshTokenAsync()
         {
             HttpRequestMessage request = CreateRequest(AccessTokenUrl, "POST");
@@ -220,7 +214,6 @@ namespace Entities.RedditEntities
             }
             return false;
         }
-
         public async Task<List<Subreddit>> GetSubscribedSubredditsAsync()
         {
             List<Subreddit> subscribedSubreddits = new List<Subreddit>();
@@ -245,7 +238,7 @@ namespace Entities.RedditEntities
         }
         //Kind: self | link
         // if kind is link, then url must be specified
-        public async Task<(HttpStatusCode, string)> CreatePostAsync(Subreddit ToSubreddit, string title, string kind, string text, string url="")
+        public async Task<(HttpStatusCode, string)> CreatePostAsync(Subreddit ToSubreddit, string title, string kind, string text = "", string url = "")
         {
             string data;
             if (kind.Equals("link"))
@@ -263,6 +256,18 @@ namespace Entities.RedditEntities
                     return (HttpStatusCode.OK, "Post was created!");
             }
             return (HttpStatusCode.BadRequest, "Could not create post");
+        }
+        public async Task<List<AbstractCommentable>> GetMoreComments(AbstractCommentable commentable, int maxCommentsAmount=10)
+        {
+            HttpRequestMessage request = CreateRequest(SubscribedSubredditsUrl, "GET");
+            //"dqmoow1"
+            JToken response = await SendRequest(request);
+            if (response["error"] == null)
+            {
+                return null;
+            }
+            else
+                return null;
         }
     }
 }
