@@ -13,9 +13,9 @@
         <StackPanel Name="CommentStackPanel" Margin = "20, 5, 0, 5">
             <RelativePanel Name="CommentPanel" DataContext="{x:Bind Path = currentComment}">
                 <RelativePanel Margin="10,10,15,0" Name="VotePanel">
-                    <Button Content="Like" Style="{StaticResource LikeButton}" Name="UpvoteButton" Click="UpvoteButton_Click" Width="20" Height="20"/>
+                    <Button Content="Like" Style="{StaticResource LikeButton}" Name="Upvote" Click="UpvoteButton_Click" Width="20" Height="20"/>
 
-                    <Button Content="Dislike" Style="{StaticResource DislikeButton}" RelativePanel.Below="UpvoteButton" Name="DownvoteButton" Click="DownvoteButton_Click" Width="20" Height="20" Margin="0,-5,0,0"/>
+                    <Button Content="Dislike" Style="{StaticResource DislikeButton}" RelativePanel.Below="Upvote" Name="Downvote" Click="DownvoteButton_Click" Width="20" Height="20" Margin="0,-5,0,0"/>
                 </RelativePanel>
 
                 <RelativePanel Name="TextPanel" RelativePanel.RightOf="VotePanel" Margin="0,7,3,0">

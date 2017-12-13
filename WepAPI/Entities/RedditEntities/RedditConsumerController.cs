@@ -220,9 +220,9 @@ namespace Entities.RedditEntities
         {
             string data;
             if (kind.Equals("link"))
-                data = $"sr={toSubreddit.name}&kind={kind}&title={title}&url={url}";
+                data = $"sr={toSubreddit.display_name}&kind={kind}&title={title}&url={url}";
             else
-                data = $"sr={toSubreddit.name}&kind={kind}&title={title}&text={text}";
+                data = $"sr={toSubreddit.display_name}&kind={kind}&title={title}&text={text}";
 
             var request = CreateRequest(CreatePostUrl, "POST");
             request.Content = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");

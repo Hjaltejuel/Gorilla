@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using UITEST.Model;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -28,6 +29,8 @@ namespace UITEST
         private TextBox CommentTextBox;
         private RelativePanel InsertCommentPanel;
         private IRedditAPIConsumer redditAPIConsumer;
+        private bool IsLiked;
+        private bool IsDisliked;
 
         public CommentControl(Comment comment)
         {
@@ -102,13 +105,88 @@ namespace UITEST
 
         private void UpvoteButton_Click(object sender, RoutedEventArgs e)
         {
-            currentComment.score++;
+            CommentLikedAsync();
         }
 
         private void DownvoteButton_Click(object sender, RoutedEventArgs e)
         {
-            currentComment.score--;
+            CommentDislikedAsync();
         }
+
+
+        //Hvor skal det her stå? vi har ikke en viewmodel
+        public async Task CommentLikedAsync()
+        {
+            int direction;
+
+            if (IsLiked)
+            {
+                currentComment.score -= 1;
+                direction = 0;
+            }
+            else
+            {
+                if (IsDisliked)
+                    currentComment.score += 2;
+                else
+                    currentComment.score += 1;
+                direction = 1;
+            }
+            IsDisliked = false;
+            IsLiked = !IsLiked;
+            await redditAPIConsumer.VoteAsync(currentComment, direction);
+            LikeSuccesful();
+        }
+
+        public async Task CommentDislikedAsync()
+        {
+            int direction;
+
+            if (IsDisliked)
+            {
+                currentComment.score += 1;
+                direction = 0;
+            }
+            else
+            {
+                if (IsLiked)
+                    currentComment.score -= 2;
+                else
+                    currentComment.score -= 1;
+                direction = -1;
+            }
+            IsLiked = false;
+            IsDisliked = !IsDisliked;
+            await redditAPIConsumer.VoteAsync(currentComment, direction);
+            DislikeSuccesful();
+        }
+
+        private void LikeSuccesful()
+        {
+            var UpvoteClickedStyle = App.Current.Resources["LikeButtonClicked"] as Style;
+            var UpvoteNotClickedStyle = App.Current.Resources["LikeButton"] as Style;
+
+            if (Upvote.Style.Equals(UpvoteClickedStyle))
+                Upvote.Style = UpvoteNotClickedStyle;
+            else
+                Upvote.Style = UpvoteClickedStyle;
+
+            Downvote.Style = App.Current.Resources["DislikeButton"] as Style;
+        }
+
+        private void DislikeSuccesful()
+        {
+            var DownvoteClickedStyle = App.Current.Resources["DislikeButtonClicked"] as Style;
+            var DownvoteNotClickedStyle = App.Current.Resources["DislikeButton"] as Style;
+
+            if (Downvote.Style.Equals(DownvoteClickedStyle))
+                Downvote.Style = DownvoteNotClickedStyle;
+            else
+                Downvote.Style = DownvoteClickedStyle;
+
+            Upvote.Style = App.Current.Resources["LikeButton"] as Style;
+        }
+
 
         private void TextButton_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
