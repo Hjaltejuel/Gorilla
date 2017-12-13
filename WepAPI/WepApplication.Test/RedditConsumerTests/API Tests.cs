@@ -13,59 +13,59 @@ namespace RedditAPIConsumer.Tests
 {
     public class UnitTest1
     {
-        IRedditAPIConsumer rcc;
+        private readonly IRedditAPIConsumer _rcc;
         public UnitTest1()
         {
-            rcc = new RedditConsumerController();
-            bool authed = rcc.RefreshTokenAsync().Result;
+            _rcc = new RedditConsumerController();
+            var authed = _rcc.RefreshTokenAsync().Result;
         }
         [Fact(DisplayName = "Get comments on post")]
         public async Task Get_Post_And_Comments_Success()
         {
-            Post post = await rcc.GetPostAndCommentsByIdAsync("7gukik");
+            var post = await _rcc.GetPostAndCommentsByIdAsync("7gukik");
             Assert.Equal("Carpet cleaning", post.title);
         }
 
         [Fact(DisplayName = "Get posts from AskReddit")]
         public async Task Test_Get_Posts_From_Subreddit_Success()
         {
-            Subreddit S = await rcc.GetSubredditAsync("AskReddit");
+            var S = await _rcc.GetSubredditAsync("AskReddit");
             Assert.Equal("AskReddit", S.display_name);
         }
 
         [Fact(DisplayName = "Get comments on post 2")]
         public async Task Get_Post_And_Comments_2_Success()
         {
-            Post post = await rcc.GetPostAndCommentsByIdAsync("7i0s1o");
+            var post = await _rcc.GetPostAndCommentsByIdAsync("7i0s1o");
             Assert.Equal("What's the fastest way you've seen someone improve their life?", post.title);
         }
 
         [Fact(DisplayName = "Get account details")]
         public async Task Get_Account_Details()
         {
-            User user = await rcc.GetAccountDetailsAsync();
+            var user = await _rcc.GetAccountDetailsAsync();
             Assert.Equal("YAzEEEEEEEES", user.name);
         }
 
         [Fact(DisplayName = "Post a comment")]
         public async Task Post_Comment()
         {
-            Post pretendPost = new Post()
+            var pretendPost = new Post()
             {
                 name = "t3_6q7512"
             };
-            var reponse = await rcc.CreateCommentAsync(pretendPost, "YoYoYo!");
+            var reponse = await _rcc.CreateCommentAsync(pretendPost, "YoYoYo!");
             Assert.Equal((HttpStatusCode.OK, "Comment was posted!"), reponse);
         }
 
         [Fact(DisplayName = "Cast a vote on a post")]
         public async Task Cast_Vote()
         {
-            Post pretendPost = new Post()
+            var pretendPost = new Post()
             {
                 name = "t3_6q7512"
             };
-            var response = await rcc.VoteAsync(pretendPost, 1);
+            var response = await _rcc.VoteAsync(pretendPost, 1);
 
             Assert.Equal((HttpStatusCode.OK, "Vote succesful!"), response);
         }
@@ -74,22 +74,22 @@ namespace RedditAPIConsumer.Tests
         [Fact(DisplayName = "Subscribe/Unsubscribe to a subreddit")]
         public async Task Subscribe_Test()
         {
-            List<Subreddit> subscribedSubreddits = await rcc.GetSubscribedSubredditsAsync();
-            Subreddit subscribed = subscribedSubreddits.Where(e => e.name.Equals("t5_2qgzy")).FirstOrDefault();
+            var subscribedSubreddits = await _rcc.GetSubscribedSubredditsAsync();
+            var subscribed = subscribedSubreddits.FirstOrDefault(e => e.name.Equals("t5_2qgzy"));
 
-            Subreddit pretendSubreddit = new Subreddit()
+            var pretendSubreddit = new Subreddit()
             {
                 name = "t5_2qgzy" //Sports
             };
 
             if (subscribed == null)
             {
-                var response = await rcc.SubscribeToSubreddit(pretendSubreddit, true);
+                var response = await _rcc.SubscribeToSubreddit(pretendSubreddit, true);
                 Assert.Equal((HttpStatusCode.OK, "Subcribe successful!"), response);
             }
             else
             {
-                var response = await rcc.SubscribeToSubreddit(pretendSubreddit, false);
+                var response = await _rcc.SubscribeToSubreddit(pretendSubreddit, false);
                 Assert.Equal((HttpStatusCode.OK, "Subcribe successful!"), response);
             }
         }
@@ -97,7 +97,7 @@ namespace RedditAPIConsumer.Tests
         [Fact(DisplayName = "Get subscriptions")]
         public async Task Get_My_Subreddit_Subscriptions()
         {
-            List<Subreddit> subreddits = await rcc.GetSubscribedSubredditsAsync();
+            var subreddits = await _rcc.GetSubscribedSubredditsAsync();
             
             Assert.Equal(typeof(Subreddit), subreddits[0].GetType());
         }

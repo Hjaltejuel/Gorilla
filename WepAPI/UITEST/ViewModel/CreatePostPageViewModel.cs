@@ -10,7 +10,7 @@ namespace UITEST.ViewModel
     public class CreatePostPageViewModel
     {
         private readonly IRedditAPIConsumer _consumer;
-        private Subreddit currentSubreddit;
+        private readonly Subreddit _currentSubreddit;
 
         public delegate void PostSent();
         public event PostSent PostSentEvent;
@@ -18,12 +18,12 @@ namespace UITEST.ViewModel
         public CreatePostPageViewModel(IRedditAPIConsumer consumer, Subreddit subreddit)
         {
             _consumer = consumer;
-            currentSubreddit = subreddit;
+            _currentSubreddit = subreddit;
         }
 
         public async Task CreateNewPostAsync(string title, string body = "")
         {
-            await _consumer.CreatePostAsync(currentSubreddit, title, "self", body);
+            await _consumer.CreatePostAsync(_currentSubreddit, title, "self", body);
             PostSentEvent.Invoke();
         }
     }
