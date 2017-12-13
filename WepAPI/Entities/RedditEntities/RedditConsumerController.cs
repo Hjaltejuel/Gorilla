@@ -244,7 +244,7 @@ namespace Entities.RedditEntities
                 return null;
         }
 
-        public async Task<(HttpStatusCode, string)> CreatePostAsync(string subreddit, string title, string kind, string url, string text, Subreddit ToSubreddit)
+        public async Task<(HttpStatusCode, string)> CreatePostAsync(string title, string kind, Subreddit ToSubreddit, string text = "", string url = "")
         {
             string data = $"sr={ToSubreddit.name}&kind={kind}&title={title}&text={text}";
             HttpRequestMessage request = CreateRequest(CreatePostUrl, "POST");

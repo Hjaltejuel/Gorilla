@@ -35,6 +35,7 @@ namespace Gorilla.Model
             services.AddScoped<PostPageViewModel>();
             services.AddScoped<ProfilePageViewModel>();
             services.AddScoped<TrendingPageViewModel>();
+            services.AddScoped<CreatePostPageViewModel>();
 
 
 
