@@ -24,8 +24,9 @@ namespace UITEST.ViewModel
         public Subreddit currentSubreddit
         {
             get { return CurrentSubreddit; }
-            set {
-                if(value != CurrentSubreddit)
+            set
+            {
+                if (value != CurrentSubreddit)
                 {
                     CurrentSubreddit = value;
                     OnPropertyChanged("CurrentSubreddit");

@@ -10,6 +10,7 @@ using System.Windows.Input;
 using UITEST.View;
 using Windows.Security.Credentials;
 using Windows.UI.Xaml.Controls;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace UITEST.ViewModel
 {
@@ -40,7 +41,7 @@ namespace UITEST.ViewModel
 
             GoToCreatePostPageCommand = new RelayCommand(o => _service.Navigate(typeof(CreatePostPage), subreddit));
         }
-
+        
         public async void GeneratePosts()
         {
             subreddit = await _consumer.GetSubredditAsync("AskReddit");

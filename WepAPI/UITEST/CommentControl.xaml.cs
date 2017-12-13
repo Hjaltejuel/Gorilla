@@ -33,23 +33,38 @@ namespace UITEST
         {
             redditAPIConsumer = new RedditConsumerController();
             this.InitializeComponent();
-            //Make root comment bordered
-            if (comment.depth == 0)
+
+            //If the comment is a 'more' type
+            if (comment.body == null)
             {
-                CommentStackPanel.BorderThickness = new Thickness(1);
-                CommentStackPanel.BorderBrush = new SolidColorBrush(Colors.Gray);
-                CommentStackPanel.Margin = new Thickness(0, 0, 0, 10);
+                Button b = new Button()
+                {
+                    Content = "Klik her for at crashe",
+                    Margin = new Thickness(20, 5, 0, 5)
+                };
+                b.Click += B_Click;
+                CommentStackPanel.Children.Add(b);
             }
-
-            if (comment.depth%2==0)
-                CommentStackPanel.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
             else
-                CommentStackPanel.Background = new SolidColorBrush(Color.FromArgb(255, 240, 240, 240));
+            {
+                //Make root comment bordered
+                if (comment.depth == 0)
+                {
+                    CommentStackPanel.BorderThickness = new Thickness(1);
+                    CommentStackPanel.BorderBrush = new SolidColorBrush(Colors.Gray);
+                    CommentStackPanel.Margin = new Thickness(0, 0, 0, 10);
+                }
 
-            currentComment = comment;
-            CheckNumberOfPointsIsOnlyOne();
-            SetUpTimeText();
-            CreateChildComments();
+                if (comment.depth % 2 == 0)
+                    CommentStackPanel.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                else
+                    CommentStackPanel.Background = new SolidColorBrush(Color.FromArgb(255, 240, 240, 240));
+
+                currentComment = comment;
+                CheckNumberOfPointsIsOnlyOne();
+                SetUpTimeText();
+                CreateChildComments();
+            }
         }
 
         private void CheckNumberOfPointsIsOnlyOne()
@@ -69,18 +84,7 @@ namespace UITEST
         {
             foreach (Comment comment in currentComment.Replies)
             {
-                if (comment.body == null)
-                {
-                    Button b = new Button()
-                    {
-                        Content = "Klik her for at crashe",
-                        Margin = new Thickness(20, 5, 0, 5)
-                    };
-                    b.Click += B_Click;
-                    CommentStackPanel.Children.Add(b);
-                }
-                else
-                    CommentStackPanel.Children.Add(new CommentControl(comment));
+                CommentStackPanel.Children.Add(new CommentControl(comment));
             }
         }
 
@@ -88,7 +92,12 @@ namespace UITEST
         {
             Button b = sender as Button;
             CommentStackPanel.Children.Remove(b);
-            throw new NotImplementedException();
+            LoadMoreComments();
+        }
+
+        private void LoadMoreComments()
+        {
+
         }
 
         private void UpvoteButton_Click(object sender, RoutedEventArgs e)

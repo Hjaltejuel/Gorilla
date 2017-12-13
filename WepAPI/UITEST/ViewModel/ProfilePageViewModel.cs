@@ -9,14 +9,25 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using UITEST.Model;
 using UITEST.View;
-
+using Microsoft.Extensions.DependencyInjection;
 namespace UITEST.ViewModel
 {
     public class ProfilePageViewModel : BaseViewModel
     {
         public ObservableCollection<Post> Posts { get; private set; }
+        
 
-        public Profile CurrentProfile { get; set; }
+        private Profile currentProfile;
+
+        public Profile CurrentProfile
+        {
+            get => currentProfile;
+            set
+            {
+                currentProfile = value;
+                OnPropertyChanged("CurrentProfile");
+            }
+        }
 
         public ICommand GoToPostPageCommand { get; set; }
 
@@ -40,8 +51,30 @@ namespace UITEST.ViewModel
                 new Post {Title = "VIld Nice", Author = "Maads", NumOfVotes = 121, Text = "nice nice nicenicenicenci"},
             };
             */
+            GetCurrentProfile();
 
-            CurrentProfile = new Profile() { Name = "Morten", Username = "RedRabbitRasmusRaarup", Email = "thereddestroyer@gmail.com", AmountOfSubRedditsSubscribedTo = 12, JoinDate = new DateTime(2015, 02, 15), KarmaGiven = 201, KarmaRecieved = 635, PostCreated = 54, PathToProfilePicture = "/MockUpPictures/profilePicture.jpg" };
+            //CurrentProfile = 
+        }
+
+        private async void GetCurrentProfile()
+        {
+            var redditAPIConsumer = App.ServiceProvider.GetService<IRedditAPIConsumer>();
+            var redditUser = await redditAPIConsumer.GetAccountDetailsAsync();
+            var subscriptions = await redditAPIConsumer.GetSubscribedSubredditsAsync();
+            var unix = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            var time = unix.AddSeconds(redditUser.created);
+            CurrentProfile = new Profile()
+            {
+                Name = "Morten",
+                Username = redditUser.name,
+                Email = "thereddestroyer@gmail.com",
+                AmountOfSubRedditsSubscribedTo = subscriptions.Count,
+                JoinDate = time,
+                CommentKarma = redditUser.comment_karma,
+                LinkKarma = redditUser.link_karma,
+                PostCreated = 54,
+                PathToProfilePicture = redditUser.icon_img
+            }; 
         }
     }
 }
