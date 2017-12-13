@@ -53,7 +53,7 @@ namespace UITEST.ViewModel
         
         public async void GeneratePosts()
         {
-            subreddit = await _consumer.GetSubredditAsync("sircmpwn");
+            subreddit = await _consumer.GetSubredditAsync("AskReddit");
             PostsReadyEvent.Invoke();
             Posts = subreddit.posts;
         }

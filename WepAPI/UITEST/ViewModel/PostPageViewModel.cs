@@ -69,7 +69,6 @@ namespace UITEST.ViewModel
                     CurrentPost.score += 2;
                 else 
                     CurrentPost.score += 1;
-
                 direction = 1;
             }
             IsDisliked = false;
@@ -85,7 +84,6 @@ namespace UITEST.ViewModel
             if (IsDisliked)
             {
                 CurrentPost.score += 1;
-
                 direction = 0;
             }
             else
@@ -94,7 +92,7 @@ namespace UITEST.ViewModel
                     CurrentPost.score -= 2;
                 else
                     CurrentPost.score -= 1;
-
+                OnPropertyChanged("CurrentPost");
                 direction = -1;
             }
             IsLiked = false;
