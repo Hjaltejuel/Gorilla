@@ -27,7 +27,7 @@ namespace SLEETMIG
             {
                 name = "t3_6q7512"
             };
-            var str = await rcc.PostCommentAsync(pretendPost, "Teeest");
+            var str = await rcc.CreateCommentAsync(pretendPost, "Teeest");
 
             string a = "";
         }
