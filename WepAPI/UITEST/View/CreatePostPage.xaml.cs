@@ -34,7 +34,7 @@ namespace Gorilla.View
         private void SubmitPostButton_Click(object sender, RoutedEventArgs e)
         {
             var title = TitleText.Text;
-            if (title.Equals(string.Empty))
+            if (string.IsNullOrEmpty(title) || string.IsNullOrWhiteSpace(title))
             {
                 messageDialog = new MessageDialog("A post needs a title");
                 messageDialog.ShowAsync();

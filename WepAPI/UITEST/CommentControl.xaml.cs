@@ -27,6 +27,7 @@ namespace UITEST
     {
         private readonly Comment currentComment;
         private TextBox CommentTextBox;
+        private TextBlock errorText;
         private RelativePanel InsertCommentPanel;
         private IRedditAPIConsumer redditAPIConsumer;
         private bool IsLiked;
@@ -263,10 +264,15 @@ namespace UITEST
                 Margin = new Thickness(0, 10, 10, 0)
             };
             RelativePanel.SetBelow(SubmitButton, CommentTextBox);
+            errorText = new TextBlock() { Visibility = Visibility.Collapsed, Margin = new Thickness(10, 7, 0, 0), FontSize = 100 };
+            RelativePanel.SetRightOf(errorText, SubmitButton);
+            RelativePanel.SetBelow(errorText, CommentTextBox);
+            RelativePanel.SetAlignVerticalCenterWith(errorText, SubmitButton);
             SubmitButton.Click += CommentSaveClick;
 
             InsertCommentPanel.Children.Add(CommentTextBox);
             InsertCommentPanel.Children.Add(SubmitButton);
+            InsertCommentPanel.Children.Add(errorText);
         }
 
         private void CommentSaveClick(object sender, RoutedEventArgs e)
@@ -276,7 +282,13 @@ namespace UITEST
 
         private void InsertComment(AbstractCommentable abstractCommentableToCommentOn)
         {
-            if (!CommentTextBox.Text.Equals(""))
+            string text = CommentTextBox.Text;
+            if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
+            {
+                errorText.Text = "We need something in the textbox";
+                errorText.Visibility = Visibility.Visible;
+            }
+            else
             {
                 var newComment = new Comment()
                 {

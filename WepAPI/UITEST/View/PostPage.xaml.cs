@@ -144,7 +144,8 @@ namespace UITEST.View
 
         private void InsertComment(AbstractCommentable abstractCommentableToCommentOn)
         {
-            if (CommentTextBox.Text.Equals(""))
+            string text = CommentTextBox.Text;
+            if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
             {
                 errorText.Text = "We need something in the textbox";
                 errorText.Visibility = Visibility.Visible;
