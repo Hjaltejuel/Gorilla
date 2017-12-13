@@ -27,9 +27,11 @@ namespace UITEST
         private readonly Comment currentComment;
         private TextBox CommentTextBox;
         private RelativePanel InsertCommentPanel;
+        private IRedditAPIConsumer redditAPIConsumer;
 
         public CommentControl(Comment comment)
         {
+            redditAPIConsumer = new RedditConsumerController();
             this.InitializeComponent();
             //Make root comment bordered
             if (comment.depth == 0)
@@ -172,6 +174,8 @@ namespace UITEST
                     author = "ASD",
                     depth = currentComment.depth + 1
                 };
+
+                redditAPIConsumer.PostCommentAsync(abstractCommentableToCommentOn, newComment.body);
 
                 currentComment.Replies.Insert(0, newComment);
 

@@ -39,8 +39,6 @@ namespace UITEST
            
             _vm = App.ServiceProvider.GetService<MainPageViewModel>();
 
-          
-
             DataContext = _vm;
 
             SizeChanged += ChangeListViewWhenSizedChanged;

@@ -39,9 +39,9 @@ namespace UITEST.ViewModel
         {
 
 
-            User user = await  _consumer.GetAccountDetails();
+            User user = await  _consumer.GetAccountDetailsAsync();
             
-            var userPreferences = (await _userPreferenceRepository.FindAsync(user.username)).ToArray();
+            var userPreferences = (await _userPreferenceRepository.FindAsync(user.name)).ToArray();
 
             var subreddits = new HashSet<string>();
             if (userPreferences.Count() < 15)

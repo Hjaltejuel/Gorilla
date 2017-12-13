@@ -24,18 +24,19 @@ namespace UITEST.ViewModel
         public MainPageViewModel(ISubredditRepository repository, IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer) : base(service)
         {
             _consumer = consumer;
+            _consumer.RefreshTokenAsync();
+            //bool hasToken = _consumer.RefreshTokenAsync().Result;
+            //if (!hasToken)
+            //{
+            //    //TODO
+            //    //FUUUUUCK 
+            //}
             _repository = repository;
             _helper = helper;
-
-            Initialize();
-         
-            
         }
 
         public async void GeneratePosts()
         {
-
-          
             Subreddit subreddit = await _consumer.GetSubredditAsync("AskReddit");
             PostsReadyEvent.Invoke();
             Posts = subreddit.posts;

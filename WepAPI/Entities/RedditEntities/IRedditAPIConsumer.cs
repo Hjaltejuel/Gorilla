@@ -7,17 +7,18 @@ using System.Threading.Tasks;
 
 namespace Entities.RedditEntities
 {
-    public interface IRedditAPIConsumer : IWebConsumer
+    public interface IRedditAPIConsumer
     {
         Task<Post> GetPostAndCommentsByIdAsync(string name_id);
-        Task<Subreddit> GetSubredditAsync(string subredditName, string sortBy="hot");
+        Task<Subreddit> GetSubredditAsync(string subredditName, string sortBy = "hot");
+        Task<List<Subreddit>> GetSubscribedSubredditsAsync();
         Task<(HttpStatusCode, string)> LoginToReddit(string username, string password);
-        Task<(HttpStatusCode, string)> CreateComment(AbstractCommentable thing, string commentText);
-        Task<(HttpStatusCode, string)> SubscribeToSubreddit(Subreddit subreddit);
-        Task<(HttpStatusCode, string)> CreatePostAsync(Post post);
+        Task<(HttpStatusCode, string)> PostCommentAsync(AbstractCommentable thing, string commentText);
+        Task<(HttpStatusCode, string)> SubscribeToSubreddit(Subreddit subreddit, bool IsSubscribing);
+        Task<(HttpStatusCode, string)> CreatePostAsync(string subreddit, string title, string kind, string url, string text, Subreddit ToSubreddit);
         Task<(HttpStatusCode, string)> PostVoteAsync(AbstractCommentable commentable, int direction);
-        Task<User> GetAccountDetails();
-        Task RefreshToken();
+        Task<User> GetAccountDetailsAsync();
+        Task<bool> RefreshTokenAsync();
 
     }
 }

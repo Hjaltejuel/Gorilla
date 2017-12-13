@@ -17,6 +17,7 @@ namespace UITEST.ViewModel
         public delegate void CommentsReady();
         public event CommentsReady CommentsReadyEvent;
         private Post currentpost;
+        IRedditAPIConsumer redditAPIConsumer;
 
         public Post CurrentPost
         {
@@ -40,19 +41,19 @@ namespace UITEST.ViewModel
 
         public async void GetCurrentPost(Post post)
         {
-            IRedditAPIConsumer redditAPIConsumer = new RedditConsumerController();
             CurrentPost = await redditAPIConsumer.GetPostAndCommentsByIdAsync(post.id);
             CommentsReadyEvent.Invoke();
         }
         public void Initialize(Post post)
         {
+            redditAPIConsumer = new RedditConsumerController();
             CurrentPost = post;
             GetCurrentPost(post);
         }
 
         public void AddComment(AbstractCommentable commentableToCommentOn, Comment newComment)
         {
-
+            redditAPIConsumer.PostCommentAsync(commentableToCommentOn, newComment.body);
         }
     }
 }

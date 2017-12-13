@@ -1,11 +1,7 @@
 ﻿using Entities.RedditEntities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SLET_MIG
+namespace SLEETMIG
 {
     class Program
     {
@@ -17,7 +13,7 @@ namespace SLET_MIG
         static async void GetAccountDetails()
         {
             IRedditAPIConsumer rcc = new RedditConsumerController();
-            User user = await rcc.GetAccountDetails();
+            User user = await rcc.GetAccountDetailsAsync();
             string a = "";
         }
 
@@ -27,7 +23,11 @@ namespace SLET_MIG
             //(HttpStatusCode, string) loginResponse = await rcc.LoginToReddit("YAzEEEEEEEES", "12341234");
 
             //User asd = await rcc.GetAccountDetails();
-            var str = await rcc.CreateComment(null, null);
+            Post pretendPost = new Post()
+            {
+                name = "t3_6q7512"
+            };
+            var str = await rcc.PostCommentAsync(pretendPost, "Teeest");
 
             string a = "";
         }
@@ -38,9 +38,9 @@ namespace SLET_MIG
             IRedditAPIConsumer rcc = new RedditConsumerController();
             //(HttpStatusCode, string) loginResponse = await rcc.LoginToReddit("YAzEEEEEEEES", "12341234");
 
-            rcc.RefreshToken();
+            rcc.RefreshTokenAsync();
             string a = "";
         }
-
     }
 }
+    
