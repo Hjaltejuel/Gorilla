@@ -23,7 +23,7 @@ namespace UITEST.ViewModel
 
         public async Task CreateNewPostAsync(string title, string body = "")
         {
-            await _consumer.CreatePostAsync(title, "self", currentSubreddit, body);
+            await _consumer.CreatePostAsync(currentSubreddit, title, "self", body);
             PostSentEvent.Invoke();
         }
     }
