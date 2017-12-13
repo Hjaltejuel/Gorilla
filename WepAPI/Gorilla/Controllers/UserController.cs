@@ -47,11 +47,12 @@ namespace WepAPI.Controllers
             }
             return Ok(result);
         }
-        
+
         // POST: api/User
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody]User user)
         {
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
