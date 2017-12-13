@@ -175,30 +175,62 @@ namespace UITEST.View
             _vm.PostDislikedAsync();
         }
 
+
+
+        //Grimt i know.. what to do? det er et midlertidligt workaround
+        private Style UpvoteClickedStyle = App.Current.Resources["LikeButtonClicked"] as Style;
+        private Style UpvoteNotClickedStyle = App.Current.Resources["LikeButton"] as Style;
+        private Style DownvoteClickedStyle = App.Current.Resources["DislikeButtonClicked"] as Style;
+        private Style DownvoteNotClickedStyle = App.Current.Resources["DislikeButton"] as Style;
+
         private void LikeSuccesful()
         {
-            var UpvoteClickedStyle = App.Current.Resources["LikeButtonClicked"] as Style;
-            var UpvoteNotClickedStyle = App.Current.Resources["LikeButton"] as Style;
+            int votes;
+            int.TryParse(Votes.Text, out votes);
 
             if (Upvote.Style.Equals(UpvoteClickedStyle))
+            {
                 Upvote.Style = UpvoteNotClickedStyle;
+                Votes.Text = (votes - 1).ToString();
+            }
             else
+            {
+                if (Downvote.Style.Equals(DownvoteClickedStyle))
+                {
+                    Votes.Text = (votes + 2).ToString();
+
+                }
+                else
+                {
+                    Votes.Text = (votes + 1).ToString();
+                }
                 Upvote.Style = UpvoteClickedStyle;
 
-            Downvote.Style = App.Current.Resources["DislikeButton"] as Style;
+            }
+            Downvote.Style = DownvoteNotClickedStyle;
         }
 
         private void DislikeSuccesful()
         {
-            var DownvoteClickedStyle = App.Current.Resources["DislikeButtonClicked"] as Style;
-            var DownvoteNotClickedStyle = App.Current.Resources["DislikeButton"] as Style;
+            int votes;
+            int.TryParse(Votes.Text, out votes);
 
             if (Downvote.Style.Equals(DownvoteClickedStyle))
+            {
                 Downvote.Style = DownvoteNotClickedStyle;
+                Votes.Text = (votes + 1).ToString();
+            }
             else
+            {
+                if (Upvote.Style.Equals(UpvoteClickedStyle))
+                    Votes.Text = (votes - 2).ToString();
+                else
+                {
+                    Votes.Text = (votes - 1).ToString();
+                }
                 Downvote.Style = DownvoteClickedStyle;
-
-            Upvote.Style = App.Current.Resources["LikeButton"] as Style;
+            }
+            Upvote.Style = UpvoteNotClickedStyle;
         }
     }
 }
