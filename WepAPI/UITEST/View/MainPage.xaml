@@ -23,6 +23,7 @@
             <AppBarButton Icon="Contact" Label="Profile" Command="{Binding GoToProfilePageCommand}"/>
         </CommandBar>
         <TextBlock Name="PageTitleText" Grid.Column="0" Grid.Row="1" Text="Home" Style="{StaticResource PageTitleText}"/>
+        <Button Content="Create post" Grid.Column="0" Grid.Row="1" Command="{Binding GoToCreatePostPageCommand}" HorizontalAlignment="Right"/>
         <Rectangle Name="HorizontalSplitter" Grid.Row="2" HorizontalAlignment="Stretch" Fill="Gray" Height="1"/>
         <ListView Grid.Row="3" x:Name="PostsList" Height="800" SelectionMode="None" ItemsSource="{Binding Posts}" ScrollViewer.VerticalScrollBarVisibility="Visible" DataContextChanged="List_DataContextChanged">
             <ListView.ItemTemplate>

@@ -30,14 +30,16 @@
         </CommandBar>
         <RelativePanel Grid.Column="0" Grid.Row="1">
             <TextBlock Name="Title" Text="Title" FontSize="20" Margin="10, 10, 0, 0"/>
-            <TextBox Name="TitleText" TextWrapping="Wrap" Width="400" Height="auto" PlaceholderText="Insert your title here" RelativePanel.Below="Title" />
+            <TextBox Name="TitleText" TextWrapping="Wrap" Width="400" Height="auto" PlaceholderText="Insert your title here" RelativePanel.Below="Title" Margin="10, 10, 0, 0"/>
             <TextBlock Name="Body" Text="Text " FontSize="20" RelativePanel.Below="TitleText" Margin="10, 10, 5, 0"/>
             <TextBlock Name="BodyOptionalText" Text="(optional)" FontSize="14" Foreground="Gray" RelativePanel.RightOf="Body" RelativePanel.AlignVerticalCenterWith="Body" Margin="0, 15, 0, 0"/>
-            <TextBox Name="BodyText" TextWrapping="Wrap" Width="400" Height="300" PlaceholderText="Insert your text here" RelativePanel.AlignHorizontalCenterWith="TitleText" RelativePanel.Below="Body" Margin="0, 10, 0, 0"/>
+            <TextBox Name="BodyText" TextWrapping="Wrap" Width="400" Height="300" PlaceholderText="Insert your text here" RelativePanel.AlignHorizontalCenterWith="TitleText" RelativePanel.Below="Body" Margin="10, 10, 0, 0"/>
 
+            <TextBlock Name="PostingTo" Text="Posting to " FontSize="10" Foreground="Gray" RelativePanel.AlignVerticalCenterWith="SubmitPostButton" Margin="5, 20, 0, 0"/>
+            <TextBlock Text="{x:Bind Path = _vm.currentSubreddit.display_name_prefixed}" FontSize="10" Foreground="Gray" RelativePanel.AlignVerticalCenterWith="PostingTo" RelativePanel.RightOf="PostingTo" Margin="3, 20, 0, 0"/>
             <Button Name="SubmitPostButton" Content="Submit post" Click="SubmitPostButton_Click" RelativePanel.Below="BodyText" RelativePanel.AlignRightWith="BodyText" Margin="0, 20, 0, 0"/>
         </RelativePanel>
 
-        <ProgressRing Name="LoadingRing" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4" Height="100" Width="100"/>
+        <ProgressRing Name="LoadingRing" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Height="200" Width="200"/>
     </Grid>
 </Page>
