@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WepAPI.Controllers
 {
-    
     [Produces("application/json")]
     [Route("api/User")]
     public class UserController : Controller

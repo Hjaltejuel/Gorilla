@@ -39,9 +39,6 @@ namespace Gorilla.Model
             services.AddScoped<CreatePostPageViewModel>();
             services.AddScoped<LoginPageViewModel>();
 
-
-
-
             return services.BuildServiceProvider();
         }
     }
