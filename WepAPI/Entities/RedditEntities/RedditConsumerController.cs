@@ -195,7 +195,7 @@ namespace Entities.RedditEntities
         public async Task<(HttpStatusCode, string)> SubscribeToSubreddit(Subreddit subreddit, bool IsSubscribing)
         {
             string action = IsSubscribing ? "sub" : "unsub";
-            string data = $"action={action}&sr={subreddit.display_name}";
+            string data = $"action={action}&sr={subreddit.name}";
             HttpRequestMessage request = CreateRequest(SubscribeUrl, "POST");
             request.Content = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
             JToken response = await SendRequest(request);
