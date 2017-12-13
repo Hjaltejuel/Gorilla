@@ -175,7 +175,7 @@ namespace UITEST
                     depth = currentComment.depth + 1
                 };
 
-                redditAPIConsumer.PostCommentAsync(abstractCommentableToCommentOn, newComment.body);
+                redditAPIConsumer.CreateCommentAsync(abstractCommentableToCommentOn, newComment.body);
 
                 currentComment.Replies.Insert(0, newComment);
 

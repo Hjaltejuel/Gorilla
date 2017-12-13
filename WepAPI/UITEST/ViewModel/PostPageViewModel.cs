@@ -53,7 +53,7 @@ namespace UITEST.ViewModel
 
         public void AddComment(AbstractCommentable commentableToCommentOn, Comment newComment)
         {
-            redditAPIConsumer.PostCommentAsync(commentableToCommentOn, newComment.body);
+            redditAPIConsumer.CreateCommentAsync(commentableToCommentOn, newComment.body);
         }
     }
 }

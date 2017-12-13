@@ -162,7 +162,8 @@ namespace Entities.RedditEntities
                 return null;
         }
 
-        public async Task<(HttpStatusCode, string)> PostVoteAsync(AbstractCommentable thing, int direction)
+        //Direction: -1 downvote | 0 remove vote | 1 upvote
+        public async Task<(HttpStatusCode, string)> VoteAsync(AbstractCommentable thing, int direction)
         {
             string data = $"id={thing.name}&dir={direction}";
             HttpRequestMessage request = CreateRequest(VoteUrl, "POST");
@@ -173,8 +174,7 @@ namespace Entities.RedditEntities
             else
                 return (HttpStatusCode.BadRequest, "Could not vote");
         }
-
-        public async Task<(HttpStatusCode, string)> PostCommentAsync(AbstractCommentable thing, string commentText)
+        public async Task<(HttpStatusCode, string)> CreateCommentAsync(AbstractCommentable thing, string commentText)
         {
             string data = $"thing_id={thing.name}&text={commentText}";
             HttpRequestMessage request = CreateRequest(CommentUrl, "POST");
@@ -196,7 +196,7 @@ namespace Entities.RedditEntities
         {
             string action = IsSubscribing ? "sub" : "unsub";
             string data = $"action={action}&sr={subreddit.display_name}";
-            HttpRequestMessage request = CreateRequest(CreatePostUrl, "POST");
+            HttpRequestMessage request = CreateRequest(SubscribeUrl, "POST");
             request.Content = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
             JToken response = await SendRequest(request);
 
@@ -243,10 +243,15 @@ namespace Entities.RedditEntities
             else
                 return null;
         }
-
-        public async Task<(HttpStatusCode, string)> CreatePostAsync(string subreddit, string title, string kind, string url, string text, Subreddit ToSubreddit)
+        //Kind: self | link
+        // if kind is link, then url must be specified
+        public async Task<(HttpStatusCode, string)> CreatePostAsync(Subreddit ToSubreddit, string title, string kind, string text, string url="")
         {
-            string data = $"sr={ToSubreddit.name}&kind={kind}&title={title}&text={text}";
+            string data;
+            if (kind.Equals("link"))
+                data = $"sr={ToSubreddit.name}&kind={kind}&title={title}&url={url}";
+            else
+                data = $"sr={ToSubreddit.name}&kind={kind}&title={title}&text={text}";
             HttpRequestMessage request = CreateRequest(CreatePostUrl, "POST");
             request.Content = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
             JToken response = await SendRequest(request);

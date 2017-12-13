@@ -54,7 +54,7 @@ namespace RedditAPIConsumer.Tests
             {
                 name = "t3_6q7512"
             };
-            var reponse = await rcc.PostCommentAsync(pretendPost, "YoYoYo!");
+            var reponse = await rcc.CreateCommentAsync(pretendPost, "YoYoYo!");
             Assert.Equal((HttpStatusCode.OK, "Comment was posted!"), reponse);
         }
 
@@ -65,7 +65,7 @@ namespace RedditAPIConsumer.Tests
             {
                 name = "t3_6q7512"
             };
-            var response = await rcc.PostVoteAsync(pretendPost, 1);
+            var response = await rcc.VoteAsync(pretendPost, 1);
 
             Assert.Equal((HttpStatusCode.OK, "Vote succesful!"), response);
         }
