@@ -14,7 +14,6 @@ namespace UITEST.ViewModel
     {
         public delegate void CommentsReady();
         public event CommentsReady CommentsReadyEvent;
-
         private Post currentpost;
         IRedditAPIConsumer redditAPIConsumer;
         private bool IsLiked;
