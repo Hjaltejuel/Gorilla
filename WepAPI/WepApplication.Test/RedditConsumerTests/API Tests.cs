@@ -105,7 +105,7 @@ namespace RedditAPIConsumer.Tests
         [Fact(DisplayName = "Create post")]
         public async Task Create_Post()
         {
-            List<Subreddit> subreddits = await rcc.GetSubscribedSubredditsAsync();
+            List<Subreddit> subreddits = await _rcc.GetSubscribedSubredditsAsync();
 
             Assert.Equal(typeof(Subreddit), subreddits[0].GetType());
         }
