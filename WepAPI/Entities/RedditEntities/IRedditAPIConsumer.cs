@@ -19,7 +19,6 @@ namespace Entities.RedditEntities
         Task<(HttpStatusCode, string)> CreatePostAsync(Subreddit ToSubreddit, string title, string kind, string text = "", string url = "");
         Task<(HttpStatusCode, string)> VoteAsync(AbstractCommentable commentable, int direction);
         Task<User> GetAccountDetailsAsync();
-        Task<bool> RefreshTokenAsync();
 
     }
 }

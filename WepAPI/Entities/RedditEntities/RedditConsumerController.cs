@@ -29,7 +29,8 @@ namespace Entities.RedditEntities
         private const string Client_id = "ephxxGR7ZA77nA";
         private bool IsAuthenticated = false;
         private string token = "";
-        private string refresh_token = "";//"51999737725-OYI8KJ5T56KSO4xAyvoVhA8t5TM";
+        private string refresh_token = "";
+        //"51999737725-OYI8KJ5T56KSO4xAyvoVhA8t5TM";
 
         public async Task Authenticate(string code)
         {
@@ -60,7 +61,7 @@ namespace Entities.RedditEntities
 
             var request = new HttpRequestMessage()
             {
-                RequestUri = uri                
+                RequestUri = uri
             };
             if (IsOAuth)
                 request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
@@ -114,7 +115,13 @@ namespace Entities.RedditEntities
                 subreddit.posts = new ObservableCollection<Post>();
                 foreach (var child in postsListing.data.children)
                 {
-                    subreddit.posts.Add(child.data.ToObject<Post>());
+                    try
+                    {
+                        subreddit.posts.Add(child.data.ToObject<Post>());
+                    } catch(Exception e) {
+                        var a = e;
+                        var b = "";
+                    }
                 }
                 return subreddit;
             }
@@ -186,19 +193,19 @@ namespace Entities.RedditEntities
 
             return (HttpStatusCode.OK, "Subcribe successful!");
         }
-        public async Task<bool> RefreshTokenAsync()
-        {
-            var request = CreateRequest(AccessTokenUrl, "POST");
-            var basicAuth = Convert.ToBase64String(Encoding.UTF8.GetBytes(Client_id + ":"));
-            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", basicAuth);
-            request.Content = new StringContent($"grant_type=refresh_token&refresh_token={refresh_token}", Encoding.UTF8, "application/x-www-form-urlencoded");
-            var responseBody = await SendRequest(request);
+        //public async Task<bool> RefreshTokenAsync()
+        //{
+        //    var request = CreateRequest(AccessTokenUrl, "POST");
+        //    var basicAuth = Convert.ToBase64String(Encoding.UTF8.GetBytes(Client_id + ":"));
+        //    request.Headers.Authorization = new AuthenticationHeaderValue("Basic", basicAuth);
+        //    request.Content = new StringContent($"grant_type=refresh_token&refresh_token={refresh_token}", Encoding.UTF8, "application/x-www-form-urlencoded");
+        //    var responseBody = await SendRequest(request);
 
-            if (responseBody["error"] != null) return false;
+        //    if (responseBody["error"] != null) return false;
 
-            token = responseBody["access_token"].ToObject<string>();
-            return true;
-        }
+        //    token = responseBody["access_token"].ToObject<string>();
+        //    return true;
+        //}
         public async Task<List<Subreddit>> GetSubscribedSubredditsAsync()
         {
             var subscribedSubreddits = new List<Subreddit>();

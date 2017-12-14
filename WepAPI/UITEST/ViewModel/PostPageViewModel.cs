@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UITEST.Model;
 using UITEST.View;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace UITEST.ViewModel
 {
@@ -41,7 +42,7 @@ namespace UITEST.ViewModel
 
         public void Initialize(Post post)
         {
-            redditAPIConsumer = new RedditConsumerController();
+            redditAPIConsumer = App.ServiceProvider.GetService<IRedditAPIConsumer>();
             CurrentPost = post;
             GetCurrentPost(post);
         }

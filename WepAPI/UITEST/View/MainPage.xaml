@@ -23,7 +23,7 @@
             <AppBarButton Icon="Contact" Label="Profile" Command="{Binding GoToProfilePageCommand}"/>
         </CommandBar>
         <TextBlock Name="PageTitleText" Grid.Column="0" Grid.Row="1" Text="Home" Style="{StaticResource PageTitleText}"/>
-        <Button Name="SubsribeToSubredditButton" Content="Subscribe" Grid.Column="0" Grid.Row="1" Click="SubsribeToSubredditButton_Click" HorizontalAlignment="Right" Margin="0, 0, 335, 0"/>
+        <Button Name="SubsribeToSubredditButton" Content="{x:Bind _vm.subscribeString}" Grid.Column="0" Grid.Row="1" Click="SubsribeToSubredditButton_Click" HorizontalAlignment="Right" Margin="0, 0, 335, 0"/>
         <Button Name="CreatePostButton" Content="Create post" Grid.Column="0" Grid.Row="1" Command="{Binding GoToCreatePostPageCommand}" HorizontalAlignment="Right" RelativePanel.LeftOf="SearchBox" Margin="0, 0, 220, 0"/>
         <SearchBox Name="SearchBox" Grid.Column="0" Grid.Row="1" Width="200" Height="32" HorizontalAlignment="Right" QuerySubmitted="SearchBox_QuerySubmitted"/>
         <Rectangle Name="HorizontalSplitter" Grid.Row="2" HorizontalAlignment="Stretch" Fill="Gray" Height="1"/>
