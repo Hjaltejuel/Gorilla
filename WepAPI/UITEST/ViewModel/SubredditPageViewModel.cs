@@ -1,34 +1,38 @@
-﻿using Entities.RedditEntities;
-using Gorilla.AuthenticationGorillaAPI;
-using Gorilla.Model;
-using Gorilla.View;
-using Model;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using UITEST.View;
-using Windows.Security.Credentials;
-using Windows.UI.Xaml.Controls;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
-using System.Diagnostics;
-using System.Net;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Gorilla.Model;
+using Entities.RedditEntities;
+using System.Windows.Input;
+using System.Collections.ObjectModel;
+using Gorilla.AuthenticationGorillaAPI;
+using Gorilla.View;
 
 namespace UITEST.ViewModel
 {
-    public class MainPageViewModel : BaseViewModel
+    class SubredditPageViewModel : BaseViewModel
     {
         public ICommand GoToCreatePostPageCommand { get; set; }
         bool firstTime = true;
         IRedditAPIConsumer _consumer;
-     
+
         public Subreddit _Subreddit;
         public ObservableCollection<Post> posts;
         public string subscribeString = "Subscribe";
         bool userIsSubscribed;
-        bool UserIsSubscribed {
+        public delegate void PostsReady();
+        public event PostsReady PostsReadyEvent;
+
+        public SubredditPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer) : base(service)
+        {
+            _consumer = consumer;
+            _helper = helper;
+            GoToCreatePostPageCommand = new RelayCommand(o => _service.Navigate(typeof(CreatePostPage), _Subreddit));
+        }
+        bool UserIsSubscribed
+        {
             get => userIsSubscribed;
             set
             {
@@ -47,21 +51,32 @@ namespace UITEST.ViewModel
             }
         }
 
-        public delegate void PostsReady();
-        public event PostsReady PostsReadyEvent;
 
-        public MainPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer) : base(service)
+        public async Task GeneratePosts(string subredditName, string sort = "hot")
         {
-            _consumer = consumer;
-            _helper = helper;
-            GoToCreatePostPageCommand = new RelayCommand(o => _service.Navigate(typeof(CreatePostPage), _Subreddit));
-            Initialize();
-        }
+            //if (_vm._Subreddit.display_name == null)
+            //{
+            //    PageTitleText.Text = "";
+            //    NothingFoundTextBlock = new TextBlock() { Text = $"Nothing Found on r/{SubredditToSearchFor}", FontSize = 50, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
+            //    _Grid.Children.Add(NothingFoundTextBlock);
+            //    Grid.SetRow(NothingFoundTextBlock, 3);
+            //}
+            //else
+            //{
+            //    PageTitleText.Text = _vm._Subreddit.display_name_prefixed;
+            //}
+            //_vm._Subreddit = e.Parameter as Subreddit;
+            //if (_vm._Subreddit != null)
+            //    PageTitleText.Text = _vm._Subreddit.display_name_prefixed;
 
-        public async Task GeneratePosts(string s = "sircmpwn", string sort = "hot")
-        {
-            _Subreddit = await _consumer.GetSubredditAsync(s, sort);
+            _Subreddit = await _consumer.GetSubredditAsync(subredditName, sort);
+            if(_Subreddit==null || _Subreddit.name == null)
+            {
+                return;
+            }
+
             Posts = _Subreddit.posts;
+
             foreach (Post p in Posts)
             {
                 if (p.is_self)
@@ -74,6 +89,7 @@ namespace UITEST.ViewModel
                     {
                         p.thumbnail = "/Assets/Externallink.png";
                     }
+
                 }
             }
             List<Subreddit> subs = await _consumer.GetSubscribedSubredditsAsync();
@@ -91,11 +107,11 @@ namespace UITEST.ViewModel
         {
             if (await Authorize() != null)
             {
-                GeneratePosts();
+                //GeneratePosts();
             }
             else
             {
-                if(firstTime == true)
+                if (firstTime == true)
                 {
                     firstTime = false;
                 }

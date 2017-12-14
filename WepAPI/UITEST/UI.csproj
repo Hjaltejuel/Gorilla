@@ -122,6 +122,10 @@
     <Compile Include="Model\IoCContainer.cs" />
     <Compile Include="Model\NavigationService.cs" />
     <Compile Include="Misc\TimeHelper.cs" />
+    <Compile Include="ViewModel\SubredditPageViewModel.cs" />
+    <Compile Include="View\SubredditPage.xaml.cs">
+      <DependentUpon>SubredditPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\PostViewControl.xaml.cs">
       <DependentUpon>PostViewControl.xaml</DependentUpon>
     </Compile>
@@ -232,6 +236,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="CommentControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SubredditPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

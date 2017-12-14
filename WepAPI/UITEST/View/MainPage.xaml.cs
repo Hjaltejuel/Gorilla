@@ -28,13 +28,19 @@ namespace UITEST.View
         public MainPage()
         {
             this.InitializeComponent();
-            PostViewControl a;
             _vm = App.ServiceProvider.GetService<MainPageViewModel>();
             DataContext = _vm;
             SizeChanged += ChangeListViewWhenSizedChanged;
             _vm.PostsReadyEvent += PostReadyEvent;
             SortTypes = new List<string>() { "hot", "new", "rising", "top", "controversial" };
+            PostsList.OnNagivated += PostsList_OnNagivated;
         }
+
+        private void PostsList_OnNagivated(Post post)
+        {
+            Frame.Navigate(typeof(PostPage), post);
+        }
+
         private void ChangeListViewWhenSizedChanged(object sender, SizeChangedEventArgs e)
         {
             PostsList.Height = e.NewSize.Height - (commandBar.ActualHeight+75);
@@ -56,19 +62,7 @@ namespace UITEST.View
         private async void SearchForSubreddit(string SubredditToSearchFor)
         {
             LoadingRing.IsActive = true;
-            Grid.Children.Remove(NothingFoundTextBlock);
-            await _vm.GeneratePosts(SubredditToSearchFor);
-            if (_vm._Subreddit.display_name == null)
-            {
-                PageTitleText.Text = "";
-                NothingFoundTextBlock = new TextBlock() { Text = $"Nothing Found on r/{SubredditToSearchFor}", FontSize = 50, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center};
-                Grid.Children.Add(NothingFoundTextBlock);
-                Grid.SetRow(NothingFoundTextBlock, 3);
-            }
-            else
-            {
-                PageTitleText.Text = _vm._Subreddit.display_name_prefixed;
-            }
+            Frame.Navigate(typeof(SubredditPage), SubredditToSearchFor);
         }
 
         private void SubsribeToSubredditButton_Click(object sender, RoutedEventArgs e)
