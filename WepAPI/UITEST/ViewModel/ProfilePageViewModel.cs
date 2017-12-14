@@ -51,9 +51,10 @@ namespace UITEST.ViewModel
 
         public async Task Initialize()
         {
-           // await _repository.CreateAsync(new Entities.User {Username = "Test5", PathToProfilePicture = "profilePicture.jpg" });
+            // await _repository.CreateAsync(new Entities.User {Username = "Test5", PathToProfilePicture = "profilePicture.jpg" });
+            await GetCurrentProfile();
 
-            ImageBytes = await  _repository.FindImageAsync("Test5");
+            ImageBytes = await _repository.FindImageAsync("Test5");
             
             /*
             Posts = new ObservableCollection<Post>
@@ -64,8 +65,6 @@ namespace UITEST.ViewModel
                 new Post {Title = "VIld Nice", Author = "Maads", NumOfVotes = 121, Text = "nice nice nicenicenicenci"},
             };
             */
-            
-            await GetCurrentProfile();
         }
 
         private async Task GetCurrentProfile()
