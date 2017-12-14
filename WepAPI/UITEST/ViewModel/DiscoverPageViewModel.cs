@@ -4,11 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using UITEST.Model;
-using UITEST.View;
 using Model;
 
 namespace UITEST.ViewModel

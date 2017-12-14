@@ -64,6 +64,22 @@ namespace UITEST.ViewModel
            
                 subreddit = await _consumer.GetSubredditAsync(s, sort);
                 Posts = subreddit.posts;
+
+            foreach (Post p in Posts)
+            {
+                if (p.is_self)
+                {
+                    p.thumbnail = "/Assets/Textpost.png";
+                } 
+                else
+                {
+                    if(p.thumbnail == "default")
+                    {
+                        p.thumbnail = "/Assets/Externallink.png";
+                    }
+                  
+                }
+            }
           
             List<Subreddit> subs = await _consumer.GetSubscribedSubredditsAsync();
             UserIsSubscribed = !subs.Contains(subreddit);
