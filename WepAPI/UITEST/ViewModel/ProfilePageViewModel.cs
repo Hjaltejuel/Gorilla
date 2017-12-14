@@ -92,7 +92,6 @@ namespace UITEST.ViewModel
             string numberOfComments;
             if (UserComments.Count > 25) numberOfComments = "25+";
             else numberOfComments = UserComments.Count.ToString();
-
             var unix = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
             var time = unix.AddSeconds(redditUser.created);
             CurrentProfile = new Profile()
