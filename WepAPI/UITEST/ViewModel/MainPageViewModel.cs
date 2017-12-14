@@ -23,7 +23,6 @@ namespace UITEST.ViewModel
         bool firstTime = true;
         IRedditAPIConsumer _consumer;
         protected ISubredditRepository _repository;
-        public string subredditString;
         public Subreddit subreddit;
         public ObservableCollection<Post> posts;
         public ObservableCollection<Post> Posts
@@ -53,13 +52,14 @@ namespace UITEST.ViewModel
             _helper = helper;
 
             GoToCreatePostPageCommand = new RelayCommand(o => _service.Navigate(typeof(CreatePostPage), subreddit));
+            GeneratePosts();
         }
         
-        public async Task GeneratePosts(string s = "sircmpwn")
+        public async Task GeneratePosts(string s = "sircmpwn", string sort = "hot")
         {
             //try
             //{
-                subreddit = await _consumer.GetSubredditAsync(s);
+                subreddit = await _consumer.GetSubredditAsync(s, sort);
                 Posts = subreddit.posts;
             //}
             //catch (JsonReaderException e)

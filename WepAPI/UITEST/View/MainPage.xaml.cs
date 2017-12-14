@@ -16,6 +16,7 @@ using Entities.RedditEntities;
 using UITEST.View;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Text;
+using System.Collections.Generic;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -28,19 +29,20 @@ namespace UITEST
     public sealed partial class MainPage : Page
     {
         private readonly MainPageViewModel _vm;
+        private List<string> SortTypes;
         private TextBlock NothingFoundTextBlock;
 
         public MainPage()
         {
             this.InitializeComponent();
             PostsList.Visibility = Visibility.Collapsed;
-            LoadingRing.IsActive = true;
            
             _vm = App.ServiceProvider.GetService<MainPageViewModel>();
             DataContext = _vm;
-
+           
             SizeChanged += ChangeListViewWhenSizedChanged;
             _vm.PostsReadyEvent += PostReadyEvent;
+            SortTypes = new List<string>() { "hot", "new", "rising", "top", "controversial" };
         }
         private void ChangeListViewWhenSizedChanged(object sender, SizeChangedEventArgs e)
         {
@@ -51,17 +53,6 @@ namespace UITEST
             LoadingRing.IsActive = false;
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            _vm.Initialize();
-        }
-
-        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Frame.Navigate(typeof(PostPage), e.AddedItems[0]);
-        }
-        
         private void Title_Click(object sender, RoutedEventArgs e)
         {
             var btn = sender as Button;
@@ -96,7 +87,14 @@ namespace UITEST
             var btn = sender as Button;
             btn.FontWeight = FontWeights.Normal;
         }
-        
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            if (_vm.subreddit != null)
+                PageTitleText.Text = _vm.subreddit.display_name_prefixed;
+        }
+
         private void List_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
             PostsList.Visibility = Visibility.Visible;
@@ -128,6 +126,14 @@ namespace UITEST
         {
             _vm.SubscribeToSubreddit();
             string s = _vm.subreddit.user_is_subscriber;
+        }
+
+        private void SortBy_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LoadingRing.IsActive = true;
+            var comboBox = sender as ComboBox;
+            var SortString = comboBox.SelectedItem as string;
+            _vm.GeneratePosts(_vm.subreddit.display_name, SortString);
         }
     }
 }
