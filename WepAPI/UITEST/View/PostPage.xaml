@@ -68,6 +68,6 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-        <ProgressRing Name="LoadingRing" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4" Height="100" Width="100"/>
+        <ProgressRing Grid.Column="3" Name="LoadingRing" HorizontalAlignment="Center" VerticalAlignment="Center" Height="200" Width="200"/>
     </Grid>
 </Page>

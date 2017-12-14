@@ -16,7 +16,8 @@ namespace UITEST.ViewModel
     {
         public ObservableCollection<Post> Posts { get; private set; }
 
-        //ProfileInformation
+        //ProfileInformation i region
+        #region
         private string _username;
         public string Username { get => _username; set { if (value != _username) { _username = value; OnPropertyChanged(); } } }
         private int _amountOfSubRedditsSubscribedTo;
@@ -31,13 +32,11 @@ namespace UITEST.ViewModel
         public string PostsCreated { get => _postsCreated; set { if (value != _postsCreated) { _postsCreated = value; OnPropertyChanged(); } } }
         private string _commentsCreated;
         public string CommentsCreated { get => _commentsCreated; set { if (value != _commentsCreated) { _commentsCreated = value; OnPropertyChanged(); } } }
+        #endregion
 
         public ICommand GoToPostPageCommand { get; set; }
-
         private readonly IRestUserRepository _repository;
-
         private readonly IRedditAPIConsumer _consumer;
-
         private ImageSource _image;
         public ImageSource Image { get { return _image; } set { if (_image != value) { _image = value; OnPropertyChanged(); } } }
 
@@ -91,15 +90,6 @@ namespace UITEST.ViewModel
             LinkKarma = redditUser.link_karma;
             PostsCreated = numberOfPosts;
             CommentsCreated = numberOfComments;
-        }
-
-        private async void GetCommentHistory()
-        {
-        }
-
-        private async void GetPostHistory()
-        {
-
         }
         public async Task LoadImageAsync()
         {

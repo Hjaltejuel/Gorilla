@@ -17,15 +17,15 @@ namespace UITEST.View
         public ProfilePage()
         {
             this.InitializeComponent();
-
             _vm = App.ServiceProvider.GetService<ProfilePageViewModel>();
-
             DataContext = _vm;
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            LoadingRing.IsActive = true;
             await _vm.Initialize();
+            LoadingRing.IsActive = false;
         }
 
         private void ListView_SelectionItem(object sender, SelectionChangedEventArgs e)
