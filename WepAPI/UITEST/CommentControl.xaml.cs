@@ -1,5 +1,6 @@
 ﻿using Entities.RedditEntities;
 using Gorilla.Model;
+using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Windows.UI;
 using Windows.UI.Text;
@@ -24,7 +25,7 @@ namespace UITEST
 
         public CommentControl(Comment comment)
         {
-            redditAPIConsumer = new RedditConsumerController();
+            redditAPIConsumer = App.ServiceProvider.GetService<IRedditAPIConsumer>();
             this.InitializeComponent();
 
             //If the comment is a 'more' type
