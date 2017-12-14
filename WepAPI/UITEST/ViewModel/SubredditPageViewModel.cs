@@ -20,8 +20,15 @@ namespace UITEST.ViewModel
 
         public Subreddit _Subreddit;
         public ObservableCollection<Post> posts;
-        public string subscribeString = "Subscribe";
-        bool userIsSubscribed;
+
+        private string  _subscribeString;
+        public string subscribeString { get { return _subscribeString; } set { _subscribeString = value;
+                OnPropertyChanged(); }}
+
+        private string _subredditName;
+        public string subredditName{ get { return _subredditName; } set { _subredditName = value;
+                OnPropertyChanged(); } }
+
         public delegate void PostsReady();
         public event PostsReady PostsReadyEvent;
 
@@ -31,49 +38,31 @@ namespace UITEST.ViewModel
             _helper = helper;
             GoToCreatePostPageCommand = new RelayCommand(o => _service.Navigate(typeof(CreatePostPage), _Subreddit));
         }
+        bool userIsSubscribed;
         bool UserIsSubscribed
         {
             get => userIsSubscribed;
             set
             {
                 userIsSubscribed = value;
-                subscribeString = value ? "Subscribe" : "Unsubscribe";
+                subscribeString = value ? "Unsubscribe" : "Subscribe";
                 OnPropertyChanged("subscribeString");
             }
         }
         public ObservableCollection<Post> Posts
         {
-            get => posts;
-            set
-            {
-                posts = value;
-                OnPropertyChanged("Posts");
-            }
+            get => posts; set { posts = value; OnPropertyChanged("Posts"); }
         }
 
 
         public async Task GeneratePosts(string subredditName, string sort = "hot")
         {
-            //if (_vm._Subreddit.display_name == null)
-            //{
-            //    PageTitleText.Text = "";
-            //    NothingFoundTextBlock = new TextBlock() { Text = $"Nothing Found on r/{SubredditToSearchFor}", FontSize = 50, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
-            //    _Grid.Children.Add(NothingFoundTextBlock);
-            //    Grid.SetRow(NothingFoundTextBlock, 3);
-            //}
-            //else
-            //{
-            //    PageTitleText.Text = _vm._Subreddit.display_name_prefixed;
-            //}
-            //_vm._Subreddit = e.Parameter as Subreddit;
-            //if (_vm._Subreddit != null)
-            //    PageTitleText.Text = _vm._Subreddit.display_name_prefixed;
-
             _Subreddit = await _consumer.GetSubredditAsync(subredditName, sort);
             if(_Subreddit==null || _Subreddit.name == null)
             {
                 return;
             }
+            subredditName = _Subreddit.display_name_prefixed;
 
             Posts = _Subreddit.posts;
 
@@ -93,14 +82,17 @@ namespace UITEST.ViewModel
                 }
             }
             List<Subreddit> subs = await _consumer.GetSubscribedSubredditsAsync();
-            UserIsSubscribed = !subs.Contains(_Subreddit);
+            UserIsSubscribed = (from b in subs
+                                where b.display_name.Equals(_Subreddit.display_name)
+                                select b).Any();
+            //UserIsSubscribed = subs.Contains(_Subreddit);
             PostsReadyEvent.Invoke();
         }
 
         public async Task SubscribeToSubreddit()
         {
             UserIsSubscribed = !UserIsSubscribed;
-            await _consumer.SubscribeToSubreddit(_Subreddit, !UserIsSubscribed);
+            await _consumer.SubscribeToSubreddit(_Subreddit, UserIsSubscribed);
         }
 
         public async Task Initialize()

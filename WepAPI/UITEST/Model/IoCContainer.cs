@@ -39,6 +39,7 @@ namespace Gorilla.Model
             services.AddScoped<TrendingPageViewModel>();
             services.AddScoped<CreatePostPageViewModel>();
             services.AddScoped<LoginPageViewModel>();
+            services.AddScoped<SubredditPageViewModel>();
 
             return services.BuildServiceProvider();
         }

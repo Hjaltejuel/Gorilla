@@ -23,7 +23,6 @@ namespace UITEST.View
     {
         private readonly MainPageViewModel _vm;
         private List<string> SortTypes;
-        private TextBlock NothingFoundTextBlock;
 
         public MainPage()
         {
@@ -57,12 +56,8 @@ namespace UITEST.View
         }
         private void SearchBox_QuerySubmitted(SearchBox sender, SearchBoxQuerySubmittedEventArgs args)
         {
-            SearchForSubreddit(args.QueryText);
-        }
-        private async void SearchForSubreddit(string SubredditToSearchFor)
-        {
             LoadingRing.IsActive = true;
-            Frame.Navigate(typeof(SubredditPage), SubredditToSearchFor);
+            Frame.Navigate(typeof(SubredditPage), args.QueryText);
         }
 
         private void SubsribeToSubredditButton_Click(object sender, RoutedEventArgs e)
