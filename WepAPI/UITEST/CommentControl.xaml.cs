@@ -90,7 +90,9 @@ namespace UITEST
 
         private void LoadMoreComments()
         {
-
+            string postID = null;
+            string[] children = null;
+            redditAPIConsumer.GetMoreComments(postID, children);
         }
 
         private void UpvoteButton_Click(object sender, RoutedEventArgs e)
