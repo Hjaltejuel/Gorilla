@@ -46,25 +46,24 @@
                 <RelativePanel Name="InfoPanelLeft" RelativePanel.Below="ProfilePicture" Margin="20, 20, 0, 0" DataContext="{x:Bind Path = _vm.CurrentProfile}">
                     <TextBlock Name="Info" Text="Info" Style="{StaticResource SubTitle}"/>
                     <TextBlock Name="Username" Text="Username" Style="{StaticResource StandardText}" RelativePanel.Below="Info"/>
-                    <TextBlock Name="Name" Text="Name" Style="{StaticResource StandardText}" RelativePanel.Below="Username"/>
-                    <TextBlock Name="Email" Text="E-mail" Style="{StaticResource StandardText}" RelativePanel.Below="Name"/>
 
-                    <TextBlock Name="Statistics" Text="Statistics" Style="{StaticResource SubTitle}" RelativePanel.Below="Email"/>
-                    <TextBlock Name="KarmaGiven" Text="Karma Given" Style="{StaticResource StandardText}" RelativePanel.Below="Statistics"/>
-                    <TextBlock Name="KarmaRecieved" Text="Karma Recieved" Style="{StaticResource StandardText}" RelativePanel.Below="KarmaGiven"/>
-                    <TextBlock Name="PostCreated" Text="Post Given" Style="{StaticResource StandardText}" RelativePanel.Below="KarmaRecieved"/>
-                    <TextBlock Name="SubscribedNumberOfSubreddits" Text="Subcribed SR's" Style="{StaticResource StandardText}" RelativePanel.Below="PostCreated"/>
-                    <TextBlock Name="JoinDate" Text="Days since joined" Style="{StaticResource StandardText}" RelativePanel.Below="SubscribedNumberOfSubreddits"/>
+                    <TextBlock Name="Statistics" Text="Statistics" Style="{StaticResource SubTitle}" RelativePanel.Below="Username"/>
+                    <TextBlock Name="LinkKarma" Text="Karma from posts" Style="{StaticResource StandardText}" RelativePanel.Below="Statistics"/>
+                    <TextBlock Name="CommentKarma" Text="Karma from comments" Style="{StaticResource StandardText}" RelativePanel.Below="LinkKarma"/>
+                  
+                    <TextBlock Name="PostCreated" Text="Number of posts" Style="{StaticResource StandardText}" RelativePanel.Below="CommentKarma"/>
+                    <TextBlock Name="CommentsCreated" Text="Number of comments" Style="{StaticResource StandardText}" RelativePanel.Below="PostCreated"/>
+                    <TextBlock Name="SubscribedNumberOfSubreddits" Text="Subcribed SR's" Style="{StaticResource StandardText}" RelativePanel.Below="CommentsCreated"/>
+                    <TextBlock Name="JoinDate" Text="Date joined" Style="{StaticResource StandardText}" RelativePanel.Below="SubscribedNumberOfSubreddits"/>
 
                     <Rectangle Name="MiddleInfoLine" Height="300" Fill="Gray" Width="1" RelativePanel.RightOf="Statistics" Margin="30, 0, 10, 0"/>
 
                     <TextBlock Name="UsernameText" Text="{Binding Username}" Style="{StaticResource StandardText}" RelativePanel.RightOf="MiddleInfoLine" RelativePanel.AlignVerticalCenterWith="Username"/>
-                    <TextBlock Name="NameText" Text="{Binding Name}" Style="{StaticResource StandardText}" RelativePanel.RightOf="MiddleInfoLine" RelativePanel.AlignVerticalCenterWith="Name"/>
-                    <TextBlock Name="EmailText" Text="{Binding Email}" Style="{StaticResource StandardText}" RelativePanel.RightOf="MiddleInfoLine" RelativePanel.AlignVerticalCenterWith="Email"/>
 
-                    <TextBlock Name="KarmaGivenNumber" Text="{Binding KarmaGiven}" Style="{StaticResource StandardText}" RelativePanel.RightOf="MiddleInfoLine" RelativePanel.AlignVerticalCenterWith="KarmaGiven"/>
-                    <TextBlock Name="KarmaReceivedNumber" Text="{Binding KarmaRecieved}" Style="{StaticResource StandardText}" RelativePanel.RightOf="MiddleInfoLine" RelativePanel.AlignVerticalCenterWith="KarmaRecieved"/>
+                    <TextBlock Name="LinkKarmaText" Text="{Binding CommentKarma}" Style="{StaticResource StandardText}" RelativePanel.RightOf="MiddleInfoLine" RelativePanel.AlignVerticalCenterWith="LinkKarma"/>
+                    <TextBlock Name="CommentKarmaText" Text="{Binding LinkKarma}" Style="{StaticResource StandardText}" RelativePanel.RightOf="MiddleInfoLine" RelativePanel.AlignVerticalCenterWith="CommentKarma"/>
                     <TextBlock Name="PostCreatedNumber" Text="{Binding PostCreated}" Style="{StaticResource StandardText}" RelativePanel.RightOf="MiddleInfoLine" RelativePanel.AlignVerticalCenterWith="PostCreated"/>
+                    <TextBlock Name="CommentsCreatedNumber" Text="{Binding CommentsCreated}" Style="{StaticResource StandardText}" RelativePanel.RightOf="MiddleInfoLine" RelativePanel.AlignVerticalCenterWith="CommentsCreated"/>
                     <TextBlock Name="SubscribedNumberOfSubredditsNumber" Text="{Binding AmountOfSubRedditsSubscribedTo}" Style="{StaticResource StandardText}" RelativePanel.RightOf="MiddleInfoLine" RelativePanel.AlignVerticalCenterWith="SubscribedNumberOfSubreddits"/>
                     <TextBlock Name="JoinDateText" Text="{Binding JoinDate}" Style="{StaticResource StandardText}" RelativePanel.RightOf="MiddleInfoLine" RelativePanel.AlignVerticalCenterWith="JoinDate"/>
 
