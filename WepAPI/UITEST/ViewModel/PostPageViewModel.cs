@@ -1,13 +1,6 @@
 ﻿using Entities.RedditEntities;
 using Gorilla.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
-using UITEST.Model;
-using UITEST.View;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace UITEST.ViewModel
@@ -20,6 +13,12 @@ namespace UITEST.ViewModel
         IRedditAPIConsumer redditAPIConsumer;
         private bool IsLiked;
         private bool IsDisliked;
+        private int _votes;
+        public int votes
+        {
+            get { return _votes; }
+            set { _votes = value; OnPropertyChanged(); }
+        }
 
         public Post CurrentPost
         {
@@ -44,6 +43,7 @@ namespace UITEST.ViewModel
         {
             redditAPIConsumer = App.ServiceProvider.GetService<IRedditAPIConsumer>();
             CurrentPost = post;
+            votes = CurrentPost.score;
             GetCurrentPost(post);
         }
 
@@ -65,15 +65,15 @@ namespace UITEST.ViewModel
 
             if (IsLiked)
             {
-                CurrentPost.score -= 1;
+                votes -= 1;
                 direction = 0;
             }
             else
             {
                 if (IsDisliked)
-                    CurrentPost.score += 2;
-                else 
-                    CurrentPost.score += 1;
+                    votes += 2;
+                else
+                    votes += 1;
                 direction = 1;
             }
             IsDisliked = false;
@@ -88,16 +88,15 @@ namespace UITEST.ViewModel
 
             if (IsDisliked)
             {
-                CurrentPost.score += 1;
+                votes += 1;
                 direction = 0;
             }
             else
             {
                 if (IsLiked)
-                    CurrentPost.score -= 2;
+                    votes -= 2;
                 else
-                    CurrentPost.score -= 1;
-                OnPropertyChanged("CurrentPost");
+                    votes -= 1;
                 direction = -1;
             }
             IsLiked = false;

@@ -22,6 +22,8 @@
         </CommandBar>
 
         <TextBlock Grid.Column="0" Grid.Row="1" Text="Profile" Style="{StaticResource PageTitleText}"></TextBlock>
+        <TextBlock Name="RecentlyViewed" Grid.Row="1" Text="Recently Viewed" Style="{StaticResource PageTitleText}" HorizontalAlignment="Right" Margin="0, 0, 20, 0"/>
+
         <Rectangle Grid.Row="2" HorizontalAlignment="Stretch" Fill="Black" Height="1"/>
 
         <Grid Grid.Row="3">
@@ -43,7 +45,7 @@
                         </Ellipse.Fill>
                     </Ellipse>
                 </RelativePanel>
-                <RelativePanel Name="InfoPanelLeft" RelativePanel.Below="ProfilePicture" Margin="20, 20, 0, 0" DataContext="{x:Bind Path = _vm.CurrentProfile}">
+                <RelativePanel Name="InfoPanelLeft" RelativePanel.Below="ProfilePicture" Margin="20, 20, 0, 0">
                     <TextBlock Name="Info" Text="Info" Style="{StaticResource SubTitle}"/>
                     <TextBlock Name="Username" Text="Username" Style="{StaticResource StandardText}" RelativePanel.Below="Info"/>
 
@@ -59,7 +61,6 @@
                     <Rectangle Name="MiddleInfoLine" Height="300" Fill="Gray" Width="1" RelativePanel.RightOf="Statistics" Margin="30, 0, 10, 0"/>
 
                     <TextBlock Name="UsernameText" Text="{Binding Username}" Style="{StaticResource StandardText}" RelativePanel.RightOf="MiddleInfoLine" RelativePanel.AlignVerticalCenterWith="Username"/>
-
                     <TextBlock Name="LinkKarmaText" Text="{Binding CommentKarma}" Style="{StaticResource StandardText}" RelativePanel.RightOf="MiddleInfoLine" RelativePanel.AlignVerticalCenterWith="LinkKarma"/>
                     <TextBlock Name="CommentKarmaText" Text="{Binding LinkKarma}" Style="{StaticResource StandardText}" RelativePanel.RightOf="MiddleInfoLine" RelativePanel.AlignVerticalCenterWith="CommentKarma"/>
                     <TextBlock Name="PostCreatedNumber" Text="{Binding PostCreated}" Style="{StaticResource StandardText}" RelativePanel.RightOf="MiddleInfoLine" RelativePanel.AlignVerticalCenterWith="PostCreated"/>
@@ -77,11 +78,10 @@
                     <Rectangle VerticalAlignment="Stretch" Fill="Gray" Width="1"/>
                 </RelativePanel>
                 <RelativePanel Name="RecentlyViewPanel" RelativePanel.RightOf="MiddleLine">
-                    <TextBlock Name="RecentlyViewed" Text="Recently Viewed" Style="{StaticResource PageTitleText}"/>
                     <!--MÅSKE SKAL DEN HER KUN VISE FEM TING?
                     IKKE LAVET ENDNU
                     FYLDETEKST SÅ DET IKKE GLEMMES HIHI-->
-                    <ListView ItemsSource="{Binding Posts}" SelectionMode="Single" SelectionChanged="ListView_SelectionItem" RelativePanel.Below="RecentlyViewed">
+                    <ListView ItemsSource="{Binding Posts}" SelectionMode="Single" SelectionChanged="ListView_SelectionItem">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <RelativePanel Margin="20, 20, 0, 0" Height="80">
@@ -110,6 +110,7 @@
                     </ListView>
                 </RelativePanel>
             </RelativePanel>
+            <ProgressRing Name="LoadingRing" Height="100" Width="100"/>
         </Grid>
     </Grid>
 </Page>

@@ -132,5 +132,38 @@ namespace RedditAPIConsumer.Tests
 
             Assert.Equal(typeof(Subreddit), subreddits[0].GetType());
         }
+
+
+        [Fact(DisplayName = "Get more children")]
+        public async Task Get_More_Children()
+        {
+            string[] sarray = new string[] {
+                                                                                        "dqm5e9x",
+                                                                                        "dqm5wuf",
+                                                                                        "dqmfdlb",
+                                                                                        "dqn4xao",
+                                                                                        "dqmafpv",
+                                                                                        "dqmf6vp",
+                                                                                        "dqn3ct5",
+                                                                                        "dqm4cyr",
+                                                                                        "dqn894f",
+                                                                                        "dqma8mr",
+                                                                                        "dqm360r",
+                                                                                        "dqmccdv",
+                                                                                        "dqm4bm1",
+                                                                                        "dqn0nyi",
+                                                                                        "dqm59xr",
+                                                                                        "dqoj6jj",
+                                                                                        "dqmjzoh",
+                                                                                        "dqm9qaq",
+                                                                                        "dqmcin9",
+                                                                                        "dqmg1v2",
+                                                                                        "dqmbla0",
+                                                                                        "dqmopks"
+                                                                                    };
+           ObservableCollection<Comment> list = await _rcc.GetMoreComments("t3_7gukik", sarray);
+
+            Assert.Equal(typeof(Comment), list[0].GetType());
+        }
     }
 }

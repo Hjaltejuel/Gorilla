@@ -33,8 +33,7 @@ namespace UITEST.View
         private RelativePanel CommentPanel;
         private TextBox CommentTextBox;
         private TextBlock errorText;
-       
-
+        
         public PostPage()
         {
             this.InitializeComponent();
@@ -206,19 +205,12 @@ namespace UITEST.View
             int votes;
             int.TryParse(Votes.Text, out votes);
 
-            if (Upvote.Style.Equals(UpvoteClickedStyle))  {
+            if (Upvote.Style.Equals(UpvoteClickedStyle))
+            {
                 Upvote.Style = UpvoteNotClickedStyle;
-                Votes.Text = (votes - 1).ToString();
             }
-            else {
-                if (Downvote.Style.Equals(DownvoteClickedStyle))
-                {
-                    Votes.Text = (votes + 2).ToString();
-
-                }
-                else {
-                    Votes.Text = (votes + 1).ToString();
-                }
+            else
+            {
                 Upvote.Style = UpvoteClickedStyle;
             }
             Downvote.Style = DownvoteNotClickedStyle;
@@ -229,16 +221,12 @@ namespace UITEST.View
             int votes;
             int.TryParse(Votes.Text, out votes);
 
-            if (Downvote.Style.Equals(DownvoteClickedStyle)) {
+            if (Downvote.Style.Equals(DownvoteClickedStyle))
+            {
                 Downvote.Style = DownvoteNotClickedStyle;
-                Votes.Text = (votes + 1).ToString();
             }
-            else {
-                if (Upvote.Style.Equals(UpvoteClickedStyle))
-                    Votes.Text = (votes - 2).ToString();
-                else {
-                    Votes.Text = (votes - 1).ToString();
-                }
+            else
+            {
                 Downvote.Style = DownvoteClickedStyle;
             }
             Upvote.Style = UpvoteNotClickedStyle;
