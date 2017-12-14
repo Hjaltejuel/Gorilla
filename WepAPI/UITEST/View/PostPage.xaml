@@ -30,7 +30,7 @@
                     <Button Content="Like" Height="20" Width="20" Name="Upvote" Style="{StaticResource LikeButton}" Click="Upvote_Click"/>
                     <TextBlock Text="{Binding score}" Name="Votes" HorizontalAlignment="Left" Margin="0, 8, 0, 0"/>
                     <Button Content="Dislike" Height="20" FontSize="30" Name="Downvote" RelativePanel.Below="Upvote" Style="{StaticResource DislikeButton}" Click="Downvote_Click"/>
-                    <Rectangle Fill="Blue" Height="40" Width="40" Name="Box" Margin="20, 0, 0, 0" RelativePanel.RightOf="Upvote"/>
+                    <Image Source="{Binding thumbnail}" Height="40" Width="40" Name="Box" Margin="20, 0, 0, 0" RelativePanel.RightOf="Upvote"/>
                 </RelativePanel>
                 <RelativePanel Name="TitlePanel" RelativePanel.RightOf="OpOgNed">
                     <TextBlock Text="{Binding title}" FontSize="20" Name="Title"/>
