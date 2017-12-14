@@ -26,8 +26,18 @@ namespace UITEST.ViewModel
                 OnPropertyChanged(); }}
 
         private string _subredditName;
-        public string subredditName{ get { return _subredditName; } set { _subredditName = value;
-                OnPropertyChanged(); } }
+        public string SubredditName
+        {
+            get { return _subredditName; }
+            set
+            {
+                if (value != _subredditName)
+                {
+                    _subredditName = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public delegate void PostsReady();
         public event PostsReady PostsReadyEvent;
@@ -54,7 +64,6 @@ namespace UITEST.ViewModel
             get => posts; set { posts = value; OnPropertyChanged("Posts"); }
         }
 
-
         public async Task GeneratePosts(string subredditName, string sort = "hot")
         {
             _Subreddit = await _consumer.GetSubredditAsync(subredditName, sort);
@@ -62,7 +71,7 @@ namespace UITEST.ViewModel
             {
                 return;
             }
-            subredditName = _Subreddit.display_name_prefixed;
+            SubredditName = _Subreddit.display_name_prefixed;
 
             Posts = _Subreddit.posts;
 
@@ -85,7 +94,6 @@ namespace UITEST.ViewModel
             UserIsSubscribed = (from b in subs
                                 where b.display_name.Equals(_Subreddit.display_name)
                                 select b).Any();
-            //UserIsSubscribed = subs.Contains(_Subreddit);
             PostsReadyEvent.Invoke();
         }
 

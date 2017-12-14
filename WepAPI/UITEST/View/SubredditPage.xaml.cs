@@ -61,12 +61,13 @@ namespace UITEST.View
         private async void ShowSubreddit(string SubredditSearchString)
         {
             await _vm.GeneratePosts(SubredditSearchString);
-
+            SubsribeToSubredditButton.Visibility = Visibility.Visible;
             if (_vm._Subreddit == null || _vm._Subreddit.name == null)
             {
                 NothingFoundTextBlock = new TextBlock() { Text = $"Nothing Found on r/{SubredditSearchString}", FontSize = 50, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
                 _Grid.Children.Add(NothingFoundTextBlock);
                 Grid.SetRow(NothingFoundTextBlock, 3);
+                SubsribeToSubredditButton.Visibility = Visibility.Collapsed;
             }
         }
         private void SearchBox_QuerySubmitted(SearchBox sender, SearchBoxQuerySubmittedEventArgs args)
