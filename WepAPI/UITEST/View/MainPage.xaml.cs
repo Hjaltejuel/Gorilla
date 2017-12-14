@@ -28,6 +28,7 @@ namespace UITEST
     public sealed partial class MainPage : Page
     {
         private readonly MainPageViewModel _vm;
+        private TextBlock NothingFoundTextBlock;
 
         public MainPage()
         {
@@ -107,17 +108,19 @@ namespace UITEST
         }
         private async void SearchForSubreddit(string SubredditToSearchFor)
         {
+            LoadingRing.IsActive = true;
+            Grid.Children.Remove(NothingFoundTextBlock);
             await _vm.GeneratePosts(SubredditToSearchFor);
             if (_vm.subreddit.display_name == null)
             {
                 PageTitleText.Text = "";
-                var NothingFoundTextBlock = new TextBlock() { Text = "Nothing Found", FontSize = 50, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center};
+                NothingFoundTextBlock = new TextBlock() { Text = $"Nothing Found on r/{SubredditToSearchFor}", FontSize = 50, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center};
                 Grid.Children.Add(NothingFoundTextBlock);
                 Grid.SetRow(NothingFoundTextBlock, 3);
             }
             else
             {
-                PageTitleText.Text = _vm.subreddit.display_name;
+                PageTitleText.Text = _vm.subreddit.display_name_prefixed;
             }
         }
 
