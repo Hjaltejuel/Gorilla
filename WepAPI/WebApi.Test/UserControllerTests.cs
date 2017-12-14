@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WepAPI.Controllers;
 using Xunit;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WebApi.Test
 {
@@ -45,6 +46,21 @@ namespace WebApi.Test
             Assert.IsType<NoContentResult>(result); 
         }
 
+        [Fact(DisplayName = "GetImage given existing username returns Ok with Image")]
+        public async Task GetImage_given_existing_id_returns_Ok_with_Image()
+        {
+            var user = new User {Username = "test", PathToProfilePicture = "profilePicture.jpg" };
+
+            var repository = new Mock<IUserRepository>();
+            repository.Setup(r => r.FindAsync("test")).ReturnsAsync(user);
+
+            var controller = new UserController(repository.Object);
+
+            var result = await controller.GetImageAsync("test") as VirtualFileResult;
+
+            Assert.Equal("images/profilePicture.jpg", result.FileName);
+            Assert.Equal("image/png", result.ContentType);
+        }
         [Fact(DisplayName = "Get given existing username returns Ok with user")]
         public async Task Get_given_existing_id_returns_Ok_with_track()
         {
@@ -81,15 +97,15 @@ namespace WebApi.Test
             var controller = new UserController(repository.Object);
             controller.ModelState.AddModelError(string.Empty, "Error");
 
-            var user = new User();
-            var result = await controller.PostAsync(user);
+            
+            var result = await controller.PostAsync(null);
 
             Assert.IsType<BadRequestObjectResult>(result);
         }
         [Fact(DisplayName = "Post given AlreadyThereException returns conflict")]
         public async Task Post_given_AlreadyThereException_returns_Conflict()
         {
-            var user = new User();
+            var user = new User {Username = "test", PathToProfilePicture = "hello" };
             var repository = new Mock<IUserRepository>();
             repository.Setup(r => r.CreateAsync(user)).Throws(new AlreadyThereException(""));
             var controller = new UserController(repository.Object);
@@ -106,13 +122,15 @@ namespace WebApi.Test
         {
             var repository = new Mock<IUserRepository>();
 
+
+
             var controller = new UserController(repository.Object);
             controller.ModelState.AddModelError(string.Empty, "Error");
 
-            var user = new User();
+            var user = new User { Username = "test", PathToProfilePicture = "hello" };
             await controller.PostAsync(user);
 
-            repository.Verify(r => r.CreateAsync(It.IsAny<User>()), Times.Never);
+            repository.Verify(r => r.CreateAsync(user), Times.Never);
         }
 
         [Fact(DisplayName = "Post given valid user calls CreateAsync")]
@@ -122,7 +140,7 @@ namespace WebApi.Test
 
             var controller = new UserController(repository.Object);
 
-            var user = new User();
+            var user = new User { Username = "test", PathToProfilePicture = "hello" };
             await controller.PostAsync(user);
 
             repository.Verify(r => r.CreateAsync(user));
@@ -131,11 +149,13 @@ namespace WebApi.Test
         [Fact(DisplayName = "Post given valid user returns CreatedAtAction")]
         public async Task Post_given_valid_track_returns_CreatedAtAction()
         {
+            var user = new User { Username = "test", PathToProfilePicture = "hello" };
             var repository = new Mock<IUserRepository>();
-            repository.Setup(r => r.CreateAsync(It.IsAny<User>())).ReturnsAsync("test");
+            repository.Setup(r => r.CreateAsync(user)).ReturnsAsync("test");
             var controller = new UserController(repository.Object);
 
-            var user = new User();
+
+            
             var result = await controller.PostAsync(user) as CreatedAtActionResult;
 
             Assert.Equal(nameof(UserController.GetAsync), result.ActionName);

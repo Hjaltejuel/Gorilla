@@ -36,7 +36,7 @@ namespace UITEST.View
 
             DataContext = _vm;
         }
-
+        
         private void ListView_SelectionItem(object sender, SelectionChangedEventArgs e)
         {
             Frame.Navigate(typeof(PostPage), e.AddedItems[0]);

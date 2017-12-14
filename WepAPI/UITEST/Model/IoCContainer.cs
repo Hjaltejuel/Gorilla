@@ -27,9 +27,10 @@ namespace Gorilla.Model
             services.AddScoped<DelegatingHandler, AuthorizedHandler>();
             services.AddScoped<IAuthenticationHelper, AuthenticationHelper>();
             services.AddScoped<INavigationService, NavigationService>();
-            services.AddScoped<ISubredditRepository, RestSubredditRepository>();
-            services.AddScoped<ISubredditConnectionRepository, RestSubredditConnectionRepository>();
-            services.AddScoped<IUserPreferenceRepository, RestUserPreferenceRepository>();
+            services.AddScoped<IRestSubredditRepository, RestSubredditRepository>();
+            services.AddScoped<IRestSubredditConnectionRepository, RestSubredditConnectionRepository>();
+            services.AddScoped<IRestUserPreferenceRepository, RestUserPreferenceRepository>();
+            services.AddScoped<IRestUserRepository, RestUserRepository>();
             services.AddScoped<IRedditAPIConsumer, RedditConsumerController>();
             services.AddScoped<MainPageViewModel>();
             services.AddScoped<DiscoverPageViewModel>();

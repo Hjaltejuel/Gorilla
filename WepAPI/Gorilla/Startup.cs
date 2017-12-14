@@ -18,6 +18,8 @@ using Model.Repositories;
 using Entities;
 using WepAPI.Models;
 using Extensions;
+using System.IO;
+using Microsoft.AspNetCore.Hosting.Internal;
 
 namespace Gorilla
 {
@@ -49,10 +51,11 @@ namespace Gorilla
 
             var options = new AzureAdOptions();
             Configuration.Bind("AzureAd", options);
+            
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
               .AddJwtBearer(o =>
               {
-                //o.Audience = options.Audience;
+                 o.Audience = options.Audience;
                 o.Authority = options.Authority;
                   o.TokenValidationParameters = new TokenValidationParameters
                   {
@@ -60,7 +63,8 @@ namespace Gorilla
                       ValidAudiences = new[] { options.ClientId, options.Audience }
                   };
               });
-
+              
+            
 
             services.AddRouting(o =>
             {
@@ -71,6 +75,8 @@ namespace Gorilla
             {
                 c.SwaggerDoc("v1", new Info { Title = "Gorilla API", Version = "v1" });
                 c.DocumentFilter<LowerCaseDocumentFilter>();
+                c.DescribeAllEnumsAsStrings();
+               
             });
 
             services.Configure<MvcOptions>(o =>
@@ -98,6 +104,7 @@ namespace Gorilla
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Gorilla API");
+             
             });
             var options = new RewriteOptions().AddRedirectToHttps();
             app.UseRewriter(options);

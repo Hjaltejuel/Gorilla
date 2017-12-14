@@ -15,13 +15,13 @@ namespace UITEST.ViewModel
     {
         bool firstTime = true;
         IRedditAPIConsumer _consumer;
-        protected ISubredditRepository _repository;
+        protected IRestSubredditRepository _repository;
         public ObservableCollection<Post> Posts { get; set; }
 
         public delegate void PostsReady();
         public event PostsReady PostsReadyEvent;
 
-        public MainPageViewModel(ISubredditRepository repository, IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer) : base(service)
+        public MainPageViewModel(IRestSubredditRepository repository, IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer) : base(service)
         {
             _consumer = consumer;
             _repository = repository;

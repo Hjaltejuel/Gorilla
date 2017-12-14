@@ -7,17 +7,20 @@ using Entities;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Gorilla.AuthenticationGorillaAPI;
+using System.Net;
 
 namespace WebApplication2.Models.GorillaApiConsumeRepositories
 {
-    public class RestSubredditRepository : ISubredditRepository
+    public class RestSubredditRepository : IRestSubredditRepository
     {
-        private readonly Uri _baseAddress = new Uri("http://gorillaapi.azurewebsites.net/");
+        private readonly Uri _baseAddress = new Uri("https://gorillaapi.azurewebsites.net/");
 
         private readonly HttpClient _client;
+        private readonly IAuthenticationHelper _helper;
 
-        public RestSubredditRepository(ISettings settings, DelegatingHandler handler)
+        public RestSubredditRepository(ISettings settings, DelegatingHandler handler, IAuthenticationHelper helper)
         {
+            _helper = helper;
             var client = new HttpClient(handler)
             {
                 BaseAddress = settings.ApiBaseAddress
@@ -29,15 +32,29 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
         }
         public async Task<string> CreateAsync(Entities.Subreddit subreddit)
         {
-            var response = await _client.PostAsync("api/subreddit/", subreddit.ToHttpContent());
-
-            if (response.IsSuccessStatusCode)
+            using (var h = new HttpClient())
             {
-                var location = response.Headers.GetValues("Location").First();
-                return location;
-            }
+                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("POST"), new Uri("https://gorillaapi.azurewebsites.net/api/subreddit"));
+                request.Content = subreddit.ToHttpContent();
 
-            return null;
+                var token = await _helper.AcquireTokenSilentAsync();
+
+
+                if (string.IsNullOrWhiteSpace(token))
+                {
+                    return new HttpResponseMessage(HttpStatusCode.Unauthorized).ToString();
+                }
+
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var response = await h.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    var location = response.Headers.GetValues("Location").FirstOrDefault();
+                    return location;
+                }
+                return null;
+
+            }
         }
 
         public async Task<bool> DeleteAsync(string subredditName)

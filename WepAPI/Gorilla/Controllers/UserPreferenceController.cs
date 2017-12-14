@@ -13,7 +13,7 @@ namespace WepAPI.Controllers
 {
     
     [Produces("application/json")]
-    [Route("api/UserPreference")]
+    [Route("api/[controller]")]
     public class UserPreferenceController : Controller
     {
         private readonly IUserPreferenceRepository repository;
