@@ -7,17 +7,21 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Gorilla.AuthenticationGorillaAPI;
+using System.Net;
 
 namespace WebApplication2.Models.GorillaApiConsumeRepositories
 {
-    public class RestSubredditConnectionRepository: ISubredditConnectionRepository
+    public class RestSubredditConnectionRepository: IRestSubredditConnectionRepository
     {
         private readonly Uri _baseAddress = new Uri("http://gorillaapi.azurewebsites.net/");
 
+        private readonly IAuthenticationHelper _helper;
+
         private readonly HttpClient _client;
 
-        public RestSubredditConnectionRepository(ISettings settings, DelegatingHandler handler)
+        public RestSubredditConnectionRepository(ISettings settings, DelegatingHandler handler, IAuthenticationHelper helper)
         {
+            _helper = helper;
             var client = new HttpClient(handler)
             {
                 BaseAddress = settings.ApiBaseAddress
@@ -28,17 +32,31 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
             _client = client;
         }
 
-        public async Task<(string,string)> CreateAsync(SubredditConnection subredditConnection)
+        public async Task<string> CreateAsync(SubredditConnection subredditConnection)
         {
-            var response = await _client.PostAsync("api/subredditConnection", subredditConnection.ToHttpContent());
-
-            if (response.IsSuccessStatusCode)
+            using (var h = new HttpClient())
             {
-                var location = response.Headers.GetValues("Location").First();
-                return (location,null);
-            }
+                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("POST"), new Uri("https://gorillaapi.azurewebsites.net/api/SubredditConnection"));
+                request.Content = subredditConnection.ToHttpContent();
 
-            return (null,null);
+                var token = await _helper.AcquireTokenSilentAsync();
+
+
+                if (string.IsNullOrWhiteSpace(token))
+                {
+                    return new HttpResponseMessage(HttpStatusCode.Unauthorized).ToString();
+                }
+
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var response = await h.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    var location = response.Headers.GetValues("Location").FirstOrDefault();
+                    return location;
+                }
+                return null;
+
+            }
         }
 
         public async Task<IReadOnlyCollection<SubredditConnection>> FindAsync(string subredditFromName)

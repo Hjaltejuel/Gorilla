@@ -22,7 +22,5 @@ namespace UITEST.Model
             get { return joinDate.Date; }
             set { joinDate = value; }
         }
-
-        public string PathToProfilePicture { get; set; }
     }
 }

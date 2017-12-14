@@ -18,13 +18,13 @@ namespace UITEST.ViewModel
         public ObservableCollection<Subreddit> SubReddits { get; private set; }
 
         public ICommand GoToSubRedditPage { get; set; }
-        private readonly ISubredditConnectionRepository _repository;
+        private readonly IRestSubredditConnectionRepository _repository;
         private readonly IRedditAPIConsumer _consumer;
-        public  readonly IUserPreferenceRepository _userPreferenceRepository;
+        public  readonly IRestUserPreferenceRepository _userPreferenceRepository;
         public delegate void DiscoverReady();
         public event DiscoverReady DiscoverReadyEvent;
 
-        public DiscoverPageViewModel(INavigationService service, IRedditAPIConsumer consumer, ISubredditConnectionRepository repository, IUserPreferenceRepository userPreferenceRepository) :base(service)
+        public DiscoverPageViewModel(INavigationService service, IRedditAPIConsumer consumer, IRestSubredditConnectionRepository repository, IRestUserPreferenceRepository userPreferenceRepository) :base(service)
         {
             _userPreferenceRepository = userPreferenceRepository;
             _consumer = consumer;

@@ -7,17 +7,21 @@ using Entities;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Gorilla.AuthenticationGorillaAPI;
+using System.Net;
 
 namespace WebApplication2.Models.GorillaApiConsumeRepositories
 { 
-    public class RestUserPreferenceRepository : IUserPreferenceRepository
+    public class RestUserPreferenceRepository : IRestUserPreferenceRepository
     {
         private readonly Uri _baseAddress = new Uri("http://gorillaapi.azurewebsites.net/");
 
         private readonly HttpClient _client;
 
-        public RestUserPreferenceRepository(ISettings settings, DelegatingHandler handler)
+        private readonly IAuthenticationHelper _helper;
+
+        public RestUserPreferenceRepository(ISettings settings, DelegatingHandler handler, IAuthenticationHelper helper)
         {
+            _helper = helper;
             var client = new HttpClient(handler)
             {
                 BaseAddress = settings.ApiBaseAddress
@@ -27,16 +31,31 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
 
             _client = client;
         }
-        public async Task<(string, string)> CreateAsync(UserPreference userPreference)
+        public async Task<string> CreateAsync(UserPreference userPreference)
         {
-            var response = await _client.PostAsync("api/UserPreference/", userPreference.ToHttpContent());
-            if (response.IsSuccessStatusCode)
+            using (var h = new HttpClient())
             {
-                var location = response.Headers.GetValues("Location").First();
-                return (location,null);
-            }
+                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("POST"), new Uri("https://gorillaapi.azurewebsites.net/api/UserPreference"));
+                request.Content = userPreference.ToHttpContent();
 
-            return (null,null);
+                var token = await _helper.AcquireTokenSilentAsync();
+
+
+                if (string.IsNullOrWhiteSpace(token))
+                {
+                    return new HttpResponseMessage(HttpStatusCode.Unauthorized).ToString();
+                }
+
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var response = await h.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    var location = response.Headers.GetValues("Location").FirstOrDefault();
+                    return location;
+                }
+                return null;
+
+            }
         }
 
         public async Task<bool> DeleteAsync(string username, string subredditName)

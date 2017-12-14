@@ -114,6 +114,10 @@
     <Compile Include="Model\GorillaRepositories\RestSubredditRepository.cs" />
     <Compile Include="Model\GorillaRepositories\RestUserPreferenceRepository.cs" />
     <Compile Include="Model\GorillaRepositories\RestUserRepository.cs" />
+    <Compile Include="Model\GorillaRestInterfaces\IRestSubredditConnectionRepository.cs" />
+    <Compile Include="Model\GorillaRestInterfaces\IRestSubredditRepository.cs" />
+    <Compile Include="Model\GorillaRestInterfaces\IRestUserPreferenceRepository.cs" />
+    <Compile Include="Model\GorillaRestInterfaces\IRestUserRepository.cs" />
     <Compile Include="Model\INavigationService.cs" />
     <Compile Include="Model\IoCContainer.cs" />
     <Compile Include="Model\NavigationService.cs" />
@@ -207,7 +211,6 @@
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
     <Content Include="MockUpPictures\CarsBanner.png" />
     <Content Include="MockUpPictures\Destiny2Banner.png" />
-    <Content Include="MockUpPictures\profilePicture.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -277,8 +280,36 @@
       <Name>Entities</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

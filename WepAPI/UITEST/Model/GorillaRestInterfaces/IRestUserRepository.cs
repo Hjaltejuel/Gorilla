@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-    public interface IUserRepository: IDisposable
+    public interface IRestUserRepository: IDisposable
     {
         Task<User> FindAsync(string username);
         Task<String> CreateAsync(User user);
         Task<bool> DeleteAsync(string username);
         Task<IReadOnlyCollection<User>> ReadAsync();
         Task<bool> UpdateAsync(User user);
-        
+        Task<byte[]> FindImageAsync(string username);
     }
 }

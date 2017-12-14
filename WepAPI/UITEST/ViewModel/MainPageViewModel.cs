@@ -50,7 +50,7 @@ namespace UITEST.ViewModel
         public delegate void PostsReady();
         public event PostsReady PostsReadyEvent;
 
-        public MainPageViewModel(ISubredditRepository repository, IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer) : base(service)
+        public MainPageViewModel(IRestSubredditRepository repository, IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer) : base(service)
         {
             _consumer = consumer;
             _repository = repository;

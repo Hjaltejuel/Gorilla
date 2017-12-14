@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
+    <None Include="wwwroot\Images\profilePicture.jpg" />
   </ItemGroup>
 
 </Project>

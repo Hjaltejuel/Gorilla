@@ -12,7 +12,7 @@ namespace Gorilla.Controllers
 {
     
     [Produces("application/json")]
-    [Route("api/SubredditConnection")]
+    [Route("api/[controller]")]
     public class SubredditConnectionController : Controller
     {
         private readonly ISubredditConnectionRepository repository;
@@ -34,6 +34,7 @@ namespace Gorilla.Controllers
             {
                 return NoContent();
             }
+           
             return Ok(result);
         }
 
@@ -68,6 +69,7 @@ namespace Gorilla.Controllers
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody]SubredditConnection subredditConnection)
         {
+          
 
             if (!ModelState.IsValid)
             {

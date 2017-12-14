@@ -11,8 +11,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WepAPI.Controllers
 {
+
     [Produces("application/json")]
-    [Route("api/User")]
+    [Route("api/[controller]")]
     public class UserController : Controller
     {
         private readonly IUserRepository repository;
@@ -21,9 +22,10 @@ namespace WepAPI.Controllers
             repository = _repository;
         }
         // GET: api/User
-        [HttpGet]
+        [HttpGet("get")]
         public async Task<IActionResult> ReadAsync()
         {
+
             var result = await repository.ReadAsync();
             if (result == null)
             {
@@ -37,9 +39,10 @@ namespace WepAPI.Controllers
         }
 
         // GET: api/User/5
-        [HttpGet("{username}", Name = "Get")]
+        [HttpGet("get/{username}")]
         public async Task<IActionResult> GetAsync(string username)
         {
+
             var result = await repository.FindAsync(username);
             if (result == null)
             {
@@ -48,9 +51,24 @@ namespace WepAPI.Controllers
             return Ok(result);
         }
 
+        [HttpGet("get/{username}/image")]
+        public async Task<IActionResult> GetImageAsync (string username)
+        {
+
+            var character = await repository.FindAsync(username);
+
+            if (character?.PathToProfilePicture == null)
+            {
+                return NotFound();
+            }
+
+            return File($"images/{character.PathToProfilePicture}", "image/png");
+        }
+
         // POST: api/User
+        
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody]User user)
+        public async Task<IActionResult> PostAsync([FromBody ]User user)
         {
 
             if (!ModelState.IsValid)
@@ -59,8 +77,11 @@ namespace WepAPI.Controllers
             }
             try
             {
+               
                 var username = await repository.CreateAsync(user);
+
                 return CreatedAtAction(nameof(GetAsync), new { username }, null);
+
             } catch (AlreadyThereException)
             {
                return new StatusCodeResult(StatusCodes.Status409Conflict);
@@ -69,11 +90,12 @@ namespace WepAPI.Controllers
         }
         
         // DELETE: api/ApiWithActions/5
-        [HttpDelete("{username}")]
+        [HttpDelete("delete/{username}")]
         public async Task<IActionResult> DeleteAsync(string username)
         {
-            
-                var deleted = await repository.DeleteAsync(username);
+        
+
+            var deleted = await repository.DeleteAsync(username);
 
                 if (!deleted)
                 {
@@ -84,10 +106,11 @@ namespace WepAPI.Controllers
             
         }
 
-        [HttpPut]
+        [HttpPut("put")]
         public async Task<IActionResult> PutAsync([FromBody]User user)
         {
             
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
