@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WepAPI.Controllers
 {
-    
     [Produces("application/json")]
     [Route("api/User")]
     public class UserController : Controller
@@ -48,11 +47,12 @@ namespace WepAPI.Controllers
             }
             return Ok(result);
         }
-        
+
         // POST: api/User
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody]User user)
         {
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

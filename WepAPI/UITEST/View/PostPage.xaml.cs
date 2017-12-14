@@ -32,6 +32,7 @@ namespace UITEST.View
         private readonly PostPageViewModel _vm;
         private RelativePanel CommentPanel;
         private TextBox CommentTextBox;
+        private TextBlock errorText;
 
         public PostPage()
         {
@@ -39,16 +40,22 @@ namespace UITEST.View
             LoadingRing.IsActive = true;
 
             _vm = App.ServiceProvider.GetService<PostPageViewModel>();
-
             DataContext = _vm;
-            SizeChanged += ChangeListViewWhenSizedChanged;
-            _vm.CommentsReadyEvent += _vm_CommentsReadyEvent;
+            SetEventMethods();
         }
 
-        private void _vm_CommentsReadyEvent()
+        private void CommentsReadyEvent()
         {
             LoadingRing.IsActive = false;
             DrawComments();
+        }
+
+        private void SetEventMethods()
+        {
+            SizeChanged += ChangeListViewWhenSizedChanged;
+            _vm.CommentsReadyEvent += CommentsReadyEvent;
+            _vm.Like += LikeSuccesful;
+            _vm.Dislike += DislikeSuccesful;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -105,20 +112,22 @@ namespace UITEST.View
                 Margin = new Thickness(0, 10, 10, 0)
             };
             RelativePanel.SetBelow(SubmitButton, CommentTextBox);
+            errorText = new TextBlock() { Visibility = Visibility.Collapsed, Margin = new Thickness(10, 7, 0, 0), FontSize = 14};
+            RelativePanel.SetRightOf(errorText, SubmitButton);
+            RelativePanel.SetBelow(errorText, CommentTextBox);
+            RelativePanel.SetAlignVerticalCenterWith(errorText, SubmitButton);
             SubmitButton.Click += CommentSaveClick;
             
             CommentPanel.Children.Add(CommentTextBox);
             CommentPanel.Children.Add(SubmitButton);
+            CommentPanel.Children.Add(errorText);
         }
 
         private void PostTextComment_Click(object sender, RoutedEventArgs e)
         {
-            var CommentBtn = sender as Button;
-
             if (CommentPanel == null)
             {
                 CreateCommentPanel();
-                var CommentExtraTextPanel = CommentBtn.Parent as RelativePanel;
                 ExtraStuff.Children.Add(CommentPanel);
             }
             else
@@ -135,23 +144,26 @@ namespace UITEST.View
 
         private void InsertComment(AbstractCommentable abstractCommentableToCommentOn)
         {
-            if (!CommentTextBox.Text.Equals(""))
+            string text = CommentTextBox.Text;
+            if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
+            {
+                errorText.Text = "We need something in the textbox";
+                errorText.Visibility = Visibility.Visible;
+            }
+            else
             {
                 var newComment = new Comment()
                 {
                     body = CommentTextBox.Text,
                     author = "ASD"
                 };
-
-                _vm.AddComment(abstractCommentableToCommentOn, newComment);
-
-                CommentTextBox.Text = "";
+                _vm.AddCommentAsync(abstractCommentableToCommentOn, newComment);
+                PostView.Items.Insert(2, new CommentControl(newComment));
                 ExtraStuff.Children.Remove(CommentPanel);
                 CommentPanel = null;
-
-                PostView.Items.Insert(2, new CommentControl(newComment));
             }
         }
+        
 
         private void DrawComments()
         {
@@ -165,12 +177,63 @@ namespace UITEST.View
 
         private void Upvote_Click(object sender, RoutedEventArgs e)
         {
-            _vm.CurrentPost.score += 1;
+            _vm.PostLikedAsync();
         }
 
         private void Downvote_Click(object sender, RoutedEventArgs e)
         {
-            _vm.CurrentPost.score -= 1;
+            _vm.PostDislikedAsync();
+        }
+
+
+
+        //Grimt i know.. what to do? det er et midlertidligt workaround
+        private Style UpvoteClickedStyle = App.Current.Resources["LikeButtonClicked"] as Style;
+        private Style UpvoteNotClickedStyle = App.Current.Resources["LikeButton"] as Style;
+        private Style DownvoteClickedStyle = App.Current.Resources["DislikeButtonClicked"] as Style;
+        private Style DownvoteNotClickedStyle = App.Current.Resources["DislikeButton"] as Style;
+
+        private void LikeSuccesful()
+        {
+            int votes;
+            int.TryParse(Votes.Text, out votes);
+
+            if (Upvote.Style.Equals(UpvoteClickedStyle))  {
+                Upvote.Style = UpvoteNotClickedStyle;
+                Votes.Text = (votes - 1).ToString();
+            }
+            else {
+                if (Downvote.Style.Equals(DownvoteClickedStyle))
+                {
+                    Votes.Text = (votes + 2).ToString();
+
+                }
+                else {
+                    Votes.Text = (votes + 1).ToString();
+                }
+                Upvote.Style = UpvoteClickedStyle;
+            }
+            Downvote.Style = DownvoteNotClickedStyle;
+        }
+
+        private void DislikeSuccesful()
+        {
+            int votes;
+            int.TryParse(Votes.Text, out votes);
+
+            if (Downvote.Style.Equals(DownvoteClickedStyle)) {
+                Downvote.Style = DownvoteNotClickedStyle;
+                Votes.Text = (votes + 1).ToString();
+            }
+            else {
+                if (Upvote.Style.Equals(UpvoteClickedStyle))
+                    Votes.Text = (votes - 2).ToString();
+                else {
+                    Votes.Text = (votes - 1).ToString();
+                }
+                Downvote.Style = DownvoteClickedStyle;
+            }
+            Upvote.Style = UpvoteNotClickedStyle;
         }
     }
 }

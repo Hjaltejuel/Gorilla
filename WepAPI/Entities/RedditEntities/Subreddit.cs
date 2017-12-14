@@ -4,14 +4,14 @@ using System.Collections.ObjectModel;
 
 namespace Entities.RedditEntities
 {
-    public class Subreddit : AbstractCommentable
+    public class Subreddit
     {
         public string user_is_contributor { get; set; }
         public string banner_img { get; set; }
         public string user_flair_text { get; set; }
         public string submit_text_html { get; set; }
         public string user_is_banned { get; set; }
-        public bool wiki_enabled { get; set; }
+        public bool? wiki_enabled { get; set; }
         public bool show_media { get; set; }
         public string id { get; set; }
         public string description { get; set; }
@@ -30,13 +30,13 @@ namespace Entities.RedditEntities
         public int[] icon_size { get; set; }
         public string audience_target { get; set; }
         public string suggested_comment_sort { get; set; }
-        public int active_user_count { get; set; }
+        public int? active_user_count { get; set; }
         public string icon_img { get; set; }
         public string header_title { get; set; }
         public string display_name_prefixed { get; set; }
         public string user_is_muted { get; set; }
         public string submit_link_label { get; set; }
-        public int accounts_active { get; set; }
+        public int? accounts_active { get; set; }
         public bool public_traffic { get; set; }
         public int[] header_size { get; set; }
         public int subscribers { get; set; }

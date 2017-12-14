@@ -1,22 +1,51 @@
 ﻿using Entities.RedditEntities;
 using Gorilla.AuthenticationGorillaAPI;
 using Gorilla.Model;
+using Gorilla.View;
 using Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using UITEST.View;
 using Windows.Security.Credentials;
 using Windows.UI.Xaml.Controls;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+using System.Diagnostics;
+using System.Net;
+using System.Collections.Generic;
 
 namespace UITEST.ViewModel
 {
-    public class MainPageViewModel : BaseViewModel, INotifyPropertyChanged
+    public class MainPageViewModel : BaseViewModel
     {
+        public ICommand GoToCreatePostPageCommand { get; set; }
         bool firstTime = true;
         IRedditAPIConsumer _consumer;
         protected ISubredditRepository _repository;
-        public ObservableCollection<Post> Posts { get; set; }
+        public Subreddit subreddit;
+        public ObservableCollection<Post> posts;
+        public string subscribeString = "Subscribe";
+        bool userIsSubscribed;
+        bool UserIsSubscribed {
+            get => userIsSubscribed;
+            set
+            {
+                userIsSubscribed = value;
+                subscribeString = value ? "Subscribe" : "Unsubscribe";
+                OnPropertyChanged("subscribeString");
+            }
+        }
+        public ObservableCollection<Post> Posts
+        {
+            get => posts;
+            set
+            {
+                posts = value;
+                OnPropertyChanged("Posts");
+            }
+        }
 
         public delegate void PostsReady();
         public event PostsReady PostsReadyEvent;
@@ -26,20 +55,25 @@ namespace UITEST.ViewModel
             _consumer = consumer;
             _repository = repository;
             _helper = helper;
-
-            Initialize();
-         
-            
+            GoToCreatePostPageCommand = new RelayCommand(o => _service.Navigate(typeof(CreatePostPage), subreddit));
+            GeneratePosts();
+        }
+        
+        public async Task GeneratePosts(string s = "sircmpwn", string sort = "hot")
+        {
+           
+                subreddit = await _consumer.GetSubredditAsync(s, sort);
+                Posts = subreddit.posts;
+          
+            List<Subreddit> subs = await _consumer.GetSubscribedSubredditsAsync();
+            UserIsSubscribed = !subs.Contains(subreddit);
+            PostsReadyEvent.Invoke();
         }
 
-        public async void GeneratePosts()
+        public async Task SubscribeToSubreddit()
         {
-
-          
-            Subreddit subreddit = await _consumer.GetSubredditAsync("AskReddit");
-            PostsReadyEvent.Invoke();
-            Posts = subreddit.posts;
-            OnPropertyChanged("Posts");
+            UserIsSubscribed = !UserIsSubscribed;
+            await _consumer.SubscribeToSubreddit(subreddit, !UserIsSubscribed);
         }
 
         public async Task Initialize()
@@ -58,10 +92,7 @@ namespace UITEST.ViewModel
                 {
                     await Initialize();
                 }
-                
             }
-         
-
         }
     }
 }

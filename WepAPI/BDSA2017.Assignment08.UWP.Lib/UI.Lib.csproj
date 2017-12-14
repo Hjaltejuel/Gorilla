@@ -106,9 +106,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Models\IoCContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\BaseViewModel.cs" />
     <EmbeddedResource Include="Properties\BDSA2017.Assignment08.UWP.Lib.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -126,10 +124,8 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UITEST\UI.csproj">
-      <Project>{e1bd4360-1f27-4e2d-aa3c-655467fce5f0}</Project>
-      <Name>UI</Name>
-    </ProjectReference>
+    <Folder Include="Models\" />
+    <Folder Include="ViewModels\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

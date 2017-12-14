@@ -4,133 +4,298 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 
 namespace Entities.RedditEntities    
 {
     public class RedditConsumerController : IRedditAPIConsumer
     {
+        public string BaseUrl => "https://oauth.reddit.com/";
 
-        public string BaseUrl { get => "https://reddit.com/"; set => throw new NotImplementedException(); }
+        private const string CommentUrl = "api/comment";
+        private const string MeUrl = "api/v1/me";
+        private const string AccessTokenUrl = "https://www.reddit.com/api/v1/access_token";
+        private const string VoteUrl = "api/vote";
+        private const string CreatePostUrl = "api/submit";
+        private const string SubscribeUrl = "api/subscribe";
+        private const string SubscribedSubredditsUrl = "subreddits/mine";
 
-        //Brug enums til sortBy? 
-        public async Task<HttpResponseMessage> Get(Uri uri)
+        private const int limit = 10;
+
+        private const string Client_id = "ephxxGR7ZA77nA";
+        private bool IsAuthenticated = false;
+        private string token = "";
+        private string refresh_token = "";
+        //"51999737725-OYI8KJ5T56KSO4xAyvoVhA8t5TM";
+
+        public async Task Authenticate(string code)
         {
-            using (var client = new HttpClient())
+            var request = CreateRequest(AccessTokenUrl, "POST");
+            var BasicAuth = Convert.ToBase64String(Encoding.UTF8.GetBytes(Client_id + ":"));
+            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", BasicAuth);
+            request.Content = new StringContent($"grant_type=authorization_code&code={code}&redirect_uri=https://gorillaapi.azurewebsites.net/",
+                Encoding.UTF8,
+                "application/x-www-form-urlencoded");
+            var responseBody = await SendRequest(request);
+            if (responseBody["error"] == null)
             {
-                client.BaseAddress = uri;
-                client.DefaultRequestHeaders.Clear();
-                HttpResponseMessage response = await client.GetAsync(client.BaseAddress);
-                string responseBody = await response.Content.ReadAsStringAsync();
-                return response;
+                token = responseBody["access_token"].ToObject<string>();
+                refresh_token = responseBody["refresh_token"].ToObject<string>();
             }
         }
-        public async Task<HttpResponseMessage> Post(Uri uri, Object o)
+        private HttpRequestMessage CreateRequest(string stringUri, string method)
         {
+            Uri uri;
+            var IsOAuth = false;
+            if (!stringUri.StartsWith("https"))
+            {
+                uri = new Uri(BaseUrl + stringUri + ".json?json_raw=1");
+                IsOAuth = true;
+            }
+            else
+                uri = new Uri(stringUri + ".json?json_raw=1");
+
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = uri
+            };
+            if (IsOAuth)
+                request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
+
+            request.Method = new HttpMethod(method);
+            //request.Headers.UserAgent.ParseAdd(UserAgent);
+            request.Headers.Add("User-Agent", "Gorilla");
+            return request;
+        }
+        public async Task<JToken> SendRequest(HttpRequestMessage request)
+        {
+            if (request == null) throw new ArgumentException("No requests specified");
+            //Send request
             using (var client = new HttpClient())
             {
-                //YAzEEEEEEEES
-                //12341234
-                //WUF6RUVFRUVFRUVTOjEyMzQxMjM0
-                client.BaseAddress = uri;
-                //VED IKKE OM DET VIRKER SÅDAN HER
-                JToken jToken = JToken.FromObject(o);
-                client.DefaultRequestHeaders.Clear();
-                HttpResponseMessage request = await client.PostAsJsonAsync<JToken>(client.BaseAddress, jToken);
-                return request;
+                var response = await client.SendAsync(request);
+                var stringResponse = await response.Content.ReadAsStringAsync();
+                JToken json;
+                if (stringResponse.Length > 0)
+                {
+                    json = JToken.Parse(stringResponse);
+                }
+                else
+                {
+                    json = JToken.Parse($"{{'error':{response.StatusCode}}}");
+                }
+                return json;
             }
         }
-        
+        public HttpRequestMessage BuildRequestBody(HttpRequestMessage request, object data)
+        {
+            return request;
+        }
         //CONVENTION: IF SORTBY STRING IS EMPTY, HOT IS DEFAULTED TO
-        public async Task<Subreddit> GetSubredditAsync(string subredditName, string sortBy="hot")
+        public async Task<Subreddit> GetSubredditAsync(string subredditName, string sortBy = "hot")
         {
-            Uri aboutUri = new Uri(string.Format
-               (BaseUrl +
-               "r/{0}/about.json?json_raw=1",
-               subredditName,
-               sortBy));
-
-            HttpResponseMessage response = await Get(aboutUri);
-            string responseBody = await response.Content.ReadAsStringAsync();
-            ChildNode listings = JObject.Parse(responseBody).ToObject<ChildNode>();
-            Subreddit subreddit = listings.data.ToObject<Subreddit>();
-            
-
-
-            Uri postsUri = new Uri(string.Format
-               (BaseUrl +
-               "r/{0}/{1}/.json?json_raw=1",
-               subredditName,
-               sortBy));
-
-            response = await Get(postsUri);
-            responseBody = await response.Content.ReadAsStringAsync();
-
-            Listing postsListing = JObject.Parse(responseBody).ToObject<Listing>();
-            subreddit.posts = new ObservableCollection<Post>();
-            foreach(ChildNode child in postsListing.data.children)
+            var aboutUri = $"https://www.reddit.com/r/{subredditName}/about";
+            var aboutRequest = CreateRequest(aboutUri, "GET");
+            var aboutResponse = await SendRequest(aboutRequest);
+            if (aboutResponse["error"]==null)
             {
-                subreddit.posts.Add(child.data.ToObject<Post>());
+                var listings = aboutResponse.ToObject<ChildNode>();
+                var subreddit = listings.data.ToObject<Subreddit>();
+
+                var postsUri = $"https://www.reddit.com/r/{subredditName}/{sortBy}";
+                var postsRequest = CreateRequest(postsUri, "GET");
+                var postsResponse = await SendRequest(postsRequest);
+
+                var postsListing = postsResponse.ToObject<Listing>();
+                subreddit.posts = new ObservableCollection<Post>();
+                foreach (var child in postsListing.data.children)
+                {
+                    try
+                    {
+                        subreddit.posts.Add(child.data.ToObject<Post>());
+                    } catch(Exception e) {
+                        var a = e;
+                        var b = "";
+                    }
+                }
+                return subreddit;
             }
-
-            return subreddit;
+            return null;
         }
-
         //t3 = comments on link / post & t5 = subreddit & t1 = comment
         public async Task<Post> GetPostAndCommentsByIdAsync(string post_id)
         {
-            Uri uri = new Uri($"{BaseUrl}/comments/{post_id}.json?json_raw=1");
-            HttpResponseMessage response = await Get(uri);
-            string responseBody = await response.Content.ReadAsStringAsync();
-            Listing[] listings = JArray.Parse(responseBody).ToObject<Listing[]>();
-            Post post = listings[0].data.children[0].data.ToObject<Post>();
+            var uri = $"https://www.reddit.com/comments/{post_id}.json?json_raw=1";
+
+            var request = CreateRequest(uri, "GET");
+            var response = await SendRequest(request);
+            if (response == null) return null;
+
+            var listings = response.ToObject<Listing[]>();
+            var post = listings[0].data.children[0].data.ToObject<Post>();
             post.BuildReplies(listings[1]);
             return post;
         }
-
-        public void DeserializeCommentListing(JToken JSONCommentListing)
-        {
-            
-        }
-
-        public async Task<(HttpStatusCode, string)> PostPostAsync(Post p)
-        {
-            Uri uri = new Uri(BaseUrl + "api/submit");
-            HttpResponseMessage response = await Post(uri, p);
-
-            return await (ResponseStatusAsync(response));
-        }
-
-        public async Task<(HttpStatusCode, string)> PostCommentAsync(Comment_old c)
-        {
-            Uri uri = new Uri(BaseUrl + "api/comment");
-            HttpResponseMessage response = await Post(uri, c);
-
-            return await (ResponseStatusAsync(response));
-        }
-
-        public async Task<(HttpStatusCode, string)> PostVoteAsync(Vote v)
-        {
-            Uri uri = new Uri(BaseUrl + "api/vote");
-            HttpResponseMessage response = await Post(uri, v);
-
-            return await (ResponseStatusAsync(response));
-        }
-
         public async Task<(HttpStatusCode, string)> ResponseStatusAsync(HttpResponseMessage response)
         {
-            string responseBody = await response.Content.ReadAsStringAsync();
-            HttpStatusCode statusCode = response.StatusCode;
-
+            var responseBody = await response.Content.ReadAsStringAsync();
+            var statusCode = response.StatusCode;
             return (statusCode, responseBody);
         }
-        public Task<(HttpStatusCode, string)> LoginToReddit(string username, string password)
+        public async Task<User> GetAccountDetailsAsync()
         {
-            throw new NotImplementedException();
+            var request = CreateRequest(MeUrl, "GET");
+            var response = await SendRequest(request);
+            if (response["error"] != null) return null;
+            var user = response.ToObject<User>();
+            return user;
+        }
+        //Direction: -1 downvote | 0 remove vote | 1 upvote
+        public async Task<(HttpStatusCode, string)> VoteAsync(AbstractCommentable thing, int direction)
+        {
+            var data = $"id={thing.name}&dir={direction}";
+            var request = CreateRequest(VoteUrl, "POST");
+            request.Content = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
+            var response = await SendRequest(request);
+            if (response["error"] == null)
+                return (HttpStatusCode.OK, "Vote succesful!");
+            else
+                return (HttpStatusCode.BadRequest, "Could not vote");
+        }
+        public async Task<(HttpStatusCode, string)> CreateCommentAsync(AbstractCommentable thing, string commentText)
+        {
+            var data = $"thing_id={thing.name}&text={commentText}";
+            var request = CreateRequest(CommentUrl, "POST");
+            request.Content = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
+            var response = await SendRequest(request);
+
+            if (response["error"] != null) return (HttpStatusCode.BadRequest, "Could not post comment");
+
+            var success = response["success"].ToObject<bool>();
+            if (success)
+                return (HttpStatusCode.OK, "Comment was posted!");
+            return (HttpStatusCode.BadRequest, "Could not post comment");
+        }
+        public async Task<(HttpStatusCode, string)> SubscribeToSubreddit(Subreddit subreddit, bool IsSubscribing)
+        {
+            var action = IsSubscribing ? "sub" : "unsub";
+            var data = $"action={action}&sr={subreddit.name}";
+            var request = CreateRequest(SubscribeUrl, "POST");
+            request.Content = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
+            var response = await SendRequest(request);
+            
+            if (response["error"] != null) return (HttpStatusCode.BadRequest, "Could not subscribe");
+
+            return (HttpStatusCode.OK, "Subcribe successful!");
+        }
+        //public async Task<bool> RefreshTokenAsync()
+        //{
+        //    var request = CreateRequest(AccessTokenUrl, "POST");
+        //    var basicAuth = Convert.ToBase64String(Encoding.UTF8.GetBytes(Client_id + ":"));
+        //    request.Headers.Authorization = new AuthenticationHeaderValue("Basic", basicAuth);
+        //    request.Content = new StringContent($"grant_type=refresh_token&refresh_token={refresh_token}", Encoding.UTF8, "application/x-www-form-urlencoded");
+        //    var responseBody = await SendRequest(request);
+
+        //    if (responseBody["error"] != null) return false;
+
+        //    token = responseBody["access_token"].ToObject<string>();
+        //    return true;
+        //}
+        public async Task<List<Subreddit>> GetSubscribedSubredditsAsync()
+        {
+            var subscribedSubreddits = new List<Subreddit>();
+
+            var request = CreateRequest(SubscribedSubredditsUrl, "GET");
+            var response = await SendRequest(request);
+            if (response["error"] != null) return null;
+
+            var responseListing = response.ToObject<Listing>();
+            if (responseListing == null) return null;
+
+            subscribedSubreddits.AddRange(
+                responseListing.data.children.Select(child => child.data.ToObject<Subreddit>()));
+            return subscribedSubreddits;
+        }
+        //Kind: self | link
+        // if kind is link, then url must be specified
+        public async Task<(HttpStatusCode, string)> CreatePostAsync(Subreddit toSubreddit, string title, string kind, string text = "", string url = "")
+        {
+            string data;
+            if (kind.Equals("link"))
+                data = $"sr={toSubreddit.display_name}&kind={kind}&title={title}&url={url}";
+            else
+                data = $"sr={toSubreddit.display_name}&kind={kind}&title={title}&text={text}";
+
+            var request = CreateRequest(CreatePostUrl, "POST");
+            request.Content = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
+            var response = await SendRequest(request);
+            if (response["error"] != null) return (HttpStatusCode.BadRequest, "Could not create post");
+            var success = response["success"].ToObject<bool>();
+
+            if (success)
+                return (HttpStatusCode.OK, "Post was created!");
+            return (HttpStatusCode.BadRequest, "Could not create post");
+        }
+        public async Task<List<AbstractCommentable>> GetMoreComments(AbstractCommentable parentComment, string[] children, int maxCommentsAmount=10)
+        {
+            var childrenString = string.Join(",", children);
+            var moreChildrenUrl = $"/api/morechildren.json?api_type=json&link_id={parentComment.name}&children={childrenString}";
+            var request = CreateRequest(moreChildrenUrl, "GET");
+            var response = await SendRequest(request);
+            if (response["error"] == null)
+            {
+                return null;
+            }
+            return null;
+        }
+        //https://oauth.reddit.com/subreddits/mine/subscriber
+
+        public async Task<ObservableCollection<Post>> GetUserPosts(string user)
+        {
+            string url = $"https://reddit.com/user/{user}/submitted/";
+            var request = CreateRequest(url, "GET");
+            var response = await SendRequest(request);
+            if(response == null)
+            {
+                return null;
+            }
+            var listings = response.ToObject<Listing>();
+            ObservableCollection<Post> o = new ObservableCollection<Post>(CreateUserInfoCollection<Post>(listings));
+            return o;
         }
 
-        public async Task<User> GetAccountDetails()
+        public async Task<ObservableCollection<Comment>> GetUserComments(string user)
         {
-            return new User { username = "Hjalte" };
+            string url = $"https://reddit.com/user/{user}/comments/";
+            var request = CreateRequest(url, "GET");
+            var response = await SendRequest(request);
+            if (response == null)
+            {
+                return null;
+            }
+
+            var listings = response.ToObject<Listing>();
+
+            ObservableCollection<Comment> o = new ObservableCollection<Comment>(CreateUserInfoCollection<Comment>(listings));
+
+            return o;
+
+        }
+        public List<AbstractableComment> CreateUserInfoCollection<AbstractableComment>(Listing listing)
+        {
+            List<AbstractableComment> list = new List<AbstractableComment>();
+            
+            if (listing != null)
+            {
+                list.AddRange(
+                listing.data.children.Select(child => child.data.ToObject<AbstractableComment>()));
+            }
+            return list;
         }
     }
 }
