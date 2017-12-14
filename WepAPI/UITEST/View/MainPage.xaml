@@ -1,10 +1,10 @@
 ﻿<Page
-    x:Class="UITEST.MainPage"
+    x:Class="UITEST.View.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:UITEST"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:UITEST.View"
     mc:Ignorable="d">
 
     <Grid Name ="Grid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -28,29 +28,7 @@
         <Button Name="CreatePostButton" Content="Create post" Grid.Column="0" Grid.Row="1" Command="{Binding GoToCreatePostPageCommand}" HorizontalAlignment="Right" RelativePanel.LeftOf="SearchBox" Margin="0, 0, 220, 0"/>
         <SearchBox Name="SearchBox" Grid.Column="0" Grid.Row="1" Width="200" Height="32" HorizontalAlignment="Right" QuerySubmitted="SearchBox_QuerySubmitted"/>
         <Rectangle Name="HorizontalSplitter" Grid.Row="2" HorizontalAlignment="Stretch" Fill="Gray" Height="1"/>
-        <ListView Grid.Row="3" x:Name="PostsList" Height="800" SelectionMode="None" ItemsSource="{Binding Posts}" ScrollViewer.VerticalScrollBarVisibility="Visible" DataContextChanged="List_DataContextChanged">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <RelativePanel Margin="20, 20, 0, 0">
-                        <RelativePanel  Name="OpOgNed" Margin="0, 10, 0, 0" Width="50">
-                            <TextBlock Text="{Binding score}" RelativePanel.AlignHorizontalCenterWithPanel="True"/>
-                        </RelativePanel>
-
-                        <RelativePanel RelativePanel.RightOf="OpOgNed" Margin="10,0,0,0 ">
-                            <Image Source="{Binding thumbnail}" Height="40" Width="40" Name="Box" Margin="0, 10, 5, 0"/>
-
-                            <Button Name="Title" Content="{Binding title}" Style="{StaticResource TitleText}" RelativePanel.RightOf="Box" Click="Title_Click" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
-                            <TextBlock Text="{Binding author}" RelativePanel.Below ="Title" RelativePanel.RightOf="Box" Style="{StaticResource AuthorText}" Name="Author"/>
-                            <TextBlock Text="{Binding num_comments}" RelativePanel.Below ="Author" RelativePanel.RightOf="Box" FontSize="10" Name="CommentsAmount"/>
-                            <TextBlock Text="share" RelativePanel.Below ="Author" RelativePanel.RightOf="CommentsAmount" Style="{StaticResource MiniNavigationText}" Name="ShareText" Margin="4, 0, 0, 0"/>
-                            <TextBlock Text="save" RelativePanel.Below ="Author" RelativePanel.RightOf="ShareText" Style="{StaticResource MiniNavigationText}" Name="SaveText" Margin="4, 0, 0, 0"/>
-                            <TextBlock Text="hide" RelativePanel.Below ="Author" RelativePanel.RightOf="SaveText" Style="{StaticResource MiniNavigationText}" Name="HideText" Margin="4, 0, 0, 0"/>
-                            <TextBlock Text="report" RelativePanel.Below ="Author" RelativePanel.RightOf="HideText" Style="{StaticResource MiniNavigationText}" Name="ReportTex" Margin="4, 0, 0, 0"/>
-                        </RelativePanel>
-                    </RelativePanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <local:PostViewControl x:Name="PostsList" Posts="{Binding _vm._Subreddit.posts}" Grid.Row="3"/>
         <ProgressRing Name="LoadingRing" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4" Height="100" Width="100"/>
     </Grid>
 </Page>

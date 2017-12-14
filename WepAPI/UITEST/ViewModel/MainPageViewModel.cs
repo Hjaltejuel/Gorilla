@@ -24,7 +24,7 @@ namespace UITEST.ViewModel
         bool firstTime = true;
         IRedditAPIConsumer _consumer;
      
-        public Subreddit subreddit;
+        public Subreddit _Subreddit;
         public ObservableCollection<Post> posts;
         public string subscribeString = "Subscribe";
         bool userIsSubscribed;
@@ -55,15 +55,15 @@ namespace UITEST.ViewModel
             _consumer = consumer;
             
             _helper = helper;
-            GoToCreatePostPageCommand = new RelayCommand(o => _service.Navigate(typeof(CreatePostPage), subreddit));
+            GoToCreatePostPageCommand = new RelayCommand(o => _service.Navigate(typeof(CreatePostPage), _Subreddit));
             GeneratePosts();
         }
         
         public async Task GeneratePosts(string s = "sircmpwn", string sort = "hot")
         {
            
-                subreddit = await _consumer.GetSubredditAsync(s, sort);
-                Posts = subreddit.posts;
+                _Subreddit = await _consumer.GetSubredditAsync(s, sort);
+                Posts = _Subreddit.posts;
 
             foreach (Post p in Posts)
             {
@@ -82,14 +82,14 @@ namespace UITEST.ViewModel
             }
           
             List<Subreddit> subs = await _consumer.GetSubscribedSubredditsAsync();
-            UserIsSubscribed = !subs.Contains(subreddit);
+            UserIsSubscribed = !subs.Contains(_Subreddit);
             PostsReadyEvent.Invoke();
         }
 
         public async Task SubscribeToSubreddit()
         {
             UserIsSubscribed = !UserIsSubscribed;
-            await _consumer.SubscribeToSubreddit(subreddit, !UserIsSubscribed);
+            await _consumer.SubscribeToSubreddit(_Subreddit, !UserIsSubscribed);
         }
 
         public async Task Initialize()

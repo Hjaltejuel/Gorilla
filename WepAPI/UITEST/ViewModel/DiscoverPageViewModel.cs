@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Model;
+using UITEST.View;
 
 namespace UITEST.ViewModel
 {
