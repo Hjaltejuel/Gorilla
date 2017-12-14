@@ -23,7 +23,7 @@ namespace UITEST.ViewModel
         public ICommand GoToCreatePostPageCommand { get; set; }
         bool firstTime = true;
         IRedditAPIConsumer _consumer;
-        protected ISubredditRepository _repository;
+     
         public Subreddit subreddit;
         public ObservableCollection<Post> posts;
         public string subscribeString = "Subscribe";
@@ -50,10 +50,10 @@ namespace UITEST.ViewModel
         public delegate void PostsReady();
         public event PostsReady PostsReadyEvent;
 
-        public MainPageViewModel(IRestSubredditRepository repository, IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer) : base(service)
+        public MainPageViewModel( IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer) : base(service)
         {
             _consumer = consumer;
-            _repository = repository;
+            
             _helper = helper;
             GoToCreatePostPageCommand = new RelayCommand(o => _service.Navigate(typeof(CreatePostPage), subreddit));
             GeneratePosts();

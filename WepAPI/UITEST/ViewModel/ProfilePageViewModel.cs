@@ -39,15 +39,19 @@ namespace UITEST.ViewModel
 
         private readonly IRestUserRepository _repository;
 
+        private readonly IRedditAPIConsumer _consumer;
+
         private ImageSource _image;
         public ImageSource Image { get { return _image; } set { if (_image != value) { _image = value; OnPropertyChanged(); } } }
 
         private byte[] _imageBytes;
         public byte[] ImageBytes { get { return _imageBytes; } set { if (_imageBytes != value) { _imageBytes = value; OnPropertyChanged(); LoadImageAsync(); } } }
 
-        public ProfilePageViewModel(INavigationService service, IRestUserRepository repository) : base(service)
+        public ProfilePageViewModel(INavigationService service, IRestUserRepository repository, IRedditAPIConsumer consumer) : base(service)
         {
             _repository = repository;
+
+            _consumer = consumer;
 
             Initialize();
         }
@@ -59,10 +63,11 @@ namespace UITEST.ViewModel
 
            // await _repository.CreateAsync(new Entities.User {Username = "Test5", PathToProfilePicture = "profilePicture.jpg" });
 
-            CurrentProfile = new Profile() { Name = "Morten", Username = "RedRabbitRasmusRaarup", Email = "thereddestroyer@gmail.com", AmountOfSubRedditsSubscribedTo = 12, JoinDate = new DateTime(2015, 02, 15), KarmaGiven = 201, KarmaRecieved = 635, PostCreated = 54 };
+           
 
             ImageBytes = await  _repository.FindImageAsync("Test5");
             
+            /*
             Posts = new ObservableCollection<Post>
             {
                 new Post {Title = "hej", Author = "Raaaasmusss", NumOfVotes = -100, Text = "FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. hej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gid"},
@@ -71,14 +76,15 @@ namespace UITEST.ViewModel
                 new Post {Title = "VIld Nice", Author = "Maads", NumOfVotes = 121, Text = "nice nice nicenicenicenci"},
             };
             */
+            
             GetCurrentProfile();
         }
 
         private async void GetCurrentProfile()
         {
-            var redditAPIConsumer = App.ServiceProvider.GetService<IRedditAPIConsumer>();
-            var redditUser = await redditAPIConsumer.GetAccountDetailsAsync();
-            var subscriptions = await redditAPIConsumer.GetSubscribedSubredditsAsync();
+            
+            var redditUser = await _consumer.GetAccountDetailsAsync();
+            var subscriptions = await _consumer.GetSubscribedSubredditsAsync();
             var unix = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
             var time = unix.AddSeconds(redditUser.created);
             CurrentProfile = new Profile()
@@ -86,12 +92,11 @@ namespace UITEST.ViewModel
                 Name = "Morten",
                 Username = redditUser.name,
                 Email = "thereddestroyer@gmail.com",
-                AmountOfSubRedditsSubscribedTo = subscriptions.Count,
+                AmountOfSubRedditsSubscribedTo = subscriptions.Count(),
                 JoinDate = time,
                 CommentKarma = redditUser.comment_karma,
                 LinkKarma = redditUser.link_karma,
                 PostCreated = 54,
-                PathToProfilePicture = redditUser.icon_img
             }; 
         }
 

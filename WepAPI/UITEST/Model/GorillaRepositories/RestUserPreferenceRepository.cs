@@ -1,5 +1,4 @@
-﻿using Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,11 +7,13 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Gorilla.AuthenticationGorillaAPI;
 using System.Net;
+using Model;
 
 namespace WebApplication2.Models.GorillaApiConsumeRepositories
-{ 
+{
     public class RestUserPreferenceRepository : IRestUserPreferenceRepository
-    {
+    {   
+
         private readonly Uri _baseAddress = new Uri("http://gorillaapi.azurewebsites.net/");
 
         private readonly HttpClient _client;
