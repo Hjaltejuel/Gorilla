@@ -15,7 +15,6 @@ using Entities;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-
 namespace UITEST.ViewModel
 {
     public class ProfilePageViewModel : BaseViewModel
@@ -85,24 +84,31 @@ namespace UITEST.ViewModel
             
             var redditUser = await _consumer.GetAccountDetailsAsync();
             var subscriptions = await _consumer.GetSubscribedSubredditsAsync();
+            var userPosts = await _consumer.GetUserPosts(redditUser.name);
+            string numberOfPosts;
+            if (userPosts.Count > 25) numberOfPosts = "25+";
+            else numberOfPosts = userPosts.Count.ToString();
+            var UserComments = await _consumer.GetUserComments(redditUser.name);
+            string numberOfComments;
+            if (UserComments.Count > 25) numberOfComments = "25+";
+            else numberOfComments = UserComments.Count.ToString();
+
             var unix = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
             var time = unix.AddSeconds(redditUser.created);
             CurrentProfile = new Profile()
             {
-                Name = "Morten",
                 Username = redditUser.name,
-                Email = "thereddestroyer@gmail.com",
                 AmountOfSubRedditsSubscribedTo = subscriptions.Count(),
                 JoinDate = time,
                 CommentKarma = redditUser.comment_karma,
                 LinkKarma = redditUser.link_karma,
-                PostCreated = 54,
+                PostCreated = numberOfPosts,
+                CommentsCreated = numberOfComments
             }; 
         }
 
         private async void GetCommentHistory()
         {
-
         }
 
         private async void GetPostHistory()

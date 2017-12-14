@@ -9,11 +9,10 @@ namespace UITEST.Model
     public class Profile
     {
         public string Username { get; set; }
-        public string Email { get; set; }
-        public string Name { get; set; }
         public int LinkKarma { get; set; }
         public int CommentKarma { get; set; }
-        public int PostCreated { get; set; }
+        public string PostCreated { get; set; }
+        public string CommentsCreated { get; set; }
         public int AmountOfSubRedditsSubscribedTo { get; set; } 
 
         private DateTime joinDate;
