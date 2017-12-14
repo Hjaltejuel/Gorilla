@@ -247,5 +247,48 @@ namespace Entities.RedditEntities
             }
             return null;
         }
+
+        public async Task<ObservableCollection<Post>> GetUserPosts(string user)
+        {
+            string url = $"https://reddit.com/user/{user}/submitted/";
+            var request = CreateRequest(url, "GET");
+            var response = await SendRequest(request);
+            if(response == null)
+            {
+                return null;
+            }
+            var listings = response.ToObject<Listing>();
+            ObservableCollection<Post> o = new ObservableCollection<Post>(CreateUserInfoCollection<Post>(listings));
+            return o;
+        }
+
+        public async Task<ObservableCollection<Comment>> GetUserComments(string user)
+        {
+            string url = $"https://reddit.com/user/{user}/comments/";
+            var request = CreateRequest(url, "GET");
+            var response = await SendRequest(request);
+            if (response == null)
+            {
+                return null;
+            }
+
+            var listings = response.ToObject<Listing>();
+         
+            ObservableCollection<Comment> o = new ObservableCollection<Comment>(CreateUserInfoCollection<Comment>(listings));
+
+            return o;
+
+        }
+        public List<AbstractableComment> CreateUserInfoCollection<AbstractableComment>(Listing listing)
+        {
+            List<AbstractableComment> list = new List<AbstractableComment>();
+            
+            if (listing != null)
+            {
+                list.AddRange(
+                listing.data.children.Select(child => child.data.ToObject<AbstractableComment>()));
+            }
+            return list;
+        }
     }
 }

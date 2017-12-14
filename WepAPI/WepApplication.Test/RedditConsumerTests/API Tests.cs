@@ -2,6 +2,7 @@ using Entities.RedditEntities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -24,6 +25,20 @@ namespace RedditAPIConsumer.Tests
         {
             var post = await _rcc.GetPostAndCommentsByIdAsync("7gukik");
             Assert.Equal("Carpet cleaning", post.title);
+        }
+
+        [Fact(DisplayName = "Get posts from user")]
+        public async Task Get_Posts_From_User()
+        {
+            ObservableCollection<Post> list = await _rcc.GetUserPosts("n0oah");
+            Assert.Equal("n0oah", list[0].author);
+        }
+
+        [Fact(DisplayName = "Get comments from user")]
+        public async Task Get_Comments_From_User()
+        {
+            ObservableCollection<Comment> list = await _rcc.GetUserComments("n0oah");
+            Assert.Equal("n0oah", list[0].author);
         }
 
         [Fact(DisplayName = "Get posts from AskReddit")]
