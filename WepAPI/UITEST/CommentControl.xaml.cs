@@ -1,6 +1,7 @@
 ﻿using Entities.RedditEntities;
 using Gorilla.Model;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Threading.Tasks;
 using Windows.UI;
 using Windows.UI.Text;
