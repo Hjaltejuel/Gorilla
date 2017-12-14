@@ -11,17 +11,33 @@ using UITEST.View;
 using Windows.Security.Credentials;
 using Windows.UI.Xaml.Controls;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+using System.Diagnostics;
+using System.Net;
+using System.Collections.Generic;
 
 namespace UITEST.ViewModel
 {
-    public class MainPageViewModel : BaseViewModel, INotifyPropertyChanged
+    public class MainPageViewModel : BaseViewModel
     {
         public ICommand GoToCreatePostPageCommand { get; set; }
         bool firstTime = true;
         IRedditAPIConsumer _consumer;
         protected ISubredditRepository _repository;
+        public string subredditString;
         public Subreddit subreddit;
         public ObservableCollection<Post> posts;
+        public string subscribeString = "Subscribe";
+        bool userIsSubscribed;
+        bool UserIsSubscribed {
+            get => userIsSubscribed;
+            set
+            {
+                userIsSubscribed = value;
+                subscribeString = value ? "Subscribe" : "Unsubscribe";
+                OnPropertyChanged("subscribeString");
+            }
+        }
         public ObservableCollection<Post> Posts
         {
             get => posts;
@@ -38,24 +54,24 @@ namespace UITEST.ViewModel
         public MainPageViewModel(ISubredditRepository repository, IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer) : base(service)
         {
             _consumer = consumer;
-            _consumer.RefreshTokenAsync();
-            //bool hasToken = _consumer.RefreshTokenAsync().Result;
-            //if (!hasToken)
-            //{
-            //    //TODO
-            //    //FUUUUUCK 
-            //}
             _repository = repository;
             _helper = helper;
-
             GoToCreatePostPageCommand = new RelayCommand(o => _service.Navigate(typeof(CreatePostPage), subreddit));
         }
-        
-        public async void GeneratePosts()
+
+        public async Task GeneratePosts(string s = "sircmpwn")
         {
-            subreddit = await _consumer.GetSubredditAsync("AskReddit");
-            PostsReadyEvent.Invoke();
+            subreddit = await _consumer.GetSubredditAsync(s);
             Posts = subreddit.posts;
+            List<Subreddit> subs = await _consumer.GetSubscribedSubredditsAsync();
+            UserIsSubscribed = !subs.Contains(subreddit);
+            PostsReadyEvent.Invoke();
+        }
+
+        public async Task SubscribeToSubreddit()
+        {
+            UserIsSubscribed = !UserIsSubscribed;
+            await _consumer.SubscribeToSubreddit(subreddit, !UserIsSubscribed);
         }
 
         public async Task Initialize()

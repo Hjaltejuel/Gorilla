@@ -26,33 +26,45 @@ namespace Entities.RedditEntities
         private const string SubscribeUrl = "api/subscribe";
         private const string SubscribedSubredditsUrl = "subreddits/mine";
 
-        private const string ClientId = "ephxxGR7ZA77nA";
+        private const string Client_id = "ephxxGR7ZA77nA";
+        private bool IsAuthenticated = false;
+        private string token = "";
+        private string refresh_token = "";
+        //"51999737725-OYI8KJ5T56KSO4xAyvoVhA8t5TM";
 
-        private string _token = "";
-        private const string refresh_token = "51999737725-OYI8KJ5T56KSO4xAyvoVhA8t5TM";
-
-        public RedditConsumerController()
+        public async Task Authenticate(string code)
         {
-            RefreshTokenAsync();
+            var request = CreateRequest(AccessTokenUrl, "POST");
+            var BasicAuth = Convert.ToBase64String(Encoding.UTF8.GetBytes(Client_id + ":"));
+            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", BasicAuth);
+            request.Content = new StringContent($"grant_type=authorization_code&code={code}&redirect_uri=https://gorillaapi.azurewebsites.net/",
+                Encoding.UTF8,
+                "application/x-www-form-urlencoded");
+            var responseBody = await SendRequest(request);
+            if (responseBody["error"] == null)
+            {
+                token = responseBody["access_token"].ToObject<string>();
+                refresh_token = responseBody["refresh_token"].ToObject<string>();
+            }
         }
         private HttpRequestMessage CreateRequest(string stringUri, string method)
         {
             Uri uri;
-            var isOAuth = false;
+            var IsOAuth = false;
             if (!stringUri.StartsWith("https"))
             {
                 uri = new Uri(BaseUrl + stringUri + ".json?json_raw=1");
-                isOAuth = true;
+                IsOAuth = true;
             }
             else
                 uri = new Uri(stringUri + ".json?json_raw=1");
 
             var request = new HttpRequestMessage()
             {
-                RequestUri = uri                
+                RequestUri = uri
             };
-            if (isOAuth)
-                request.Headers.Authorization = new AuthenticationHeaderValue("bearer", _token);
+            if (IsOAuth)
+                request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
 
             request.Method = new HttpMethod(method);
             //request.Headers.UserAgent.ParseAdd(UserAgent);
@@ -67,7 +79,6 @@ namespace Entities.RedditEntities
             {
                 var response = await client.SendAsync(request);
                 var stringResponse = await response.Content.ReadAsStringAsync();
-                var s = _token;
                 JToken json;
                 if (stringResponse.Length > 0)
                 {
@@ -104,7 +115,13 @@ namespace Entities.RedditEntities
                 subreddit.posts = new ObservableCollection<Post>();
                 foreach (var child in postsListing.data.children)
                 {
-                    subreddit.posts.Add(child.data.ToObject<Post>());
+                    try
+                    {
+                        subreddit.posts.Add(child.data.ToObject<Post>());
+                    } catch(Exception e) {
+                        var a = e;
+                        var b = "";
+                    }
                 }
                 return subreddit;
             }
@@ -129,17 +146,6 @@ namespace Entities.RedditEntities
             var responseBody = await response.Content.ReadAsStringAsync();
             var statusCode = response.StatusCode;
             return (statusCode, responseBody);
-        }
-        public async Task<(HttpStatusCode, string)> LoginToReddit(string username, string password)
-        {
-            /*
-            "access_token": "daAVJCA7aA38doAt5_FcS6wR-2U",
-            "token_type": "bearer",
-            "expires_in": 3600,
-            "refreshToken": "51999737725-OYI8KJ5T56KSO4xAyvoVhA8t5TM",
-            "scope": "*"
-            */
-            return (0, null);
         }
         public async Task<User> GetAccountDetailsAsync()
         {
@@ -187,19 +193,19 @@ namespace Entities.RedditEntities
 
             return (HttpStatusCode.OK, "Subcribe successful!");
         }
-        public async Task<bool> RefreshTokenAsync()
-        {
-            var request = CreateRequest(AccessTokenUrl, "POST");
-            var basicAuth = Convert.ToBase64String(Encoding.UTF8.GetBytes(ClientId + ":"));
-            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", basicAuth);
-            request.Content = new StringContent($"grant_type=refresh_token&refresh_token={refresh_token}", Encoding.UTF8, "application/x-www-form-urlencoded");
-            var responseBody = await SendRequest(request);
+        //public async Task<bool> RefreshTokenAsync()
+        //{
+        //    var request = CreateRequest(AccessTokenUrl, "POST");
+        //    var basicAuth = Convert.ToBase64String(Encoding.UTF8.GetBytes(Client_id + ":"));
+        //    request.Headers.Authorization = new AuthenticationHeaderValue("Basic", basicAuth);
+        //    request.Content = new StringContent($"grant_type=refresh_token&refresh_token={refresh_token}", Encoding.UTF8, "application/x-www-form-urlencoded");
+        //    var responseBody = await SendRequest(request);
 
-            if (responseBody["error"] != null) return false;
+        //    if (responseBody["error"] != null) return false;
 
-            _token = responseBody["access_token"].ToObject<string>();
-            return true;
-        }
+        //    token = responseBody["access_token"].ToObject<string>();
+        //    return true;
+        //}
         public async Task<List<Subreddit>> GetSubscribedSubredditsAsync()
         {
             var subscribedSubreddits = new List<Subreddit>();
@@ -221,9 +227,9 @@ namespace Entities.RedditEntities
         {
             string data;
             if (kind.Equals("link"))
-                data = $"sr={toSubreddit.name}&kind={kind}&title={title}&url={url}";
+                data = $"sr={toSubreddit.display_name}&kind={kind}&title={title}&url={url}";
             else
-                data = $"sr={toSubreddit.name}&kind={kind}&title={title}&text={text}";
+                data = $"sr={toSubreddit.display_name}&kind={kind}&title={title}&text={text}";
 
             var request = CreateRequest(CreatePostUrl, "POST");
             request.Content = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");

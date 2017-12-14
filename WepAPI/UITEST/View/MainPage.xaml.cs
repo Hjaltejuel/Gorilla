@@ -28,21 +28,18 @@ namespace UITEST
     public sealed partial class MainPage : Page
     {
         private readonly MainPageViewModel _vm;
+        private TextBlock NothingFoundTextBlock;
 
         public MainPage()
         {
             this.InitializeComponent();
-
             PostsList.Visibility = Visibility.Collapsed;
-
             LoadingRing.IsActive = true;
            
             _vm = App.ServiceProvider.GetService<MainPageViewModel>();
-
             DataContext = _vm;
 
             SizeChanged += ChangeListViewWhenSizedChanged;
-
             _vm.PostsReadyEvent += PostReadyEvent;
         }
         private void ChangeListViewWhenSizedChanged(object sender, SizeChangedEventArgs e)
@@ -65,7 +62,6 @@ namespace UITEST
             Frame.Navigate(typeof(PostPage), e.AddedItems[0]);
         }
         
-
         private void Title_Click(object sender, RoutedEventArgs e)
         {
             var btn = sender as Button;
@@ -104,6 +100,34 @@ namespace UITEST
         private void List_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
             PostsList.Visibility = Visibility.Visible;
+        }
+
+        private void SearchBox_QuerySubmitted(SearchBox sender, SearchBoxQuerySubmittedEventArgs args)
+        {
+            SearchForSubreddit(args.QueryText);
+        }
+        private async void SearchForSubreddit(string SubredditToSearchFor)
+        {
+            LoadingRing.IsActive = true;
+            Grid.Children.Remove(NothingFoundTextBlock);
+            await _vm.GeneratePosts(SubredditToSearchFor);
+            if (_vm.subreddit.display_name == null)
+            {
+                PageTitleText.Text = "";
+                NothingFoundTextBlock = new TextBlock() { Text = $"Nothing Found on r/{SubredditToSearchFor}", FontSize = 50, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center};
+                Grid.Children.Add(NothingFoundTextBlock);
+                Grid.SetRow(NothingFoundTextBlock, 3);
+            }
+            else
+            {
+                PageTitleText.Text = _vm.subreddit.display_name_prefixed;
+            }
+        }
+
+        private void SubsribeToSubredditButton_Click(object sender, RoutedEventArgs e)
+        {
+            _vm.SubscribeToSubreddit();
+            string s = _vm.subreddit.user_is_subscriber;
         }
     }
 }

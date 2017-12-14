@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Name ="Grid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -23,7 +23,9 @@
             <AppBarButton Icon="Contact" Label="Profile" Command="{Binding GoToProfilePageCommand}"/>
         </CommandBar>
         <TextBlock Name="PageTitleText" Grid.Column="0" Grid.Row="1" Text="Home" Style="{StaticResource PageTitleText}"/>
-        <Button Content="Create post" Grid.Column="0" Grid.Row="1" Command="{Binding GoToCreatePostPageCommand}" HorizontalAlignment="Right"/>
+        <Button Name="SubsribeToSubredditButton" Content="{x:Bind _vm.subscribeString}" Grid.Column="0" Grid.Row="1" Click="SubsribeToSubredditButton_Click" HorizontalAlignment="Right" Margin="0, 0, 335, 0"/>
+        <Button Name="CreatePostButton" Content="Create post" Grid.Column="0" Grid.Row="1" Command="{Binding GoToCreatePostPageCommand}" HorizontalAlignment="Right" RelativePanel.LeftOf="SearchBox" Margin="0, 0, 220, 0"/>
+        <SearchBox Name="SearchBox" Grid.Column="0" Grid.Row="1" Width="200" Height="32" HorizontalAlignment="Right" QuerySubmitted="SearchBox_QuerySubmitted"/>
         <Rectangle Name="HorizontalSplitter" Grid.Row="2" HorizontalAlignment="Stretch" Fill="Gray" Height="1"/>
         <ListView Grid.Row="3" x:Name="PostsList" Height="800" SelectionMode="None" ItemsSource="{Binding Posts}" ScrollViewer.VerticalScrollBarVisibility="Visible" DataContextChanged="List_DataContextChanged">
             <ListView.ItemTemplate>

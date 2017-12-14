@@ -3,18 +3,19 @@ using Gorilla.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using UITEST.Model;
 using UITEST.View;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace UITEST.ViewModel
 {
     public class PostPageViewModel : BaseViewModel
     {
-        public delegate void CommentsReady();
-        public event CommentsReady CommentsReadyEvent;
-
+        public delegate void Comments();
+        public event Comments CommentsReadyEvent;
         private Post currentpost;
         IRedditAPIConsumer redditAPIConsumer;
         private bool IsLiked;
@@ -41,20 +42,22 @@ namespace UITEST.ViewModel
 
         public void Initialize(Post post)
         {
-            redditAPIConsumer = new RedditConsumerController();
+            redditAPIConsumer = App.ServiceProvider.GetService<IRedditAPIConsumer>();
             CurrentPost = post;
             GetCurrentPost(post);
         }
 
-        public void AddComment(AbstractCommentable commentableToCommentOn, Comment newComment)
+        public async Task AddCommentAsync(AbstractCommentable commentableToCommentOn, Comment newComment)
         {
-            redditAPIConsumer.CreateCommentAsync(commentableToCommentOn, newComment.body);
+            await redditAPIConsumer.CreateCommentAsync(commentableToCommentOn, newComment.body);
         }
 
         public delegate void Vote();
         public event Vote Like;
         public event Vote Dislike;
 
+
+        //TODO hvis vi ikke kan få observer pattern til at virke kan vi slette de der currentcomment.score - og + statements
         public async Task PostLikedAsync()
         {
             int direction;
@@ -70,7 +73,6 @@ namespace UITEST.ViewModel
                     CurrentPost.score += 2;
                 else 
                     CurrentPost.score += 1;
-
                 direction = 1;
             }
             IsDisliked = false;
@@ -86,7 +88,6 @@ namespace UITEST.ViewModel
             if (IsDisliked)
             {
                 CurrentPost.score += 1;
-
                 direction = 0;
             }
             else
@@ -95,7 +96,7 @@ namespace UITEST.ViewModel
                     CurrentPost.score -= 2;
                 else
                     CurrentPost.score -= 1;
-
+                OnPropertyChanged("CurrentPost");
                 direction = -1;
             }
             IsLiked = false;

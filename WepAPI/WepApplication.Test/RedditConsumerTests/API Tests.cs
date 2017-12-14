@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using WebApplication2.Models;
 using Xunit;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace RedditAPIConsumer.Tests
 {
@@ -18,7 +19,7 @@ namespace RedditAPIConsumer.Tests
         public UnitTest1()
         {
             _rcc = new RedditConsumerController();
-            var authed = _rcc.RefreshTokenAsync().Result;
+            
         }
         [Fact(DisplayName = "Get comments on post")]
         public async Task Get_Post_And_Comments_Success()
@@ -46,6 +47,13 @@ namespace RedditAPIConsumer.Tests
         {
             var S = await _rcc.GetSubredditAsync("AskReddit");
             Assert.Equal("AskReddit", S.display_name);
+        }
+
+        [Fact(DisplayName = "Get posts from Chess")]
+        public async Task Test_Get_Posts_From_Subreddit_Success2()
+        {
+            var S = await _rcc.GetSubredditAsync("chess");
+            Assert.Equal("chess", S.display_name);
         }
 
         [Fact(DisplayName = "Get comments on post 2")]
@@ -114,6 +122,14 @@ namespace RedditAPIConsumer.Tests
         {
             var subreddits = await _rcc.GetSubscribedSubredditsAsync();
             
+            Assert.Equal(typeof(Subreddit), subreddits[0].GetType());
+        }
+
+        [Fact(DisplayName = "Create post")]
+        public async Task Create_Post()
+        {
+            List<Subreddit> subreddits = await _rcc.GetSubscribedSubredditsAsync();
+
             Assert.Equal(typeof(Subreddit), subreddits[0].GetType());
         }
     }

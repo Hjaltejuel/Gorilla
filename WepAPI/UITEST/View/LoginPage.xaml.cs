@@ -13,9 +13,11 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using Gorilla.Authentication;
+using Gorilla.ViewModel;
+using Microsoft.Extensions.DependencyInjection;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace UITEST.View
 {
     /// <summary>
@@ -23,15 +25,28 @@ namespace UITEST.View
     /// </summary>
     public sealed partial class LoginPage : Page
     {
+        private readonly LoginPageViewModel _vm;
         public LoginPage()
         {
             this.InitializeComponent();
+            _vm = App.ServiceProvider.GetService<LoginPageViewModel>();
+            DataContext = _vm;
         }
-
+        public void HasAuthenticated()
+        {
+            Frame.Navigate(typeof(MainPage));
+        }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             Storyboard fadeIn = this.Resources["FadeIn"] as Storyboard;
             fadeIn.Begin();
+            BeginAuthentication();
+        }
+        public async void BeginAuthentication()
+        {
+            var AuthHandler = new RedditAuthHandler();
+            await AuthHandler.BeginAuth();
+            HasAuthenticated();
         }
     }
 }

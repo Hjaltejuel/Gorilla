@@ -4,14 +4,14 @@ using System.Collections.ObjectModel;
 
 namespace Entities.RedditEntities
 {
-    public class Subreddit : AbstractCommentable
+    public class Subreddit
     {
         public string user_is_contributor { get; set; }
         public string banner_img { get; set; }
         public string user_flair_text { get; set; }
         public string submit_text_html { get; set; }
         public string user_is_banned { get; set; }
-        public bool wiki_enabled { get; set; }
+        public bool? wiki_enabled { get; set; }
         public bool show_media { get; set; }
         public string id { get; set; }
         public string description { get; set; }
