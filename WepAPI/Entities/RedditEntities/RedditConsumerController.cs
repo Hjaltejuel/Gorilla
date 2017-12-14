@@ -15,7 +15,6 @@ namespace Entities.RedditEntities
 {
     public class RedditConsumerController : IRedditAPIConsumer
     {
-        
         public string BaseUrl => "https://oauth.reddit.com/";
 
         private const string CommentUrl = "api/comment";
@@ -25,6 +24,8 @@ namespace Entities.RedditEntities
         private const string CreatePostUrl = "api/submit";
         private const string SubscribeUrl = "api/subscribe";
         private const string SubscribedSubredditsUrl = "subreddits/mine";
+
+        private const int limit = 10;
 
         private const string Client_id = "ephxxGR7ZA77nA";
         private bool IsAuthenticated = false;
@@ -88,7 +89,6 @@ namespace Entities.RedditEntities
                 {
                     json = JToken.Parse($"{{'error':{response.StatusCode}}}");
                 }
-
                 return json;
             }
         }
@@ -253,6 +253,7 @@ namespace Entities.RedditEntities
             }
             return null;
         }
+        //https://oauth.reddit.com/subreddits/mine/subscriber
 
         public async Task<ObservableCollection<Post>> GetUserPosts(string user)
         {
@@ -279,7 +280,7 @@ namespace Entities.RedditEntities
             }
 
             var listings = response.ToObject<Listing>();
-         
+
             ObservableCollection<Comment> o = new ObservableCollection<Comment>(CreateUserInfoCollection<Comment>(listings));
 
             return o;
