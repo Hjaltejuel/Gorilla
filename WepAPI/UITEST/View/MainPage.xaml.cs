@@ -59,22 +59,6 @@ namespace UITEST
             Post post = btn.DataContext as Post;
             Frame.Navigate(typeof(PostPage), post);
         }
-
-        private void PostVoteButton_Clicked(object sender, RoutedEventArgs e)
-        {
-            var btn = sender as Button;
-            var post = btn.DataContext as Post;
-            if (btn.Content.Equals("Like"))
-            {
-                post.score += 1;
-                btn.Style = App.Current.Resources["LikeButtonClicked"] as Style;
-            }
-            else if (btn.Content.Equals("Dislike"))
-            {
-                post.score -= 1;
-                btn.Style = App.Current.Resources["DislikeButtonClicked"] as Style;
-            }
-        }
         
         private void TextButton_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
