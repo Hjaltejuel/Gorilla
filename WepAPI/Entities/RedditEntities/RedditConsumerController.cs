@@ -241,17 +241,24 @@ namespace Entities.RedditEntities
                 return (HttpStatusCode.OK, "Post was created!");
             return (HttpStatusCode.BadRequest, "Could not create post");
         }
-        public async Task<List<AbstractCommentable>> GetMoreComments(AbstractCommentable parentComment, string[] children, int maxCommentsAmount=10)
+        public async Task<ObservableCollection<Comment>> GetMoreComments(string parentPostID, string[] children, int maxCommentsAmount=10)
         {
             var childrenString = string.Join(",", children);
-            var moreChildrenUrl = $"/api/morechildren.json?api_type=json&link_id={parentComment.name}&children={childrenString}";
+            var moreChildrenUrl = $"/api/morechildren.json?api_type=json&link_id={parentPostID}&sort=hot&children={childrenString}&depth=20";
             var request = CreateRequest(moreChildrenUrl, "GET");
             var response = await SendRequest(request);
-            if (response["error"] == null)
+            if (response == null)
             {
                 return null;
             }
-            return null;
+
+            List<Comment> l = new List<Comment>();
+            l.AddRange(
+            response["json"]["data"]["things"].Select(child => child["data"].ToObject<Comment>()));
+            ObservableCollection<Comment> o = new ObservableCollection<Comment>(l);
+
+            return o;
+
         }
         //https://oauth.reddit.com/subreddits/mine/subscriber
 
@@ -264,9 +271,7 @@ namespace Entities.RedditEntities
             {
                 return null;
             }
-            var listings = response.ToObject<Listing>();
-            ObservableCollection<Post> o = new ObservableCollection<Post>(CreateUserInfoCollection<Post>(listings));
-            return o;
+            return CreateUserInfoCollection<Post>(response);
         }
 
         public async Task<ObservableCollection<Comment>> GetUserComments(string user)
@@ -278,24 +283,25 @@ namespace Entities.RedditEntities
             {
                 return null;
             }
-
-            var listings = response.ToObject<Listing>();
-
-            ObservableCollection<Comment> o = new ObservableCollection<Comment>(CreateUserInfoCollection<Comment>(listings));
-
-            return o;
+            return CreateUserInfoCollection<Comment>(response);
+            
 
         }
-        public List<AbstractableComment> CreateUserInfoCollection<AbstractableComment>(Listing listing)
+        public ObservableCollection<AbstractableComment> CreateUserInfoCollection<AbstractableComment>(JToken response)
         {
             List<AbstractableComment> list = new List<AbstractableComment>();
-            
+
+            var listing = response.ToObject<Listing>();
             if (listing != null)
             {
                 list.AddRange(
                 listing.data.children.Select(child => child.data.ToObject<AbstractableComment>()));
             }
-            return list;
+
+            ObservableCollection<AbstractableComment> o = new ObservableCollection<AbstractableComment>(list);
+
+
+            return o;
         }
     }
 }
