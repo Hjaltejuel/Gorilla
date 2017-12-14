@@ -74,5 +74,15 @@ namespace UITEST.ViewModel
                 PathToProfilePicture = redditUser.icon_img
             }; 
         }
+
+        private async void GetCommentHistory()
+        {
+
+        }
+
+        private async void GetPostHistory()
+        {
+
+        }
     }
 }

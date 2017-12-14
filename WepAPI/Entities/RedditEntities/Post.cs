@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.ObjectModel;
 
 namespace Entities.RedditEntities
@@ -7,12 +8,12 @@ namespace Entities.RedditEntities
     public class Post : AbstractCommentable
     {
         public string domain { get; set; }
-        public object media_embed { get; set; }
+        public JToken media_embed { get; set; }
         public string thumbnail_width { get; set; }
         public string selftext_html { get; set; }
         public string selftext { get; set; }
         public string suggested_sort { get; set; }
-        public string secure_media { get; set; }
+        public JToken secure_media { get; set; }
         public bool is_reddit_media_domain { get; set; }
         public string link_flair_text { get; set; }
         public string id { get; set; }
@@ -36,7 +37,7 @@ namespace Entities.RedditEntities
         public int gilded { get; set; }
         public bool locked { get; set; }
         public bool brand_safe { get; set; }
-        public object secure_media_embed { get; set; }
+        public JToken secure_media_embed { get; set; }
         public string removal_reason { get; set; }
         public bool can_gild { get; set; }
         public string thumbnail_height { get; set; }
@@ -51,7 +52,7 @@ namespace Entities.RedditEntities
         public bool quarantine { get; set; }
         public string subreddit_name_prefixed { get; set; }
         public string distinguished { get; set; }
-        public string media { get; set; }
+        public JToken media { get; set; }
         public double upvote_ratio { get; set; }
         public string[] mod_reports { get; set; }
         public bool is_self { get; set; }

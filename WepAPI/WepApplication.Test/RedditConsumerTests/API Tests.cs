@@ -2,12 +2,14 @@ using Entities.RedditEntities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using WebApplication2.Models;
 using Xunit;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace RedditAPIConsumer.Tests
 {
@@ -17,7 +19,7 @@ namespace RedditAPIConsumer.Tests
         public UnitTest1()
         {
             _rcc = new RedditConsumerController();
-            var authed = _rcc.RefreshTokenAsync().Result;
+            
         }
         [Fact(DisplayName = "Get comments on post")]
         public async Task Get_Post_And_Comments_Success()
@@ -26,11 +28,32 @@ namespace RedditAPIConsumer.Tests
             Assert.Equal("Carpet cleaning", post.title);
         }
 
+        [Fact(DisplayName = "Get posts from user")]
+        public async Task Get_Posts_From_User()
+        {
+            ObservableCollection<Post> list = await _rcc.GetUserPosts("n0oah");
+            Assert.Equal("n0oah", list[0].author);
+        }
+
+        [Fact(DisplayName = "Get comments from user")]
+        public async Task Get_Comments_From_User()
+        {
+            ObservableCollection<Comment> list = await _rcc.GetUserComments("n0oah");
+            Assert.Equal("n0oah", list[0].author);
+        }
+
         [Fact(DisplayName = "Get posts from AskReddit")]
         public async Task Test_Get_Posts_From_Subreddit_Success()
         {
             var S = await _rcc.GetSubredditAsync("AskReddit");
             Assert.Equal("AskReddit", S.display_name);
+        }
+
+        [Fact(DisplayName = "Get posts from Chess")]
+        public async Task Test_Get_Posts_From_Subreddit_Success2()
+        {
+            var S = await _rcc.GetSubredditAsync("chess");
+            Assert.Equal("chess", S.display_name);
         }
 
         [Fact(DisplayName = "Get comments on post 2")]
