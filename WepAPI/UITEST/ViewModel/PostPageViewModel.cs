@@ -49,6 +49,7 @@ namespace UITEST.ViewModel
 
         public async Task AddCommentAsync(AbstractCommentable commentableToCommentOn, Comment newComment)
         {
+          
             await redditAPIConsumer.CreateCommentAsync(commentableToCommentOn, newComment.body);
         }
 

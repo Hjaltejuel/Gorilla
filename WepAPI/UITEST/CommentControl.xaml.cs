@@ -281,7 +281,8 @@ namespace UITEST
         }
 
         private void InsertComment(AbstractCommentable abstractCommentableToCommentOn)
-        {
+        {   
+
             string text = CommentTextBox.Text;
             if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
             {
@@ -290,11 +291,15 @@ namespace UITEST
             }
             else
             {
+                var old = new DateTime(1970, 1, 1);
+                var totaltime = DateTime.Now - old;
+                int timeInSeconds = (int)totaltime.TotalSeconds;
                 var newComment = new Comment()
                 {
                     body = CommentTextBox.Text,
                     author = "ASD",
-                    depth = currentComment.depth + 1
+                    depth = currentComment.depth + 1,
+                    created_utc = timeInSeconds
                 };
 
                 redditAPIConsumer.CreateCommentAsync(abstractCommentableToCommentOn, newComment.body);

@@ -33,6 +33,7 @@ namespace UITEST.View
         private RelativePanel CommentPanel;
         private TextBox CommentTextBox;
         private TextBlock errorText;
+       
 
         public PostPage()
         {
@@ -144,6 +145,7 @@ namespace UITEST.View
 
         private void InsertComment(AbstractCommentable abstractCommentableToCommentOn)
         {
+            
             string text = CommentTextBox.Text;
             if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
             {
@@ -152,11 +154,17 @@ namespace UITEST.View
             }
             else
             {
+                var old = new DateTime(1970, 1, 1);
+                var totaltime = DateTime.Now - old;
+                int timeInSeconds = (int)totaltime.TotalSeconds;
                 var newComment = new Comment()
-                {
+                { 
                     body = CommentTextBox.Text,
-                    author = "ASD"
-                };
+                    author = "ASD",
+                    created_utc = timeInSeconds
+                
+                
+            };
                 _vm.AddCommentAsync(abstractCommentableToCommentOn, newComment);
                 PostView.Items.Insert(2, new CommentControl(newComment));
                 ExtraStuff.Children.Remove(CommentPanel);
