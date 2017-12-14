@@ -25,15 +25,15 @@
         </CommandBar>
 
         <ListView Grid.Row="4" Name="PostView" SelectionMode="None" HorizontalAlignment="Stretch">
-            <RelativePanel Name="TopInfo"  Margin="20, 20, 0, 0" Height="Auto" Grid.Row="1" DataContext="{x:Bind Path = _vm.CurrentPost}">
+            <RelativePanel Name="TopInfo"  Margin="20, 20, 0, 0" Height="Auto" Grid.Row="1">
                 <RelativePanel Name="OpOgNed" Width="Auto" Margin="0,0,10,0">
                     <Button Content="Like" Height="20" Width="20" Name="Upvote" Style="{StaticResource LikeButton}" Click="Upvote_Click"/>
-                    <TextBlock Text="{Binding score}" Name="Votes" HorizontalAlignment="Left" Margin="0, 8, 0, 0"/>
+                    <TextBlock Text="{Binding votes}" Name="Votes" HorizontalAlignment="Left" Margin="0, 8, 0, 0"/>
                     <Button Content="Dislike" Height="20" FontSize="30" Name="Downvote" RelativePanel.Below="Upvote" Style="{StaticResource DislikeButton}" Click="Downvote_Click"/>
-                    <Image Source="{Binding thumbnail}" Height="40" Width="40" Name="Box" Margin="20, 0, 0, 0" RelativePanel.RightOf="Upvote"/>
+                    <Image Source="{x:Bind Path = _vm.CurrentPost.thumbnail}" Height="40" Width="40" Name="Box" Margin="20, 0, 0, 0" RelativePanel.RightOf="Upvote"/>
                 </RelativePanel>
                 <RelativePanel Name="TitlePanel" RelativePanel.RightOf="OpOgNed">
-                    <TextBlock Text="{Binding title}" FontSize="20" Name="Title"/>
+                    <TextBlock Text="{x:Bind Path = _vm.CurrentPost.title}" FontSize="20" Name="Title"/>
                 </RelativePanel>
                 <RelativePanel Name="TimePanel" RelativePanel.Below="TitlePanel" RelativePanel.RightOf="OpOgNed">
                     <TextBlock Text="" Name="TimeText" FontSize="12"/>
@@ -41,15 +41,15 @@
 
                 <RelativePanel Name="TextPanel" RelativePanel.Below="TimePanel" RelativePanel.RightOf="OpOgNed" Width="Auto" Margin="0, 4, 10, 0">
                     <Border BorderThickness="1" BorderBrush="Gray" Padding="10, 10, 10, 10">
-                        <TextBlock Text="{Binding selftext}" Name="PostText" TextWrapping="Wrap"/>
+                        <TextBlock Text="{x:Bind Path = _vm.CurrentPost.selftext}" Name="PostText" TextWrapping="Wrap"/>
                     </Border>
                     
 
                 </RelativePanel>
 
                 <RelativePanel Name="ExtraStuff" RelativePanel.RightOf="OpOgNed" RelativePanel.Below="TextPanel">
-                    <TextBlock Text="{Binding author}" Style="{StaticResource AuthorText}" Name="Author"/>
-                    <TextBlock Text="{Binding num_comments}" RelativePanel.Below ="Author" FontSize="10" Name="CommentsAmount"/>
+                    <TextBlock Text="{x:Bind Path = _vm.CurrentPost.author}" Style="{StaticResource AuthorText}" Name="Author"/>
+                    <TextBlock Text="{x:Bind Path = _vm.CurrentPost.num_comments}" RelativePanel.Below ="Author" FontSize="10" Name="CommentsAmount"/>
                     <Button Click="PostTextComment_Click" Content="comment" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="CommentsAmount" RelativePanel.Below="Author" Name="CommentButton" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
                     <Button Content="share" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="CommentButton" RelativePanel.Below="Author" Name="ShareText" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
                     <Button Content="save" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="ShareText" RelativePanel.Below="Author" Name="SaveText" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
@@ -68,6 +68,6 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-        <ProgressRing Grid.Column="3" Name="LoadingRing" HorizontalAlignment="Center" VerticalAlignment="Center" Height="200" Width="200"/>
+        <ProgressRing Grid.Row="4" Name="LoadingRing" HorizontalAlignment="Center" VerticalAlignment="Center" Height="200" Width="200"/>
     </Grid>
 </Page>
