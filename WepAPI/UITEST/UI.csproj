@@ -159,10 +159,12 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <None Include="Assets\New-Folder-With-Items-2.zip" />
     <None Include="UITEST_TemporaryKey.pfx" />
     <None Include="UI_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\externallink.png" />
     <Content Include="Assets\GorillaGLogo.png" />
     <Content Include="Assets\GorillaTextLogo.png" />
     <Content Include="Assets\greydown.png" />
@@ -172,6 +174,7 @@
     <Content Include="Assets\LargeTile.scale-150.png" />
     <Content Include="Assets\LargeTile.scale-200.png" />
     <Content Include="Assets\LargeTile.scale-400.png" />
+    <Content Include="Assets\picturepost.png" />
     <Content Include="Assets\purpledown.png" />
     <Content Include="Assets\purpleup.png" />
     <Content Include="Assets\SmallTile.scale-100.png" />
@@ -205,6 +208,8 @@
     <Content Include="Assets\StoreLogo.scale-150.png" />
     <Content Include="Assets\StoreLogo.scale-200.png" />
     <Content Include="Assets\StoreLogo.scale-400.png" />
+    <Content Include="Assets\Textpost.png" />
+    <Content Include="Assets\Video.png" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />

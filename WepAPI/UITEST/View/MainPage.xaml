@@ -37,7 +37,7 @@
                         </RelativePanel>
 
                         <RelativePanel RelativePanel.RightOf="OpOgNed" Margin="10,0,0,0 ">
-                            <Rectangle Fill="Blue" Height="40" Width="40" Name="Box" Margin="0, 10, 5, 0"/>
+                            <Image Source="{Binding thumbnail}" Height="40" Width="40" Name="Box" Margin="0, 10, 5, 0"/>
 
                             <Button Name="Title" Content="{Binding title}" Style="{StaticResource TitleText}" RelativePanel.RightOf="Box" Click="Title_Click" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
                             <TextBlock Text="{Binding author}" RelativePanel.Below ="Title" RelativePanel.RightOf="Box" Style="{StaticResource AuthorText}" Name="Author"/>
