@@ -13,16 +13,13 @@ namespace UITEST.ViewModel
         public delegate void Comments();
         public event Comments CommentsReadyEvent;
         IRedditAPIConsumer redditAPIConsumer;
-
         IRestPostRepository _repository;
         private bool IsLiked;
         private bool IsDisliked;
-
         private Style _likeButton;
         public Style likeButton { get { return _likeButton; } set { _likeButton = value; OnPropertyChanged(); } }
         private Style _dislikeButton;
         public Style dislikeButton { get { return _dislikeButton; } set { _dislikeButton = value; OnPropertyChanged(); } }
-
         private int _votes;
         public int votes { get { return _votes; } set { _votes = value; OnPropertyChanged(); } }
         private Post _currentComment;
@@ -33,9 +30,7 @@ namespace UITEST.ViewModel
         public PostPageViewModel(INavigationService service, IRestPostRepository repository) : base(service)
         {
             _repository = repository;
-          
         }
-
         public async void GetCurrentPost(Post post)
         {
             CurrentPost = await redditAPIConsumer.GetPostAndCommentsByIdAsync(post.id);

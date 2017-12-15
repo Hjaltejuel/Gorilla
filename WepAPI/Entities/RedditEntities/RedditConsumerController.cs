@@ -238,14 +238,10 @@ namespace Entities.RedditEntities
             {
                 return null;
             }
-
             List<Comment> l = new List<Comment>();
-            l.AddRange(
-            response["json"]["data"]["things"].Select(child => child["data"].ToObject<Comment>()));
+            l.AddRange(response["json"]["data"]["things"].Select(child => child["data"].ToObject<Comment>()));
             ObservableCollection<Comment> o = new ObservableCollection<Comment>(l);
-
             return o;
-
         }
 
         public async Task<ObservableCollection<Post>> GetHomePageContent()

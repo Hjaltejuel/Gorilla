@@ -25,7 +25,7 @@
         </CommandBar>
 
         <ListView Grid.Row="4" Name="PostView" SelectionMode="None" HorizontalAlignment="Stretch">
-            <RelativePanel Name="TopInfo"  Margin="20, 20, 0, 0" Height="Auto" Grid.Row="1">
+            <RelativePanel Name="TopInfo" Margin="20, 20, 0, 0" Height="Auto" Grid.Row="1">
                 <RelativePanel Name="OpOgNed" Width="Auto" Margin="0,0,10,0">
                     <Button Content="Like" Height="20" Width="20" Name="Upvote" Style="{Binding likeButton}" Click="Upvote_Click"/>
                     <TextBlock Text="{Binding votes}" Name="Votes" HorizontalAlignment="Left" Margin="0, 8, 0, 0"/>
@@ -40,8 +40,9 @@
                 </RelativePanel>
 
                 <RelativePanel Name="TextPanel" RelativePanel.Below="TimePanel" RelativePanel.RightOf="OpOgNed" Width="Auto" Margin="0, 4, 10, 0">
-                    <Border BorderThickness="1" BorderBrush="Gray" Padding="10, 10, 10, 10">
+                    <Border Name="ContentContainer" BorderThickness="1" BorderBrush="Gray" Padding="10, 10, 10, 10">
                         <TextBlock Text="{x:Bind Path = _vm.CurrentPost.selftext}" Name="PostText" TextWrapping="Wrap"/>
+                        <!--<TextBlock Text="{x:Bind Path = _vm.CurrentPost}" Name="PostText" TextWrapping="Wrap"/>-->
                     </Border>
                     
 
