@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using UITEST.Model;
 using UITEST.View;
 using Microsoft.Extensions.DependencyInjection;
+using Gorilla.Model.GorillaRestInterfaces;
 
 namespace UITEST.ViewModel
 {
@@ -18,6 +19,8 @@ namespace UITEST.ViewModel
         public event Comments CommentsReadyEvent;
         private Post currentpost;
         IRedditAPIConsumer redditAPIConsumer;
+
+        IRestPostRepository _repository;
         private bool IsLiked;
         private bool IsDisliked;
 
@@ -30,13 +33,16 @@ namespace UITEST.ViewModel
             }
         }
 
-        public PostPageViewModel(INavigationService service) :base(service)
+        public PostPageViewModel(INavigationService service, IRestPostRepository repository) :base(service)
         {
+            _repository = repository;
+          
         }
 
         public async void GetCurrentPost(Post post)
         {
             CurrentPost = await redditAPIConsumer.GetPostAndCommentsByIdAsync(post.id);
+            await _repository.CreateAsync(new Entities.Post { Id = post.id });
             CommentsReadyEvent.Invoke();
         }
 

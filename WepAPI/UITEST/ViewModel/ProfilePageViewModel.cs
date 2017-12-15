@@ -15,12 +15,13 @@ using Entities;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
+using Gorilla.Model.GorillaRestInterfaces;
 
 namespace UITEST.ViewModel
 {
     public class ProfilePageViewModel : BaseViewModel
     {
-        public ObservableCollection<Post> Posts { get; private set; }
+        public ObservableCollection<Entities.RedditEntities.Post> Posts { get; private set; }
         
 
         private Profile currentProfile;
@@ -38,6 +39,7 @@ namespace UITEST.ViewModel
         public ICommand GoToPostPageCommand { get; set; }
 
         private readonly IRestUserRepository _repository;
+        private readonly IRestPostRepository _restPostRepository;
 
         private readonly IRedditAPIConsumer _consumer;
 
@@ -47,8 +49,10 @@ namespace UITEST.ViewModel
         private byte[] _imageBytes;
         public byte[] ImageBytes { get { return _imageBytes; } set { if (_imageBytes != value) { _imageBytes = value; OnPropertyChanged(); LoadImageAsync(); } } }
 
-        public ProfilePageViewModel(INavigationService service, IRestUserRepository repository, IRedditAPIConsumer consumer) : base(service)
+        public ProfilePageViewModel(INavigationService service, IRestUserRepository repository, IRedditAPIConsumer consumer, IRestPostRepository restPostRepository) : base(service)
         {
+            _restPostRepository = restPostRepository;
+
             _repository = repository;
 
             _consumer = consumer;
@@ -61,30 +65,41 @@ namespace UITEST.ViewModel
 
           
 
-           // await _repository.CreateAsync(new Entities.User {Username = "Test5", PathToProfilePicture = "profilePicture.jpg" });
+           
 
            
 
-            ImageBytes = await  _repository.FindImageAsync("Test5");
+           
+           
+
             
-            /*
-            Posts = new ObservableCollection<Post>
-            {
-                new Post {Title = "hej", Author = "Raaaasmusss", NumOfVotes = -100, Text = "FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. hej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gid"},
-                new Post {Title = "VIld Nice", Author = "Maads", NumOfVotes = 121, Text = "nice nice nicenicenicenci"},
-                new Post {Title = "VIld Nice", Author = "Maads", NumOfVotes = 121, Text = "nice nice nicenicenicenci"},
-                new Post {Title = "VIld Nice", Author = "Maads", NumOfVotes = 121, Text = "nice nice nicenicenicenci"},
-            };
-            */
             
-            GetCurrentProfile();
+            await GetCurrentProfile();
+
+            await _repository.CreateAsync(new Entities.User { Username = currentProfile.Username, PathToProfilePicture = "profilePicture.jpg" });
+
+            var ImageBytes = await _repository.FindImageAsync(currentProfile.Username);
+
+            var postIds = await _restPostRepository.ReadAsync(currentProfile.Username);
+
+
+
+            Posts = new ObservableCollection<Entities.RedditEntities.Post>();
+           
+            Parallel.ForEach(postIds, async post => { Posts.Add(await _consumer.GetPostAndCommentsByIdAsync(post.Id)); });
+
+            OnPropertyChanged();
+       
         }
 
-        private async void GetCurrentProfile()
+        private async Task GetCurrentProfile()
         {
             
             var redditUser = await _consumer.GetAccountDetailsAsync();
             var subscriptions = await _consumer.GetSubscribedSubredditsAsync();
+
+           
+
             var unix = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
             var time = unix.AddSeconds(redditUser.created);
             CurrentProfile = new Profile()
