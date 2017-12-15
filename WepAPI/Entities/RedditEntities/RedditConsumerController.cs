@@ -24,6 +24,7 @@ namespace Entities.RedditEntities
         private const string CreatePostUrl = "api/submit";
         private const string SubscribeUrl = "api/subscribe";
         private const string SubscribedSubredditsUrl = "subreddits/mine";
+        private const string HomePageUrl = "subreddits/mine/subscriber";
 
         private const int limit = 10;
 
@@ -193,19 +194,6 @@ namespace Entities.RedditEntities
 
             return (HttpStatusCode.OK, "Subcribe successful!");
         }
-        //public async Task<bool> RefreshTokenAsync()
-        //{
-        //    var request = CreateRequest(AccessTokenUrl, "POST");
-        //    var basicAuth = Convert.ToBase64String(Encoding.UTF8.GetBytes(Client_id + ":"));
-        //    request.Headers.Authorization = new AuthenticationHeaderValue("Basic", basicAuth);
-        //    request.Content = new StringContent($"grant_type=refresh_token&refresh_token={refresh_token}", Encoding.UTF8, "application/x-www-form-urlencoded");
-        //    var responseBody = await SendRequest(request);
-
-        //    if (responseBody["error"] != null) return false;
-
-        //    token = responseBody["access_token"].ToObject<string>();
-        //    return true;
-        //}
         public async Task<List<Subreddit>> GetSubscribedSubredditsAsync()
         {
             var subscribedSubreddits = new List<Subreddit>();
@@ -260,14 +248,25 @@ namespace Entities.RedditEntities
             return o;
 
         }
-        //https://oauth.reddit.com/subreddits/mine/subscriber
 
+        public async Task<ObservableCollection<Post>> GetHomePageContent()
+        {
+            var request = CreateRequest(HomePageUrl, "GET");
+            var response = await SendRequest(request);
+            if (response == null) return null;
+            if (response["error"] != null) return null;
+
+            Listing l = response.ToObject<Listing>();
+            var list = new List<Post>();
+            list.AddRange(l.data.children.Select(child => child.data.ToObject<Post>()));
+            return new ObservableCollection<Post>(list);
+        }
         public async Task<ObservableCollection<Post>> GetUserPosts(string user)
         {
             string url = $"https://reddit.com/user/{user}/submitted/";
             var request = CreateRequest(url, "GET");
             var response = await SendRequest(request);
-            if(response == null)
+            if (response == null)
             {
                 return null;
             }
@@ -284,7 +283,7 @@ namespace Entities.RedditEntities
                 return null;
             }
             return CreateUserInfoCollection<Comment>(response);
-            
+
 
         }
         public ObservableCollection<AbstractableComment> CreateUserInfoCollection<AbstractableComment>(JToken response)

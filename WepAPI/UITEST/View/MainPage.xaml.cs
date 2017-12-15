@@ -3,14 +3,9 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Extensions.DependencyInjection;
-
-using System;
 using UITEST.ViewModel;
 using Entities.RedditEntities;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Text;
 using System.Collections.Generic;
-using UITEST.View;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
