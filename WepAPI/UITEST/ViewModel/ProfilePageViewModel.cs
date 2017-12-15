@@ -56,9 +56,6 @@ namespace UITEST.ViewModel
 
         public async Task Initialize()
         {
-
-            
-            
             await GetCurrentProfile();
 
 
