@@ -11,6 +11,7 @@ using System.Net.Http.Headers;
 using WebApplication2.Models;
 using System.Net;
 using Gorilla.Model.GorillaRestInterfaces;
+using System.Collections.ObjectModel;
 
 namespace Gorilla.Model.GorillaRepositories
 {
@@ -69,7 +70,14 @@ namespace Gorilla.Model.GorillaRepositories
 
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.To<IReadOnlyCollection<Post>>();
+                var reponse = await response.Content.To<IReadOnlyCollection<Post>>();
+                if (reponse == null)
+                {
+                    var list = new List<Post>();
+                    var emptyList = new ReadOnlyCollection<Post>(list);
+                    return emptyList;
+                }
+                return reponse;
             }
 
             return null;

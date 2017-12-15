@@ -20,10 +20,17 @@ namespace UITEST.ViewModel
 
         public Subreddit _Subreddit;
         public ObservableCollection<Post> posts;
+        private List<string> _SortTypes;
+
+        public List<string> SortTypes
+        {
+            get { return _SortTypes; }
+            set { _SortTypes = value; OnPropertyChanged(); }
+        }
+
 
         private string  _subscribeString;
-        public string subscribeString { get { return _subscribeString; } set { _subscribeString = value;
-                OnPropertyChanged(); }}
+        public string subscribeString { get { return _subscribeString; } set { _subscribeString = value;  OnPropertyChanged(); }}
 
         private string _subredditName;
         public string SubredditName
@@ -47,6 +54,8 @@ namespace UITEST.ViewModel
             _consumer = consumer;
             _helper = helper;
             GoToCreatePostPageCommand = new RelayCommand(o => _service.Navigate(typeof(CreatePostPage), _Subreddit));
+            SortTypes = new List<string>() { "hot", "new", "rising", "top", "controversial" };
+
         }
         bool userIsSubscribed;
         bool UserIsSubscribed

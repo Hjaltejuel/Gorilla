@@ -22,7 +22,6 @@ namespace UITEST.View
     public sealed partial class MainPage : Page
     {
         private readonly MainPageViewModel _vm;
-        private List<string> SortTypes;
 
         public MainPage()
         {
@@ -33,7 +32,6 @@ namespace UITEST.View
             DataContext = _vm;
             SizeChanged += ChangeListViewWhenSizedChanged;
             _vm.PostsReadyEvent += PostReadyEvent;
-            SortTypes = new List<string>() { "hot", "new", "rising", "top", "controversial" };
             PostsList.OnNagivated += PostsList_OnNagivated;
         }
 
@@ -66,14 +64,6 @@ namespace UITEST.View
         {
             _vm.SubscribeToSubreddit();
             string s = _vm._Subreddit.user_is_subscriber;
-        }
-
-        private void SortBy_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            LoadingRing.IsActive = true;
-            var comboBox = sender as ComboBox;
-            var SortString = comboBox.SelectedItem as string;
-            _vm.GeneratePosts(_vm._Subreddit.display_name, SortString);
         }
     }
 }
