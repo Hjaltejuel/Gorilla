@@ -15,7 +15,7 @@ namespace UITEST.ViewModel
 {
     public class ProfilePageViewModel : BaseViewModel
     {
-        //public ObservableCollection<Post> Posts { get; private set; }
+        
         private ObservableCollection<Post> posts;
 
         public ObservableCollection<Post> Posts
@@ -86,7 +86,10 @@ namespace UITEST.ViewModel
            
             Posts = new ObservableCollection<Post>();
            
-            Parallel.ForEach(postIds, async post => { Posts.Add(await _consumer.GetPostAndCommentsByIdAsync(post.Id)); });
+            foreach(Entities.Post post in postIds)
+            {
+               posts.Add( await _consumer.GetPostAndCommentsByIdAsync(post.Id));
+            }
 
             PostsReadyEvent.Invoke();
 

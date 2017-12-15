@@ -64,7 +64,7 @@ namespace UITEST.View
             
             base.OnNavigatedTo(e);
             var post = e.Parameter as Post;
-            _repository.CreateAsync(new Entities.Post { Id = post.id, username = UserFactory.GetInfo().name });
+  
             _vm.Initialize(post);
         }
 

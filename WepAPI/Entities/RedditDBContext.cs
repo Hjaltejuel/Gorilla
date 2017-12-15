@@ -28,9 +28,9 @@ namespace Entities
 
 
             modelBuilder.Entity<SubredditConnection>().HasKey(c => new { c.SubredditFromName, c.SubredditToName });
-          
 
 
+            modelBuilder.Entity<Post>().HasKey(c => new { c.username, c.Id });
 
             modelBuilder.Entity<UserPreference>().HasKey(c => new { c.SubredditName, c.Username});
          

@@ -39,7 +39,8 @@ namespace UITEST.ViewModel
         public async void GetCurrentPost(Post post)
         {
             CurrentPost = await redditAPIConsumer.GetPostAndCommentsByIdAsync(post.id);
-            await _repository.CreateAsync(new Entities.Post { Id = post.id });
+            await _repository.CreateAsync(new Entities.Post { Id = post.id, username = UserFactory.GetInfo().name });
+
             CommentsReadyEvent.Invoke();
         }
 
