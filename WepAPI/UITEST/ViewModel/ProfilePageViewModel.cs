@@ -16,7 +16,7 @@ namespace UITEST.ViewModel
 {
     public class ProfilePageViewModel : BaseViewModel
     {
-        //public ObservableCollection<Post> Posts { get; private set; }
+        
         private ObservableCollection<Post> posts;
 
         public ObservableCollection<Post> Posts
@@ -64,6 +64,8 @@ namespace UITEST.ViewModel
 
             _repository = repository;
             _consumer = consumer;
+
+    
         }
 
         public async Task Initialize()

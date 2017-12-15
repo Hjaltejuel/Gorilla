@@ -6,6 +6,7 @@ using System;
 using Windows.UI.Xaml;
 using Gorilla.Model.GorillaRestInterfaces;
 using UITEST.RedditInterfaces;
+using Model;
 
 namespace UITEST.ViewModel
 {
@@ -14,6 +15,7 @@ namespace UITEST.ViewModel
         public delegate void Comments();
         public event Comments CommentsReadyEvent;
         IRedditAPIConsumer redditAPIConsumer;
+        IRestUserPreferenceRepository _restUserPreferenceRepository;
         IRestPostRepository _repository;
         private bool IsLiked;
         private bool IsDisliked;
@@ -28,14 +30,18 @@ namespace UITEST.ViewModel
         private string _timeSinceCreation;
         public string timeSinceCreation { get { return _timeSinceCreation; } set { _timeSinceCreation = value; OnPropertyChanged(); }}
 
-        public PostPageViewModel(INavigationService service, IRestPostRepository repository) : base(service)
+        public PostPageViewModel(INavigationService service, IRestPostRepository repository, IRestUserPreferenceRepository restUserPreferenceRepository) : base(service)
         {
             _repository = repository;
+            _restUserPreferenceRepository = restUserPreferenceRepository;
+
+
         }
         public async void GetCurrentPost(Post post)
         {
             CurrentPost = await redditAPIConsumer.GetPostAndCommentsByIdAsync(post.id);
-            await _repository.CreateAsync(new Entities.Post { Id = post.id });
+            await _repository.CreateAsync(new Entities.Post { Id = post.id, username = UserFactory.GetInfo().name });
+
             CommentsReadyEvent.Invoke();
         }
 
@@ -62,11 +68,13 @@ namespace UITEST.ViewModel
                 created_utc = timeInSeconds
             };
             await redditAPIConsumer.CreateCommentAsync(commentableToCommentOn, newComment.body);
+            await  _restUserPreferenceRepository.UpdateAsync(new Entities.UserPreference { Username = UserFactory.GetInfo().name, SubredditName = CurrentPost.subreddit, PriorityMultiplier = 3 });
             return newComment;
         }
 
         public async Task PostLikedAsync()
         {
+          
             int direction;
 
             if (IsLiked)
@@ -88,10 +96,12 @@ namespace UITEST.ViewModel
             IsLiked = !IsLiked;
             dislikeButton = App.Current.Resources["DislikeButton"] as Style;
             await redditAPIConsumer.VoteAsync(_currentComment, direction);
+            await _restUserPreferenceRepository.UpdateAsync(new Entities.UserPreference { Username = UserFactory.GetInfo().name, SubredditName = CurrentPost.subreddit, PriorityMultiplier = 1 });
         }
 
         public async Task PostDislikedAsync()
         {
+            
             int direction;
 
             if (IsDisliked)
@@ -113,6 +123,7 @@ namespace UITEST.ViewModel
             IsDisliked = !IsDisliked;
             likeButton = App.Current.Resources["LikeButton"] as Style;
             await redditAPIConsumer.VoteAsync(_currentComment, direction);
+            await _restUserPreferenceRepository.UpdateAsync(new Entities.UserPreference { Username = UserFactory.GetInfo().name, SubredditName = CurrentPost.subreddit, PriorityMultiplier = 1 });
         }
     }
 }

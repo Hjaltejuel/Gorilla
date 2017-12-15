@@ -25,6 +25,7 @@ namespace UITEST.View
             SizeChanged += ChangeListViewWhenSizedChanged;
             _vm.PostsReadyEvent += PostReadyEvent;
             PostsList.OnNagivated += PostsList_OnNagivated;
+            
         }
         private void PostsList_OnNagivated(Post post)
         {

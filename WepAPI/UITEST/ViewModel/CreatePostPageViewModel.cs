@@ -1,6 +1,7 @@
 ﻿using Entities.RedditEntities;
 using Gorilla.AuthenticationGorillaAPI;
 using Gorilla.Model;
+using Model;
 using System.Net;
 using System.Threading.Tasks;
 using UITEST.RedditInterfaces;
@@ -28,10 +29,11 @@ namespace UITEST.ViewModel
                 }
             }
         }
+        private readonly IRestUserPreferenceRepository _repository;
 
-
-        public CreatePostPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer) : base(service)
+        public CreatePostPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer, IRestUserPreferenceRepository repository) : base(service)
         {
+            _repository = repository;
             _consumer = consumer;
             _helper = helper;
         }
@@ -42,11 +44,13 @@ namespace UITEST.ViewModel
             if (response.Item1 == HttpStatusCode.OK)
             {
                 SentSuccesfulEvent.Invoke();
+                await _repository.UpdateAsync(new Entities.UserPreference { Username = UserFactory.GetInfo().name, SubredditName = CurrentSubreddit.display_name, PriorityMultiplier = 5 });
             }
             else
             {
                 SentUnsuccesfulEvent.Invoke();
             }
+            
         }
     }
 }

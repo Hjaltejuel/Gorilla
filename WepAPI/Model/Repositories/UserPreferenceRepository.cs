@@ -77,14 +77,28 @@ namespace Model
 
         public async Task<bool> UpdateAsync(UserPreference userPreference)
         {
-            UserPreference preference = await context.UserPreferences.FindAsync(userPreference.Username, userPreference.SubredditName);
+            User user = await context.Users.FindAsync(userPreference.Username);
+            Subreddit subreddit = await context.Subreddits.FindAsync(userPreference.SubredditName);
+            var preference = await (from a in context.UserPreferences
+                              where a.Username.Equals(userPreference.Username) && a.SubredditName.Equals(userPreference.SubredditName)
+                              select a).FirstOrDefaultAsync();
             if (preference != null)
             {
-                preference.PriorityMultiplier = userPreference.PriorityMultiplier;
+                preference.PriorityMultiplier += userPreference.PriorityMultiplier;
                 await context.SaveChangesAsync();
                 return true;
             }
-            return false;
+            else {
+                if (userPreference.PriorityMultiplier < 0)
+                {
+                    userPreference.PriorityMultiplier = 0;
+                }
+                await CreateAsync(userPreference);
+
+                return true;
+            }
+
+           
         }
         private bool disposedValue = false;
         protected virtual void Dispose(bool disposing)

@@ -75,17 +75,19 @@ namespace UITEST.View
                 Frame.Navigate(typeof(SubredditPage), args.QueryText);
         }
 
-        private void SubsribeToSubredditButton_Click(object sender, RoutedEventArgs e)
+        private async void SubsribeToSubredditButton_Click(object sender, RoutedEventArgs e)
         {
-            _vm.SubscribeToSubreddit();
+            await _vm.SubscribeToSubreddit();
+
+
         }
 
-        private void SortBy_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void SortBy_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             LoadingRing.IsActive = true;
             var comboBox = sender as ComboBox;
             var SortString = comboBox.SelectedItem as string;
-            _vm.GeneratePosts(_vm._Subreddit.display_name, SortString);
+            await _vm.GeneratePosts(_vm._Subreddit.display_name, SortString);
         }
     }
 }

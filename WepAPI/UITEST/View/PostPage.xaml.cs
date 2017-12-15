@@ -22,6 +22,7 @@ using Windows.UI.Xaml.Navigation;
 using Gorilla.Model;
 using Gorilla.Model.GorillaRestInterfaces;
 using Gorilla.Model.GorillaRepositories;
+using Model;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 namespace UITEST.View
@@ -33,6 +34,7 @@ namespace UITEST.View
     {
         private readonly PostPageViewModel _vm;
         private readonly IRestPostRepository _repository;
+    
         private RelativePanel CommentPanel;
         private TextBox CommentTextBox;
         private TextBlock errorText;
@@ -41,6 +43,7 @@ namespace UITEST.View
         {
             this.InitializeComponent();
             LoadingRing.IsActive = true;
+           
             _repository = App.ServiceProvider.GetService<IRestPostRepository>();
             _vm = App.ServiceProvider.GetService<PostPageViewModel>();
             DataContext = _vm;
@@ -164,14 +167,16 @@ namespace UITEST.View
             }
         }
 
-        private void Upvote_Click(object sender, RoutedEventArgs e)
+        private async void Upvote_Click(object sender, RoutedEventArgs e)
         {
-            _vm.PostLikedAsync();
+           
+            await _vm.PostLikedAsync();
         }
 
-        private void Downvote_Click(object sender, RoutedEventArgs e)
+        private async void Downvote_Click(object sender, RoutedEventArgs e)
         {
-            _vm.PostDislikedAsync();
+          
+            await _vm.PostDislikedAsync();
         }
     }
 }
