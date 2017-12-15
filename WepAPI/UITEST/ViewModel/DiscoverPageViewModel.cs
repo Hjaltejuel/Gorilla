@@ -21,6 +21,9 @@ namespace UITEST.ViewModel
         public delegate void DiscoverReady();
         public event DiscoverReady DiscoverReadyEvent;
 
+        public delegate void NoElements();
+        public event NoElements NoElementsEvent;
+
         public DiscoverPageViewModel(INavigationService service, IRedditAPIConsumer consumer, IRestSubredditConnectionRepository repository, IRestUserPreferenceRepository userPreferenceRepository) :base(service)
         {
             _userPreferenceRepository = userPreferenceRepository;
@@ -36,46 +39,69 @@ namespace UITEST.ViewModel
         {
 
 
-            User user = await  _consumer.GetAccountDetailsAsync();
-            
-            var userPreferences = (await _userPreferenceRepository.FindAsync(user.name)).ToArray();
+            User user = await _consumer.GetAccountDetailsAsync();
 
-            var subreddits = new HashSet<string>();
-            if (userPreferences.Count() < 15)
+            var result = (await _userPreferenceRepository.FindAsync(user.name));
+
+            if (result == null)
             {
-               
-                int reps = (15/userPreferences.Count());
-
-                for (int j = 0; j < userPreferences.Count(); j++)
-                {
-                    var SubredditConnections = await _repository.FindAsync(userPreferences[j].SubredditName);
-                    for (int i = 0; i < reps && i< SubredditConnections.Count(); i++)
-                    {
-                        subreddits.Add(SubredditConnections.ElementAt(i).SubredditToName);
-                   
-                    }
-                }
-
+                NoElementsEvent.Invoke();
+                DiscoverReadyEvent.Invoke();
             }
             else
             {
-              
-                for (int i = 0; i < 15; i++)
+                var userPreferences = result.ToArray();
+                var subreddits = new HashSet<string>();
+                if (userPreferences.Count() < 15)
                 {
-                    subreddits.Add(((await _repository.FindAsync(userPreferences[i]
-                                                        .SubredditName)).
-                                                        FirstOrDefault()).SubredditToName);
+
+                    int reps = (15 / userPreferences.Count());
+
+                    for (int j = 0; j < userPreferences.Count(); j++)
+                    {
+                        var SubredditConnections = await _repository.FindAsync(userPreferences[j].SubredditName);
+                        if (SubredditConnections != null)
+                        {
+                            for (int i = 0; i < reps && i < SubredditConnections.Count(); i++)
+                            {
+                                subreddits.Add(SubredditConnections.ElementAt(i).SubredditToName);
+
+                            }
+                        }
+                    }
+
                 }
-            }
+                else
+                {
+
+                    for (int i = 0; i < 15; i++)
+                    {
+                        subreddits.Add(((await _repository.FindAsync(userPreferences[i]
+                                                            .SubredditName)).
+                                                            FirstOrDefault()).SubredditToName);
+                    }
+                }
 
 
-            SubReddits = new ObservableCollection<Subreddit>();
-            foreach(String s in subreddits)
-            {
-                SubReddits.Add(new Subreddit() { name = s , banner_img = "/MockUpPictures/Destiny2Banner.png"});
+                var subs = new Subreddit[14];
+                for(int i = 0; i<subreddits.Count(); i++)
+                {
+                    var sub = await _consumer.GetSubredditAsync(subreddits.ElementAt(i));
+                    
+                    subs[i] = sub;
+                    if(sub.banner_img == null)
+                    {
+                        sub.banner_img = sub.header_img;
+                        if(sub.banner_img == null)
+                        {
+                            sub.banner_img = sub.icon_img;
+                        }
+                    }
+                }
+                SubReddits = new ObservableCollection<Subreddit>(subs);
+                DiscoverReadyEvent.Invoke();
+                OnPropertyChanged("SubReddits");
             }
-            DiscoverReadyEvent.Invoke();
-            OnPropertyChanged("SubReddits");
         }
     }
 }

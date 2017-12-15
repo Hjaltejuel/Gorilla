@@ -68,5 +68,18 @@ namespace Entities.RedditEntities
         public string submission_type { get; set; }
         public string user_is_subscriber { get; set; }
         public ObservableCollection<Post> posts { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var sub = obj as Subreddit;
+            if (sub.display_name.Equals(this.display_name))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

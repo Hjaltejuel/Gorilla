@@ -64,7 +64,7 @@ namespace UITEST.ViewModel
             _repository = repository;
             _consumer = consumer;
 
-            Initialize();
+    
         }
 
         public async Task Initialize()

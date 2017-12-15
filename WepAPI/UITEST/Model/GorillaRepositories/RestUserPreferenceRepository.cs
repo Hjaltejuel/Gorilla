@@ -14,7 +14,7 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
     public class RestUserPreferenceRepository : IRestUserPreferenceRepository
     {   
 
-        private readonly Uri _baseAddress = new Uri("http://gorillaapi.azurewebsites.net/");
+        private readonly Uri _baseAddress = new Uri("https://gorillaapi.azurewebsites.net/");
 
         private readonly HttpClient _client;
 
@@ -32,11 +32,12 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
 
             _client = client;
         }
+
         public async Task<string> CreateAsync(UserPreference userPreference)
         {
             using (var h = new HttpClient())
             {
-                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("POST"), new Uri("https://gorillaapi.azurewebsites.net/api/UserPreference"));
+                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("POST"), new Uri("https://gorillaapi.azurewebsites.net/api/Userpreference"));
                 request.Content = userPreference.ToHttpContent();
 
                 var token = await _helper.AcquireTokenSilentAsync();

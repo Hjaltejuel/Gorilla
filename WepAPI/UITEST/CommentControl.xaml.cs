@@ -1,6 +1,7 @@
 ﻿using Entities.RedditEntities;
 using Gorilla.Model;
 using Microsoft.Extensions.DependencyInjection;
+using Model;
 using System;
 using System.Threading.Tasks;
 using Windows.UI;
@@ -21,12 +22,14 @@ namespace UITEST
         private TextBlock errorText;
         private RelativePanel InsertCommentPanel;
         private IRedditAPIConsumer redditAPIConsumer;
+        private readonly IRestUserPreferenceRepository _repository; 
         private bool IsLiked;
         private bool IsDisliked;
 
         public CommentControl(Comment comment)
         {
             redditAPIConsumer = App.ServiceProvider.GetService<IRedditAPIConsumer>();
+            _repository = App.ServiceProvider.GetService<IRestUserPreferenceRepository>();
             this.InitializeComponent();
 
             //If the comment is a 'more' type
@@ -97,14 +100,20 @@ namespace UITEST
             redditAPIConsumer.GetMoreComments(postID, children);
         }
 
-        private void UpvoteButton_Click(object sender, RoutedEventArgs e)
+        private async void UpvoteButton_Click(object sender, RoutedEventArgs e)
         {
-            CommentLikedAsync();
+            await  CommentLikedAsync();
+            await _repository.UpdateAsync(new Entities.UserPreference { Username = UserFactory.GetInfo().name, SubredditName = currentComment.subreddit, PriorityMultiplier = 1 });
+           
         }
 
-        private void DownvoteButton_Click(object sender, RoutedEventArgs e)
+        private async void DownvoteButton_Click(object sender, RoutedEventArgs e)
         {
-            CommentDislikedAsync();
+            await CommentDislikedAsync();
+           await _repository.UpdateAsync(new Entities.UserPreference { Username = UserFactory.GetInfo().name, SubredditName = currentComment.subreddit, PriorityMultiplier = 1 });
+            
+
+
         }
 
 
@@ -217,13 +226,13 @@ namespace UITEST
             btn.FontWeight = FontWeights.SemiBold;
         }
 
-        private void CommentButton_Click(object sender, RoutedEventArgs e)
+        private async void CommentButton_Click(object sender, RoutedEventArgs e)
         {
             var CommentBtn = sender as Button;
 
             if (InsertCommentPanel == null)
             {
-                CreateCommentPanel();
+                await CreateCommentPanel();
                 var CommentExtraTextPanel = CommentBtn.Parent as RelativePanel;
                 TextInfoPanel.Children.Add(InsertCommentPanel);
             }
@@ -234,7 +243,7 @@ namespace UITEST
             }
         }
 
-        private void CreateCommentPanel()
+        private async Task CreateCommentPanel()
         {
             if (InsertCommentPanel != null)
             {
@@ -261,19 +270,19 @@ namespace UITEST
             RelativePanel.SetRightOf(errorText, SubmitButton);
             RelativePanel.SetBelow(errorText, CommentTextBox);
             RelativePanel.SetAlignVerticalCenterWith(errorText, SubmitButton);
-            SubmitButton.Click += CommentSaveClick;
+            SubmitButton.Click +=  CommentSaveClick;
 
             InsertCommentPanel.Children.Add(CommentTextBox);
             InsertCommentPanel.Children.Add(SubmitButton);
             InsertCommentPanel.Children.Add(errorText);
         }
 
-        private void CommentSaveClick(object sender, RoutedEventArgs e)
+        private async void CommentSaveClick(object sender, RoutedEventArgs e)
         {
-            InsertComment(currentComment);
+            await InsertComment(currentComment);
         }
 
-        private void InsertComment(AbstractCommentable abstractCommentableToCommentOn)
+        private async Task InsertComment(AbstractCommentable abstractCommentableToCommentOn)
         {   
 
             string text = CommentTextBox.Text;
@@ -295,7 +304,9 @@ namespace UITEST
                     created_utc = timeInSeconds
                 };
 
-                redditAPIConsumer.CreateCommentAsync(abstractCommentableToCommentOn, newComment.body);
+                await redditAPIConsumer.CreateCommentAsync(abstractCommentableToCommentOn, newComment.body);
+
+               
 
                 currentComment.Replies.Insert(0, newComment);
 
@@ -304,6 +315,7 @@ namespace UITEST
                 InsertCommentPanel = null;
 
                 CommentStackPanel.Children.Insert(1, new CommentControl(newComment));
+                await _repository.UpdateAsync(new Entities.UserPreference { Username = UserFactory.GetInfo().name, SubredditName = currentComment.subreddit, PriorityMultiplier = 3 });
             }
         }
     }
