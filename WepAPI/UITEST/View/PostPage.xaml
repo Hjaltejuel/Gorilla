@@ -27,16 +27,16 @@
         <ListView Grid.Row="4" Name="PostView" SelectionMode="None" HorizontalAlignment="Stretch">
             <RelativePanel Name="TopInfo"  Margin="20, 20, 0, 0" Height="Auto" Grid.Row="1">
                 <RelativePanel Name="OpOgNed" Width="Auto" Margin="0,0,10,0">
-                    <Button Content="Like" Height="20" Width="20" Name="Upvote" Style="{StaticResource LikeButton}" Click="Upvote_Click"/>
+                    <Button Content="Like" Height="20" Width="20" Name="Upvote" Style="{Binding likeButton}" Click="Upvote_Click"/>
                     <TextBlock Text="{Binding votes}" Name="Votes" HorizontalAlignment="Left" Margin="0, 8, 0, 0"/>
-                    <Button Content="Dislike" Height="20" FontSize="30" Name="Downvote" RelativePanel.Below="Upvote" Style="{StaticResource DislikeButton}" Click="Downvote_Click"/>
+                    <Button Content="Dislike" Height="20" FontSize="30" Name="Downvote" RelativePanel.Below="Upvote" Style="{Binding dislikeButton}" Click="Downvote_Click"/>
                     <Image Source="{x:Bind Path = _vm.CurrentPost.thumbnail}" Height="40" Width="40" Name="Box" Margin="20, 0, 0, 0" RelativePanel.RightOf="Upvote"/>
                 </RelativePanel>
                 <RelativePanel Name="TitlePanel" RelativePanel.RightOf="OpOgNed">
                     <TextBlock Text="{x:Bind Path = _vm.CurrentPost.title}" FontSize="20" Name="Title"/>
                 </RelativePanel>
                 <RelativePanel Name="TimePanel" RelativePanel.Below="TitlePanel" RelativePanel.RightOf="OpOgNed">
-                    <TextBlock Text="" Name="TimeText" FontSize="12"/>
+                    <TextBlock Name="TimeText" Text="{Binding timeSinceCreation}" FontSize="12"/>
                 </RelativePanel>
 
                 <RelativePanel Name="TextPanel" RelativePanel.Below="TimePanel" RelativePanel.RightOf="OpOgNed" Width="Auto" Margin="0, 4, 10, 0">

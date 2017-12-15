@@ -23,7 +23,7 @@ namespace UITEST.ViewModel
         public ICommand GoToCreatePostPageCommand { get; set; }
         bool firstTime = true;
         IRedditAPIConsumer _consumer;
-     
+        IRestUserRepository _repository;
         public Subreddit _Subreddit;
         public ObservableCollection<Post> posts;
         public string subscribeString = "Subscribe";
@@ -50,9 +50,10 @@ namespace UITEST.ViewModel
         public delegate void PostsReady();
         public event PostsReady PostsReadyEvent;
 
-        public MainPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer) : base(service)
+        public MainPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer, IRestUserRepository repository) : base(service)
         {
             _consumer = consumer;
+            _repository = repository;
             _helper = helper;
             GoToCreatePostPageCommand = new RelayCommand(o => _service.Navigate(typeof(CreatePostPage), _Subreddit));
             Initialize();
@@ -60,6 +61,8 @@ namespace UITEST.ViewModel
 
         public async Task GeneratePosts(string s = "sircmpwn", string sort = "hot")
         {
+            await UserFactory.initialize(_consumer);
+            await _repository.CreateAsync(new Entities.User { Username = UserFactory.GetInfo().name, PathToProfilePicture = "profilePicture.jpg" });
             _Subreddit = await _consumer.GetSubredditAsync(s, sort);
             Posts = _Subreddit.posts;
             foreach (Post p in Posts)
@@ -89,9 +92,11 @@ namespace UITEST.ViewModel
 
         public async Task Initialize()
         {
+            
+            
             if (await Authorize() != null)
             {
-                GeneratePosts();
+                await GeneratePosts();
             }
             else
             {

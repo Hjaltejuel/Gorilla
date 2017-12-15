@@ -7,6 +7,7 @@ namespace Entities.RedditEntities
 {
     public class User
     {
+        public byte[] ProfilePic { get; set; }
         public bool is_employee { get; set; }
         public bool has_visited_new_profile { get; set; }
         public bool pref_no_profanity { get; set; }

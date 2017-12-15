@@ -20,6 +20,7 @@ using WepAPI.Models;
 using Extensions;
 using System.IO;
 using Microsoft.AspNetCore.Hosting.Internal;
+using Entities.GorillaAPI.Interfaces;
 
 namespace Gorilla
 {
@@ -40,6 +41,7 @@ namespace Gorilla
             services.AddScoped<IRedditDBContext, RedditDBContext>();
             services.AddScoped<ISubredditRepository, SubredditRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<IUserPreferenceRepository, UserPreferenceRepository>();
             services.AddScoped<ISubredditConnectionRepository, SubredditConnectionRepository>();
 

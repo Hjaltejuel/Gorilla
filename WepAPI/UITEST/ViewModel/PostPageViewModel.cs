@@ -2,6 +2,9 @@
 using Gorilla.Model;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using Windows.UI.Xaml;
+using Gorilla.Model.GorillaRestInterfaces;
 
 namespace UITEST.ViewModel
 {
@@ -9,33 +12,34 @@ namespace UITEST.ViewModel
     {
         public delegate void Comments();
         public event Comments CommentsReadyEvent;
-        private Post currentpost;
         IRedditAPIConsumer redditAPIConsumer;
+
+        IRestPostRepository _repository;
         private bool IsLiked;
         private bool IsDisliked;
+
+        private Style _likeButton;
+        public Style likeButton { get { return _likeButton; } set { _likeButton = value; OnPropertyChanged(); } }
+        private Style _dislikeButton;
+        public Style dislikeButton { get { return _dislikeButton; } set { _dislikeButton = value; OnPropertyChanged(); } }
+
         private int _votes;
-        public int votes
-        {
-            get { return _votes; }
-            set { _votes = value; OnPropertyChanged(); }
-        }
+        public int votes { get { return _votes; } set { _votes = value; OnPropertyChanged(); } }
+        private Post _currentComment;
+        public Post CurrentPost { get { return _currentComment; } set { _currentComment = value; OnPropertyChanged();  } }
+        private string _timeSinceCreation;
+        public string timeSinceCreation { get { return _timeSinceCreation; } set { _timeSinceCreation = value; OnPropertyChanged(); }}
 
-        public Post CurrentPost
+        public PostPageViewModel(INavigationService service, IRestPostRepository repository) : base(service)
         {
-            get { return currentpost; }
-            set {
-                currentpost = value;
-                OnPropertyChanged("CurrentPost");
-            }
-        }
-
-        public PostPageViewModel(INavigationService service) :base(service)
-        {
+            _repository = repository;
+          
         }
 
         public async void GetCurrentPost(Post post)
         {
             CurrentPost = await redditAPIConsumer.GetPostAndCommentsByIdAsync(post.id);
+            await _repository.CreateAsync(new Entities.Post { Id = post.id });
             CommentsReadyEvent.Invoke();
         }
 
@@ -45,20 +49,26 @@ namespace UITEST.ViewModel
             CurrentPost = post;
             votes = CurrentPost.score;
             GetCurrentPost(post);
+            timeSinceCreation = TimeHelper.CalcCreationDateByUser(CurrentPost);
+            likeButton = App.Current.Resources["LikeButton"] as Style;
+            dislikeButton = App.Current.Resources["DislikeButton"] as Style;
         }
 
-        public async Task AddCommentAsync(AbstractCommentable commentableToCommentOn, Comment newComment)
+        public async Task<Comment> AddCommentAsync(AbstractCommentable commentableToCommentOn, string newCommentText)
         {
-          
+            var old = new DateTime(1970, 1, 1);
+            var totaltime = DateTime.Now - old;
+            int timeInSeconds = (int)totaltime.TotalSeconds;
+            var newComment = new Comment()
+            {
+                body = newCommentText,
+                author = "ASD",
+                created_utc = timeInSeconds
+            };
             await redditAPIConsumer.CreateCommentAsync(commentableToCommentOn, newComment.body);
+            return newComment;
         }
 
-        public delegate void Vote();
-        public event Vote Like;
-        public event Vote Dislike;
-
-
-        //TODO hvis vi ikke kan få observer pattern til at virke kan vi slette de der currentcomment.score - og + statements
         public async Task PostLikedAsync()
         {
             int direction;
@@ -67,6 +77,7 @@ namespace UITEST.ViewModel
             {
                 votes -= 1;
                 direction = 0;
+                likeButton = App.Current.Resources["LikeButton"] as Style;
             }
             else
             {
@@ -75,11 +86,12 @@ namespace UITEST.ViewModel
                 else
                     votes += 1;
                 direction = 1;
+                likeButton = App.Current.Resources["LikeButtonClicked"] as Style;
             }
             IsDisliked = false;
             IsLiked = !IsLiked;
-            await redditAPIConsumer.VoteAsync(currentpost, direction);
-            Like.Invoke();
+            dislikeButton = App.Current.Resources["DislikeButton"] as Style;
+            await redditAPIConsumer.VoteAsync(_currentComment, direction);
         }
 
         public async Task PostDislikedAsync()
@@ -90,6 +102,7 @@ namespace UITEST.ViewModel
             {
                 votes += 1;
                 direction = 0;
+                dislikeButton = App.Current.Resources["DislikeButton"] as Style;
             }
             else
             {
@@ -98,11 +111,12 @@ namespace UITEST.ViewModel
                 else
                     votes -= 1;
                 direction = -1;
+                dislikeButton = App.Current.Resources["DislikeButtonClicked"] as Style;
             }
             IsLiked = false;
             IsDisliked = !IsDisliked;
-            await redditAPIConsumer.VoteAsync(currentpost, direction);
-            Dislike.Invoke();
+            likeButton = App.Current.Resources["LikeButton"] as Style;
+            await redditAPIConsumer.VoteAsync(_currentComment, direction);
         }
     }
 }

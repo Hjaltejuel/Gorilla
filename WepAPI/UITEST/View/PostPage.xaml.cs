@@ -20,6 +20,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Gorilla.Model;
+using Gorilla.Model.GorillaRestInterfaces;
+using Gorilla.Model.GorillaRepositories;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 namespace UITEST.View
@@ -30,6 +32,7 @@ namespace UITEST.View
     public sealed partial class PostPage : Page
     {
         private readonly PostPageViewModel _vm;
+        private readonly IRestPostRepository _repository;
         private RelativePanel CommentPanel;
         private TextBox CommentTextBox;
         private TextBlock errorText;
@@ -38,7 +41,7 @@ namespace UITEST.View
         {
             this.InitializeComponent();
             LoadingRing.IsActive = true;
-
+            _repository = App.ServiceProvider.GetService<IRestPostRepository>();
             _vm = App.ServiceProvider.GetService<PostPageViewModel>();
             DataContext = _vm;
             SetEventMethods();
@@ -54,22 +57,15 @@ namespace UITEST.View
         {
             SizeChanged += ChangeListViewWhenSizedChanged;
             _vm.CommentsReadyEvent += CommentsReadyEvent;
-            _vm.Like += LikeSuccesful;
-            _vm.Dislike += DislikeSuccesful;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            
             base.OnNavigatedTo(e);
             var post = e.Parameter as Post;
+            _repository.CreateAsync(new Entities.Post { Id = post.id, username = UserFactory.GetInfo().name });
             _vm.Initialize(post);
-
-            SetUpTimeText();
-        }
-
-        private void SetUpTimeText()
-        {
-            TimeText.Text = TimeHelper.CalcCreationDateByUser(_vm.CurrentPost);
         }
 
         private void ChangeListViewWhenSizedChanged(object sender, SizeChangedEventArgs e)
@@ -98,12 +94,7 @@ namespace UITEST.View
             CommentPanel = new RelativePanel() { Margin = new Thickness(0, 40, 0, 0)};
             CommentTextBox = new TextBox()
             {
-                Height = 200,
-                Width = 600,
-                AcceptsReturn = true,
-                TextWrapping = TextWrapping.Wrap,
-                IsSpellCheckEnabled = true,
-                Language = "en-US"
+                Height = 200, Width = 600, AcceptsReturn = true, TextWrapping = TextWrapping.Wrap, IsSpellCheckEnabled = true, Language = "en-US"
             };
 
             Button SubmitButton = new Button()
@@ -139,12 +130,11 @@ namespace UITEST.View
 
         private void CommentSaveClick(object sender, RoutedEventArgs e)
         {
-            InsertComment(_vm.CurrentPost);
+            InsertCommentAsync(_vm.CurrentPost);
         }
 
-        private void InsertComment(AbstractCommentable abstractCommentableToCommentOn)
+        private async void InsertCommentAsync(AbstractCommentable abstractCommentableToCommentOn)
         {
-            
             string text = CommentTextBox.Text;
             if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
             {
@@ -153,18 +143,7 @@ namespace UITEST.View
             }
             else
             {
-                var old = new DateTime(1970, 1, 1);
-                var totaltime = DateTime.Now - old;
-                int timeInSeconds = (int)totaltime.TotalSeconds;
-                var newComment = new Comment()
-                { 
-                    body = CommentTextBox.Text,
-                    author = "ASD",
-                    created_utc = timeInSeconds
-                
-                
-            };
-                _vm.AddCommentAsync(abstractCommentableToCommentOn, newComment);
+                var newComment = await _vm.AddCommentAsync(abstractCommentableToCommentOn, text);
                 PostView.Items.Insert(2, new CommentControl(newComment));
                 ExtraStuff.Children.Remove(CommentPanel);
                 CommentPanel = null;
@@ -190,46 +169,6 @@ namespace UITEST.View
         private void Downvote_Click(object sender, RoutedEventArgs e)
         {
             _vm.PostDislikedAsync();
-        }
-
-
-
-        //Grimt i know.. what to do? det er et midlertidligt workaround
-        private Style UpvoteClickedStyle = App.Current.Resources["LikeButtonClicked"] as Style;
-        private Style UpvoteNotClickedStyle = App.Current.Resources["LikeButton"] as Style;
-        private Style DownvoteClickedStyle = App.Current.Resources["DislikeButtonClicked"] as Style;
-        private Style DownvoteNotClickedStyle = App.Current.Resources["DislikeButton"] as Style;
-
-        private void LikeSuccesful()
-        {
-            int votes;
-            int.TryParse(Votes.Text, out votes);
-
-            if (Upvote.Style.Equals(UpvoteClickedStyle))
-            {
-                Upvote.Style = UpvoteNotClickedStyle;
-            }
-            else
-            {
-                Upvote.Style = UpvoteClickedStyle;
-            }
-            Downvote.Style = DownvoteNotClickedStyle;
-        }
-
-        private void DislikeSuccesful()
-        {
-            int votes;
-            int.TryParse(Votes.Text, out votes);
-
-            if (Downvote.Style.Equals(DownvoteClickedStyle))
-            {
-                Downvote.Style = DownvoteNotClickedStyle;
-            }
-            else
-            {
-                Downvote.Style = DownvoteClickedStyle;
-            }
-            Upvote.Style = UpvoteNotClickedStyle;
         }
     }
 }
