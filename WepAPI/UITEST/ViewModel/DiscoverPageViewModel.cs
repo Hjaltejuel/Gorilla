@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows.Input;
 using Model;
 using UITEST.View;
+using UITEST.RedditInterfaces;
 
 namespace UITEST.ViewModel
 {

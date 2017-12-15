@@ -13,7 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
-using Gorilla.Authentication;
+using UITEST.Authentication;
 using Gorilla.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 

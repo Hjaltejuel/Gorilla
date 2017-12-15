@@ -1,5 +1,4 @@
-﻿using Entities.RedditEntities;
-using Gorilla.AuthenticationGorillaAPI;
+﻿using Gorilla.AuthenticationGorillaAPI;
 using Microsoft.Extensions.DependencyInjection;
 using Model;
 using System;
@@ -9,6 +8,8 @@ using UITEST.ViewModel;
 using WebApplication2.Models.GorillaApiConsumeRepositories;
 using Gorilla.Model.GorillaRestInterfaces;
 using Gorilla.Model.GorillaRepositories;
+using UITEST.RedditInterfaces;
+using UITEST.RedditRepositories;
 
 namespace Gorilla.Model
 {

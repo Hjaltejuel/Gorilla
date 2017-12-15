@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using Windows.UI.Xaml;
 using Gorilla.Model.GorillaRestInterfaces;
-using Model;
+using UITEST.RedditInterfaces;
 
 namespace UITEST.ViewModel
 {
@@ -18,12 +18,10 @@ namespace UITEST.ViewModel
         IRestPostRepository _repository;
         private bool IsLiked;
         private bool IsDisliked;
-
         private Style _likeButton;
         public Style likeButton { get { return _likeButton; } set { _likeButton = value; OnPropertyChanged(); } }
         private Style _dislikeButton;
         public Style dislikeButton { get { return _dislikeButton; } set { _dislikeButton = value; OnPropertyChanged(); } }
-
         private int _votes;
         public int votes { get { return _votes; } set { _votes = value; OnPropertyChanged(); } }
         private Post _currentComment;
@@ -38,7 +36,6 @@ namespace UITEST.ViewModel
 
 
         }
-
         public async void GetCurrentPost(Post post)
         {
             CurrentPost = await redditAPIConsumer.GetPostAndCommentsByIdAsync(post.id);

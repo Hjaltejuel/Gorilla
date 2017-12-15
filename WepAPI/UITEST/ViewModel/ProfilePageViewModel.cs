@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using UITEST.RedditInterfaces;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
@@ -71,7 +72,6 @@ namespace UITEST.ViewModel
         {
             await GetCurrentProfile();
 
-
             if (UserFactory.GetInfo().ProfilePic == null)
             {
                 ImageBytes = await _repository.FindImageAsync(Username);
@@ -79,18 +79,13 @@ namespace UITEST.ViewModel
             {
                 ImageBytes = UserFactory.GetInfo().ProfilePic;
             }
-
             var postIds = await _restPostRepository.ReadAsync(Username);
-
-
            
             Posts = new ObservableCollection<Post>();
-
             foreach (var post in postIds)
             {
                 Posts.Add(await _consumer.GetPostAndCommentsByIdAsync(post.Id));
             }
-
             PostsReadyEvent.Invoke();
         }
 
