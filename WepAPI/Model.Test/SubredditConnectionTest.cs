@@ -385,7 +385,7 @@ namespace Model.Test
         public async Task Update_given_existing_SubredditConnection_Updates_properties()
         {
             var context = new Mock<IRedditDBContext>();
-            var entity = new SubredditConnection { SubredditFromName = "name", SubredditToName = "TestSub", Similarity = 0.1M};
+            var entity = new SubredditConnection { SubredditFromName = "name", SubredditToName = "TestSub", Similarity = "0.1M"};
             context.Setup(c => c.SubredditConnections.FindAsync("name", "TestSub")).ReturnsAsync(entity);
 
             using (var repository = new SubredditConnectionRepository(context.Object))
@@ -394,14 +394,14 @@ namespace Model.Test
                 {
                     SubredditFromName = "name",
                     SubredditToName = "TestSub",
-                    Similarity=0.1M
+                    Similarity="0.1M"
 
                 };
 
                 await repository.UpdateAsync(subredditConnection);
             }
 
-            Assert.Equal(5, entity.Similarity);
+            Assert.Equal("0.1M", entity.Similarity);
 
         }
 
