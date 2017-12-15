@@ -27,6 +27,7 @@ namespace UITEST.View
             DataContext = _vm;
             SizeChanged += ChangeListViewWhenSizedChanged;
             _vm.PostsReadyEvent += PostReadyEvent;
+            _vm.PostsStartedLoading += StartedLoading;
             PostsList.OnNagivated += PostsList_OnNagivated;
         }
 
@@ -42,6 +43,10 @@ namespace UITEST.View
         private void PostReadyEvent()
         {
             LoadingRing.IsActive = false;
+        }
+        private void StartedLoading()
+        {
+            LoadingRing.IsActive = true;
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
