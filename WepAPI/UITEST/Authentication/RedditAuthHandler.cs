@@ -31,10 +31,11 @@ namespace UITEST.Authentication
 
         public async Task BeginAuth()
         {
-            refresh_token = _appSettings.Values["reddit_refresh_token"].ToString();
+            var refresh = _appSettings.Values["reddit_refresh_token"];
 
-            if (refresh_token != null) //If the refresh token exists, just login right away
+            if (refresh != null) //If the refresh token exists, just login right away
             {
+                refresh_token = refresh.ToString();
                 await RefreshToken();
             }
             else

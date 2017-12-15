@@ -1,6 +1,7 @@
 ﻿using Entities.RedditEntities;
 using Gorilla.AuthenticationGorillaAPI;
 using Gorilla.Model;
+using Model;
 using System.Net;
 using System.Threading.Tasks;
 using UITEST.RedditInterfaces;

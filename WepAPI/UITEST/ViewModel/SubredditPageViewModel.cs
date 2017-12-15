@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using Gorilla.AuthenticationGorillaAPI;
 using Gorilla.View;
 using UITEST.RedditInterfaces;
+using Model;
 
 namespace UITEST.ViewModel
 {

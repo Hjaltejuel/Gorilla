@@ -217,7 +217,7 @@ namespace UITEST.RedditRepositories
             return (HttpStatusCode.BadRequest, "Could not create post");
         }
 
-        public async Task<ObservableCollection<Comment>> GetMoreComments(string parentPostID, string[] children, int depth, int maxCommentsAmount=10)
+        public async Task<ObservableCollection<Comment>> GetMoreComments(string parentPostID, string[] children, int depth, int maxCommentsAmount = 10)
         {
             var childrenString = string.Join(",", children);
             var moreChildrenUrl = $"/api/morechildren.json?api_type=json&link_id={parentPostID}&sort=hot&children={childrenString}&depth=20";
@@ -229,12 +229,14 @@ namespace UITEST.RedditRepositories
             }
             List<Comment> l = new List<Comment>();
 
-            
+
 
             l.AddRange(
             response["json"]["data"]["things"].Select(child => child["data"].ToObject<Comment>()));
             var list = BuildCommentList(l, depth);
             ObservableCollection<Comment> o = new ObservableCollection<Comment>(list);
+            return o;
+        }
 
         public async Task<ObservableCollection<Post>> GetHomePageContent()
         {

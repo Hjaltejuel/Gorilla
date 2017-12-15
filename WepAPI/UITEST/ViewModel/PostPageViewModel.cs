@@ -6,6 +6,7 @@ using System;
 using Windows.UI.Xaml;
 using Gorilla.Model.GorillaRestInterfaces;
 using UITEST.RedditInterfaces;
+using Model;
 
 namespace UITEST.ViewModel
 {

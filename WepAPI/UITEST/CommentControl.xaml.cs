@@ -320,7 +320,7 @@ namespace UITEST
             
         }
 
-        private void InsertComment(AbstractCommentable abstractCommentableToCommentOn)
+        private async Task InsertComment(AbstractCommentable abstractCommentableToCommentOn)
         {   
 
             string text = CommentTextBox.Text;
