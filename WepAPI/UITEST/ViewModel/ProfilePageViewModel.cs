@@ -85,13 +85,13 @@ namespace UITEST.ViewModel
 
            
             Posts = new ObservableCollection<Post>();
-           
-            Parallel.ForEach(postIds, async post => { Posts.Add(await _consumer.GetPostAndCommentsByIdAsync(post.Id)); });
+
+            foreach (var post in postIds)
+            {
+                Posts.Add(await _consumer.GetPostAndCommentsByIdAsync(post.Id));
+            }
 
             PostsReadyEvent.Invoke();
-
-            OnPropertyChanged();
-       
         }
 
         private async Task GetCurrentProfile()
