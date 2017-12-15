@@ -85,23 +85,20 @@ namespace UITEST.ViewModel
 
            
             Posts = new ObservableCollection<Post>();
-           
-            foreach(Entities.Post post in postIds)
+
+            foreach (var post in postIds)
             {
-               posts.Add( await _consumer.GetPostAndCommentsByIdAsync(post.Id));
+                Posts.Add(await _consumer.GetPostAndCommentsByIdAsync(post.Id));
             }
 
             PostsReadyEvent.Invoke();
-
-            OnPropertyChanged();
-       
         }
 
         private async Task GetCurrentProfile()
         {
             var redditUser = UserFactory.GetInfo();
             var subscriptions = await _consumer.GetSubscribedSubredditsAsync();
-            var userPosts = await _consumer.GetUserPosts(redditUser.name);
+            var userPosts = await _consumer.GetUserComments(redditUser.name);
             string numberOfPosts;
             if (userPosts.Count > 25) numberOfPosts = "25+";
             else numberOfPosts = userPosts.Count.ToString();
