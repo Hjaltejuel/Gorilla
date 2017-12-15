@@ -17,8 +17,7 @@ namespace Entities
         public string SubredditToName { get; set; }
         
 
-        public decimal PPMI { get; set; }
-
-        public int Count { get; set; }
+        public string Similarity { get; set; }
+        
     }
 }

@@ -4,14 +4,15 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
+using UITEST.RedditInterfaces;
+using Entities.RedditEntities;
+using UITEST.Authentication;
 
-namespace Entities.RedditEntities    
+namespace UITEST.RedditRepositories
 {
     public class RedditConsumerController : IRedditAPIConsumer
     {
@@ -19,34 +20,22 @@ namespace Entities.RedditEntities
 
         private const string CommentUrl = "api/comment";
         private const string MeUrl = "api/v1/me";
-        private const string AccessTokenUrl = "https://www.reddit.com/api/v1/access_token";
         private const string VoteUrl = "api/vote";
         private const string CreatePostUrl = "api/submit";
         private const string SubscribeUrl = "api/subscribe";
-        private const string SubscribedSubredditsUrl = "subreddits/mine";
+        private const string SubscribedSubredditsUrl = "subreddits/mine/subscriber";
 
         private const int limit = 10;
 
-        private const string Client_id = "ephxxGR7ZA77nA";
+        RedditAuthHandler _authHandler;
         private bool IsAuthenticated = false;
         private string token = "";
         private string refresh_token = "";
         //"51999737725-OYI8KJ5T56KSO4xAyvoVhA8t5TM";
-
-        public async Task Authenticate(string code)
+        //
+        public void Authenticate(RedditAuthHandler handler)
         {
-            var request = CreateRequest(AccessTokenUrl, "POST");
-            var BasicAuth = Convert.ToBase64String(Encoding.UTF8.GetBytes(Client_id + ":"));
-            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", BasicAuth);
-            request.Content = new StringContent($"grant_type=authorization_code&code={code}&redirect_uri=https://gorillaapi.azurewebsites.net/",
-                Encoding.UTF8,
-                "application/x-www-form-urlencoded");
-            var responseBody = await SendRequest(request);
-            if (responseBody["error"] == null)
-            {
-                token = responseBody["access_token"].ToObject<string>();
-                refresh_token = responseBody["refresh_token"].ToObject<string>();
-            }
+            _authHandler = handler;
         }
         private HttpRequestMessage CreateRequest(string stringUri, string method)
         {
@@ -65,10 +54,9 @@ namespace Entities.RedditEntities
                 RequestUri = uri
             };
             if (IsOAuth)
-                request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
+                request = _authHandler.AuthenticateRequest(request);
 
             request.Method = new HttpMethod(method);
-            //request.Headers.UserAgent.ParseAdd(UserAgent);
             request.Headers.Add("User-Agent", "Gorilla");
             return request;
         }
@@ -193,19 +181,6 @@ namespace Entities.RedditEntities
 
             return (HttpStatusCode.OK, "Subcribe successful!");
         }
-        //public async Task<bool> RefreshTokenAsync()
-        //{
-        //    var request = CreateRequest(AccessTokenUrl, "POST");
-        //    var basicAuth = Convert.ToBase64String(Encoding.UTF8.GetBytes(Client_id + ":"));
-        //    request.Headers.Authorization = new AuthenticationHeaderValue("Basic", basicAuth);
-        //    request.Content = new StringContent($"grant_type=refresh_token&refresh_token={refresh_token}", Encoding.UTF8, "application/x-www-form-urlencoded");
-        //    var responseBody = await SendRequest(request);
-
-        //    if (responseBody["error"] != null) return false;
-
-        //    token = responseBody["access_token"].ToObject<string>();
-        //    return true;
-        //}
         public async Task<List<Subreddit>> GetSubscribedSubredditsAsync()
         {
             var subscribedSubreddits = new List<Subreddit>();
@@ -252,7 +227,6 @@ namespace Entities.RedditEntities
             {
                 return null;
             }
-
             List<Comment> l = new List<Comment>();
 
             
@@ -262,17 +236,24 @@ namespace Entities.RedditEntities
             var list = BuildCommentList(l, depth);
             ObservableCollection<Comment> o = new ObservableCollection<Comment>(list);
 
-            return o;
+        public async Task<ObservableCollection<Post>> GetHomePageContent()
+        {
+            var request = CreateRequest("/", "GET");
+            var response = await SendRequest(request);
+            if (response == null) return null;
+            if (response["error"] != null) return null;
 
+            Listing l = response.ToObject<Listing>();
+            var list = new List<Post>();
+            list.AddRange(l.data.children.Select(child => child.data.ToObject<Post>()));
+            return new ObservableCollection<Post>(list);
         }
-        //https://oauth.reddit.com/subreddits/mine/subscriber
-
         public async Task<ObservableCollection<Post>> GetUserPosts(string user)
         {
             string url = $"https://reddit.com/user/{user}/submitted/";
             var request = CreateRequest(url, "GET");
             var response = await SendRequest(request);
-            if(response == null)
+            if (response == null)
             {
                 return null;
             }
@@ -289,7 +270,7 @@ namespace Entities.RedditEntities
                 return null;
             }
             return CreateUserInfoCollection<Comment>(response);
-            
+
 
         }
         public ObservableCollection<AbstractableComment> CreateUserInfoCollection<AbstractableComment>(JToken response)

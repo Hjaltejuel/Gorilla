@@ -13,6 +13,7 @@ namespace Entities
         public virtual DbSet<Subreddit> Subreddits { get; set; }
         public virtual DbSet<UserPreference> UserPreferences { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public DbSet<Post> Posts { get; set; }
 
         public RedditDBContext(DbContextOptions<RedditDBContext> options) : base(options)
         {
@@ -27,17 +28,7 @@ namespace Entities
 
 
             modelBuilder.Entity<SubredditConnection>().HasKey(c => new { c.SubredditFromName, c.SubredditToName });
-            /*
-            modelBuilder.Entity<SubredditConnection>()
-                .HasOne(e => e.FromSubreddit)
-                .WithMany(e => e.SubredditToConnections)
-                .HasForeignKey(e => e.SubredditFromName);
-
-            modelBuilder.Entity<SubredditConnection>()
-                .HasOne(e => e.ToSubreddit)
-                .WithMany(e => e.SubredditFromConnections)
-                .HasForeignKey(e => e.SubredditToName);
-                */
+          
 
 
 

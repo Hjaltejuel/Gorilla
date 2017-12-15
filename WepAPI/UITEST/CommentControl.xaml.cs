@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using UITEST.RedditInterfaces;
 using Windows.UI;
 using Windows.UI.Text;
 using Windows.UI.Xaml;

@@ -14,14 +14,14 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <CommandBar OverflowButtonVisibility="Collapsed" Grid.Row="0" Style="{StaticResource StandardCommandBar}">
+        <CommandBar Name="commandBar" OverflowButtonVisibility="Collapsed" Grid.Row="0" Style="{StaticResource StandardCommandBar}">
             <AppBarButton Icon="Home" Label="Home" Command="{Binding GoToHomePageCommand}"/>
             <AppBarButton Icon="ZeroBars" Label="Trending" Command="{Binding GoToTrendingPageCommand}"/>
             <AppBarButton Icon="OutlineStar" Label="Discover" Command="{Binding GoToDiscoverPageCommand}"/>
             <AppBarButton Icon="Contact" Label="Profile" Command="{Binding GoToProfilePageCommand}"/>
         </CommandBar>
 
-        <TextBlock Grid.Column="0" Grid.Row="1" Text="Profile" Style="{StaticResource PageTitleText}"></TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Profile" Style="{StaticResource PageTitleText}"/>
         <TextBlock Name="RecentlyViewed" Grid.Row="1" Text="Recently Viewed" Style="{StaticResource PageTitleText}" HorizontalAlignment="Right" Margin="0, 0, 20, 0"/>
 
         <Rectangle Grid.Row="2" HorizontalAlignment="Stretch" Fill="Black" Height="1"/>
@@ -38,7 +38,6 @@
             <!-- Venstre Side -->
             <RelativePanel Grid.Column="0" Grid.Row="0" Name="Left" >
                 <RelativePanel  Name="ProfilePicture" >
-                    <!--<Rectangle Fill="Blue" Height="150" Width="150" Margin="20, 20, 0, 0"/>-->
                     <Ellipse Width="150" Height="150"  Margin="20, 20, 0, 0">
                         <Ellipse.Fill>
                             <ImageBrush ImageSource="{Binding Image}" />
@@ -73,41 +72,12 @@
 
 
             <!-- Højre Side -->
-            <RelativePanel Grid.Column="1" Grid.Row="0" Name="Right">
+            <RelativePanel Grid.Column="1" Grid.Row="1" Name="Right">
                 <RelativePanel Name="MiddleLine">
                     <Rectangle VerticalAlignment="Stretch" Fill="Gray" Width="1"/>
                 </RelativePanel>
                 <RelativePanel Name="RecentlyViewPanel" RelativePanel.RightOf="MiddleLine">
-                    <!--MÅSKE SKAL DEN HER KUN VISE FEM TING?
-                    IKKE LAVET ENDNU
-                    FYLDETEKST SÅ DET IKKE GLEMMES HIHI-->
-                    <ListView ItemsSource="{Binding Posts}" SelectionMode="Single" SelectionChanged="ListView_SelectionItem">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <RelativePanel Margin="20, 20, 0, 0" Height="80">
-                                    <RelativePanel  Name="OpOgNed" Margin="0, 10, 0, 0" Width="50">
-                                        <SymbolIcon Symbol="Like"  Height="20" Width="20" Name="op" RelativePanel.AlignHorizontalCenterWithPanel="True"/>
-                                        <TextBlock Text="{Binding NumOfVotes}" Name="Votes" RelativePanel.Below="op" RelativePanel.AlignHorizontalCenterWithPanel="True"/>
-                                        <SymbolIcon Symbol="Dislike" Height="20" Width="20" Name="ned" RelativePanel.Below="Votes" RelativePanel.AlignHorizontalCenterWithPanel="True"/>
-                                    </RelativePanel>
-
-                                    <RelativePanel RelativePanel.RightOf="OpOgNed" Margin="10, 0, 0,0 " RelativePanel.AlignVerticalCenterWith="OpOgNed">
-                                        <Rectangle Fill="Blue" Height="40" Width="40" Name="Box" Margin="0, 10, 5, 0"/>
-
-                                        <!--FIXME ikke hele boxen skal være klikbar-->
-                                        <TextBlock Text="{Binding Title}" FontSize="20" Name="Title" RelativePanel.RightOf="Box"/>
-
-                                        <TextBlock Text="{Binding Author}" RelativePanel.Below ="Title" RelativePanel.RightOf="Box" Style="{StaticResource AuthorText}" Name="Author"/>
-                                        <TextBlock Text="{Binding NumOfComments}" RelativePanel.Below ="Author" RelativePanel.RightOf="Box" FontSize="10" Name="CommentsAmount"/>
-                                        <TextBlock Text="share" RelativePanel.Below ="Author" RelativePanel.RightOf="CommentsAmount" Style="{StaticResource MiniNavigationText}" Name="ShareText" Margin="4, 0, 0, 0"/>
-                                        <TextBlock Text="save" RelativePanel.Below ="Author" RelativePanel.RightOf="ShareText" Style="{StaticResource MiniNavigationText}" Name="SaveText" Margin="4, 0, 0, 0"/>
-                                        <TextBlock Text="hide" RelativePanel.Below ="Author" RelativePanel.RightOf="SaveText" Style="{StaticResource MiniNavigationText}" Name="HideText" Margin="4, 0, 0, 0"/>
-                                        <TextBlock Text="report" RelativePanel.Below ="Author" RelativePanel.RightOf="HideText" Style="{StaticResource MiniNavigationText}" Name="ReportTex" Margin="4, 0, 0, 0"/>
-                                    </RelativePanel>
-                                </RelativePanel>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                    <local:PostViewControl x:Name="PostsList" Posts="{Binding Posts}"/>
                 </RelativePanel>
             </RelativePanel>
             <ProgressRing Name="LoadingRing" Height="200" Width="200" VerticalAlignment="Center" HorizontalAlignment="Center"/>
