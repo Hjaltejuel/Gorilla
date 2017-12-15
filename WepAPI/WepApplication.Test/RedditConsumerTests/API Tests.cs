@@ -161,7 +161,9 @@ namespace RedditAPIConsumer.Tests
                                                                                         "dqmbla0",
                                                                                         "dqmopks"
                                                                                     };
-           ObservableCollection<Comment> list = await _rcc.GetMoreComments("t3_7gukik", sarray);
+
+            //VED IKKE HVILKEN DYBDE JEG SKAL GIVE I TEST 
+           ObservableCollection<Comment> list = await _rcc.GetMoreComments("t3_7gukik", sarray, 2);
 
             Assert.Equal(typeof(Comment), list[0].GetType());
         }

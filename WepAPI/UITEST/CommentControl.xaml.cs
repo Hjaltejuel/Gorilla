@@ -2,6 +2,7 @@
 using Gorilla.Model;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Windows.UI;
 using Windows.UI.Text;
@@ -29,6 +30,8 @@ namespace UITEST
             redditAPIConsumer = App.ServiceProvider.GetService<IRedditAPIConsumer>();
             this.InitializeComponent();
 
+            currentComment = comment;
+
             //If the comment is a 'more' type
             if (comment.body == null)
             {
@@ -55,7 +58,6 @@ namespace UITEST
                 else
                     CommentStackPanel.Background = new SolidColorBrush(Color.FromArgb(255, 240, 240, 240));
 
-                currentComment = comment;
                 CheckNumberOfPointsIsOnlyOne();
                 SetUpTimeText();
                 CreateChildComments();
@@ -90,11 +92,30 @@ namespace UITEST
             LoadMoreComments();
         }
 
-        private void LoadMoreComments()
+        private async void LoadMoreComments()
         {
-            string postID = null;
-            string[] children = null;
-            redditAPIConsumer.GetMoreComments(postID, children);
+
+            var parentPanel = this.Parent as StackPanel;
+            var parentGrid = parentPanel.Parent as Grid;
+            var parentCommentControl = parentGrid.Parent as CommentControl;
+            var parentComment = parentCommentControl.currentComment;
+            
+            string postID = parentComment.link_id;
+
+            string[] children = currentComment.children;
+
+            //parentCommentControl.CommentStackPanel.Children.Remove(parentCommentControl);
+            if (postID != null && children.Length != 0)
+            {
+                ObservableCollection<Comment> list = await redditAPIConsumer.GetMoreComments(postID, children, currentComment.depth);
+                foreach (Comment comment in list)
+                {
+                    parentPanel.Children.Add(new CommentControl(comment));
+                    //this.InsertMoreComment(comment);
+                }
+            }
+            parentPanel.Children.Remove(this);
+            
         }
 
         private void UpvoteButton_Click(object sender, RoutedEventArgs e)
@@ -271,6 +292,22 @@ namespace UITEST
         private void CommentSaveClick(object sender, RoutedEventArgs e)
         {
             InsertComment(currentComment);
+        }
+
+
+        private void InsertMoreComment(Comment comment)
+        {
+
+            string text = comment.body;
+            
+                currentComment.Replies.Insert(0, comment);
+
+                TextInfoPanel.Children.Remove(InsertCommentPanel);
+                InsertCommentPanel = null;
+                comment.depth += 3;
+                CommentStackPanel.Children.Add(new CommentControl(comment));
+                
+            
         }
 
         private void InsertComment(AbstractCommentable abstractCommentableToCommentOn)

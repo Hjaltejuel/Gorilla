@@ -241,7 +241,8 @@ namespace Entities.RedditEntities
                 return (HttpStatusCode.OK, "Post was created!");
             return (HttpStatusCode.BadRequest, "Could not create post");
         }
-        public async Task<ObservableCollection<Comment>> GetMoreComments(string parentPostID, string[] children, int maxCommentsAmount=10)
+
+        public async Task<ObservableCollection<Comment>> GetMoreComments(string parentPostID, string[] children, int depth, int maxCommentsAmount=10)
         {
             var childrenString = string.Join(",", children);
             var moreChildrenUrl = $"/api/morechildren.json?api_type=json&link_id={parentPostID}&sort=hot&children={childrenString}&depth=20";
@@ -253,9 +254,13 @@ namespace Entities.RedditEntities
             }
 
             List<Comment> l = new List<Comment>();
+
+            
+
             l.AddRange(
             response["json"]["data"]["things"].Select(child => child["data"].ToObject<Comment>()));
-            ObservableCollection<Comment> o = new ObservableCollection<Comment>(l);
+            var list = BuildCommentList(l, depth);
+            ObservableCollection<Comment> o = new ObservableCollection<Comment>(list);
 
             return o;
 
@@ -302,6 +307,26 @@ namespace Entities.RedditEntities
 
 
             return o;
+        }
+
+        public List<Comment> BuildCommentList(List<Comment> commentList, int depth)
+        {
+
+            var dict = new Dictionary<string, Comment>();
+            var finalList = new List<Comment>();
+            foreach(Comment comment in commentList)
+            {
+                dict.Add(comment.name, comment);
+                if (comment.depth == depth) finalList.Add(comment);
+            }
+            foreach (Comment comment in commentList)
+            {
+                if(dict.TryGetValue(comment.parent_id, out var c))
+                {
+                    c.Replies.Add(comment);
+                }
+            }
+            return finalList;
         }
     }
 }
