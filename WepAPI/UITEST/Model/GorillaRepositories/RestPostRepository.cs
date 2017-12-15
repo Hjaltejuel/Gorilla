@@ -79,7 +79,6 @@ namespace Gorilla.Model.GorillaRepositories
                 }
                 return reponse;
             }
-
             return null;
         }
 

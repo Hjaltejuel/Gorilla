@@ -15,7 +15,15 @@ namespace UITEST.ViewModel
 {
     public class ProfilePageViewModel : BaseViewModel
     {
-        public ObservableCollection<Post> Posts { get; private set; }
+        //public ObservableCollection<Post> Posts { get; private set; }
+        private ObservableCollection<Post> posts;
+
+        public ObservableCollection<Post> Posts
+        {
+            get { return posts; }
+            set { posts = value; OnPropertyChanged(); }
+        }
+
 
         //ProfileInformation i region
         #region
@@ -76,7 +84,7 @@ namespace UITEST.ViewModel
 
 
            
-            Posts = new ObservableCollection<Entities.RedditEntities.Post>();
+            Posts = new ObservableCollection<Post>();
            
             Parallel.ForEach(postIds, async post => { Posts.Add(await _consumer.GetPostAndCommentsByIdAsync(post.Id)); });
 

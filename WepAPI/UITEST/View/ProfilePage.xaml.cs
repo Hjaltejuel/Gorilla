@@ -29,8 +29,6 @@ namespace UITEST.View
             
             LoadingRing.IsActive = true;
             await _vm.Initialize();
-
-
         }
 
         private void ListView_SelectionItem(object sender, SelectionChangedEventArgs e)
