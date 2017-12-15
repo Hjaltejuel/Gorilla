@@ -11,7 +11,7 @@
 
     <Grid>
         <StackPanel Name="CommentStackPanel" Margin = "20, 5, 0, 5">
-            <RelativePanel Name="CommentPanel" DataContext="{Binding CurrentCommentable}">
+            <RelativePanel Name="CommentPanel" DataContext="{Binding CurrentPost}">
                 <RelativePanel Margin="10,10,15,0" Name="VotePanel">
                     <Button Content="Like" Style="{Binding likeButton}" Name="Upvote" Click="Upvote_Click" Width="20" Height="20"/>
 
