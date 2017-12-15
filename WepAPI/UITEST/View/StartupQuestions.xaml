@@ -1,0 +1,24 @@
+﻿<Page
+    x:Class="UITEST.View.StartupQuestions"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UITEST.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="DimGray">
+        <RelativePanel HorizontalAlignment="Center" VerticalAlignment="Top">
+
+            <TextBlock FontFamily="/Assets/Enlighten.ttf" Text="Welcome to &#x0a; Gorilla" FontSize="200" Foreground="#603BBF" TextAlignment="Center"/>
+
+        </RelativePanel>
+        <RelativePanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Name="greeting" FontSize="20" Text="Before you can start using the application we need you to setup your interests, &#x0a; so we know what to show you!" TextAlignment="Center" Foreground="#ffffff" />
+        </RelativePanel>
+        <Button Click="" RelativePanel.Below="greeting" x:Name="nextpage" HorizontalAlignment="Center" VerticalAlignment="Center" Background="LightGray" Foreground="#603BBF" Margin="685,540,685,424" Height="36" Width="130">
+        Let's go!
+        </Button>
+
+    </Grid>
+</Page>

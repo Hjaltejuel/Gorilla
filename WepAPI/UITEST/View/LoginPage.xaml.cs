@@ -34,7 +34,7 @@ namespace UITEST.View
         }
         public void HasAuthenticated()
         {
-            Frame.Navigate(typeof(MainPage));
+            Frame.Navigate(typeof(StartupQuestions));
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {

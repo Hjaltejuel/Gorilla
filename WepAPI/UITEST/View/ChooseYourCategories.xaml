@@ -1,0 +1,74 @@
+﻿<Page
+    x:Class="UITEST.View.ChooseYourCategories"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Gorilla.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="DimGray" >
+        <Grid.ColumnDefinitions>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+            <TextBlock Name="PageTitleText" Text="Choose below" Style="{StaticResource PageTitleText}" Foreground="#603BBF"/>
+            <Rectangle Name="HorizontalSplitter" Grid.Row="2" HorizontalAlignment="Stretch" Fill="#603BBF" Height="1"/>
+        <RelativePanel Grid.Column="0" Grid.Row="3" Margin="400,216,-400,-520">
+            <RelativePanel Name="1"  Padding="10">
+            <Image Name="carsPicture"  Source="/Assets/Cars.jpg" Width="150" Height="150" />
+            <CheckBox Name="cars" Content=" Cars" Checked="" RelativePanel.Below="carsPicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+        </RelativePanel >
+            <RelativePanel Name="2"  RelativePanel.RightOf="1" Padding="10">
+            <Image Name="sciencepicture"  Source="/Assets/science.jpg" Width="150" Height="150" />
+            <CheckBox Name="science" Content=" Science" Checked="" RelativePanel.Below="sciencepicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+        </RelativePanel>
+            <RelativePanel Name="3"  RelativePanel.RightOf="2" Padding="10">
+                <Image Name="Gamepicture"  Source="/Assets/gaming.jpeg" Width="150" Height="150" />
+                <CheckBox Name="Games" Content=" Games" Checked="" RelativePanel.Below="Gamepicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+            </RelativePanel>
+            <RelativePanel Name="4"  RelativePanel.RightOf="3" Padding="10">
+                <Image Name="Newspicture"  Source="/Assets/phonenews.jpg" Width="150" Height="150" />
+                <CheckBox Name="News" Content="News"  Checked="" RelativePanel.Below="Newspicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+            </RelativePanel>
+            <RelativePanel Name="5"  RelativePanel.RightOf="4" Padding="10">
+                <Image Name="Travelpicture"  Source="/Assets/Travel.jpeg" Width="150" Height="150" />
+                <CheckBox Name="travel" Content=" Travel" Checked="" RelativePanel.Below="Travelpicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+            </RelativePanel>
+            <RelativePanel Name="6"  RelativePanel.Below="1" Padding="10" Margin="80,0,0,0">
+                <Image Name="sportpicture"  Source="/Assets/Soccer-Ball.jpg" Width="150" Height="150" />
+                <CheckBox Name="sport" Content=" Sport" Checked="" RelativePanel.Below="sportpicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+            </RelativePanel>
+            <RelativePanel Name="7"  RelativePanel.RightOf="6" RelativePanel.Below="2" Padding="10">
+                <Image Name="photopicture"  Source="/Assets/photographylols.jpeg" Width="150" Height="150" />
+                <CheckBox Name="Photo" Content="Photography" Checked="" RelativePanel.Below="photopicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+            </RelativePanel>
+            <RelativePanel Name="8"  RelativePanel.RightOf="7" RelativePanel.Below="3" Padding="10">
+                <Image Name="Foodpicture"  Source="/Assets/food.jpeg" Width="150" Height="150" />
+                <CheckBox Name="food" Content=" Food" Checked="" RelativePanel.Below="Foodpicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+            </RelativePanel>
+            <RelativePanel Name="9"  RelativePanel.RightOf="8" RelativePanel.Below="4" Padding="10">
+                <Image Name="Technologypicture"  Source="/Assets/tech.jpg" Width="150" Height="150" />
+                <CheckBox Name="technology" Content=" Technology" Checked="" RelativePanel.Below="Technologypicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+            </RelativePanel>
+
+
+        </RelativePanel>
+
+    </Grid>
+</Page>
+ 
