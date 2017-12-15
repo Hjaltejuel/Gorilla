@@ -7,6 +7,7 @@ using Windows.UI.Xaml;
 using Gorilla.Model.GorillaRestInterfaces;
 using UITEST.RedditInterfaces;
 using Model;
+using System.Windows.Input;
 
 namespace UITEST.ViewModel
 {
@@ -17,6 +18,8 @@ namespace UITEST.ViewModel
         IRedditAPIConsumer redditAPIConsumer;
         IRestUserPreferenceRepository _restUserPreferenceRepository;
         IRestPostRepository _repository;
+        public ICommand PostLiked;
+        public ICommand PostDisliked;
         private bool IsLiked;
         private bool IsDisliked;
         private Style _likeButton;
@@ -34,8 +37,8 @@ namespace UITEST.ViewModel
         {
             _repository = repository;
             _restUserPreferenceRepository = restUserPreferenceRepository;
-
-
+            PostLiked = new RelayCommand(async o => { await PostLikedAsync(); });
+            PostDisliked = new RelayCommand(async o => { await PostDislikedAsync(); });
         }
         public async void GetCurrentPost(Post post)
         {
@@ -74,7 +77,6 @@ namespace UITEST.ViewModel
 
         public async Task PostLikedAsync()
         {
-          
             int direction;
 
             if (IsLiked)
@@ -101,7 +103,6 @@ namespace UITEST.ViewModel
 
         public async Task PostDislikedAsync()
         {
-            
             int direction;
 
             if (IsDisliked)
