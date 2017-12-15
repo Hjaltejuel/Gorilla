@@ -21,7 +21,7 @@
             <AppBarButton Icon="Contact" Label="Profile" Command="{Binding GoToProfilePageCommand}"/>
         </CommandBar>
 
-        <TextBlock Grid.Column="0" Grid.Row="1" Text="Profile" Style="{StaticResource PageTitleText}"></TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Profile" Style="{StaticResource PageTitleText}"/>
         <TextBlock Name="RecentlyViewed" Grid.Row="1" Text="Recently Viewed" Style="{StaticResource PageTitleText}" HorizontalAlignment="Right" Margin="0, 0, 20, 0"/>
 
         <Rectangle Grid.Row="2" HorizontalAlignment="Stretch" Fill="Black" Height="1"/>
@@ -38,7 +38,6 @@
             <!-- Venstre Side -->
             <RelativePanel Grid.Column="0" Grid.Row="0" Name="Left" >
                 <RelativePanel  Name="ProfilePicture" >
-                    <!--<Rectangle Fill="Blue" Height="150" Width="150" Margin="20, 20, 0, 0"/>-->
                     <Ellipse Width="150" Height="150"  Margin="20, 20, 0, 0">
                         <Ellipse.Fill>
                             <ImageBrush ImageSource="{Binding Image}" />
