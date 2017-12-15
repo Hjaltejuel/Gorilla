@@ -20,6 +20,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Gorilla.Model;
+using Gorilla.Model.GorillaRestInterfaces;
+using Gorilla.Model.GorillaRepositories;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 namespace UITEST.View
@@ -30,6 +32,7 @@ namespace UITEST.View
     public sealed partial class PostPage : Page
     {
         private readonly PostPageViewModel _vm;
+        private readonly IRestPostRepository _repository;
         private RelativePanel CommentPanel;
         private TextBox CommentTextBox;
         private TextBlock errorText;
@@ -38,7 +41,7 @@ namespace UITEST.View
         {
             this.InitializeComponent();
             LoadingRing.IsActive = true;
-
+            _repository = App.ServiceProvider.GetService<IRestPostRepository>();
             _vm = App.ServiceProvider.GetService<PostPageViewModel>();
             DataContext = _vm;
             SetEventMethods();

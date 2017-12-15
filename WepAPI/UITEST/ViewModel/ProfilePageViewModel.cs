@@ -36,6 +36,8 @@ namespace UITEST.ViewModel
 
         public ICommand GoToPostPageCommand { get; set; }
         private readonly IRestUserRepository _repository;
+        private readonly IRestPostRepository _restPostRepository;
+
         private readonly IRedditAPIConsumer _consumer;
         private ImageSource _image;
         public ImageSource Image { get { return _image; } set { if (_image != value) { _image = value; OnPropertyChanged(); } } }
@@ -43,28 +45,44 @@ namespace UITEST.ViewModel
         private byte[] _imageBytes;
         public byte[] ImageBytes { get { return _imageBytes; } set { if (_imageBytes != value) { _imageBytes = value; OnPropertyChanged(); LoadImageAsync(); } } }
 
-        public ProfilePageViewModel(INavigationService service, IRestUserRepository repository, IRedditAPIConsumer consumer) : base(service)
+        public ProfilePageViewModel(INavigationService service, IRestUserRepository repository, IRedditAPIConsumer consumer, IRestPostRepository restPostRepository) : base(service)
         {
+            _restPostRepository = restPostRepository;
+
             _repository = repository;
             _consumer = consumer;
         }
 
         public async Task Initialize()
         {
-            // await _repository.CreateAsync(new Entities.User {Username = "Test5", PathToProfilePicture = "profilePicture.jpg" });
+
+          
+
+           
+
+           
+
+           
+           
+
+            
+            
             await GetCurrentProfile();
 
-            ImageBytes = await _repository.FindImageAsync("Test5");
-            
-            /*
-            Posts = new ObservableCollection<Post>
-            {
-                new Post {Title = "hej", Author = "Raaaasmusss", NumOfVotes = -100, Text = "FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. hej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gid"},
-                new Post {Title = "VIld Nice", Author = "Maads", NumOfVotes = 121, Text = "nice nice nicenicenicenci"},
-                new Post {Title = "VIld Nice", Author = "Maads", NumOfVotes = 121, Text = "nice nice nicenicenicenci"},
-                new Post {Title = "VIld Nice", Author = "Maads", NumOfVotes = 121, Text = "nice nice nicenicenicenci"},
-            };
-            */
+            await _repository.CreateAsync(new Entities.User { Username = currentProfile.Username, PathToProfilePicture = "profilePicture.jpg" });
+
+            var ImageBytes = await _repository.FindImageAsync(currentProfile.Username);
+
+            var postIds = await _restPostRepository.ReadAsync(currentProfile.Username);
+
+
+
+            Posts = new ObservableCollection<Entities.RedditEntities.Post>();
+           
+            Parallel.ForEach(postIds, async post => { Posts.Add(await _consumer.GetPostAndCommentsByIdAsync(post.Id)); });
+
+            OnPropertyChanged();
+       
         }
 
         private async Task GetCurrentProfile()

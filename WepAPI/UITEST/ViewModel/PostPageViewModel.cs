@@ -12,6 +12,8 @@ namespace UITEST.ViewModel
         public delegate void Comments();
         public event Comments CommentsReadyEvent;
         IRedditAPIConsumer redditAPIConsumer;
+
+        IRestPostRepository _repository;
         private bool IsLiked;
         private bool IsDisliked;
 
@@ -27,13 +29,16 @@ namespace UITEST.ViewModel
         private string _timeSinceCreation;
         public string timeSinceCreation { get { return _timeSinceCreation; } set { _timeSinceCreation = value; OnPropertyChanged(); }}
 
-        public PostPageViewModel(INavigationService service) :base(service)
+        public PostPageViewModel(INavigationService service, IRestPostRepository repository) : base(service)
         {
+            _repository = repository;
+          
         }
 
         public async void GetCurrentPost(Post post)
         {
             CurrentPost = await redditAPIConsumer.GetPostAndCommentsByIdAsync(post.id);
+            await _repository.CreateAsync(new Entities.Post { Id = post.id });
             CommentsReadyEvent.Invoke();
         }
 

@@ -12,6 +12,7 @@ namespace Entities
         DbSet<Subreddit> Subreddits { get; set; }
         DbSet<UserPreference> UserPreferences { get; set; }
         DbSet<User> Users { get; set; }
+        DbSet<Post> Posts { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
     }
 }

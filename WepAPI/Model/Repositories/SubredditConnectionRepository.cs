@@ -98,8 +98,7 @@ namespace Model.Repositories
             SubredditConnection connection = await context.SubredditConnections.FindAsync(subredditConnection.SubredditFromName, subredditConnection.SubredditToName);
             if (connection != null)
             {
-                connection.Count = subredditConnection.Count;
-                connection.PPMI = subredditConnection.PPMI;
+                connection.Similarity = subredditConnection.Similarity;
                 await context.SaveChangesAsync();
                 return true;
             }
