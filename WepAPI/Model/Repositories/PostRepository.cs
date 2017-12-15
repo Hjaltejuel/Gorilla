@@ -21,7 +21,7 @@ namespace Model.Repositories
         }
         public async Task<string> CreateAsync(Post post)
         {
-            if (context.Posts.Find(post.Id) != null)
+            if (context.Posts.Find(post.Id,post.username) != null)
             {
                 throw new AlreadyThereException("");
             }

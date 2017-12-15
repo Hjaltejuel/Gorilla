@@ -18,19 +18,27 @@ namespace UITEST.View
         {
             this.InitializeComponent();
             _vm = App.ServiceProvider.GetService<ProfilePageViewModel>();
+
             DataContext = _vm;
+            _vm.PostsReadyEvent += PostReadyEvent;
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            base.OnNavigatedTo(e);
+            
             LoadingRing.IsActive = true;
             await _vm.Initialize();
-            LoadingRing.IsActive = false;
         }
 
         private void ListView_SelectionItem(object sender, SelectionChangedEventArgs e)
         {
             Frame.Navigate(typeof(PostPage), e.AddedItems[0]);
         }
+        private void PostReadyEvent()
+        {
+            LoadingRing.IsActive = false;
+        }
+        
     }
 }

@@ -15,10 +15,21 @@ namespace UITEST.ViewModel
 {
     public class ProfilePageViewModel : BaseViewModel
     {
-        public ObservableCollection<Post> Posts { get; private set; }
+        //public ObservableCollection<Post> Posts { get; private set; }
+        private ObservableCollection<Post> posts;
+
+        public ObservableCollection<Post> Posts
+        {
+            get { return posts; }
+            set { posts = value; OnPropertyChanged(); }
+        }
+
 
         //ProfileInformation i region
         #region
+
+        public delegate void PostsReady();
+        public event PostsReady PostsReadyEvent;
         private string _username;
         public string Username { get => _username; set { if (value != _username) { _username = value; OnPropertyChanged(); } } }
         private int _amountOfSubRedditsSubscribedTo;
@@ -52,6 +63,8 @@ namespace UITEST.ViewModel
 
             _repository = repository;
             _consumer = consumer;
+
+            Initialize();
         }
 
         public async Task Initialize()
@@ -71,9 +84,11 @@ namespace UITEST.ViewModel
 
 
            
-            Posts = new ObservableCollection<Entities.RedditEntities.Post>();
+            Posts = new ObservableCollection<Post>();
            
             Parallel.ForEach(postIds, async post => { Posts.Add(await _consumer.GetPostAndCommentsByIdAsync(post.Id)); });
+
+            PostsReadyEvent.Invoke();
 
             OnPropertyChanged();
        
@@ -117,5 +132,6 @@ namespace UITEST.ViewModel
             }
             Image = image;
         }
+       
     }
 }
