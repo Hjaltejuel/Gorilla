@@ -54,8 +54,6 @@ namespace UITEST.View
         {
             SizeChanged += ChangeListViewWhenSizedChanged;
             _vm.CommentsReadyEvent += CommentsReadyEvent;
-            _vm.Like += LikeSuccesful;
-            _vm.Dislike += DislikeSuccesful;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -166,46 +164,6 @@ namespace UITEST.View
         private void Downvote_Click(object sender, RoutedEventArgs e)
         {
             _vm.PostDislikedAsync();
-        }
-
-
-
-        //Grimt i know.. what to do? det er et midlertidligt workaround
-        private Style UpvoteClickedStyle = App.Current.Resources["LikeButtonClicked"] as Style;
-        private Style UpvoteNotClickedStyle = App.Current.Resources["LikeButton"] as Style;
-        private Style DownvoteClickedStyle = App.Current.Resources["DislikeButtonClicked"] as Style;
-        private Style DownvoteNotClickedStyle = App.Current.Resources["DislikeButton"] as Style;
-
-        private void LikeSuccesful()
-        {
-            int votes;
-            int.TryParse(Votes.Text, out votes);
-
-            if (Upvote.Style.Equals(UpvoteClickedStyle))
-            {
-                Upvote.Style = UpvoteNotClickedStyle;
-            }
-            else
-            {
-                Upvote.Style = UpvoteClickedStyle;
-            }
-            Downvote.Style = DownvoteNotClickedStyle;
-        }
-
-        private void DislikeSuccesful()
-        {
-            int votes;
-            int.TryParse(Votes.Text, out votes);
-
-            if (Downvote.Style.Equals(DownvoteClickedStyle))
-            {
-                Downvote.Style = DownvoteNotClickedStyle;
-            }
-            else
-            {
-                Downvote.Style = DownvoteClickedStyle;
-            }
-            Upvote.Style = UpvoteNotClickedStyle;
         }
     }
 }
