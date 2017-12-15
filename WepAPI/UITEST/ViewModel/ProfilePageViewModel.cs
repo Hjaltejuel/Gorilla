@@ -98,7 +98,7 @@ namespace UITEST.ViewModel
         {
             var redditUser = UserFactory.GetInfo();
             var subscriptions = await _consumer.GetSubscribedSubredditsAsync();
-            var userPosts = await _consumer.GetUserPosts(redditUser.name);
+            var userPosts = await _consumer.GetUserComments(redditUser.name);
             string numberOfPosts;
             if (userPosts.Count > 25) numberOfPosts = "25+";
             else numberOfPosts = userPosts.Count.ToString();

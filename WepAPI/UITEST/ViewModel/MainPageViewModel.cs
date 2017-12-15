@@ -24,19 +24,7 @@ namespace UITEST.ViewModel
         bool firstTime = true;
         IRedditAPIConsumer _consumer;
         IRestUserRepository _repository;
-        public Subreddit _Subreddit;
         public ObservableCollection<Post> posts;
-        public string subscribeString = "Subscribe";
-        bool userIsSubscribed;
-        bool UserIsSubscribed {
-            get => userIsSubscribed;
-            set
-            {
-                userIsSubscribed = value;
-                subscribeString = value ? "Subscribe" : "Unsubscribe";
-                OnPropertyChanged("subscribeString");
-            }
-        }
         public ObservableCollection<Post> Posts
         {
             get => posts;
@@ -55,16 +43,14 @@ namespace UITEST.ViewModel
             _consumer = consumer;
             _repository = repository;
             _helper = helper;
-            GoToCreatePostPageCommand = new RelayCommand(o => _service.Navigate(typeof(CreatePostPage), _Subreddit));
             Initialize();
         }
 
-        public async Task GeneratePosts(string s = "sircmpwn", string sort = "hot")
+        public async Task GeneratePosts()
         {
             await UserFactory.initialize(_consumer);
             await _repository.CreateAsync(new Entities.User { Username = UserFactory.GetInfo().name, PathToProfilePicture = "profilePicture.jpg" });
-            _Subreddit = await _consumer.GetSubredditAsync(s, sort);
-            Posts = _Subreddit.posts;
+            Posts = await _consumer.GetHomePageContent();
             foreach (Post p in Posts)
             {
                 if (p.is_self)
@@ -79,17 +65,8 @@ namespace UITEST.ViewModel
                     }
                 }
             }
-            List<Subreddit> subs = await _consumer.GetSubscribedSubredditsAsync();
-            UserIsSubscribed = !subs.Contains(_Subreddit);
             PostsReadyEvent.Invoke();
         }
-
-        public async Task SubscribeToSubreddit()
-        {
-            UserIsSubscribed = !UserIsSubscribed;
-            await _consumer.SubscribeToSubreddit(_Subreddit, !UserIsSubscribed);
-        }
-
         public async Task Initialize()
         {
             
