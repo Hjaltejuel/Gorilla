@@ -63,14 +63,11 @@ namespace UITEST.ViewModel
 
             _repository = repository;
             _consumer = consumer;
-
-            Initialize();
         }
 
         public async Task Initialize()
         {
             await GetCurrentProfile();
-
 
             if (UserFactory.GetInfo().ProfilePic == null)
             {
@@ -79,18 +76,13 @@ namespace UITEST.ViewModel
             {
                 ImageBytes = UserFactory.GetInfo().ProfilePic;
             }
-
             var postIds = await _restPostRepository.ReadAsync(Username);
-
-
            
             Posts = new ObservableCollection<Post>();
-
             foreach (var post in postIds)
             {
                 Posts.Add(await _consumer.GetPostAndCommentsByIdAsync(post.Id));
             }
-
             PostsReadyEvent.Invoke();
         }
 
