@@ -57,7 +57,7 @@ namespace WepAPI.Controllers
                 return new StatusCodeResult(StatusCodes.Status409Conflict);
             } catch (NotFoundException)
             {
-                return NotFound();
+                return BadRequest();
             }
         } 
 

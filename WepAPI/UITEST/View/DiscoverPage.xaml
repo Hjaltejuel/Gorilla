@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Name ="GridPanel">
         <Grid.ColumnDefinitions>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -33,7 +33,7 @@
                         <Rectangle Fill="RoyalBlue" Height="150" Width="1000" Stretch="UniformToFill"  HorizontalAlignment="Center"/>
                         <Image Source="{Binding banner_img}" Height="150" Width="Auto" HorizontalAlignment="Center" Stretch="UniformToFill"/>
 
-                        <TextBlock Text="{Binding name}" Style="{StaticResource DiscoverSubRedditText}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding display_name}" Style="{StaticResource DiscoverSubRedditText}" HorizontalAlignment="Center"/>
                     </RelativePanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

@@ -14,6 +14,7 @@ namespace Entities.RedditEntities
         {
             get => null;
             set => BuildReplies(value);
+
         }
         public int count { get; set; }
         public string[] children { get; set; }

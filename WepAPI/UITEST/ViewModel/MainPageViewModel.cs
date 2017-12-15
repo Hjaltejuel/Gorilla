@@ -1,20 +1,11 @@
 ﻿using Entities.RedditEntities;
 using Gorilla.AuthenticationGorillaAPI;
 using Gorilla.Model;
-using Gorilla.View;
 using Model;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using UITEST.View;
-using Windows.Security.Credentials;
-using Windows.UI.Xaml.Controls;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
-using System.Diagnostics;
-using System.Net;
-using System.Collections.Generic;
+using UITEST.RedditInterfaces;
 
 namespace UITEST.ViewModel
 {
@@ -25,6 +16,9 @@ namespace UITEST.ViewModel
         IRedditAPIConsumer _consumer;
         IRestUserRepository _repository;
         public ObservableCollection<Post> posts;
+        public delegate void LoadingEvent();
+        public event LoadingEvent PostsReadyEvent;
+        public event LoadingEvent PostsStartedLoading;
         public ObservableCollection<Post> Posts
         {
             get => posts;
@@ -35,8 +29,6 @@ namespace UITEST.ViewModel
             }
         }
 
-        public delegate void PostsReady();
-        public event PostsReady PostsReadyEvent;
 
         public MainPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer, IRestUserRepository repository) : base(service)
         {
@@ -48,6 +40,7 @@ namespace UITEST.ViewModel
 
         public async Task GeneratePosts()
         {
+            PostsStartedLoading.Invoke();
             await UserFactory.initialize(_consumer);
             await _repository.CreateAsync(new Entities.User { Username = UserFactory.GetInfo().name, PathToProfilePicture = "profilePicture.jpg" });
             Posts = await _consumer.GetHomePageContent();
@@ -69,8 +62,6 @@ namespace UITEST.ViewModel
         }
         public async Task Initialize()
         {
-            
-            
             if (await Authorize() != null)
             {
                 await GeneratePosts();

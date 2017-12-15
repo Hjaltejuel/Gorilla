@@ -30,11 +30,31 @@ namespace UITEST.View
             SizeChanged += ChangeListViewWhenSizedChanged;
 
             _vm.DiscoverReadyEvent += DiscoverReadyEvent;
+
+            _vm.NoElementsEvent += NoElementsEvent;
         }
         private void ChangeListViewWhenSizedChanged(object sender, SizeChangedEventArgs e)
         {
             DiscoverList.Height = e.NewSize.Height - (commandBar.ActualHeight+75);
         }
+
+        public void NoElementsEvent()
+        {
+            DiscoverList = null;
+
+            TextBlock block = new TextBlock
+            {
+                Height = 100,
+                Width = 200,
+                Text = "No User preference was found",
+
+            };
+            Grid.SetRow(block, 3);
+            GridPanel.Children.Add(block);
+                
+
+        }
+
         private void DiscoverReadyEvent()
         {
             LoadingRing.IsActive = false;

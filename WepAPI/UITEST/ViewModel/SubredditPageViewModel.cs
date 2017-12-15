@@ -9,6 +9,8 @@ using System.Windows.Input;
 using System.Collections.ObjectModel;
 using Gorilla.AuthenticationGorillaAPI;
 using Gorilla.View;
+using UITEST.RedditInterfaces;
+using Model;
 
 namespace UITEST.ViewModel
 {
@@ -45,12 +47,13 @@ namespace UITEST.ViewModel
                 }
             }
         }
-
+        IRestUserPreferenceRepository _repository;
         public delegate void PostsReady();
         public event PostsReady PostsReadyEvent;
 
-        public SubredditPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer) : base(service)
+        public SubredditPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer, IRestUserPreferenceRepository repository ) : base(service)
         {
+            _repository = repository;
             _consumer = consumer;
             _helper = helper;
             GoToCreatePostPageCommand = new RelayCommand(o => _service.Navigate(typeof(CreatePostPage), _Subreddit));
@@ -110,6 +113,14 @@ namespace UITEST.ViewModel
         {
             UserIsSubscribed = !UserIsSubscribed;
             await _consumer.SubscribeToSubreddit(_Subreddit, UserIsSubscribed);
+            if (UserIsSubscribed)
+            {
+                await _repository.UpdateAsync(new Entities.UserPreference { Username = UserFactory.GetInfo().name, SubredditName = _Subreddit.display_name, PriorityMultiplier = 10 });
+
+            } else
+            {
+                await _repository.UpdateAsync(new Entities.UserPreference { Username = UserFactory.GetInfo().name, SubredditName = _Subreddit.display_name, PriorityMultiplier = -10 });
+            }
         }
 
         public async Task Initialize()

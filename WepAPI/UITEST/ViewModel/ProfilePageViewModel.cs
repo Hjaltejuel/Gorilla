@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using UITEST.RedditInterfaces;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
@@ -15,7 +16,7 @@ namespace UITEST.ViewModel
 {
     public class ProfilePageViewModel : BaseViewModel
     {
-        //public ObservableCollection<Post> Posts { get; private set; }
+        
         private ObservableCollection<Post> posts;
 
         public ObservableCollection<Post> Posts
@@ -64,13 +65,12 @@ namespace UITEST.ViewModel
             _repository = repository;
             _consumer = consumer;
 
-            Initialize();
+    
         }
 
         public async Task Initialize()
         {
             await GetCurrentProfile();
-
 
             if (UserFactory.GetInfo().ProfilePic == null)
             {
@@ -79,19 +79,14 @@ namespace UITEST.ViewModel
             {
                 ImageBytes = UserFactory.GetInfo().ProfilePic;
             }
-
             var postIds = await _restPostRepository.ReadAsync(Username);
-
-
            
             Posts = new ObservableCollection<Post>();
-           
-            Parallel.ForEach(postIds, async post => { Posts.Add(await _consumer.GetPostAndCommentsByIdAsync(post.Id)); });
-
+            foreach (var post in postIds)
+            {
+                Posts.Add(await _consumer.GetPostAndCommentsByIdAsync(post.Id));
+            }
             PostsReadyEvent.Invoke();
-
-            OnPropertyChanged();
-       
         }
 
         private async Task GetCurrentProfile()
