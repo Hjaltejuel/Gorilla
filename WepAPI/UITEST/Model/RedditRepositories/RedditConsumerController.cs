@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Collections.ObjectModel;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,11 +27,8 @@ namespace UITEST.RedditRepositories
         private const int limit = 10;
 
         RedditAuthHandler _authHandler;
-        private bool IsAuthenticated = false;
-        private string token = "";
-        private string refresh_token = "";
         //"51999737725-OYI8KJ5T56KSO4xAyvoVhA8t5TM";
-        //
+
         public void Authenticate(RedditAuthHandler handler)
         {
             _authHandler = handler;
@@ -85,7 +81,7 @@ namespace UITEST.RedditRepositories
             return request;
         }
         //CONVENTION: IF SORTBY STRING IS EMPTY, HOT IS DEFAULTED TO
-        public async Task<Subreddit> GetSubredditAsync(string subredditName, string sortBy = "hot")
+        public async Task<Subreddit> GetSubredditAsync(string subredditName)
         {
             var aboutUri = $"https://www.reddit.com/r/{subredditName}/about";
             var aboutRequest = CreateRequest(aboutUri, "GET");
@@ -94,26 +90,24 @@ namespace UITEST.RedditRepositories
             {
                 var listings = aboutResponse.ToObject<ChildNode>();
                 var subreddit = listings.data.ToObject<Subreddit>();
-
-                var postsUri = $"https://www.reddit.com/r/{subredditName}/{sortBy}";
-                var postsRequest = CreateRequest(postsUri, "GET");
-                var postsResponse = await SendRequest(postsRequest);
-
-                var postsListing = postsResponse.ToObject<Listing>();
-                subreddit.posts = new ObservableCollection<Post>();
-                foreach (var child in postsListing.data.children)
-                {
-                    try
-                    {
-                        subreddit.posts.Add(child.data.ToObject<Post>());
-                    } catch(Exception e) {
-                        var a = e;
-                        var b = "";
-                    }
-                }
                 return subreddit;
             }
             return null;
+        }
+
+        public async Task<Subreddit> GetSubredditPostsAsync(Subreddit subreddit, string sortBy="hot", int limit = 10)
+        {
+            var postsUri = $"https://www.reddit.com/r/{subreddit.display_name}/{sortBy}";
+            var postsRequest = CreateRequest(postsUri, "GET");
+            var postsResponse = await SendRequest(postsRequest);
+
+            var postsListing = postsResponse.ToObject<Listing>();
+            subreddit.posts = new ObservableCollection<Post>();
+            foreach (var child in postsListing.data.children)
+            {
+                subreddit.posts.Add(child.data.ToObject<Post>());
+            }
+            return subreddit;
         }
         //t3 = comments on link / post & t5 = subreddit & t1 = comment
         public async Task<Post> GetPostAndCommentsByIdAsync(string post_id)

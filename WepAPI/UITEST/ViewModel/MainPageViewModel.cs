@@ -15,10 +15,10 @@ namespace UITEST.ViewModel
         bool firstTime = true;
         IRedditAPIConsumer _consumer;
         IRestUserRepository _repository;
-        public ObservableCollection<Post> posts;
         public delegate void LoadingEvent();
         public event LoadingEvent PostsReadyEvent;
         public event LoadingEvent PostsStartedLoading;
+        public ObservableCollection<Post> posts;
         public ObservableCollection<Post> Posts
         {
             get => posts;
@@ -28,8 +28,6 @@ namespace UITEST.ViewModel
                 OnPropertyChanged("Posts");
             }
         }
-
-
         public MainPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer, IRestUserRepository repository) : base(service)
         {
             _consumer = consumer;
@@ -44,20 +42,6 @@ namespace UITEST.ViewModel
             await UserFactory.initialize(_consumer);
             await _repository.CreateAsync(new Entities.User { Username = UserFactory.GetInfo().name, PathToProfilePicture = "profilePicture.jpg" });
             Posts = await _consumer.GetHomePageContent();
-            foreach (Post p in Posts)
-            {
-                if (p.is_self)
-                {
-                    p.thumbnail = "/Assets/Textpost.png";
-                }
-                else
-                {
-                    if (p.thumbnail == "default")
-                    {
-                        p.thumbnail = "/Assets/Externallink.png";
-                    }
-                }
-            }
             PostsReadyEvent.Invoke();
         }
         public async Task Initialize()

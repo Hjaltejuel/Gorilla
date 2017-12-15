@@ -12,8 +12,8 @@ namespace UITEST.RedditInterfaces
     public interface IRedditAPIConsumer
     {
         Task<Post> GetPostAndCommentsByIdAsync(string name_id);
-        Task<Subreddit> GetSubredditAsync(string subredditName, string sortBy = "hot");
-
+        Task<Subreddit> GetSubredditAsync(string subredditName);
+        Task<Subreddit> GetSubredditPostsAsync(Subreddit subredditName, string sortBy = "hot", int limit = 10);
         void Authenticate(RedditAuthHandler code);
         Task<List<Subreddit>> GetSubscribedSubredditsAsync();
         Task<(HttpStatusCode, string)> CreateCommentAsync(AbstractCommentable thing, string commentText);
@@ -23,7 +23,6 @@ namespace UITEST.RedditInterfaces
         Task<ObservableCollection<Post>> GetHomePageContent();
         Task<ObservableCollection<Comment>> GetMoreComments(string parentPostID, string[] children, int depth, int maxCommentsAmount = 10);
         Task<ObservableCollection<Post>> GetUserPosts(string user);
-        
         Task<ObservableCollection<Comment>> GetUserComments(string user);
         Task<User> GetAccountDetailsAsync();
         List<Comment> BuildCommentList(List<Comment> commentList, int depth);

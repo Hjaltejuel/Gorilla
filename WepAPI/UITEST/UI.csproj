@@ -105,7 +105,11 @@
     <Compile Include="Authentication\RedditAuthentication\ISettings.cs" />
     <Compile Include="Authentication\RedditAuthentication\Settings.cs" />
     <Compile Include="Authentication\RedditAuthHandler.cs" />
-    <Compile Include="CommentControl.xaml.cs">
+    <Compile Include="ViewModel\CommentControlViewModel.cs" />
+    <Compile Include="View\CommentsListControl.xaml.cs">
+      <DependentUpon>CommentsListControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CommentControl.xaml.cs">
       <DependentUpon>CommentControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomUI\CustomButton.cs" />
@@ -132,6 +136,7 @@
     <Compile Include="Model\RedditRepositories\RedditConsumerController.cs" />
     <Compile Include="Model\RedditRestInterfaces\IRedditAPIConsumer.cs" />
     <Compile Include="Model\UserFactory.cs" />
+    <Compile Include="ViewModel\CommentableViewModel.cs" />
     <Compile Include="ViewModel\SubredditPageViewModel.cs" />
     <Compile Include="View\SubredditPage.xaml.cs">
       <DependentUpon>SubredditPage.xaml</DependentUpon>
@@ -147,7 +152,6 @@
     <Compile Include="ViewModel\PostPageViewModel.cs" />
     <Compile Include="ViewModel\ProfilePageViewModel.cs" />
     <Compile Include="ViewModel\RelayCommand.cs" />
-    <Compile Include="ViewModel\TrendingPageViewModel.cs" />
     <Compile Include="View\CreatePostPage.xaml.cs">
       <DependentUpon>CreatePostPage.xaml</DependentUpon>
     </Compile>
@@ -166,9 +170,6 @@
     </Compile>
     <Compile Include="View\ProfilePage.xaml.cs">
       <DependentUpon>ProfilePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\TrendingPage.xaml.cs">
-      <DependentUpon>TrendingPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -245,7 +246,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="CommentControl.xaml">
+    <Page Include="View\CommentsListControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CommentControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -278,10 +283,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ProfilePage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\TrendingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

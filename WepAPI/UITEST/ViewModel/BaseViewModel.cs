@@ -20,8 +20,6 @@ namespace UITEST.ViewModel
         public ICommand GoToTrendingPageCommand { get; set; }
         public ICommand GoToDiscoverPageCommand { get; set; }
         public ICommand GoToProfilePageCommand { get; set; }
-
-        
         protected IAuthenticationHelper _helper;
         protected INavigationService _service;
 
@@ -33,7 +31,6 @@ namespace UITEST.ViewModel
             GoToHomePageCommand = new RelayCommand(o => _service.Navigate(typeof(MainPage), o));
             GoToDiscoverPageCommand = new RelayCommand(o => _service.Navigate(typeof(DiscoverPage), o));
             GoToProfilePageCommand = new RelayCommand(o => _service.Navigate(typeof(ProfilePage), o));
-            GoToTrendingPageCommand = new RelayCommand(o => _service.Navigate(typeof(TrendingPage), o));
             _service = service;
         }
 

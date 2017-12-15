@@ -11,6 +11,7 @@ namespace UITEST.ViewModel
     public class CreatePostPageViewModel : BaseViewModel
     {
         private readonly IRedditAPIConsumer _consumer;
+        private readonly IRestUserPreferenceRepository _repository;
         private Subreddit CurrentSubreddit;
 
         public delegate void PostSent();
@@ -29,7 +30,6 @@ namespace UITEST.ViewModel
                 }
             }
         }
-        private readonly IRestUserPreferenceRepository _repository;
 
         public CreatePostPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer, IRestUserPreferenceRepository repository) : base(service)
         {

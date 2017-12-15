@@ -169,14 +169,12 @@ namespace UITEST.View
 
         private async void Upvote_Click(object sender, RoutedEventArgs e)
         {
-           
-            await _vm.PostLikedAsync();
+            await _vm.CommentableLikedAsync();
         }
 
         private async void Downvote_Click(object sender, RoutedEventArgs e)
         {
-          
-            await _vm.PostDislikedAsync();
+            await _vm.CommentableDislikedAsync();
         }
     }
 }

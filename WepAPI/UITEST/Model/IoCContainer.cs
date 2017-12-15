@@ -38,10 +38,10 @@ namespace Gorilla.Model
             services.AddScoped<DiscoverPageViewModel>();
             services.AddScoped<PostPageViewModel>();
             services.AddScoped<ProfilePageViewModel>();
-            services.AddScoped<TrendingPageViewModel>();
             services.AddScoped<CreatePostPageViewModel>();
             services.AddScoped<LoginPageViewModel>();
             services.AddScoped<SubredditPageViewModel>();
+            services.AddScoped<CommentControlViewModel>();
 
             return services.BuildServiceProvider();
         }

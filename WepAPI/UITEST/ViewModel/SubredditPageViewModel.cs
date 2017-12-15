@@ -58,7 +58,6 @@ namespace UITEST.ViewModel
             _helper = helper;
             GoToCreatePostPageCommand = new RelayCommand(o => _service.Navigate(typeof(CreatePostPage), _Subreddit));
             SortTypes = new List<string>() { "hot", "new", "rising", "top", "controversial" };
-
         }
         bool userIsSubscribed;
         bool UserIsSubscribed
@@ -78,30 +77,17 @@ namespace UITEST.ViewModel
 
         public async Task GeneratePosts(string subredditName, string sort = "hot")
         {
-            _Subreddit = await _consumer.GetSubredditAsync(subredditName, sort);
-            if(_Subreddit==null || _Subreddit.name == null)
+            _Subreddit = await _consumer.GetSubredditAsync(subredditName);
+            if (_Subreddit == null || _Subreddit.name == null)
             {
                 return;
             }
+            //Get posts on subreddit
+            _Subreddit = await _consumer.GetSubredditPostsAsync(_Subreddit, sort);
+
             SubredditName = _Subreddit.display_name_prefixed;
 
             Posts = _Subreddit.posts;
-
-            foreach (Post p in Posts)
-            {
-                if (p.is_self)
-                {
-                    p.thumbnail = "/Assets/Textpost.png";
-                }
-                else
-                {
-                    if (p.thumbnail == "default")
-                    {
-                        p.thumbnail = "/Assets/Externallink.png";
-                    }
-
-                }
-            }
             List<Subreddit> subs = await _consumer.GetSubscribedSubredditsAsync();
             UserIsSubscribed = (from b in subs
                                 where b.display_name.Equals(_Subreddit.display_name)

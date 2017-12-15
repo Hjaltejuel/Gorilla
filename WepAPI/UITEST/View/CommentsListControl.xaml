@@ -1,0 +1,40 @@
+﻿<UserControl
+    x:Class="UITEST.View.CommentsListControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UITEST.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid>
+        <ListView Grid.Row="4" Name="CommentsView" DataContext="{Binding Comments}" SelectionMode="None" HorizontalAlignment="Stretch">
+
+            <RelativePanel Name="CommentPanel" Margin = "20, 5, 0, 5">
+                <RelativePanel Margin="10,10,15,0" Name="VotePanel">
+                    <Button Content="Like" Style="{StaticResource LikeButton}" Name="Upvote" Click="UpvoteButton_Click" Width="20" Height="20"/>
+
+                    <Button Content="Dislike" Style="{StaticResource DislikeButton}" RelativePanel.Below="Upvote" Name="Downvote" Click="DownvoteButton_Click" Width="20" Height="20" Margin="0,-5,0,0"/>
+                </RelativePanel>
+
+                <RelativePanel Name="TextPanel" RelativePanel.RightOf="VotePanel" Margin="0,7,3,0">
+                    <TextBlock Name="AuthorTextBlock" Text="{Binding author}" FontSize="10" Width="Auto"/>
+
+                    <TextBlock Name="DotSeparator" Text="•" FontSize="10" RelativePanel.RightOf="AuthorTextBlock" Margin="2,0,0,0"/>
+
+                    <TextBlock Name="PointsTextBlock" RelativePanel.RightOf="DotSeparator" Text="{Binding score}" Width="Auto" FontSize="10" Margin="2, 0, 0, 0"/>
+                    <TextBlock Name="PointsOrPoint" RelativePanel.RightOf="PointsTextBlock" Text="points" Width="Auto" FontSize="10" Margin="2, 0, 0, 0"/>
+                    <TextBlock Name="TimeText" RelativePanel.RightOf="PointsOrPoint" FontSize="10" Margin="4, 0, 0, 0" Width="Auto" Text=""/>
+
+                    <TextBlock Name="CommentTextBlock" RelativePanel.Below="AuthorTextBlock" Text="{Binding body}" Width="Auto" Margin="0,5,0,0" TextWrapping="Wrap"/>
+                </RelativePanel>
+
+                <RelativePanel Name="TextInfoPanel" RelativePanel.Below="TextPanel" RelativePanel.RightOf="VotePanel" Margin="0,0,0,0">
+                    <Button Name="SaveButton" Content="comment" Style="{StaticResource MiniNavigationButton}" Click="CommentButton_Click" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
+                </RelativePanel>
+            </RelativePanel>
+        </ListView>
+    </Grid>
+</UserControl>
