@@ -23,8 +23,7 @@ namespace Entities.RedditEntities
         private const string VoteUrl = "api/vote";
         private const string CreatePostUrl = "api/submit";
         private const string SubscribeUrl = "api/subscribe";
-        private const string SubscribedSubredditsUrl = "subreddits/mine";
-        private const string HomePageUrl = "subreddits/mine/subscriber";
+        private const string SubscribedSubredditsUrl = "subreddits/mine/subscriber";
 
         private const int limit = 10;
 
@@ -251,7 +250,7 @@ namespace Entities.RedditEntities
 
         public async Task<ObservableCollection<Post>> GetHomePageContent()
         {
-            var request = CreateRequest(HomePageUrl, "GET");
+            var request = CreateRequest("/", "GET");
             var response = await SendRequest(request);
             if (response == null) return null;
             if (response["error"] != null) return null;

@@ -46,19 +46,11 @@ namespace UITEST.View
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if (_vm._Subreddit != null)
-                PageTitleText.Text = _vm._Subreddit.display_name_prefixed;
         }
         private void SearchBox_QuerySubmitted(SearchBox sender, SearchBoxQuerySubmittedEventArgs args)
         {
             LoadingRing.IsActive = true;
             Frame.Navigate(typeof(SubredditPage), args.QueryText);
-        }
-
-        private void SubsribeToSubredditButton_Click(object sender, RoutedEventArgs e)
-        {
-            _vm.SubscribeToSubreddit();
-            string s = _vm._Subreddit.user_is_subscriber;
         }
     }
 }
