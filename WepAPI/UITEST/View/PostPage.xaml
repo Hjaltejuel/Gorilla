@@ -40,9 +40,8 @@
                 </RelativePanel>
 
                 <RelativePanel Name="TextPanel" RelativePanel.Below="TimePanel" RelativePanel.RightOf="OpOgNed" Width="Auto" Margin="0, 4, 10, 0">
-                    <Border Name="ContentContainer" BorderThickness="1" BorderBrush="Gray" Padding="10, 10, 10, 10">
+                    <Border BorderThickness="1" BorderBrush="Gray" Padding="10, 10, 10, 10">
                         <TextBlock Text="{x:Bind Path = _vm.CurrentPost.selftext}" Name="PostText" TextWrapping="Wrap"/>
-                        <!--<TextBlock Text="{x:Bind Path = _vm.CurrentPost}" Name="PostText" TextWrapping="Wrap"/>-->
                     </Border>
                     
 

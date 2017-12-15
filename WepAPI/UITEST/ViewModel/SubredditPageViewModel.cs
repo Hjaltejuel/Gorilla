@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Collections.ObjectModel;
 using Gorilla.AuthenticationGorillaAPI;
 using Gorilla.View;
+using UITEST.RedditInterfaces;
 
 namespace UITEST.ViewModel
 {

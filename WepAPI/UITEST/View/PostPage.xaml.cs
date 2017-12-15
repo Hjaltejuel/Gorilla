@@ -66,9 +66,6 @@ namespace UITEST.View
             if (post.selftext == null)
             {
                 PostText.Visibility = Visibility.Collapsed;
-            } else
-            {
-                PostText.Visibility = Visibility.Collapsed;
             }
             _repository.CreateAsync(new Entities.Post { Id = post.id, username = UserFactory.GetInfo().name });
             _vm.Initialize(post);

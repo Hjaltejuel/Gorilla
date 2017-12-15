@@ -5,15 +5,16 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using UITEST.Authentication;
 
-namespace Entities.RedditEntities
+namespace UITEST.RedditInterfaces
 {
     public interface IRedditAPIConsumer
     {
         Task<Post> GetPostAndCommentsByIdAsync(string name_id);
         Task<Subreddit> GetSubredditAsync(string subredditName, string sortBy = "hot");
 
-        Task Authenticate(string code);
+        void Authenticate(RedditAuthHandler code);
         Task<List<Subreddit>> GetSubscribedSubredditsAsync();
         Task<(HttpStatusCode, string)> CreateCommentAsync(AbstractCommentable thing, string commentText);
         Task<(HttpStatusCode, string)> SubscribeToSubreddit(Subreddit subreddit, bool IsSubscribing);

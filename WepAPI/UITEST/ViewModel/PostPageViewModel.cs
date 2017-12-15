@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using Windows.UI.Xaml;
 using Gorilla.Model.GorillaRestInterfaces;
+using UITEST.RedditInterfaces;
 
 namespace UITEST.ViewModel
 {
