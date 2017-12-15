@@ -31,12 +31,10 @@ namespace UITEST.View
             DataContext = _vm;
             SizeChanged += ChangeListViewWhenSizedChanged;
             _vm.PostsReadyEvent += PostReadyEvent;
-            SortTypes = new List<string>() { "hot", "new", "rising", "top", "controversial" };
             PostsList.OnNagivated += PostsList_OnNagivated;
         }
 
         private readonly SubredditPageViewModel _vm;
-        private List<string> SortTypes;
         private TextBlock NothingFoundTextBlock;
 
         private void PostsList_OnNagivated(Post post)
@@ -80,7 +78,6 @@ namespace UITEST.View
         private void SubsribeToSubredditButton_Click(object sender, RoutedEventArgs e)
         {
             _vm.SubscribeToSubreddit();
-            string s = _vm._Subreddit.user_is_subscriber;
         }
 
         private void SortBy_SelectionChanged(object sender, SelectionChangedEventArgs e)
