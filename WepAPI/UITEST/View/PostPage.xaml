@@ -36,7 +36,7 @@
                     <TextBlock Text="{x:Bind Path = _vm.CurrentPost.title}" FontSize="20" Name="Title"/>
                 </RelativePanel>
                 <RelativePanel Name="TimePanel" RelativePanel.Below="TitlePanel" RelativePanel.RightOf="OpOgNed">
-                    <TextBlock Text="" Name="TimeText" FontSize="12"/>
+                    <TextBlock Name="TimeText" Text="{Binding timeSinceCreation}" FontSize="12"/>
                 </RelativePanel>
 
                 <RelativePanel Name="TextPanel" RelativePanel.Below="TimePanel" RelativePanel.RightOf="OpOgNed" Width="Auto" Margin="0, 4, 10, 0">

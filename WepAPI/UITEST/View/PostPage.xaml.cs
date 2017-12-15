@@ -63,13 +63,6 @@ namespace UITEST.View
             base.OnNavigatedTo(e);
             var post = e.Parameter as Post;
             _vm.Initialize(post);
-
-            SetUpTimeText();
-        }
-
-        private void SetUpTimeText()
-        {
-            TimeText.Text = TimeHelper.CalcCreationDateByUser(_vm.CurrentPost);
         }
 
         private void ChangeListViewWhenSizedChanged(object sender, SizeChangedEventArgs e)
@@ -98,12 +91,7 @@ namespace UITEST.View
             CommentPanel = new RelativePanel() { Margin = new Thickness(0, 40, 0, 0)};
             CommentTextBox = new TextBox()
             {
-                Height = 200,
-                Width = 600,
-                AcceptsReturn = true,
-                TextWrapping = TextWrapping.Wrap,
-                IsSpellCheckEnabled = true,
-                Language = "en-US"
+                Height = 200, Width = 600, AcceptsReturn = true, TextWrapping = TextWrapping.Wrap, IsSpellCheckEnabled = true, Language = "en-US"
             };
 
             Button SubmitButton = new Button()
@@ -139,12 +127,11 @@ namespace UITEST.View
 
         private void CommentSaveClick(object sender, RoutedEventArgs e)
         {
-            InsertComment(_vm.CurrentPost);
+            InsertCommentAsync(_vm.CurrentPost);
         }
 
-        private void InsertComment(AbstractCommentable abstractCommentableToCommentOn)
+        private async void InsertCommentAsync(AbstractCommentable abstractCommentableToCommentOn)
         {
-            
             string text = CommentTextBox.Text;
             if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
             {
@@ -153,18 +140,7 @@ namespace UITEST.View
             }
             else
             {
-                var old = new DateTime(1970, 1, 1);
-                var totaltime = DateTime.Now - old;
-                int timeInSeconds = (int)totaltime.TotalSeconds;
-                var newComment = new Comment()
-                { 
-                    body = CommentTextBox.Text,
-                    author = "ASD",
-                    created_utc = timeInSeconds
-                
-                
-            };
-                _vm.AddCommentAsync(abstractCommentableToCommentOn, newComment);
+                var newComment = await _vm.AddCommentAsync(abstractCommentableToCommentOn, text);
                 PostView.Items.Insert(2, new CommentControl(newComment));
                 ExtraStuff.Children.Remove(CommentPanel);
                 CommentPanel = null;
