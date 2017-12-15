@@ -1,16 +1,12 @@
 //using Entities.RedditEntities;
-//using Newtonsoft.Json;
-//using Newtonsoft.Json.Linq;
 //using System.Collections.Generic;
 //using System.Collections.ObjectModel;
 //using System.Linq;
 //using System.Net;
-//using System.Net.Http;
 //using System.Threading.Tasks;
-//using WebApplication2.Models;
 //using Xunit;
 //using Microsoft.Extensions.DependencyInjection;
-//using Entities.RedditEntities;
+//using UITEST.RedditInterfaces;
 
 //namespace RedditAPIConsumer.Tests
 //{
@@ -122,7 +118,7 @@
 //        public async Task Get_My_Subreddit_Subscriptions()
 //        {
 //            var subreddits = await _rcc.GetSubscribedSubredditsAsync();
-            
+
 //            Assert.Equal(typeof(Subreddit), subreddits[0].GetType());
 //        }
 
@@ -162,7 +158,7 @@
 //                                                                                        "dqmbla0",
 //                                                                                        "dqmopks"
 //                                                                                    };
-//           ObservableCollection<Comment> list = await _rcc.GetMoreComments("t3_7gukik", sarray);
+//            ObservableCollection<Comment> list = await _rcc.GetMoreComments("t3_7gukik", sarray);
 
 //            Assert.Equal(typeof(Comment), list[0].GetType());
 //        }
