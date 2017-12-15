@@ -35,8 +35,9 @@ namespace UITEST.ViewModel
             }
         }
 
-        public delegate void PostsReady();
-        public event PostsReady PostsReadyEvent;
+        public delegate void LoadingEvent();
+        public event LoadingEvent PostsReadyEvent;
+        public event LoadingEvent PostsStartedLoading;
 
         public MainPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer, IRestUserRepository repository) : base(service)
         {
@@ -48,6 +49,7 @@ namespace UITEST.ViewModel
 
         public async Task GeneratePosts()
         {
+            PostsStartedLoading.Invoke();
             await UserFactory.initialize(_consumer);
             await _repository.CreateAsync(new Entities.User { Username = UserFactory.GetInfo().name, PathToProfilePicture = "profilePicture.jpg" });
             Posts = await _consumer.GetHomePageContent();
@@ -69,8 +71,6 @@ namespace UITEST.ViewModel
         }
         public async Task Initialize()
         {
-            
-            
             if (await Authorize() != null)
             {
                 await GeneratePosts();
