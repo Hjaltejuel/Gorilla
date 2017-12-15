@@ -1,5 +1,6 @@
 ﻿using Entities.RedditEntities;
 using Gorilla.Model;
+using Gorilla.Model.GorillaRestInterfaces;
 using Model;
 using System;
 using System.Collections.ObjectModel;
@@ -36,40 +37,54 @@ namespace UITEST.ViewModel
 
         public ICommand GoToPostPageCommand { get; set; }
         private readonly IRestUserRepository _repository;
+        private readonly IRestPostRepository _restPostRepository;
+
         private readonly IRedditAPIConsumer _consumer;
         private ImageSource _image;
         public ImageSource Image { get { return _image; } set { if (_image != value) { _image = value; OnPropertyChanged(); } } }
 
         private byte[] _imageBytes;
-        public byte[] ImageBytes { get { return _imageBytes; } set { if (_imageBytes != value) { _imageBytes = value; OnPropertyChanged(); LoadImageAsync(); } } }
+        public  byte[] ImageBytes { get { return _imageBytes; } set { if (_imageBytes != value) { _imageBytes = value; OnPropertyChanged(); LoadImageAsync(); } } }
 
-        public ProfilePageViewModel(INavigationService service, IRestUserRepository repository, IRedditAPIConsumer consumer) : base(service)
+        public ProfilePageViewModel(INavigationService service, IRestUserRepository repository, IRedditAPIConsumer consumer, IRestPostRepository restPostRepository) : base(service)
         {
+            _restPostRepository = restPostRepository;
+
             _repository = repository;
             _consumer = consumer;
         }
 
         public async Task Initialize()
         {
-            // await _repository.CreateAsync(new Entities.User {Username = "Test5", PathToProfilePicture = "profilePicture.jpg" });
+
+            
+            
             await GetCurrentProfile();
 
-            ImageBytes = await _repository.FindImageAsync("Test5");
-            
-            /*
-            Posts = new ObservableCollection<Post>
+
+            if (UserFactory.GetInfo().ProfilePic == null)
             {
-                new Post {Title = "hej", Author = "Raaaasmusss", NumOfVotes = -100, Text = "FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. FY for saaaaataan. hej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gidhej hej dig gid"},
-                new Post {Title = "VIld Nice", Author = "Maads", NumOfVotes = 121, Text = "nice nice nicenicenicenci"},
-                new Post {Title = "VIld Nice", Author = "Maads", NumOfVotes = 121, Text = "nice nice nicenicenicenci"},
-                new Post {Title = "VIld Nice", Author = "Maads", NumOfVotes = 121, Text = "nice nice nicenicenicenci"},
-            };
-            */
+                ImageBytes = await _repository.FindImageAsync(Username);
+            } else
+            {
+                ImageBytes = UserFactory.GetInfo().ProfilePic;
+            }
+
+            var postIds = await _restPostRepository.ReadAsync(Username);
+
+
+           
+            Posts = new ObservableCollection<Entities.RedditEntities.Post>();
+           
+            Parallel.ForEach(postIds, async post => { Posts.Add(await _consumer.GetPostAndCommentsByIdAsync(post.Id)); });
+
+            OnPropertyChanged();
+       
         }
 
         private async Task GetCurrentProfile()
         {
-            var redditUser = await _consumer.GetAccountDetailsAsync();
+            var redditUser = UserFactory.GetInfo();
             var subscriptions = await _consumer.GetSubscribedSubredditsAsync();
             var userPosts = await _consumer.GetUserPosts(redditUser.name);
             string numberOfPosts;

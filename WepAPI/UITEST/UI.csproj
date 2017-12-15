@@ -110,10 +110,12 @@
     <Compile Include="Authentication\GorillaAuthentication\ISettings.cs" />
     <Compile Include="Authentication\GorillaAuthentication\Settings.cs" />
     <Compile Include="Model\GorillaRepositories\Extensions.cs" />
+    <Compile Include="Model\GorillaRepositories\RestPostRepository.cs" />
     <Compile Include="Model\GorillaRepositories\RestSubredditConnectionRepository.cs" />
     <Compile Include="Model\GorillaRepositories\RestSubredditRepository.cs" />
     <Compile Include="Model\GorillaRepositories\RestUserPreferenceRepository.cs" />
     <Compile Include="Model\GorillaRepositories\RestUserRepository.cs" />
+    <Compile Include="Model\GorillaRestInterfaces\IRestPostRepository.cs" />
     <Compile Include="Model\GorillaRestInterfaces\IRestSubredditConnectionRepository.cs" />
     <Compile Include="Model\GorillaRestInterfaces\IRestSubredditRepository.cs" />
     <Compile Include="Model\GorillaRestInterfaces\IRestUserPreferenceRepository.cs" />
@@ -122,6 +124,7 @@
     <Compile Include="Model\IoCContainer.cs" />
     <Compile Include="Model\NavigationService.cs" />
     <Compile Include="Misc\TimeHelper.cs" />
+    <Compile Include="Model\UserFactory.cs" />
     <Compile Include="ViewModel\SubredditPageViewModel.cs" />
     <Compile Include="View\SubredditPage.xaml.cs">
       <DependentUpon>SubredditPage.xaml</DependentUpon>
