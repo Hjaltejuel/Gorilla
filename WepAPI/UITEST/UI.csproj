@@ -124,6 +124,7 @@
     <Compile Include="Model\IoCContainer.cs" />
     <Compile Include="Model\NavigationService.cs" />
     <Compile Include="Misc\TimeHelper.cs" />
+    <Compile Include="Model\UserFactory.cs" />
     <Compile Include="ViewModel\SubredditPageViewModel.cs" />
     <Compile Include="View\SubredditPage.xaml.cs">
       <DependentUpon>SubredditPage.xaml</DependentUpon>

@@ -3,17 +3,12 @@ using Gorilla.AuthenticationGorillaAPI;
 using Microsoft.Extensions.DependencyInjection;
 using Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using Gorilla.ViewModel;
 using UITEST.ViewModel;
 using WebApplication2.Models.GorillaApiConsumeRepositories;
 using Gorilla.Model.GorillaRestInterfaces;
 using Gorilla.Model.GorillaRepositories;
-using UITEST.Model;
 
 namespace Gorilla.Model
 {
@@ -37,7 +32,8 @@ namespace Gorilla.Model
             services.AddScoped<IRestPostRepository, RestPostRepository>();
             services.AddScoped<IRedditAPIConsumer, RedditConsumerController>();
             services.AddScoped<MainPageViewModel>();
-            services.AddScoped<User>();
+            
+           
             services.AddScoped<DiscoverPageViewModel>();
             services.AddScoped<PostPageViewModel>();
             services.AddScoped<ProfilePageViewModel>();

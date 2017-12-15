@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Windows.UI.Xaml;
+using Gorilla.Model.GorillaRestInterfaces;
 
 namespace UITEST.ViewModel
 {

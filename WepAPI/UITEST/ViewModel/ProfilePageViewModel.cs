@@ -1,5 +1,6 @@
 ﻿using Entities.RedditEntities;
 using Gorilla.Model;
+using Gorilla.Model.GorillaRestInterfaces;
 using Model;
 using System;
 using System.Collections.ObjectModel;
@@ -43,7 +44,7 @@ namespace UITEST.ViewModel
         public ImageSource Image { get { return _image; } set { if (_image != value) { _image = value; OnPropertyChanged(); } } }
 
         private byte[] _imageBytes;
-        public byte[] ImageBytes { get { return _imageBytes; } set { if (_imageBytes != value) { _imageBytes = value; OnPropertyChanged(); LoadImageAsync(); } } }
+        public  byte[] ImageBytes { get { return _imageBytes; } set { if (_imageBytes != value) { _imageBytes = value; OnPropertyChanged(); LoadImageAsync(); } } }
 
         public ProfilePageViewModel(INavigationService service, IRestUserRepository repository, IRedditAPIConsumer consumer, IRestPostRepository restPostRepository) : base(service)
         {
@@ -56,27 +57,23 @@ namespace UITEST.ViewModel
         public async Task Initialize()
         {
 
-          
-
-           
-
-           
-
-           
-           
-
             
             
             await GetCurrentProfile();
 
-            await _repository.CreateAsync(new Entities.User { Username = currentProfile.Username, PathToProfilePicture = "profilePicture.jpg" });
 
-            var ImageBytes = await _repository.FindImageAsync(currentProfile.Username);
+            if (UserFactory.GetInfo().ProfilePic == null)
+            {
+                ImageBytes = await _repository.FindImageAsync(Username);
+            } else
+            {
+                ImageBytes = UserFactory.GetInfo().ProfilePic;
+            }
 
-            var postIds = await _restPostRepository.ReadAsync(currentProfile.Username);
+            var postIds = await _restPostRepository.ReadAsync(Username);
 
 
-
+           
             Posts = new ObservableCollection<Entities.RedditEntities.Post>();
            
             Parallel.ForEach(postIds, async post => { Posts.Add(await _consumer.GetPostAndCommentsByIdAsync(post.Id)); });
@@ -87,7 +84,7 @@ namespace UITEST.ViewModel
 
         private async Task GetCurrentProfile()
         {
-            var redditUser = await _consumer.GetAccountDetailsAsync();
+            var redditUser = UserFactory.GetInfo();
             var subscriptions = await _consumer.GetSubscribedSubredditsAsync();
             var userPosts = await _consumer.GetUserPosts(redditUser.name);
             string numberOfPosts;

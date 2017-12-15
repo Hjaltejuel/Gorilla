@@ -61,8 +61,10 @@ namespace UITEST.View
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            
             base.OnNavigatedTo(e);
             var post = e.Parameter as Post;
+            _repository.CreateAsync(new Entities.Post { Id = post.id, username = UserFactory.GetInfo().name });
             _vm.Initialize(post);
         }
 
