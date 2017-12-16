@@ -45,45 +45,23 @@ namespace UITEST.ViewModel
                 OnPropertyChanged("subscribeString");
             }
         }
-
         public SubredditPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer, IRestUserPreferenceRepository repository ) : base(helper, service, consumer)
         {
             _repository = repository;
-            
             GoToCreatePostPageCommand = new RelayCommand(o => _service.Navigate(typeof(CreatePostPage), _Subreddit));
             SortTypes = new List<string>() { "hot", "new", "rising", "top", "controversial" };
-
         }
-       
-
         public async Task GeneratePosts(string subredditName, string sort = "hot")
         {
             InvokeLoadSwitchEvent();
             _Subreddit = await _consumer.GetSubredditAsync(subredditName, sort);
-            if (_Subreddit == null || _Subreddit.name == null)
+            if (_Subreddit?.name == null)
             {
                 InvokeLoadSwitchEvent();
                 return;
             }
             SubredditName = _Subreddit.display_name_prefixed;
-
             Posts = _Subreddit.posts;
-
-            foreach (Post p in Posts)
-            {
-                if (p.is_self)
-                {
-                    p.thumbnail = "/Assets/Textpost.png";
-                }
-                else
-                {
-                    if (p.thumbnail == "default")
-                    {
-                        p.thumbnail = "/Assets/Externallink.png";
-                    }
-
-                }
-            }
             await IsUserSubscribed();
             InvokeLoadSwitchEvent();
         }
