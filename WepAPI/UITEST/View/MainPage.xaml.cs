@@ -1,15 +1,12 @@
-﻿
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Extensions.DependencyInjection;
 using UITEST.ViewModel;
 using Entities.RedditEntities;
-using System.Collections.Generic;
 using Windows.UI.Core;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
-
 namespace UITEST.View
 {
     /// <summary>

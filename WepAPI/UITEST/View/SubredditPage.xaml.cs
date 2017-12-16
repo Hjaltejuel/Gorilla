@@ -30,8 +30,8 @@ namespace UITEST.View
             _vm = App.ServiceProvider.GetService<SubredditPageViewModel>();
             DataContext = _vm;
             SizeChanged += ChangeListViewWhenSizedChanged;
-            _vm.PostsReadyEvent += PostReadyEvent;
             PostsList.OnNagivated += PostsList_OnNagivated;
+            _vm.LoadSwitch += LoadingRingSwitch;
         }
 
         private readonly SubredditPageViewModel _vm;
@@ -46,9 +46,9 @@ namespace UITEST.View
         {
             PostsList.Height = e.NewSize.Height - (commandBar.ActualHeight + 75);
         }
-        private void PostReadyEvent()
+        private void LoadingRingSwitch()
         {
-            LoadingRing.IsActive = false;
+            LoadingRing.IsActive = LoadingRing.IsActive == true ? false : true;
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -72,23 +72,14 @@ namespace UITEST.View
                 _Grid.Children.Remove(PageTitleText);
             }
         }
-        private void SearchBox_QuerySubmitted(SearchBox sender, SearchBoxQuerySubmittedEventArgs args)
-        {
-            LoadingRing.IsActive = true;
-            if (!args.QueryText.Equals(_vm._Subreddit.display_name))
-                Frame.Navigate(typeof(SubredditPage), args.QueryText);
-        }
 
         private async void SubsribeToSubredditButton_Click(object sender, RoutedEventArgs e)
         {
             await _vm.SubscribeToSubreddit();
-
-
         }
 
         private async void SortBy_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            LoadingRing.IsActive = true;
             var comboBox = sender as ComboBox;
             var SortString = comboBox.SelectedItem as string;
             await _vm.GeneratePosts(_vm._Subreddit.display_name, SortString);
