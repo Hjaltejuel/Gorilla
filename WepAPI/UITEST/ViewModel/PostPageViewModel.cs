@@ -76,7 +76,7 @@ namespace UITEST.ViewModel
                 author = username,
                 created_utc = timeInSeconds
             };
-            await redditAPIConsumer.CreateCommentAsync(commentableToCommentOn, newComment.body);
+            await _redditAPIConsumer.CreateCommentAsync(commentableToCommentOn, newComment.body);
             await  _restUserPreferenceRepository.UpdateAsync(new Entities.UserPreference { Username = username, SubredditName = CurrentPost.subreddit, PriorityMultiplier = 3 });
             return newComment;
         }
