@@ -76,12 +76,22 @@ namespace Model.Repositories
                           select u).ToListAsync();
         }
 
+        public async Task<IReadOnlyCollection<SubredditConnection>> GetAllPrefs(string[] subredditFromNames)
+        {
+            int test = 15 / subredditFromNames.Count();
+            var prefs =        (from a in context.SubredditConnections
+                               where subredditFromNames.Contains(a.SubredditFromName)
+                               select a).GroupBy(a => a.SubredditFromName).SelectMany(a => a.OrderByDescending(k => Decimal.Parse(k.Similarity)).Take(test)).ToList();
+          
+            return prefs;
+        
+        }
         public async Task<IReadOnlyCollection<SubredditConnection>> FindAsync(string SubredditFromName)
         {
 
-            var prefs =  await (from a in context.SubredditConnections
+            var prefs =     await ( (from a in context.SubredditConnections
                                where a.SubredditFromName.Equals(SubredditFromName)
-                               select a).ToListAsync();
+                               select a).OrderByDescending(a => a.Similarity)).ToListAsync();
 
             if (prefs.Count() == 0)
             {

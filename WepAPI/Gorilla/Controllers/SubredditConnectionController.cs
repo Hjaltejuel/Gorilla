@@ -10,7 +10,7 @@ using Exceptions;
 
 namespace Gorilla.Controllers
 {
-    
+
     [Produces("application/json")]
     [Route("api/[controller]")]
     public class SubredditConnectionController : Controller
@@ -34,10 +34,23 @@ namespace Gorilla.Controllers
             {
                 return NoContent();
             }
-           
+
             return Ok(result);
         }
-
+        [HttpGet("GetAllPrefs")]
+        public async Task<IActionResult> GetAllPrefs([FromBody]string[] ListOfPrefs)
+            {
+            var result = await repository.GetAllPrefs(ListOfPrefs);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            else if (result.Count() == 0)
+            {
+                return NoContent();
+            }
+            return Ok(result);
+        }
         [HttpGet(Name = "Read")]
         public async Task<IActionResult> ReadAsync()
         {

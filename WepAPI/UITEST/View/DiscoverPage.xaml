@@ -30,10 +30,12 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <RelativePanel Margin="10, 10, 0, 10">
-                        <Rectangle Fill="RoyalBlue" Height="150" Width="1000" Stretch="UniformToFill"  HorizontalAlignment="Center"/>
-                        <Image Source="{Binding banner_img}" Height="150" Width="Auto" HorizontalAlignment="Center" Stretch="UniformToFill"/>
+                        <Image Source="/Assets/GorillaTextLogo.png" Height="150" Width="Auto" Stretch="Fill"  HorizontalAlignment="Center"/>
+                        <Image Source="{Binding banner_img}" Height="150" Width="Auto" HorizontalAlignment="Center" Stretch="Fill"/>
 
-                        <TextBlock Text="{Binding display_name}" Style="{StaticResource DiscoverSubRedditText}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding display_name}" Style="{StaticResource DiscoverSubRedditText}" Name ="blok1"  HorizontalAlignment="Center"/>
+                        <TextBlock Text="Because of your interest in : " Style="{StaticResource DiscoverSubRedditText}" Name="Blok2"  RelativePanel.Below="blok1"/>
+                        <TextBlock Text="{Binding interest}" Style="{StaticResource DiscoverSubRedditText}" RelativePanel.Below="Blok2"  />
                     </RelativePanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
