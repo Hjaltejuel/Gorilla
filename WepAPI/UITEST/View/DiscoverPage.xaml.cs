@@ -20,17 +20,13 @@ namespace UITEST.View
         public DiscoverPage()
         {
             this.InitializeComponent();
-
             LoadingRing.IsActive = true;
 
             _vm = App.ServiceProvider.GetService<DiscoverPageViewModel>();
 
             DataContext = _vm;
-
             SizeChanged += ChangeListViewWhenSizedChanged;
-
             _vm.DiscoverReadyEvent += DiscoverReadyEvent;
-
             _vm.NoElementsEvent += NoElementsEvent;
         }
         private void ChangeListViewWhenSizedChanged(object sender, SizeChangedEventArgs e)
@@ -47,12 +43,9 @@ namespace UITEST.View
                 Height = 100,
                 Width = 200,
                 Text = "No User preference was found",
-
             };
             Grid.SetRow(block, 3);
             GridPanel.Children.Add(block);
-                
-
         }
 
         private void DiscoverReadyEvent()
@@ -70,7 +63,8 @@ namespace UITEST.View
         {
             var list = sender as ListView;
             selectedSubReddit = list.SelectedItem as Subreddit;
-            _vm.GoToSubRedditPage.Execute(selectedSubReddit);
+            if(selectedSubReddit != null)
+                _vm.GoToSubRedditPage.Execute(selectedSubReddit.display_name);
         }
     }
 }
