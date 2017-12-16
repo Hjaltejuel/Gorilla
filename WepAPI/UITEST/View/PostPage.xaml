@@ -33,7 +33,7 @@
                     <Image Source="{x:Bind Path = _vm.CurrentPost.thumbnail}" Height="40" Width="40" Name="Box" Margin="20, 0, 0, 0" RelativePanel.RightOf="Upvote"/>
                 </RelativePanel>
                 <RelativePanel Name="TitlePanel" RelativePanel.RightOf="OpOgNed">
-                    <TextBlock Text="{x:Bind Path = _vm.CurrentPost.title}" FontSize="20" Name="Title"/>
+                    <TextBlock Text="{x:Bind Path = _vm.CurrentPost.title}" FontSize="20" Name="Title" TextWrapping="Wrap"/>
                 </RelativePanel>
                 <RelativePanel Name="TimePanel" RelativePanel.Below="TitlePanel" RelativePanel.RightOf="OpOgNed">
                     <TextBlock Name="TimeText" Text="{Binding timeSinceCreation}" FontSize="12"/>
