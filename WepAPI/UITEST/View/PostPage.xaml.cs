@@ -1,28 +1,13 @@
 ﻿using Entities.RedditEntities;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
 using Microsoft.Extensions.DependencyInjection;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using UITEST.CustomUI;
 using UITEST.ViewModel;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Gorilla.Model;
 using Gorilla.Model.GorillaRestInterfaces;
-using Gorilla.Model.GorillaRepositories;
-using Model;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 namespace UITEST.View
@@ -34,10 +19,6 @@ namespace UITEST.View
     {
         private readonly PostPageViewModel _vm;
         private readonly IRestPostRepository _repository;
-    
-        //private RelativePanel CommentPanel;
-        //private TextBox CommentTextBox;
-        //private TextBlock errorText;
         
         public PostPage()
         {
@@ -119,15 +100,5 @@ namespace UITEST.View
                 PostView.Items.Add(TopCommentPanel);
             }
         }
-
-        //private async void Upvote_Click(object sender, RoutedEventArgs e)
-        //{
-        //    await _vm.PostLikedAsync();
-        //}
-
-        //private async void Downvote_Click(object sender, RoutedEventArgs e)
-        //{
-        //    await _vm.PostDislikedAsync();
-        //}
     }
 }

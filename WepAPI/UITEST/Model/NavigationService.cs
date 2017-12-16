@@ -19,5 +19,11 @@ namespace Gorilla.Model
 
             return false;
         }
+
+        public void GoBack()
+        {
+            var f = Window.Current.Content as Frame;
+            f.GoBack();
+        }
     }
 }

@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using Gorilla.AuthenticationGorillaAPI;
 using System.Net;
 using Model;
+using System.Diagnostics;
 
 namespace WebApplication2.Models.GorillaApiConsumeRepositories
 {
@@ -73,6 +74,7 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
 
             if (response.IsSuccessStatusCode)
             {
+                
                 return await response.Content.To<IReadOnlyCollection<Entities.UserPreference>>();
             }
 

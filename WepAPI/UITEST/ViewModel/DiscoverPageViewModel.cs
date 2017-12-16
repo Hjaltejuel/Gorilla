@@ -8,12 +8,17 @@ using System.Windows.Input;
 using Model;
 using UITEST.View;
 using UITEST.RedditInterfaces;
+using Entities;
+using System.Threading.Tasks;
+using System.Timers;
+using System.Collections.Concurrent;
+using System.Diagnostics;
 
 namespace UITEST.ViewModel
 {
     public class DiscoverPageViewModel : BaseViewModel
     {
-        public ObservableCollection<Subreddit> SubReddits { get; private set; }
+        public ObservableCollection<Entities.RedditEntities.Subreddit> SubReddits { get; private set; }
 
         public ICommand GoToSubRedditPage { get; set; }
         private readonly IRestSubredditConnectionRepository _repository;
@@ -32,15 +37,14 @@ namespace UITEST.ViewModel
             _repository = repository;
           
             GoToSubRedditPage = new RelayCommand(o => _service.Navigate(typeof(MainPage), o));
-            Initialize();
+            
            
         }
 
         public async void Initialize()
         {
-
-
-            User user = await _consumer.GetAccountDetailsAsync();
+       
+            Entities.RedditEntities.User user = UserFactory.GetInfo();
 
             var result = (await _userPreferenceRepository.FindAsync(user.name));
 
@@ -51,58 +55,73 @@ namespace UITEST.ViewModel
             }
             else
             {
-                var userPreferences = result.ToArray();
-                var subreddits = new HashSet<string>();
-                if (userPreferences.Count() < 15)
+             
+               
+                var connections = await _repository.GetAllPrefs(result.Select(a => a.SubredditName).ToArray());
+
+                var taskList = new List<Task>();
+                var subs = new Entities.RedditEntities.Subreddit[connections.Count()];
+                int j = 0;
+                foreach (string subreddit in connections.Select(A=> A.SubredditToName))
+                {
+                    taskList.Add(finalize(j, subreddit, subs,connections.ElementAt(j).SubredditFromName));
+
+                    j++;
+                }
+                await Task.WhenAll(taskList);
+
+
+                SubReddits = new ObservableCollection<Entities.RedditEntities.Subreddit>(subs);
+                DiscoverReadyEvent.Invoke();
+                OnPropertyChanged("SubReddits");
+
+          
+            }
+             
+                
+            
+            }
+
+
+            public async Task add( int k, int reps, ConcurrentBag<string> subreddits, string subredditFromName)
+            {
+
+                var SubredditConnections = await _repository.FindAsync(subredditFromName);
+            Debug.WriteLine(subredditFromName);
+                if (SubredditConnections != null)
                 {
 
-                    int reps = (15 / userPreferences.Count());
+                    subreddits.Add(SubredditConnections.ElementAt(reps).SubredditToName);
 
-                    for (int j = 0; j < userPreferences.Count(); j++)
-                    {
-                        var SubredditConnections = await _repository.FindAsync(userPreferences[j].SubredditName);
-                        if (SubredditConnections != null)
-                        {
-                            for (int i = 0; i < reps && i < SubredditConnections.Count(); i++)
-                            {
-                                subreddits.Add(SubredditConnections.ElementAt(i).SubredditToName);
-
-                            }
-                        }
-                    }
-
+                    k++;
                 }
                 else
                 {
 
-                    for (int i = 0; i < 15; i++)
-                    {
-                        subreddits.Add(((await _repository.FindAsync(userPreferences[i]
-                                                            .SubredditName)).
-                                                            FirstOrDefault()).SubredditToName);
-                    }
                 }
+            }
+            public async Task addOver(int i, ConcurrentBag<string> subreddits, string subredditFromName)
+            {
+            Debug.WriteLine(subredditFromName);
 
-
-                var subs = new Subreddit[14];
-                for(int i = 0; i<subreddits.Count(); i++)
+            var sub = await (_repository.FindAsync(subredditFromName));
+                if (sub != null)
                 {
-                    var sub = await _consumer.GetSubredditAsync(subreddits.ElementAt(i));
-                    
-                    subs[i] = sub;
-                    if(sub.banner_img == null)
-                    {
-                        sub.banner_img = sub.header_img;
-                        if(sub.banner_img == null)
-                        {
-                            sub.banner_img = sub.icon_img;
-                        }
-                    }
+                    subreddits.Add(sub.FirstOrDefault().SubredditToName);
                 }
-                SubReddits = new ObservableCollection<Subreddit>(subs);
-                DiscoverReadyEvent.Invoke();
-                OnPropertyChanged("SubReddits");
+            }
+        public async Task finalize(int i, string subreddit, Entities.RedditEntities.Subreddit[] subs,string subredditFromName)
+        {
+            var sub = await _consumer.GetSubredditAsync(subreddit);
+            sub.interest = subredditFromName;
+
+            subs[i] = sub;
+            if (sub.banner_img.Equals(""))
+            {
+                sub.banner_img = sub.header_img;
+
             }
         }
+        }
     }
-}
+

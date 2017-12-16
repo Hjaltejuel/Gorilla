@@ -27,8 +27,7 @@ namespace UITEST.View
 
             DataContext = _vm;
             SizeChanged += ChangeListViewWhenSizedChanged;
-            _vm.PostsReadyEvent += PostReadyEvent;
-            _vm.PostsStartedLoading += StartedLoading;
+            _vm.LoadSwitch += LoadingRingSwitch;
             PostsList.OnNagivated += PostsList_OnNagivated;
         }
 
@@ -41,23 +40,14 @@ namespace UITEST.View
         {
             PostsList.Height = e.NewSize.Height - (commandBar.ActualHeight+75);
         }
-        private void PostReadyEvent()
+        private void LoadingRingSwitch()
         {
-            LoadingRing.IsActive = false;
-        }
-        private void StartedLoading()
-        {
-            LoadingRing.IsActive = true;
+            LoadingRing.IsActive = LoadingRing.IsActive == true ? false : true;
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
-        }
-        private void SearchBox_QuerySubmitted(SearchBox sender, SearchBoxQuerySubmittedEventArgs args)
-        {
-            LoadingRing.IsActive = true;
-            Frame.Navigate(typeof(SubredditPage), args.QueryText);
         }
     }
 }

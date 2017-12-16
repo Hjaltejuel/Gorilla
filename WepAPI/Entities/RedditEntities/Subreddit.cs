@@ -6,6 +6,7 @@ namespace Entities.RedditEntities
 {
     public class Subreddit
     {
+        public string interest { get; set; }
         public string user_is_contributor { get; set; }
         public string banner_img { get; set; }
         public string user_flair_text { get; set; }

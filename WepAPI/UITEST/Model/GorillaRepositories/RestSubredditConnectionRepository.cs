@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Gorilla.AuthenticationGorillaAPI;
 using System.Net;
+using System.Diagnostics;
 
 namespace WebApplication2.Models.GorillaApiConsumeRepositories
 {
@@ -59,11 +60,39 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
             }
         }
 
+        public async Task<IReadOnlyCollection<SubredditConnection>> GetAllPrefs(string[] subredditFromNames)
+        {
+            using (var h = new HttpClient())
+            {
+                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("GET"), new Uri("https://gorillaapi.azurewebsites.net/api/SubredditConnection/GetAllPrefs"));
+                request.Content = subredditFromNames.ToHttpContent();
+
+                var token = await _helper.AcquireTokenSilentAsync();
+
+
+                if (string.IsNullOrWhiteSpace(token))
+                {
+                    return null;
+                }
+
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var response = await h.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                   return await response.Content.To<IReadOnlyCollection<SubredditConnection>>();
+                }
+                return null;
+
+            }
+        }
+
         public async Task<IReadOnlyCollection<SubredditConnection>> FindAsync(string subredditFromName)
         {
-            var response = await _client.GetAsync($"api/subredditConnection/{subredditFromName }");
+            Debug.WriteLine("I AM Begining");
+            var response = await _client.GetAsync($"api/subredditConnection/{subredditFromName}");
             if (response.IsSuccessStatusCode)
             {
+                Debug.WriteLine("I AM STARTING");
                 return await response.Content.To<IReadOnlyCollection<SubredditConnection>>();
             }
             return null;

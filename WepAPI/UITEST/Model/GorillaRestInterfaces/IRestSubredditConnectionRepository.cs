@@ -11,6 +11,7 @@ namespace Model
         Task<SubredditConnection> GetAsync(string subredditFromName, string subredditToName);
         Task<IReadOnlyCollection<SubredditConnection>> FindAsync(string subredditFromName);
         Task<string> CreateAsync(SubredditConnection connection);
+        Task<IReadOnlyCollection<SubredditConnection>> GetAllPrefs(string[] subredditFromNames);
         Task<bool> DeleteAsync(string subredditFromName, string subredditToName);
         Task<IReadOnlyCollection<SubredditConnection>> ReadAsync();
         Task<bool> UpdateAsync(SubredditConnection user);

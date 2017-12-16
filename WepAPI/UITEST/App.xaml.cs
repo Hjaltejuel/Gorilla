@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using UITEST.View;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -25,6 +27,7 @@ namespace UITEST
     /// </summary>
     sealed partial class App : Application
     {
+        
         public static IServiceProvider ServiceProvider { get; } = IoCContainer.Create();
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -45,6 +48,8 @@ namespace UITEST
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             Frame rootFrame = Window.Current.Content as Frame;
+            ServicePointManager.DefaultConnectionLimit = 100;
+            
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active

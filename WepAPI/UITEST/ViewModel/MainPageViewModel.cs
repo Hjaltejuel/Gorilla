@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using UITEST.RedditInterfaces;
+using UITEST.View;
 
 namespace UITEST.ViewModel
 {
@@ -15,10 +16,12 @@ namespace UITEST.ViewModel
         bool firstTime = true;
         IRedditAPIConsumer _consumer;
         IRestUserRepository _repository;
+        private string _queryText;
+        public string queryText{ get { return _queryText; } set { if (_queryText != value) { _queryText = value; OnPropertyChanged(); } }}
+
         public ObservableCollection<Post> posts;
         public delegate void LoadingEvent();
-        public event LoadingEvent PostsReadyEvent;
-        public event LoadingEvent PostsStartedLoading;
+        public event LoadingEvent LoadSwitch;
         public ObservableCollection<Post> Posts
         {
             get => posts;
@@ -40,7 +43,7 @@ namespace UITEST.ViewModel
 
         public async Task GeneratePosts()
         {
-            PostsStartedLoading.Invoke();
+            LoadSwitch.Invoke();
             await UserFactory.initialize(_consumer);
             await _repository.CreateAsync(new Entities.User { Username = UserFactory.GetInfo().name, PathToProfilePicture = "profilePicture.jpg" });
             Posts = await _consumer.GetHomePageContent();
@@ -58,7 +61,7 @@ namespace UITEST.ViewModel
                     }
                 }
             }
-            PostsReadyEvent.Invoke();
+            LoadSwitch.Invoke();
         }
         public async Task Initialize()
         {
@@ -78,5 +81,12 @@ namespace UITEST.ViewModel
                 }
             }
         }
+
+        public void SearchQuerySubmitted()
+        {
+            _service.Navigate(typeof(SubredditPage), queryText);
+        }
+
+
     }
 }
