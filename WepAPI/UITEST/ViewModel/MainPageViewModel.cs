@@ -1,6 +1,7 @@
 ﻿using Entities.RedditEntities;
 using Gorilla.AuthenticationGorillaAPI;
 using Gorilla.Model;
+using Gorilla.ViewModel;
 using Model;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -10,40 +11,17 @@ using UITEST.View;
 
 namespace UITEST.ViewModel
 {
-    public class MainPageViewModel : BaseViewModel
+    public class MainPageViewModel : SearchableViewModel
     {
-        public ICommand GoToCreatePostPageCommand { get; set; }
-        bool firstTime = true;
-        IRedditAPIConsumer _consumer;
-        IRestUserRepository _repository;
-        private string _queryText;
-        public string queryText{ get { return _queryText; } set { if (_queryText != value) { _queryText = value; OnPropertyChanged(); } }}
-
-        public ObservableCollection<Post> posts;
-        public delegate void LoadingEvent();
-        public event LoadingEvent LoadSwitch;
-        public ObservableCollection<Post> Posts
+        public MainPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer, IRestUserRepository repository) : base(helper, service, consumer)
         {
-            get => posts;
-            set
-            {
-                posts = value;
-                OnPropertyChanged("Posts");
-            }
-        }
-
-
-        public MainPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer, IRestUserRepository repository) : base(service)
-        {
-            _consumer = consumer;
             _repository = repository;
-            _helper = helper;
             Initialize();
         }
 
         public async Task GeneratePosts()
         {
-            LoadSwitch.Invoke();
+            InvokeLoadSwitchEvent();
             await UserFactory.initialize(_consumer);
             await _repository.CreateAsync(new Entities.User { Username = UserFactory.GetInfo().name, PathToProfilePicture = "profilePicture.jpg" });
             Posts = await _consumer.GetHomePageContent();
@@ -61,7 +39,7 @@ namespace UITEST.ViewModel
                     }
                 }
             }
-            LoadSwitch.Invoke();
+            InvokeLoadSwitchEvent();
         }
         public async Task Initialize()
         {
@@ -81,12 +59,5 @@ namespace UITEST.ViewModel
                 }
             }
         }
-
-        public void SearchQuerySubmitted()
-        {
-            _service.Navigate(typeof(SubredditPage), queryText);
-        }
-
-
     }
 }

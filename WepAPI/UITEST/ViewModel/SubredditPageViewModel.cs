@@ -11,55 +11,29 @@ using Gorilla.AuthenticationGorillaAPI;
 using Gorilla.View;
 using UITEST.RedditInterfaces;
 using Model;
+using Gorilla.ViewModel;
 
 namespace UITEST.ViewModel
 {
-    class SubredditPageViewModel : BaseViewModel
+    class SubredditPageViewModel : SearchableViewModel
     {
         public ICommand GoToCreatePostPageCommand { get; set; }
-        bool firstTime = true;
-        IRedditAPIConsumer _consumer;
 
+        IRestUserPreferenceRepository _repository;
         public Subreddit _Subreddit;
-        public ObservableCollection<Post> posts;
         private List<string> _SortTypes;
-
         public List<string> SortTypes
         {
             get { return _SortTypes; }
             set { _SortTypes = value; OnPropertyChanged(); }
         }
 
-
         private string  _subscribeString;
         public string subscribeString { get { return _subscribeString; } set { _subscribeString = value;  OnPropertyChanged(); }}
 
         private string _subredditName;
-        public string SubredditName
-        {
-            get { return _subredditName; }
-            set
-            {
-                if (value != _subredditName)
-                {
-                    _subredditName = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-        IRestUserPreferenceRepository _repository;
-        public delegate void PostsReady();
-        public event PostsReady PostsReadyEvent;
+        public string SubredditName { get { return _subredditName; }  set  { if (value != _subredditName){ _subredditName = value;OnPropertyChanged();}}}
 
-        public SubredditPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer, IRestUserPreferenceRepository repository ) : base(service)
-        {
-            _repository = repository;
-            _consumer = consumer;
-            _helper = helper;
-            GoToCreatePostPageCommand = new RelayCommand(o => _service.Navigate(typeof(CreatePostPage), _Subreddit));
-            SortTypes = new List<string>() { "hot", "new", "rising", "top", "controversial" };
-
-        }
         bool userIsSubscribed;
         bool UserIsSubscribed
         {
@@ -71,16 +45,24 @@ namespace UITEST.ViewModel
                 OnPropertyChanged("subscribeString");
             }
         }
-        public ObservableCollection<Post> Posts
+
+        public SubredditPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer, IRestUserPreferenceRepository repository ) : base(helper, service, consumer)
         {
-            get => posts; set { posts = value; OnPropertyChanged("Posts"); }
+            _repository = repository;
+            
+            GoToCreatePostPageCommand = new RelayCommand(o => _service.Navigate(typeof(CreatePostPage), _Subreddit));
+            SortTypes = new List<string>() { "hot", "new", "rising", "top", "controversial" };
+
         }
+       
 
         public async Task GeneratePosts(string subredditName, string sort = "hot")
         {
+            InvokeLoadSwitchEvent();
             _Subreddit = await _consumer.GetSubredditAsync(subredditName, sort);
-            if(_Subreddit==null || _Subreddit.name == null)
+            if (_Subreddit == null || _Subreddit.name == null)
             {
+                InvokeLoadSwitchEvent();
                 return;
             }
             SubredditName = _Subreddit.display_name_prefixed;
@@ -102,11 +84,16 @@ namespace UITEST.ViewModel
 
                 }
             }
+            await IsUserSubscribed();
+            InvokeLoadSwitchEvent();
+        }
+
+        private async Task IsUserSubscribed()
+        {
             List<Subreddit> subs = await _consumer.GetSubscribedSubredditsAsync();
             UserIsSubscribed = (from b in subs
                                 where b.display_name.Equals(_Subreddit.display_name)
                                 select b).Any();
-            PostsReadyEvent.Invoke();
         }
 
         public async Task SubscribeToSubreddit()
@@ -120,25 +107,6 @@ namespace UITEST.ViewModel
             } else
             {
                 await _repository.UpdateAsync(new Entities.UserPreference { Username = UserFactory.GetInfo().name, SubredditName = _Subreddit.display_name, PriorityMultiplier = -10 });
-            }
-        }
-
-        public async Task Initialize()
-        {
-            if (await Authorize() != null)
-            {
-                //GeneratePosts();
-            }
-            else
-            {
-                if (firstTime == true)
-                {
-                    firstTime = false;
-                }
-                else
-                {
-                    await Initialize();
-                }
             }
         }
     }
