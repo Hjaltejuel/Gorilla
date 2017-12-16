@@ -25,7 +25,7 @@
         <ComboBox Name="SortBy" ItemsSource="{Binding SortTypes}" PlaceholderText="Sort by" SelectionChanged="SortBy_SelectionChanged" Grid.Column="0" Grid.Row="1" Width="100" HorizontalAlignment="Right" Margin="0, 10, 450, 0"/>
         <Button Name="SubsribeToSubredditButton" Content="{Binding subscribeString}" Grid.Column="0" Grid.Row="1" Click="SubsribeToSubredditButton_Click" HorizontalAlignment="Right" Margin="0, 0, 335, 0"/>
         <Button Name="CreatePostButton" Content="Create post" Grid.Column="0" Grid.Row="1" Command="{Binding GoToCreatePostPageCommand}" HorizontalAlignment="Right" RelativePanel.LeftOf="SearchBox" Margin="0, 0, 220, 0"/>
-        <SearchBox Name="SearchBox" Grid.Column="0" Grid.Row="1" Width="200" Height="32" HorizontalAlignment="Right" QuerySubmitted="SearchBox_QuerySubmitted"/>
+        <SearchBox Name="SearchBox" Grid.Column="0" Grid.Row="1" Width="200" Height="32" HorizontalAlignment="Right" QuerySubmitted="{x:Bind _vm.SearchQuerySubmitted}" QueryText="{x:Bind _vm.queryText, Mode=TwoWay}"/>
         <Rectangle Name="HorizontalSplitter" Grid.Row="2" HorizontalAlignment="Stretch" Fill="Gray" Height="1"/>
         <local:PostViewControl x:Name="PostsList" Posts="{Binding _vm._Subreddit.posts}" Grid.Row="3"/>
         <ProgressRing Name="LoadingRing" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4" Height="100" Width="100"/>

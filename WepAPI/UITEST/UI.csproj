@@ -132,6 +132,7 @@
     <Compile Include="Model\RedditRepositories\RedditConsumerController.cs" />
     <Compile Include="Model\RedditRestInterfaces\IRedditAPIConsumer.cs" />
     <Compile Include="Model\UserFactory.cs" />
+    <Compile Include="ViewModel\SearchableViewModel.cs" />
     <Compile Include="ViewModel\SubredditPageViewModel.cs" />
     <Compile Include="View\SubredditPage.xaml.cs">
       <DependentUpon>SubredditPage.xaml</DependentUpon>
