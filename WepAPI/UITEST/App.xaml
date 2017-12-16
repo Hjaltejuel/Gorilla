@@ -44,15 +44,15 @@
 
         <Style TargetType="TextBlock" x:Key="DiscoverSubRedditText">
             <Setter Property="FontSize" Value="30"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
         </Style>
         <Style TargetType="TextBlock" x:Key="DiscoverSubredditInterest">
             <Setter Property="FontSize" Value="30"/>
             <Setter Property="HorizontalTextAlignment" Value="Right"/>
             <Setter Property="FlowDirection" Value="LeftToRight"/>
-         
 
-            <Setter Property="Foreground" Value="White"/>
+
+            <Setter Property="Foreground" Value="Black"/>
         </Style>
 
         <Style TargetType="Button" x:Key="TitleText">
