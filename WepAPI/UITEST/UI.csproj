@@ -133,6 +133,9 @@
     <Compile Include="Model\RedditRestInterfaces\IRedditAPIConsumer.cs" />
     <Compile Include="Model\UserFactory.cs" />
     <Compile Include="ViewModel\SubredditPageViewModel.cs" />
+    <Compile Include="View\ThankYouForChoosing.xaml.cs">
+      <DependentUpon>ThankYouForChoosing.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ChooseYourCategories.xaml.cs">
       <DependentUpon>ChooseYourCategories.xaml</DependentUpon>
     </Compile>
@@ -264,6 +267,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="CommentControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ThankYouForChoosing.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -65,7 +65,7 @@
                 <CheckBox Name="technology" Content=" Technology" Checked="" RelativePanel.Below="Technologypicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
 
             </RelativePanel>
-
+            <Button Content="hejjsa" RelativePanel.Below="7" Width="200" Height="200" Margin="300,0,0,0" />
 
         </RelativePanel>
 
