@@ -17,42 +17,41 @@ namespace UITEST.Authentication
 {
     public class RedditAuthHandler
     {
-        private string token;
-        private string refresh_token;
+        private string _token;
+        private string _refreshToken;
         private readonly ApplicationDataContainer _appSettings;
         private const string AccessTokenUrl = "https://www.reddit.com/api/v1/access_token";
-        private const string Client_id = "ephxxGR7ZA77nA";
+        private const string ClientId = "ephxxGR7ZA77nA";
         public RedditAuthHandler()
         {
             _appSettings = ApplicationData.Current.RoamingSettings;
         }
-        public string startURL = "https://www.reddit.com/api/v1/authorize?client_id=ephxxGR7ZA77nA&response_type=code&state=assasdsdadsa4125&redirect_uri=https://gorillaapi.azurewebsites.net/&duration=permanent&scope=*";
-        public string endURL = "https://gorillaapi.azurewebsites.net/";
+        public string StartUrl = "https://www.reddit.com/api/v1/authorize?client_id=ephxxGR7ZA77nA&response_type=code&state=assasdsdadsa4125&redirect_uri=https://gorillaapi.azurewebsites.net/&duration=permanent&scope=*";
+        public string EndUrl = "https://gorillaapi.azurewebsites.net/";
 
         public async Task BeginAuth()
         {
-            var refresh = _appSettings.Values["reddit_refresh_token"];
+            var appSettingsValue = _appSettings.Values["reddit_refresh_token"];
 
-            if (refresh != null) //If the refresh token exists, just login right away
+            if (appSettingsValue != null) //If the refresh token exists, just login right away
             {
-                refresh_token = refresh.ToString();
+                _refreshToken = appSettingsValue.ToString();
                 await RefreshToken();
             }
-            else
-            { //Otherwise.. show the user the login panel
-                Uri startURI = new Uri(startURL);
-                Uri endURI = new Uri(endURL);
-                string result;
+            else //Otherwise.. show the user the login panel
+            { 
+                var startUri = new Uri(StartUrl);
+                var endUri = new Uri(EndUrl);
                 var webAuthenticationResult =
                     await Windows.Security.Authentication.Web.WebAuthenticationBroker.AuthenticateAsync(
                         Windows.Security.Authentication.Web.WebAuthenticationOptions.None,
-                        startURI,
-                        endURI);
+                        startUri,
+                        endUri);
 
                 //Force authentication
                 if (webAuthenticationResult.ResponseStatus == Windows.Security.Authentication.Web.WebAuthenticationStatus.Success)
                 {
-                    result = webAuthenticationResult.ResponseData.ToString();
+                    var result = webAuthenticationResult.ResponseData;
                     await Authenticate(result);
                 }
                 else
@@ -61,80 +60,57 @@ namespace UITEST.Authentication
                 }
             }
         }
-
         public HttpRequestMessage AuthenticateRequest(HttpRequestMessage request)
         {
-            request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
+            request.Headers.Authorization = new AuthenticationHeaderValue("bearer", _token);
             return request;
+        }
+        private async Task<JToken> SendRequest(string Body)
+        {
+            var uri = new Uri(AccessTokenUrl);
+
+            var request = new HttpRequestMessage() { RequestUri = uri };
+            request.Method = new HttpMethod("POST");
+            request.Headers.Add("User-Agent", "Gorilla");
+            var basicAuth = Convert.ToBase64String(Encoding.UTF8.GetBytes(ClientId + ":"));
+            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", basicAuth);
+            request.Content = new StringContent(Body,
+                Encoding.UTF8,
+                "application/x-www-form-urlencoded");
+            using (var client = new HttpClient())
+            {
+                var response = await client.SendAsync(request);
+                try
+                {
+                    var contentBody = JToken.Parse(await response.Content.ReadAsStringAsync());
+                    if (contentBody["error"] == null)
+                    {
+                        return contentBody;
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Could not login " + e.Message);
+                }
+            }
+            return null;
         }
 
         public async Task RefreshToken()
         {
             var consumer = App.ServiceProvider.GetService<IRedditAPIConsumer>();
-            Uri uri = new Uri(AccessTokenUrl);
-
-            var request = new HttpRequestMessage() { RequestUri = uri };
-            request.Method = new HttpMethod("POST");
-            request.Headers.Add("User-Agent", "Gorilla");
-            var BasicAuth = Convert.ToBase64String(Encoding.UTF8.GetBytes(Client_id + ":"));
-            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", BasicAuth);
-            request.Content = new StringContent($"grant_type=refresh_token&refresh_token={refresh_token}",
-                Encoding.UTF8,
-                "application/x-www-form-urlencoded");
-
-            using (var client = new HttpClient())
-            {
-                var response = await client.SendAsync(request);
-                try
-                {
-                    var contentBody = JToken.Parse(await response.Content.ReadAsStringAsync());
-                    if (contentBody["error"] == null)
-                    {
-                        token = contentBody["access_token"].ToObject<string>();
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw new Exception("Could not login " + e.Message);
-                }
-            }
+            var contentBody = await SendRequest($"grant_type=refresh_token&refresh_token={_refreshToken}");
+            _token = contentBody["access_token"].ToObject<string>();
             consumer.Authenticate(this);
         }
-        
         public async Task Authenticate(string data)
         {
             var code = GetAuthCode(data);
             var consumer = App.ServiceProvider.GetService<IRedditAPIConsumer>();
-
-            Uri uri = new Uri(AccessTokenUrl);
-
-            var request = new HttpRequestMessage() { RequestUri = uri };
-            request.Method = new HttpMethod("POST");
-            request.Headers.Add("User-Agent", "Gorilla");
-            var BasicAuth = Convert.ToBase64String(Encoding.UTF8.GetBytes(Client_id + ":"));
-            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", BasicAuth);
-            request.Content = new StringContent($"grant_type=authorization_code&code={code}&redirect_uri=https://gorillaapi.azurewebsites.net/",
-                Encoding.UTF8,
-                "application/x-www-form-urlencoded");
-            using (var client = new HttpClient())
-            {
-                var response = await client.SendAsync(request);
-                try
-                {
-                    var contentBody = JToken.Parse(await response.Content.ReadAsStringAsync());
-                    if (contentBody["error"] == null)
-                    {
-                        token = contentBody["access_token"].ToObject<string>();
-                        refresh_token = contentBody["refresh_token"].ToObject<string>();
-
-                        _appSettings.Values["reddit_refresh_token"] = refresh_token;
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw new Exception("Could not login " + e.Message);
-                }
-            }
+            var contentBody = await SendRequest($"grant_type=authorization_code&code={code}&redirect_uri=https://gorillaapi.azurewebsites.net/");
+            _token = contentBody["access_token"].ToObject<string>();
+            _refreshToken = contentBody["refresh_token"].ToObject<string>();
+            _appSettings.Values["reddit_refresh_token"] = _refreshToken;
             consumer.Authenticate(this);
         }
 
@@ -153,8 +129,8 @@ namespace UITEST.Authentication
 
             if (jsonObject["code"] == null) throw new Exception("Could not find auth code!");
 
-            token = jsonObject["code"].ToObject<string>();
-            return token;
+            _token = jsonObject["code"].ToObject<string>();
+            return _token;
         }
     }
 }

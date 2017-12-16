@@ -34,10 +34,6 @@ namespace UITEST.View
     {
         private readonly PostPageViewModel _vm;
         private readonly IRestPostRepository _repository;
-    
-        private RelativePanel CommentPanel;
-        private TextBox CommentTextBox;
-        private TextBlock errorText;
         
         public PostPage()
         {
@@ -49,19 +45,16 @@ namespace UITEST.View
             DataContext = _vm;
             SetEventMethods();
         }
-
         private void CommentsReadyEvent()
         {
             LoadingRing.IsActive = false;
             DrawComments();
         }
-
         private void SetEventMethods()
         {
             SizeChanged += ChangeListViewWhenSizedChanged;
             _vm.CommentsReadyEvent += CommentsReadyEvent;
         }
-
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -73,65 +66,25 @@ namespace UITEST.View
             _repository.CreateAsync(new Entities.Post { Id = post.id, username = UserFactory.GetInfo().name });
             _vm.Initialize(post);
         }
-
         private void ChangeListViewWhenSizedChanged(object sender, SizeChangedEventArgs e)
         {
             PostView.Height = e.NewSize.Height-commandBar.ActualHeight;
         }
-
         private void TextButton_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
             var btn = sender as Button;
             btn.FontWeight = FontWeights.Bold;
         }
-
         private void TextButton_PointerLeaved(object sender, PointerRoutedEventArgs e)
         {
             var btn = sender as Button;
             btn.FontWeight = FontWeights.SemiBold;
         }
-        
-        private void CreateCommentPanel()
-        {
-            if (CommentPanel != null)
-            {
-                CommentPanel = null;
-            }
-            CommentPanel = new RelativePanel() { Margin = new Thickness(0, 40, 0, 0)};
-            CommentTextBox = new TextBox()
-            {
-                Height = 200, Width = 600, AcceptsReturn = true, TextWrapping = TextWrapping.Wrap, IsSpellCheckEnabled = true, Language = "en-US"
-            };
-
-            Button SubmitButton = new Button()
-            {
-                Content = "Save",
-                Margin = new Thickness(0, 10, 10, 0)
-            };
-            RelativePanel.SetBelow(SubmitButton, CommentTextBox);
-            errorText = new TextBlock() { Visibility = Visibility.Collapsed, Margin = new Thickness(10, 7, 0, 0), FontSize = 14};
-            RelativePanel.SetRightOf(errorText, SubmitButton);
-            RelativePanel.SetBelow(errorText, CommentTextBox);
-            RelativePanel.SetAlignVerticalCenterWith(errorText, SubmitButton);
-            SubmitButton.Click += CommentSaveClick;
-            
-            CommentPanel.Children.Add(CommentTextBox);
-            CommentPanel.Children.Add(SubmitButton);
-            CommentPanel.Children.Add(errorText);
-        }
-
         private void PostTextComment_Click(object sender, RoutedEventArgs e)
         {
-            if (CommentPanel == null)
-            {
-                CreateCommentPanel();
-                ExtraStuff.Children.Add(CommentPanel);
-            }
-            else
-            {
-                ExtraStuff.Children.Remove(CommentPanel);
-                CommentPanel = null;
-            }
+            CommentTextBox.Text = "";
+            ErrorText.Visibility = Visibility.Collapsed;
+            CommentPanel.Visibility = CommentPanel.Visibility.Equals(Visibility.Visible) ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void CommentSaveClick(object sender, RoutedEventArgs e)
@@ -141,22 +94,18 @@ namespace UITEST.View
 
         private async void InsertCommentAsync(AbstractCommentable abstractCommentableToCommentOn)
         {
-            string text = CommentTextBox.Text;
+            var text = CommentTextBox.Text;
             if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
             {
-                errorText.Text = "We need something in the textbox";
-                errorText.Visibility = Visibility.Visible;
+                ErrorText.Visibility = Visibility.Visible;
             }
             else
             {
+                CommentPanel.Visibility = Visibility.Collapsed;
                 var newComment = await _vm.AddCommentAsync(abstractCommentableToCommentOn, text);
                 PostView.Items.Insert(2, new CommentControl(newComment));
-                ExtraStuff.Children.Remove(CommentPanel);
-                CommentPanel = null;
             }
         }
-        
-
         private void DrawComments()
         {
             foreach (var comment in _vm.CurrentPost.Replies)
@@ -165,18 +114,6 @@ namespace UITEST.View
                 var TopCommentPanel = new CommentControl(comment);
                 PostView.Items.Add(TopCommentPanel);
             }
-        }
-
-        private async void Upvote_Click(object sender, RoutedEventArgs e)
-        {
-           
-            await _vm.PostLikedAsync();
-        }
-
-        private async void Downvote_Click(object sender, RoutedEventArgs e)
-        {
-          
-            await _vm.PostDislikedAsync();
         }
     }
 }
