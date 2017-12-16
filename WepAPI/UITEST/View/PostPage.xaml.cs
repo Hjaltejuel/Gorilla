@@ -34,10 +34,6 @@ namespace UITEST.View
     {
         private readonly PostPageViewModel _vm;
         private readonly IRestPostRepository _repository;
-    
-        //private RelativePanel CommentPanel;
-        //private TextBox CommentTextBox;
-        //private TextBlock errorText;
         
         public PostPage()
         {
@@ -90,35 +86,6 @@ namespace UITEST.View
             var btn = sender as Button;
             btn.FontWeight = FontWeights.SemiBold;
         }
-        
-        private void CreateCommentPanel()
-        {
-            //if (CommentPanel != null)
-            //{
-            //    CommentPanel = null;
-            //}
-            //CommentPanel = new RelativePanel() { Margin = new Thickness(0, 40, 0, 0)};
-            //CommentTextBox = new TextBox()
-            //{
-            //    Height = 200, Width = 600, AcceptsReturn = true, TextWrapping = TextWrapping.Wrap, IsSpellCheckEnabled = true, Language = "en-US"
-            //};
-
-            //Button SubmitButton = new Button()
-            //{
-            //    Content = "Save",
-            //    Margin = new Thickness(0, 10, 10, 0)
-            //};
-            //RelativePanel.SetBelow(SubmitButton, CommentTextBox);
-            //errorText = new TextBlock() { Visibility = Visibility.Collapsed, Margin = new Thickness(10, 7, 0, 0), FontSize = 14};
-            //RelativePanel.SetRightOf(errorText, SubmitButton);
-            //RelativePanel.SetBelow(errorText, CommentTextBox);
-            //RelativePanel.SetAlignVerticalCenterWith(errorText, SubmitButton);
-            //SubmitButton.Click += CommentSaveClick;
-            
-            //CommentPanel.Children.Add(CommentTextBox);
-            //CommentPanel.Children.Add(SubmitButton);
-            //CommentPanel.Children.Add(errorText);
-        }
 
         private void PostTextComment_Click(object sender, RoutedEventArgs e)
         {
@@ -146,7 +113,6 @@ namespace UITEST.View
                 PostView.Items.Insert(2, new CommentControl(newComment));
             }
         }
-        
 
         private void DrawComments()
         {
@@ -157,15 +123,5 @@ namespace UITEST.View
                 PostView.Items.Add(TopCommentPanel);
             }
         }
-
-        //private async void Upvote_Click(object sender, RoutedEventArgs e)
-        //{
-        //    await _vm.PostLikedAsync();
-        //}
-
-        //private async void Downvote_Click(object sender, RoutedEventArgs e)
-        //{
-        //    await _vm.PostDislikedAsync();
-        //}
     }
 }

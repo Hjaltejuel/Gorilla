@@ -43,7 +43,7 @@ namespace Gorilla.View
 
             var body = BodyText.Text;
             LoadingRing.IsActive = true;
-            _vm.CreateNewPostAsync(title, body);
+            //_vm.CreateNewPostAsync(title, body);
         }
 
         private void StopLoadingRing()

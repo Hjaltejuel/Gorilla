@@ -56,7 +56,8 @@ namespace UITEST.ViewModel
             _repository = repository;
             _consumer = consumer;
             _helper = helper;
-            GoToCreatePostPageCommand = new RelayCommand(o => _service.Navigate(typeof(CreatePostPage), _Subreddit));
+            GoToCreatePostPageCommand = new RelayCommand(o => 
+            _service.Navigate(typeof(CreatePostPage), _Subreddit));
             SortTypes = new List<string>() { "hot", "new", "rising", "top", "controversial" };
 
         }
