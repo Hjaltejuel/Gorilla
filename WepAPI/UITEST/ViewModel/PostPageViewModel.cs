@@ -15,26 +15,32 @@ namespace UITEST.ViewModel
     {
         public delegate void Comments();
         public event Comments CommentsReadyEvent;
-        IRedditAPIConsumer redditAPIConsumer;
-        IRestUserPreferenceRepository _restUserPreferenceRepository;
-        IRestPostRepository _repository;
+        readonly IRedditAPIConsumer _redditAPIConsumer;
+        readonly IRestUserPreferenceRepository _restUserPreferenceRepository;
+        readonly IRestPostRepository _repository;
         public ICommand PostLiked;
         public ICommand PostDisliked;
         private bool IsLiked;
         private bool IsDisliked;
         private Style _likeButton;
-        public Style likeButton { get { return _likeButton; } set { _likeButton = value; OnPropertyChanged(); } }
+        public Style likeButton { get => _likeButton;
+            set { _likeButton = value; OnPropertyChanged(); } }
         private Style _dislikeButton;
-        public Style dislikeButton { get { return _dislikeButton; } set { _dislikeButton = value; OnPropertyChanged(); } }
+        public Style dislikeButton { get => _dislikeButton;
+            set { _dislikeButton = value; OnPropertyChanged(); } }
         private int _votes;
-        public int votes { get { return _votes; } set { _votes = value; OnPropertyChanged(); } }
+        public int votes { get => _votes;
+            set { _votes = value; OnPropertyChanged(); } }
         private Post _currentComment;
-        public Post CurrentPost { get { return _currentComment; } set { _currentComment = value; OnPropertyChanged();  } }
+        public Post CurrentPost { get => _currentComment;
+            set { _currentComment = value; OnPropertyChanged();  } }
         private string _timeSinceCreation;
-        public string timeSinceCreation { get { return _timeSinceCreation; } set { _timeSinceCreation = value; OnPropertyChanged(); }}
+        public string timeSinceCreation { get => _timeSinceCreation;
+            set { _timeSinceCreation = value; OnPropertyChanged(); }}
 
-        public PostPageViewModel(INavigationService service, IRestPostRepository repository, IRestUserPreferenceRepository restUserPreferenceRepository) : base(service)
+        public PostPageViewModel(INavigationService service, IRestPostRepository repository, IRestUserPreferenceRepository restUserPreferenceRepository, IRedditAPIConsumer redditAPIConsumer) : base(service)
         {
+            _redditAPIConsumer = redditAPIConsumer;
             _repository = repository;
             _restUserPreferenceRepository = restUserPreferenceRepository;
             PostLiked = new RelayCommand(async o => { await PostLikedAsync(); });
@@ -42,7 +48,7 @@ namespace UITEST.ViewModel
         }
         public async void GetCurrentPost(Post post)
         {
-            CurrentPost = await redditAPIConsumer.GetPostAndCommentsByIdAsync(post.id);
+            CurrentPost = await _redditAPIConsumer.GetPostAndCommentsByIdAsync(post.id);
             await _repository.CreateAsync(new Entities.Post { Id = post.id, username = UserFactory.GetInfo().name });
 
             CommentsReadyEvent.Invoke();
@@ -50,7 +56,6 @@ namespace UITEST.ViewModel
 
         public void Initialize(Post post)
         {
-            redditAPIConsumer = App.ServiceProvider.GetService<IRedditAPIConsumer>();
             CurrentPost = post;
             votes = CurrentPost.score;
             GetCurrentPost(post);
@@ -63,14 +68,14 @@ namespace UITEST.ViewModel
         {
             var old = new DateTime(1970, 1, 1);
             var totaltime = DateTime.Now - old;
-            int timeInSeconds = (int)totaltime.TotalSeconds;
+            var timeInSeconds = (int)totaltime.TotalSeconds;
             var newComment = new Comment()
             {
                 body = newCommentText,
                 author = "ASD",
                 created_utc = timeInSeconds
             };
-            await redditAPIConsumer.CreateCommentAsync(commentableToCommentOn, newComment.body);
+            await _redditAPIConsumer.CreateCommentAsync(commentableToCommentOn, newComment.body);
             await  _restUserPreferenceRepository.UpdateAsync(new Entities.UserPreference { Username = UserFactory.GetInfo().name, SubredditName = CurrentPost.subreddit, PriorityMultiplier = 3 });
             return newComment;
         }
@@ -97,7 +102,7 @@ namespace UITEST.ViewModel
             IsDisliked = false;
             IsLiked = !IsLiked;
             dislikeButton = App.Current.Resources["DislikeButton"] as Style;
-            await redditAPIConsumer.VoteAsync(_currentComment, direction);
+            await _redditAPIConsumer.VoteAsync(_currentComment, direction);
             await _restUserPreferenceRepository.UpdateAsync(new Entities.UserPreference { Username = UserFactory.GetInfo().name, SubredditName = CurrentPost.subreddit, PriorityMultiplier = 1 });
         }
 
@@ -123,7 +128,7 @@ namespace UITEST.ViewModel
             IsLiked = false;
             IsDisliked = !IsDisliked;
             likeButton = App.Current.Resources["LikeButton"] as Style;
-            await redditAPIConsumer.VoteAsync(_currentComment, direction);
+            await _redditAPIConsumer.VoteAsync(_currentComment, direction);
             await _restUserPreferenceRepository.UpdateAsync(new Entities.UserPreference { Username = UserFactory.GetInfo().name, SubredditName = CurrentPost.subreddit, PriorityMultiplier = 1 });
         }
     }

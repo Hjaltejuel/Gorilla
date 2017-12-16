@@ -21,10 +21,9 @@ namespace UITEST.ViewModel
 
         public ObservableCollection<Post> Posts
         {
-            get { return posts; }
+            get => posts;
             set { posts = value; OnPropertyChanged(); }
         }
-
 
         //ProfileInformation i region
         #region
@@ -50,13 +49,35 @@ namespace UITEST.ViewModel
         public ICommand GoToPostPageCommand { get; set; }
         private readonly IRestUserRepository _repository;
         private readonly IRestPostRepository _restPostRepository;
-
         private readonly IRedditAPIConsumer _consumer;
         private ImageSource _image;
-        public ImageSource Image { get { return _image; } set { if (_image != value) { _image = value; OnPropertyChanged(); } } }
+        public ImageSource Image
+        {
+            get => _image;
+            set
+            {
+                if (_image != value)
+                {
+                    _image = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         private byte[] _imageBytes;
-        public  byte[] ImageBytes { get { return _imageBytes; } set { if (_imageBytes != value) { _imageBytes = value; OnPropertyChanged(); LoadImageAsync(); } } }
+        public byte[] ImageBytes
+        {
+            get => _imageBytes;
+            set
+            {
+                if (_imageBytes != value)
+                {
+                    _imageBytes = value;
+                    OnPropertyChanged();
+                    LoadImageAsync();
+                }
+            }
+        }
 
         public ProfilePageViewModel(INavigationService service, IRestUserRepository repository, IRedditAPIConsumer consumer, IRestPostRepository restPostRepository) : base(service)
         {
@@ -64,8 +85,6 @@ namespace UITEST.ViewModel
 
             _repository = repository;
             _consumer = consumer;
-
-    
         }
 
         public async Task Initialize()
