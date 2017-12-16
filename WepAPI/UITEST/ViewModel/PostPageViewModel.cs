@@ -3,18 +3,21 @@ using Gorilla.Model;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Gorilla.Model.GorillaRestInterfaces;
 using UITEST.RedditInterfaces;
 using Model;
 using System.Windows.Input;
+using WinRTXamlToolkit;
+using WinRTXamlToolkit.Controls;
 
 namespace UITEST.ViewModel
 {
     public class PostPageViewModel : BaseViewModel
     {
-        public delegate void Comments();
-        public event Comments CommentsReadyEvent;
+        public delegate void CommentsLoadedEvent();
+        public event CommentsLoadedEvent OnCommentsLoaded;
         readonly IRedditAPIConsumer _redditAPIConsumer;
         readonly IRestUserPreferenceRepository _restUserPreferenceRepository;
         readonly IRestPostRepository _repository;
@@ -22,6 +25,13 @@ namespace UITEST.ViewModel
         public ICommand PostDisliked;
         private bool IsLiked;
         private bool IsDisliked;
+        private ObservableCollection<Comment> _Comments;
+        public ObservableCollection<Comment> Comments
+        {
+            get => _Comments;
+            set { _Comments = value; OnPropertyChanged(); }
+        }
+
         private Style _likeButton;
         public Style likeButton { get => _likeButton;
             set { _likeButton = value; OnPropertyChanged(); } }
@@ -45,13 +55,14 @@ namespace UITEST.ViewModel
             _restUserPreferenceRepository = restUserPreferenceRepository;
             PostLiked = new RelayCommand(async o => { await PostLikedAsync(); });
             PostDisliked = new RelayCommand(async o => { await PostDislikedAsync(); });
+            
         }
         public async void GetCurrentPost(Post post)
         {
             CurrentPost = await _redditAPIConsumer.GetPostAndCommentsByIdAsync(post.id);
+            Comments = CurrentPost.Replies;
             await _repository.CreateAsync(new Entities.Post { Id = post.id, username = UserFactory.GetInfo().name });
-
-            CommentsReadyEvent.Invoke();
+            OnCommentsLoaded.Invoke();
         }
 
         public void Initialize(Post post)
@@ -68,8 +79,8 @@ namespace UITEST.ViewModel
         {
             var old = new DateTime(1970, 1, 1);
             var totaltime = DateTime.Now - old;
-            int timeInSeconds = (int)totaltime.TotalSeconds;
-            string username = UserFactory.GetInfo().name;
+            var timeInSeconds = (int)totaltime.TotalSeconds;
+            var username = UserFactory.GetInfo().name;
             var newComment = new Comment()
             {
                 body = newCommentText,

@@ -29,8 +29,20 @@ namespace UITEST.View
         private readonly IRestUserPreferenceRepository _repository;
         private bool IsLiked;
         private bool IsDisliked;
-
-        public CommentControl(Comment comment)
+        private Comment comment;
+        public ObservableCollection<Post> Comment
+        {
+            get { return (ObservableCollection<Post>)GetValue(CommentProperty); }
+            set { SetValue(CommentProperty, value); }
+        }
+        public static readonly DependencyProperty CommentProperty = DependencyProperty.Register
+        (
+            "Comment",
+            typeof(string),
+            typeof(CommentControl),
+            new PropertyMetadata(string.Empty)
+        );
+        public CommentControl()
         {
             redditAPIConsumer = App.ServiceProvider.GetService<IRedditAPIConsumer>();
             _repository = App.ServiceProvider.GetService<IRestUserPreferenceRepository>();
@@ -64,30 +76,15 @@ namespace UITEST.View
                 else
                     CommentStackPanel.Background = new SolidColorBrush(Color.FromArgb(255, 240, 240, 240));
 
-                CheckNumberOfPointsIsOnlyOne();
-                SetUpTimeText();
-                CreateChildComments();
-            }
-        }
-
-        private void CheckNumberOfPointsIsOnlyOne()
-        {
-            if (currentComment.score == 1)
-            {
-                PointsOrPoint.Text = "point";
-            }
-        }
-
-        private void SetUpTimeText()
-        {
-            TimeText.Text = TimeHelper.CalcCreationDate(currentComment);
-        }
-
-        public void CreateChildComments()
-        {
-            foreach (Comment comment in currentComment.Replies)
-            {
-                CommentStackPanel.Children.Add(new CommentControl(comment));
+                if (currentComment.score == 1)
+                {
+                    PointsOrPoint.Text = "point";
+                }
+                TimeText.Text = TimeHelper.CalcCreationDate(currentComment);
+                foreach (var comment in currentComment.Replies)
+                {
+                    //CommentStackPanel.Children.Add(new CommentControl(comment));
+                }
             }
         }
 
@@ -113,7 +110,7 @@ namespace UITEST.View
                 var list = await redditAPIConsumer.GetMoreComments(postID, children, currentComment.depth);
                 foreach (var comment in list)
                 {
-                    parentPanel.Children.Add(new CommentControl(comment));
+                    //parentPanel.Children.Add(new CommentControl(comment));
                     //this.InsertMoreComment(comment);
                 }
             }
@@ -179,30 +176,25 @@ namespace UITEST.View
         }
 
         //Grimt i know.. what to do? det er et midlertidligt workaround
-        private Style UpvoteClickedStyle = App.Current.Resources["LikeButtonClicked"] as Style;
-        private Style UpvoteNotClickedStyle = App.Current.Resources["LikeButton"] as Style;
-        private Style DownvoteClickedStyle = App.Current.Resources["DislikeButtonClicked"] as Style;
-        private Style DownvoteNotClickedStyle = App.Current.Resources["DislikeButton"] as Style;
+        private readonly Style UpvoteClickedStyle = App.Current.Resources["LikeButtonClicked"] as Style;
+        private readonly Style UpvoteNotClickedStyle = App.Current.Resources["LikeButton"] as Style;
+        private readonly Style DownvoteClickedStyle = App.Current.Resources["DislikeButtonClicked"] as Style;
+        private readonly Style DownvoteNotClickedStyle = App.Current.Resources["DislikeButton"] as Style;
         private void TextButton_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
-            var btn = sender as Button;
-            btn.FontWeight = FontWeights.Bold;
+            if (sender is Button btn) btn.FontWeight = FontWeights.Bold;
         }
 
         private void TextButton_PointerLeaved(object sender, PointerRoutedEventArgs e)
         {
-            var btn = sender as Button;
-            btn.FontWeight = FontWeights.SemiBold;
+            if (sender is Button btn) btn.FontWeight = FontWeights.SemiBold;
         }
 
-        private async void CommentButton_Click(object sender, RoutedEventArgs e)
+        private void CommentButton_Click(object sender, RoutedEventArgs e)
         {
-            var CommentBtn = sender as Button;
-
             if (InsertCommentPanel == null)
             {
-                await CreateCommentPanel();
-                var CommentExtraTextPanel = CommentBtn.Parent as RelativePanel;
+                CreateCommentPanel();
                 TextInfoPanel.Children.Add(InsertCommentPanel);
             }
             else
@@ -211,12 +203,8 @@ namespace UITEST.View
                 InsertCommentPanel = null;
             }
         }
-        private async Task CreateCommentPanel()
+        private void CreateCommentPanel()
         {
-            if (InsertCommentPanel != null)
-            {
-                InsertCommentPanel = null;
-            }
             InsertCommentPanel = new RelativePanel() { Margin = new Thickness(0, 40, 0, 0) };
             CommentTextBox = new TextBox()
             {
@@ -228,20 +216,20 @@ namespace UITEST.View
                 Language = "en-US"
             };
 
-            var SubmitButton = new Button()
+            var submitButton = new Button()
             {
                 Content = "Save",
                 Margin = new Thickness(0, 10, 10, 0)
             };
-            RelativePanel.SetBelow(SubmitButton, CommentTextBox);
+            RelativePanel.SetBelow(submitButton, CommentTextBox);
             errorText = new TextBlock() { Visibility = Visibility.Collapsed, Margin = new Thickness(10, 7, 0, 0), FontSize = 14 };
-            RelativePanel.SetRightOf(errorText, SubmitButton);
+            RelativePanel.SetRightOf(errorText, submitButton);
             RelativePanel.SetBelow(errorText, CommentTextBox);
-            RelativePanel.SetAlignVerticalCenterWith(errorText, SubmitButton);
-            SubmitButton.Click += CommentSaveClick;
+            RelativePanel.SetAlignVerticalCenterWith(errorText, submitButton);
+            submitButton.Click += CommentSaveClick;
 
             InsertCommentPanel.Children.Add(CommentTextBox);
-            InsertCommentPanel.Children.Add(SubmitButton);
+            InsertCommentPanel.Children.Add(submitButton);
             InsertCommentPanel.Children.Add(errorText);
         }
 
@@ -249,20 +237,6 @@ namespace UITEST.View
         {
             await InsertComment(currentComment);
         }
-
-        private void InsertMoreComment(Comment comment)
-        {
-
-            string text = comment.body;
-
-            currentComment.Replies.Insert(0, comment);
-
-            TextInfoPanel.Children.Remove(InsertCommentPanel);
-            InsertCommentPanel = null;
-            comment.depth += 3;
-            CommentStackPanel.Children.Add(new CommentControl(comment));
-        }
-
         private async Task InsertComment(AbstractCommentable abstractCommentableToCommentOn)
         {
             var text = CommentTextBox.Text;
@@ -279,7 +253,7 @@ namespace UITEST.View
                 var newComment = new Comment()
                 {
                     body = CommentTextBox.Text,
-                    author = "ASD",
+                    author = UserFactory.GetInfo().name,
                     depth = currentComment.depth + 1,
                     created_utc = timeInSeconds
                 };
@@ -292,7 +266,7 @@ namespace UITEST.View
                 TextInfoPanel.Children.Remove(InsertCommentPanel);
                 InsertCommentPanel = null;
 
-                CommentStackPanel.Children.Insert(1, new CommentControl(newComment));
+                //CommentStackPanel.Children.Insert(1, new CommentControl(newComment));
                 await _repository.UpdateAsync(new Entities.UserPreference { Username = UserFactory.GetInfo().name, SubredditName = currentComment.subreddit, PriorityMultiplier = 3 });
             }
         }

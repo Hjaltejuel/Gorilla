@@ -40,7 +40,7 @@ namespace UITEST.ViewModel
 
         public async void Initialize()
         {
-            Entities.RedditEntities.User user = UserFactory.GetInfo();
+            var user = UserFactory.GetInfo();
 
             var result = (await _userPreferenceRepository.FindAsync(user.name));
 

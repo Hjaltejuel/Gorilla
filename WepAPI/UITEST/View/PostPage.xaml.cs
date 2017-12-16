@@ -1,4 +1,5 @@
-﻿using Entities.RedditEntities;
+﻿using System.Collections.ObjectModel;
+using Entities.RedditEntities;
 using Microsoft.Extensions.DependencyInjection;
 using UITEST.ViewModel;
 using Windows.UI.Text;
@@ -29,7 +30,7 @@ namespace UITEST.View
             DataContext = _vm;
             SetEventMethods();
         }
-        private void CommentsReadyEvent()
+        private void OnCommentsLoaded()
         {
             LoadingRing.IsActive = false;
             DrawComments();
@@ -37,7 +38,7 @@ namespace UITEST.View
         private void SetEventMethods()
         {
             SizeChanged += ChangeListViewWhenSizedChanged;
-            _vm.CommentsReadyEvent += CommentsReadyEvent;
+            _vm.OnCommentsLoaded += OnCommentsLoaded;
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -52,7 +53,7 @@ namespace UITEST.View
         }
         private void ChangeListViewWhenSizedChanged(object sender, SizeChangedEventArgs e)
         {
-            PostView.Height = e.NewSize.Height-commandBar.ActualHeight;
+            CommentsTreeView.Height = e.NewSize.Height-commandBar.ActualHeight;
         }
         private void TextButton_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
@@ -87,7 +88,7 @@ namespace UITEST.View
             {
                 CommentPanel.Visibility = Visibility.Collapsed;
                 var newComment = await _vm.AddCommentAsync(abstractCommentableToCommentOn, text);
-                PostView.Items.Insert(2, new CommentControl(newComment));
+                //PostView.Items.Insert(2, new CommentControl(newComment));
             }
         }
         private void DrawComments()
@@ -95,8 +96,8 @@ namespace UITEST.View
             foreach (var comment in _vm.CurrentPost.Replies)
             {
                 if (comment.body == null) { continue; }
-                var TopCommentPanel = new CommentControl(comment);
-                PostView.Items.Add(TopCommentPanel);
+                //var TopCommentPanel = new CommentControl(comment);
+                //PostView.Items.Add(TopCommentPanel);
             }
         }
     }

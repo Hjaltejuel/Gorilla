@@ -5,6 +5,8 @@
     xmlns:local="using:UITEST.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:WinRTXamlToolkit.Controls"
+    xmlns:data="using:WinRTXamlToolkit.Controls.Data"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" DataContext="{x:Bind Path = _vm}">
@@ -22,58 +24,90 @@
             <AppBarButton Icon="OutlineStar" Label="Discover" Command="{Binding GoToDiscoverPageCommand}"/>
             <AppBarButton Icon="Contact" Label="Profile" Command="{Binding GoToProfilePageCommand}"/>
         </CommandBar>
-
-        <ListView Grid.Row="4" Name="PostView" SelectionMode="None" HorizontalAlignment="Stretch">
-            <RelativePanel Name="TopInfo" Margin="20, 20, 0, 0" Height="Auto" Grid.Row="1">
-                <RelativePanel Name="OpOgNed" Width="Auto" Margin="0,0,10,0">
-                    <Button Content="Like" Height="20" Width="20" Name="Upvote" Style="{Binding likeButton}" Command="{Binding PostLiked}"/>
-                    <TextBlock Text="{Binding votes}" Name="Votes" HorizontalAlignment="Left" Margin="0, 8, 0, 0"/>
-                    <Button Content="Dislike" Height="20" FontSize="30" Name="Downvote" RelativePanel.Below="Upvote" Style="{Binding dislikeButton}" Command="{Binding PostDisliked}"/>
-                    <Image Source="{x:Bind Path = _vm.CurrentPost.thumbnail}" Height="40" Width="40" Name="Box" Margin="20, 0, 0, 0" RelativePanel.RightOf="Upvote"/>
-                </RelativePanel>
-                <RelativePanel Name="TitlePanel" RelativePanel.RightOf="OpOgNed">
-                    <TextBlock Text="{x:Bind Path = _vm.CurrentPost.title}" FontSize="20" Name="Title" TextWrapping="Wrap"/>
-                </RelativePanel>
-                <RelativePanel Name="TimePanel" RelativePanel.Below="TitlePanel" RelativePanel.RightOf="OpOgNed">
-                    <TextBlock Name="TimeText" Text="{Binding timeSinceCreation}" FontSize="12"/>
-                </RelativePanel>
-
-                <RelativePanel Name="TextPanel" RelativePanel.Below="TimePanel" RelativePanel.RightOf="OpOgNed" Width="Auto" Margin="0, 4, 10, 0">
-                    <Border BorderThickness="1" BorderBrush="Gray" Padding="10, 10, 10, 10">
-                        <TextBlock Text="{x:Bind Path = _vm.CurrentPost.selftext}" Name="PostText" TextWrapping="Wrap"/>
-                    </Border>
-                    
-
-                </RelativePanel>
-
-                <RelativePanel Name="ExtraStuff" RelativePanel.RightOf="OpOgNed" RelativePanel.Below="TextPanel">
-                    <TextBlock Text="{x:Bind Path = _vm.CurrentPost.author}" Style="{StaticResource AuthorText}" Name="Author"/>
-                    <TextBlock Text="{x:Bind Path = _vm.CurrentPost.num_comments}" RelativePanel.Below ="Author" FontSize="10" Name="CommentsAmount"/>
-                    <Button Click="PostTextComment_Click" Content="comment" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="CommentsAmount" RelativePanel.Below="Author" Name="CommentButton" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
-                    <Button Content="share" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="CommentButton" RelativePanel.Below="Author" Name="ShareText" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
-                    <Button Content="save" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="ShareText" RelativePanel.Below="Author" Name="SaveText" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
-                    <Button Content="hide" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="SaveText" RelativePanel.Below="Author" Name="HideText" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
-                    <Button Content="report" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="HideText" RelativePanel.Below="Author" Name="ReportText" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
-                </RelativePanel>
-                <RelativePanel Margin="0, 40, 0, 0" Visibility="Collapsed" Name="CommentPanel" RelativePanel.Below="ExtraStuff">
-                    <TextBox Name="CommentTextBox" Height="200" Width="600" AcceptsReturn="True" TextWrapping="Wrap" IsSpellCheckEnabled="True" Language="en-US"/>
-                    <Button Name="SubmitButton" Content="Save" Margin="0, 10, 10, 0" RelativePanel.Below="CommentTextBox" Click="CommentSaveClick"/>
-                    <TextBlock Name="ErrorText" Text="We need something in the textbox" Visibility="Collapsed" Margin="10, 7, 0, 0" FontSize="14" RelativePanel.RightOf="SubmitButton" RelativePanel.Below="CommentTextBox" RelativePanel.AlignVerticalCenterWith="SubmitButton"/>
-
-                </RelativePanel>
+        <RelativePanel Name="TopInfo" Margin="20, 20, 0, 0" Height="Auto" Grid.Row="1">
+            <RelativePanel Name="OpOgNed" Width="Auto" Margin="0,0,10,0">
+                <Button Content="Like" Height="20" Width="20" Name="Upvote" Style="{Binding likeButton}" Command="{Binding PostLiked}"/>
+                <TextBlock Text="{Binding votes}" Name="Votes" HorizontalAlignment="Left" Margin="0, 8, 0, 0"/>
+                <Button Content="Dislike" Height="20" FontSize="30" Name="Downvote" RelativePanel.Below="Upvote" Style="{Binding dislikeButton}" Command="{Binding PostDisliked}"/>
+                <Image Source="{x:Bind Path = _vm.CurrentPost.thumbnail}" Height="40" Width="40" Name="Box" Margin="20, 0, 0, 0" RelativePanel.RightOf="Upvote"/>
             </RelativePanel>
-            
+            <RelativePanel Name="TitlePanel" RelativePanel.RightOf="OpOgNed">
+                <TextBlock Text="{x:Bind Path = _vm.CurrentPost.title}" FontSize="20" Name="Title" TextWrapping="Wrap"/>
+            </RelativePanel>
+            <RelativePanel Name="TimePanel" RelativePanel.Below="TitlePanel" RelativePanel.RightOf="OpOgNed">
+                <TextBlock Name="TimeText" Text="{Binding timeSinceCreation}" FontSize="12"/>
+            </RelativePanel>
 
-            <Rectangle Grid.Row="2" Name="verticalSplitter" HorizontalAlignment="Stretch" Fill="Gray" Height="1" Margin="0, 5, 0, 10"/>
+            <RelativePanel Name="TextPanel" RelativePanel.Below="TimePanel" RelativePanel.RightOf="OpOgNed" Width="Auto" Margin="0, 4, 10, 0">
+                <Border BorderThickness="1" BorderBrush="Gray" Padding="10, 10, 10, 10">
+                    <TextBlock Text="{Binding selftext}" Name="PostText" TextWrapping="Wrap"/>
+                </Border>
+            </RelativePanel>
 
+            <RelativePanel Name="ExtraStuff" RelativePanel.RightOf="OpOgNed" RelativePanel.Below="TextPanel">
+                <TextBlock Text="{x:Bind Path = _vm.CurrentPost.author}" Style="{StaticResource AuthorText}" Name="Author"/>
+                <TextBlock Text="{x:Bind Path = _vm.CurrentPost.num_comments}" RelativePanel.Below ="Author" FontSize="10" Name="CommentsAmount"/>
+                <Button Click="PostTextComment_Click" Content="comment" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="CommentsAmount" RelativePanel.Below="Author" Name="CommentButton" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
+                <Button Content="share" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="CommentButton" RelativePanel.Below="Author" Name="ShareText" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
+                <Button Content="save" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="ShareText" RelativePanel.Below="Author" Name="SaveText" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
+                <Button Content="hide" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="SaveText" RelativePanel.Below="Author" Name="HideText" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
+                <Button Content="report" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="HideText" RelativePanel.Below="Author" Name="ReportText" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
+            </RelativePanel>
+            <RelativePanel Margin="0, 40, 0, 0" Visibility="Collapsed" Name="CommentPanel" RelativePanel.Below="ExtraStuff">
+                <TextBox Name="CommentTextBox" Height="200" Width="600" AcceptsReturn="True" TextWrapping="Wrap" IsSpellCheckEnabled="True" Language="en-US"/>
+                <Button Name="SubmitButton" Content="Save" Margin="0, 10, 10, 0" RelativePanel.Below="CommentTextBox" Click="CommentSaveClick"/>
+                <TextBlock Name="ErrorText" Text="We need something in the textbox" Visibility="Collapsed" Margin="10, 7, 0, 0" FontSize="14" RelativePanel.RightOf="SubmitButton" RelativePanel.Below="CommentTextBox" RelativePanel.AlignVerticalCenterWith="SubmitButton"/>
 
+            </RelativePanel>
+        </RelativePanel>
+        <Rectangle Grid.Row="2" Name="verticalSplitter" HorizontalAlignment="Stretch" Fill="Gray" Height="1" Margin="0, 5, 0, 10"/>
+
+        <controls:TreeView Width="Auto" MaxHeight="800" x:Name="CommentsTreeView" ItemsSource="{Binding Comments, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" HorizontalAlignment="Stretch" >
+            <controls:TreeView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding body}" Width="Auto" TextWrapping="Wrap"/>
+                    <data:DataTemplateExtensions.Hierarchy>
+                        <data:HierarchicalDataTemplate ItemsSource="{Binding Replies}" />
+                    </data:DataTemplateExtensions.Hierarchy>
+                </DataTemplate>
+            </controls:TreeView.ItemTemplate>
+        </controls:TreeView>
+        
+        <!--<ListView Grid.Row="4" Name="PostView" SelectionMode="None" HorizontalAlignment="Stretch" ItemsSource="{Binding Comments, UpdateSourceTrigger=PropertyChanged}" Height="800">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <RelativePanel Margin="10,10,15,0" Name="VotePanel">
+                            <Button Content="Like" Style="{StaticResource LikeButton}" Name="Upvote" Width="20" Height="20"/>
+
+                            <Button Content="Dislike" Style="{StaticResource DislikeButton}" RelativePanel.Below="Upvote" Name="Downvote" Width="20" Height="20" Margin="0,-5,0,0"/>
+                        </RelativePanel>
+                        <RelativePanel Name="TextPanel" RelativePanel.RightOf="VotePanel" Margin="0,7,3,0">
+                            <TextBlock Name="AuthorTextBlock" Text="a{Binding author}" FontSize="10" Width="Auto"/>
+
+                            <TextBlock Name="DotSeparator" Text="•" FontSize="10" RelativePanel.RightOf="AuthorTextBlock" Margin="2,0,0,0"/>
+
+                            <TextBlock Name="PointsTextBlock" RelativePanel.RightOf="DotSeparator" Text="a{Binding score}" Width="Auto" FontSize="10" Margin="2, 0, 0, 0"/>
+                            <TextBlock Name="PointsOrPoint" RelativePanel.RightOf="PointsTextBlock" Text="points" Width="Auto" FontSize="10" Margin="2, 0, 0, 0"/>
+                            <TextBlock Name="TimeText" RelativePanel.RightOf="PointsOrPoint" FontSize="10" Margin="4, 0, 0, 0" Width="Auto" Text=""/>
+
+                            <TextBlock Name="CommentTextBlock" RelativePanel.Below="AuthorTextBlock" Text="a{Binding body}" Width="Auto" Margin="0,5,0,0" TextWrapping="Wrap"/>
+
+                        </RelativePanel>
+
+                        <RelativePanel Name="TextInfoPanel" RelativePanel.Below="TextPanel" RelativePanel.RightOf="VotePanel" Margin="0,0,0,0">
+                            <Button Name="SaveButton" Content="comment" Style="{StaticResource MiniNavigationButton}" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
+                        </RelativePanel>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="VerticalAlignment" Value="Stretch" />
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                 </Style>
             </ListView.ItemContainerStyle>
-        </ListView>
+        </ListView>-->
         <ProgressRing Grid.Row="4" Name="LoadingRing" HorizontalAlignment="Center" VerticalAlignment="Center" Height="200" Width="200"/>
     </Grid>
 </Page>
