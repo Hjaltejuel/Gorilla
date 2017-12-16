@@ -14,7 +14,7 @@ using Gorilla.AuthenticationGorillaAPI;
 using Gorilla.View;
 using UITEST.View;
 
-namespace Gorilla.ViewModel
+namespace UITEST.ViewModel
 {
     public abstract class SearchableViewModel : BaseViewModel
     {
