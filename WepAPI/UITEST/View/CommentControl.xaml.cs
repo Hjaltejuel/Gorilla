@@ -41,7 +41,7 @@ namespace UITEST.View
             //If the comment is a 'more' type
             if (comment.body == null)
             {
-                Button b = new Button()
+                var b = new Button()
                 {
                     Content = "Load more comments",
                     Margin = new Thickness(20, 5, 0, 5)
@@ -93,7 +93,7 @@ namespace UITEST.View
 
         private void B_Click(object sender, RoutedEventArgs e)
         {
-            Button b = sender as Button;
+            var b = sender as Button;
             CommentStackPanel.Children.Remove(b);
             LoadMoreComments();
         }
@@ -104,14 +104,14 @@ namespace UITEST.View
             var parentGrid = parentPanel.Parent as Grid;
             var parentCommentControl = parentGrid.Parent as CommentControl;
             var parentComment = parentCommentControl.currentComment;
-            string postID = parentComment.link_id;
-            string[] children = currentComment.children;
+            var postID = parentComment.link_id;
+            var children = currentComment.children;
 
             //parentCommentControl.CommentStackPanel.Children.Remove(parentCommentControl);
             if (postID != null && children.Length != 0)
             {
-                ObservableCollection<Comment> list = await redditAPIConsumer.GetMoreComments(postID, children, currentComment.depth);
-                foreach (Comment comment in list)
+                var list = await redditAPIConsumer.GetMoreComments(postID, children, currentComment.depth);
+                foreach (var comment in list)
                 {
                     parentPanel.Children.Add(new CommentControl(comment));
                     //this.InsertMoreComment(comment);
@@ -167,13 +167,13 @@ namespace UITEST.View
         //TODO hvis vi ikke kan få observer pattern til at virke kan vi slette de der currentcomment.score - og + statements
         public async Task CommentLikedAsync()
         {
-            int newDirection = GetNewVoteDirection(1);
+            var newDirection = GetNewVoteDirection(1);
             UpdateVoteUI(newDirection);
             await redditAPIConsumer.VoteAsync(currentComment, newDirection);
         }
         public async Task CommentDislikedAsync()
         {
-            int newDirection = GetNewVoteDirection(-1);
+            var newDirection = GetNewVoteDirection(-1);
             UpdateVoteUI(newDirection);
             await redditAPIConsumer.VoteAsync(currentComment, newDirection);
         }
@@ -228,7 +228,7 @@ namespace UITEST.View
                 Language = "en-US"
             };
 
-            Button SubmitButton = new Button()
+            var SubmitButton = new Button()
             {
                 Content = "Save",
                 Margin = new Thickness(0, 10, 10, 0)
@@ -265,7 +265,7 @@ namespace UITEST.View
 
         private async Task InsertComment(AbstractCommentable abstractCommentableToCommentOn)
         {
-            string text = CommentTextBox.Text;
+            var text = CommentTextBox.Text;
             if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
             {
                 errorText.Text = "We need something in the textbox";
@@ -275,7 +275,7 @@ namespace UITEST.View
             {
                 var old = new DateTime(1970, 1, 1);
                 var totaltime = DateTime.Now - old;
-                int timeInSeconds = (int)totaltime.TotalSeconds;
+                var timeInSeconds = (int)totaltime.TotalSeconds;
                 var newComment = new Comment()
                 {
                     body = CommentTextBox.Text,

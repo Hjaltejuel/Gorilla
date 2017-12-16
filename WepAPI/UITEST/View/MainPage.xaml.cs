@@ -19,9 +19,7 @@ namespace UITEST.View
         public MainPage()
         {
             this.InitializeComponent();
-            
             _vm = App.ServiceProvider.GetService<MainPageViewModel>();
-
             DataContext = _vm;
             SizeChanged += ChangeListViewWhenSizedChanged;
             _vm.LoadSwitch += LoadingRingSwitch;
@@ -32,14 +30,13 @@ namespace UITEST.View
         {
             Frame.Navigate(typeof(PostPage), post);
         }
-
         private void ChangeListViewWhenSizedChanged(object sender, SizeChangedEventArgs e)
         {
             PostsList.Height = e.NewSize.Height - (commandBar.ActualHeight+75);
         }
         private void LoadingRingSwitch()
         {
-            LoadingRing.IsActive = LoadingRing.IsActive == true ? false : true;
+            LoadingRing.IsActive = !LoadingRing.IsActive;
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {

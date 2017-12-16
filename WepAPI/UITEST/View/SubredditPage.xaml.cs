@@ -35,7 +35,6 @@ namespace UITEST.View
         }
 
         private readonly SubredditPageViewModel _vm;
-        private TextBlock NothingFoundTextBlock;
 
         private void PostsList_OnNagivated(Post post)
         {
@@ -48,28 +47,27 @@ namespace UITEST.View
         }
         private void LoadingRingSwitch()
         {
-            LoadingRing.IsActive = LoadingRing.IsActive == true ? false : true;
+            LoadingRing.IsActive = !LoadingRing.IsActive;
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            var SubredditSearchString = e.Parameter as string;
-            ShowSubreddit(SubredditSearchString);
+            var subredditSearchString = e.Parameter as string;
+            ShowSubreddit(subredditSearchString);
         }
-        private async void ShowSubreddit(string SubredditSearchString)
+        private async void ShowSubreddit(string subredditSearchString)
         {
-            await _vm.GeneratePosts(SubredditSearchString);
+            await _vm.GeneratePosts(subredditSearchString);
             SubsribeToSubredditButton.Visibility = Visibility.Visible;
-            if (_vm._Subreddit == null || _vm._Subreddit.name == null)
+            if (_vm._Subreddit?.name == null)
             {
-                NothingFoundTextBlock = new TextBlock() { Text = $"Nothing Found on r/{SubredditSearchString}", FontSize = 50, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
-                _Grid.Children.Add(NothingFoundTextBlock);
-                Grid.SetRow(NothingFoundTextBlock, 3);
+                NothingFoundTextBlock.Visibility = Visibility.Visible;
+                NothingFoundTextBlock.Text = $"Nothing Found on r/{subredditSearchString}";
                 SubsribeToSubredditButton.Visibility = Visibility.Collapsed;
-                _Grid.Children.Remove(PostsList);
-                _Grid.Children.Remove(SortBy);
-                _Grid.Children.Remove(CreatePostButton);
-                _Grid.Children.Remove(PageTitleText);
+                PostsList.Visibility = Visibility.Collapsed;
+                SortBy.Visibility = Visibility.Collapsed;
+                CreatePostButton.Visibility = Visibility.Collapsed;
+                PageTitleText.Visibility = Visibility.Collapsed;
             }
         }
 

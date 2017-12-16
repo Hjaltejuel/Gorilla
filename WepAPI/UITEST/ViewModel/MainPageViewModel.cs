@@ -25,20 +25,6 @@ namespace UITEST.ViewModel
             await UserFactory.initialize(_consumer);
             await _repository.CreateAsync(new Entities.User { Username = UserFactory.GetInfo().name, PathToProfilePicture = "profilePicture.jpg" });
             Posts = await _consumer.GetHomePageContent();
-            foreach (Post p in Posts)
-            {
-                if (p.is_self)
-                {
-                    p.thumbnail = "/Assets/Textpost.png";
-                }
-                else
-                {
-                    if (p.thumbnail == "default")
-                    {
-                        p.thumbnail = "/Assets/Externallink.png";
-                    }
-                }
-            }
             InvokeLoadSwitchEvent();
         }
         public async Task Initialize()

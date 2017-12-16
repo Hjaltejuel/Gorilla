@@ -55,8 +55,8 @@ namespace UITEST.ViewModel
 
                 var taskList = new List<Task>();
                 var subs = new Entities.RedditEntities.Subreddit[connections.Count()];
-                int j = 0;
-                foreach (string subreddit in connections.Select(A => A.SubredditToName))
+                var j = 0;
+                foreach (var subreddit in connections.Select(A => A.SubredditToName))
                 {
                     taskList.Add(finalize(j, subreddit, subs, connections.ElementAt(j).SubredditFromName));
 
@@ -71,7 +71,6 @@ namespace UITEST.ViewModel
         }
         public async Task add(int k, int reps, ConcurrentBag<string> subreddits, string subredditFromName)
         {
-
             var SubredditConnections = await _repository.FindAsync(subredditFromName);
             Debug.WriteLine(subredditFromName);
             if (SubredditConnections != null)
