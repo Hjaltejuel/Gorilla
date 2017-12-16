@@ -66,6 +66,10 @@ namespace UITEST.View
                 _Grid.Children.Add(NothingFoundTextBlock);
                 Grid.SetRow(NothingFoundTextBlock, 3);
                 SubsribeToSubredditButton.Visibility = Visibility.Collapsed;
+                _Grid.Children.Remove(PostsList);
+                _Grid.Children.Remove(SortBy);
+                _Grid.Children.Remove(CreatePostButton);
+                _Grid.Children.Remove(PageTitleText);
             }
         }
         private void SearchBox_QuerySubmitted(SearchBox sender, SearchBoxQuerySubmittedEventArgs args)

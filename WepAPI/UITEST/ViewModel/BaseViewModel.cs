@@ -17,7 +17,6 @@ namespace UITEST.ViewModel
     public abstract class BaseViewModel : INotifyPropertyChanged
     {
         public ICommand GoToHomePageCommand { get; set; }
-        public ICommand GoToTrendingPageCommand { get; set; }
         public ICommand GoToDiscoverPageCommand { get; set; }
         public ICommand GoToProfilePageCommand { get; set; }
 
@@ -33,7 +32,6 @@ namespace UITEST.ViewModel
             GoToHomePageCommand = new RelayCommand(o => _service.Navigate(typeof(MainPage), o));
             GoToDiscoverPageCommand = new RelayCommand(o => _service.Navigate(typeof(DiscoverPage), o));
             GoToProfilePageCommand = new RelayCommand(o => _service.Navigate(typeof(ProfilePage), o));
-            GoToTrendingPageCommand = new RelayCommand(o => _service.Navigate(typeof(TrendingPage), o));
             _service = service;
         }
 

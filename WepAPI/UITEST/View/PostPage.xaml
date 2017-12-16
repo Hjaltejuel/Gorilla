@@ -19,7 +19,6 @@
         </Grid.RowDefinitions>
         <CommandBar Name="commandBar" OverflowButtonVisibility="Collapsed" Style="{StaticResource StandardCommandBar}">
             <AppBarButton Icon="Home" Label="Home" Command="{Binding GoToHomePageCommand}"/>
-            <AppBarButton Icon="ZeroBars" Label="Trending" Command="{Binding GoToTrendingPageCommand}"/>
             <AppBarButton Icon="OutlineStar" Label="Discover" Command="{Binding GoToDiscoverPageCommand}"/>
             <AppBarButton Icon="Contact" Label="Profile" Command="{Binding GoToProfilePageCommand}"/>
         </CommandBar>
@@ -27,13 +26,13 @@
         <ListView Grid.Row="4" Name="PostView" SelectionMode="None" HorizontalAlignment="Stretch">
             <RelativePanel Name="TopInfo" Margin="20, 20, 0, 0" Height="Auto" Grid.Row="1">
                 <RelativePanel Name="OpOgNed" Width="Auto" Margin="0,0,10,0">
-                    <Button Content="Like" Height="20" Width="20" Name="Upvote" Style="{Binding likeButton}" Click="Upvote_Click"/>
+                    <Button Content="Like" Height="20" Width="20" Name="Upvote" Style="{Binding likeButton}" Command="{Binding PostLiked}"/>
                     <TextBlock Text="{Binding votes}" Name="Votes" HorizontalAlignment="Left" Margin="0, 8, 0, 0"/>
-                    <Button Content="Dislike" Height="20" FontSize="30" Name="Downvote" RelativePanel.Below="Upvote" Style="{Binding dislikeButton}" Click="Downvote_Click"/>
+                    <Button Content="Dislike" Height="20" FontSize="30" Name="Downvote" RelativePanel.Below="Upvote" Style="{Binding dislikeButton}" Command="{Binding PostDisliked}"/>
                     <Image Source="{x:Bind Path = _vm.CurrentPost.thumbnail}" Height="40" Width="40" Name="Box" Margin="20, 0, 0, 0" RelativePanel.RightOf="Upvote"/>
                 </RelativePanel>
                 <RelativePanel Name="TitlePanel" RelativePanel.RightOf="OpOgNed">
-                    <TextBlock Text="{x:Bind Path = _vm.CurrentPost.title}" FontSize="20" Name="Title"/>
+                    <TextBlock Text="{x:Bind Path = _vm.CurrentPost.title}" FontSize="20" Name="Title" TextWrapping="Wrap"/>
                 </RelativePanel>
                 <RelativePanel Name="TimePanel" RelativePanel.Below="TitlePanel" RelativePanel.RightOf="OpOgNed">
                     <TextBlock Name="TimeText" Text="{Binding timeSinceCreation}" FontSize="12"/>
@@ -56,7 +55,14 @@
                     <Button Content="hide" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="SaveText" RelativePanel.Below="Author" Name="HideText" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
                     <Button Content="report" Style="{StaticResource MiniNavigationButton}" RelativePanel.RightOf="HideText" RelativePanel.Below="Author" Name="ReportText" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
                 </RelativePanel>
+                <RelativePanel Margin="0, 40, 0, 0" Visibility="Collapsed" Name="CommentPanel" RelativePanel.Below="ExtraStuff">
+                    <TextBox Name="CommentTextBox" Height="200" Width="600" AcceptsReturn="True" TextWrapping="Wrap" IsSpellCheckEnabled="True" Language="en-US"/>
+                    <Button Name="SubmitButton" Content="Save" Margin="0, 10, 10, 0" RelativePanel.Below="CommentTextBox" Click="CommentSaveClick"/>
+                    <TextBlock Name="ErrorText" Text="We need something in the textbox" Visibility="Collapsed" Margin="10, 7, 0, 0" FontSize="14" RelativePanel.RightOf="SubmitButton" RelativePanel.Below="CommentTextBox" RelativePanel.AlignVerticalCenterWith="SubmitButton"/>
+
+                </RelativePanel>
             </RelativePanel>
+            
 
             <Rectangle Grid.Row="2" Name="verticalSplitter" HorizontalAlignment="Stretch" Fill="Gray" Height="1" Margin="0, 5, 0, 10"/>
 
