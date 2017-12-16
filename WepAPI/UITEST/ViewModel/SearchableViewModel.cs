@@ -31,7 +31,7 @@ namespace UITEST.ViewModel
         {
             get => posts; set { posts = value; OnPropertyChanged("Posts"); }
         }
-        public SearchableViewModel(IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer) : base(service)
+        protected SearchableViewModel(IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer) : base(service)
         {
             _consumer = consumer;
             _helper = helper;

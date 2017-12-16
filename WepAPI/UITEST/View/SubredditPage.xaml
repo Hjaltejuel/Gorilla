@@ -29,5 +29,6 @@
         <Rectangle Name="HorizontalSplitter" Grid.Row="2" HorizontalAlignment="Stretch" Fill="Gray" Height="1"/>
         <local:PostViewControl x:Name="PostsList" Posts="{Binding _vm._Subreddit.posts}" Grid.Row="3"/>
         <ProgressRing Name="LoadingRing" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4" Height="100" Width="100"/>
+        <TextBlock Name="NothingFoundTextBlock" Grid.Row="3" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"></TextBlock>
     </Grid>
 </Page>
