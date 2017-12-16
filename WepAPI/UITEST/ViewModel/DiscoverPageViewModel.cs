@@ -8,7 +8,6 @@ using System.Windows.Input;
 using Model;
 using UITEST.View;
 using UITEST.RedditInterfaces;
-using Entities;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Collections.Concurrent;
@@ -18,7 +17,7 @@ namespace UITEST.ViewModel
 {
     public class DiscoverPageViewModel : BaseViewModel
     {
-        public ObservableCollection<Entities.RedditEntities.Subreddit> SubReddits { get; private set; }
+        public ObservableCollection<Subreddit> SubReddits { get; private set; }
         public ICommand GoToSubRedditPage { get; set; }
         private readonly IRestSubredditConnectionRepository _repository;
         private readonly IRedditAPIConsumer _consumer;
@@ -36,7 +35,7 @@ namespace UITEST.ViewModel
             _consumer = consumer;
             _repository = repository;
 
-            GoToSubRedditPage = new RelayCommand(o => _service.Navigate(typeof(MainPage), o));
+            GoToSubRedditPage = new RelayCommand(o => _service.Navigate(typeof(SubredditPage), o));
         }
 
         public async void Initialize()
