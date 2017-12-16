@@ -34,10 +34,6 @@ namespace UITEST.View
     {
         private readonly PostPageViewModel _vm;
         private readonly IRestPostRepository _repository;
-    
-        //private RelativePanel CommentPanel;
-        //private TextBox CommentTextBox;
-        //private TextBlock errorText;
         
         public PostPage()
         {
@@ -119,15 +115,5 @@ namespace UITEST.View
                 PostView.Items.Add(TopCommentPanel);
             }
         }
-
-        //private async void Upvote_Click(object sender, RoutedEventArgs e)
-        //{
-        //    await _vm.PostLikedAsync();
-        //}
-
-        //private async void Downvote_Click(object sender, RoutedEventArgs e)
-        //{
-        //    await _vm.PostDislikedAsync();
-        //}
     }
 }

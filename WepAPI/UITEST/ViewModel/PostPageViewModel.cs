@@ -64,14 +64,15 @@ namespace UITEST.ViewModel
             var old = new DateTime(1970, 1, 1);
             var totaltime = DateTime.Now - old;
             int timeInSeconds = (int)totaltime.TotalSeconds;
+            string username = UserFactory.GetInfo().name;
             var newComment = new Comment()
             {
                 body = newCommentText,
-                author = "ASD",
+                author = username,
                 created_utc = timeInSeconds
             };
             await redditAPIConsumer.CreateCommentAsync(commentableToCommentOn, newComment.body);
-            await  _restUserPreferenceRepository.UpdateAsync(new Entities.UserPreference { Username = UserFactory.GetInfo().name, SubredditName = CurrentPost.subreddit, PriorityMultiplier = 3 });
+            await  _restUserPreferenceRepository.UpdateAsync(new Entities.UserPreference { Username = username, SubredditName = CurrentPost.subreddit, PriorityMultiplier = 3 });
             return newComment;
         }
 
