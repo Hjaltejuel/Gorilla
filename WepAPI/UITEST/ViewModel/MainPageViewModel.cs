@@ -1,30 +1,26 @@
-﻿using Entities.RedditEntities;
-using Gorilla.AuthenticationGorillaAPI;
-using Gorilla.Model;
-using Gorilla.ViewModel;
-using Model;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using UITEST.RedditInterfaces;
-using UITEST.View;
+﻿using System.Threading.Tasks;
+using Entities.GorillaEntities;
+using UITEST.Authentication.GorillaAuthentication;
+using UITEST.Model;
+using UITEST.Model.GorillaRestInterfaces;
+using UITEST.Model.RedditRestInterfaces;
 
 namespace UITEST.ViewModel
 {
     public class MainPageViewModel : SearchableViewModel
     {
-        public MainPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer, IRestUserRepository repository) : base(helper, service, consumer)
+        public MainPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditApiConsumer consumer, IRestUserRepository repository) : base(helper, service, consumer)
         {
-            _repository = repository;
+            Repository = repository;
             Initialize();
         }
 
         public async Task GeneratePosts()
         {
             InvokeLoadSwitchEvent();
-            await UserFactory.initialize(_consumer);
-            await _repository.CreateAsync(new Entities.User { Username = UserFactory.GetInfo().name, PathToProfilePicture = "profilePicture.jpg" });
-            Posts = await _consumer.GetHomePageContent();
+            await UserFactory.Initialize(Consumer);
+            await Repository.CreateAsync(new User { Username = UserFactory.GetInfo().name, PathToProfilePicture = "profilePicture.jpg" });
+            Posts = await Consumer.GetHomePageContent();
             InvokeLoadSwitchEvent();
         }
         public async Task Initialize()
@@ -35,9 +31,9 @@ namespace UITEST.ViewModel
             }
             else
             {
-                if(firstTime == true)
+                if(FirstTime)
                 {
-                    firstTime = false;
+                    FirstTime = false;
                 }
                 else
                 {

@@ -1,24 +1,19 @@
-﻿using Entities.GorillaAPI.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Entities;
-using System.Net.Http;
-using Gorilla.AuthenticationGorillaAPI;
-using System.Net.Http.Headers;
-using WebApplication2.Models;
-using System.Net;
-using Gorilla.Model.GorillaRestInterfaces;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using Entities.GorillaEntities;
+using UITEST.Authentication.GorillaAuthentication;
+using UITEST.Model.GorillaRestInterfaces;
 
-namespace Gorilla.Model.GorillaRepositories
+namespace UITEST.Model.GorillaRepositories
 {
     class RestPostRepository : IRestPostRepository
     {
-        private readonly Uri _baseAddress = new Uri("https://gorillaapi.azurewebsites.net/");
-
         private readonly HttpClient _client;
         private readonly IAuthenticationHelper _helper;
 
@@ -39,8 +34,8 @@ namespace Gorilla.Model.GorillaRepositories
         {
             using (var h = new HttpClient())
             {
-                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("POST"), new Uri("https://gorillaapi.azurewebsites.net/api/post"));
-                request.Content = post.ToHttpContent();
+                var request = new HttpRequestMessage(new HttpMethod("POST"),
+                    new Uri("https://gorillaapi.azurewebsites.net/api/post")) {Content = post.ToHttpContent()};
 
                 var token = await _helper.AcquireTokenSilentAsync();
 
@@ -84,11 +79,11 @@ namespace Gorilla.Model.GorillaRepositories
 
 
         #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+        private bool _disposedValue; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
@@ -99,7 +94,7 @@ namespace Gorilla.Model.GorillaRepositories
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.
 
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 

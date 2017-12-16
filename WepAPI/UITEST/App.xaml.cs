@@ -1,24 +1,13 @@
-﻿using Gorilla.Model;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System;
 using System.Net;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading;
 using UITEST.View;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using UITEST.Model;
 
 namespace UITEST
 {
@@ -36,8 +25,8 @@ namespace UITEST
         public App()
         {
             
-            this.InitializeComponent();
-            this.Suspending += OnSuspending;
+            InitializeComponent();
+            Suspending += OnSuspending;
         }
 
         /// <summary>
@@ -83,7 +72,7 @@ namespace UITEST
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
-            Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
+            SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility =
                 rootFrame.CanGoBack ?
                 AppViewBackButtonVisibility.Visible :
@@ -115,10 +104,9 @@ namespace UITEST
             deferral.Complete();
         }
 
-        private void App_BackRequested(object sender, Windows.UI.Core.BackRequestedEventArgs e)
+        private void App_BackRequested(object sender, BackRequestedEventArgs e)
         {
-            Frame rootFrame = Window.Current.Content as Frame;
-            if (rootFrame == null)
+            if (!(Window.Current.Content is Frame rootFrame))
                 return;
 
             // Navigate back if possible, and if the event has not 

@@ -8,8 +8,6 @@
     mc:Ignorable="d">
 
     <Grid Name ="_Grid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid.ColumnDefinitions>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -22,7 +20,7 @@
             <AppBarButton Icon="Contact" Label="Profile" Command="{Binding GoToProfilePageCommand}"/>
         </CommandBar>
         <TextBlock Name="PageTitleText" Grid.Column="0" Grid.Row="1" Text="Home" Style="{StaticResource PageTitleText}"/>
-        <SearchBox Name="SearchBox" Grid.Column="0" Grid.Row="1" Width="200" Height="32" HorizontalAlignment="Right" QuerySubmitted="{x:Bind _vm.SearchQuerySubmitted}" QueryText="{x:Bind _vm.queryText, Mode=TwoWay}"/>
+        <SearchBox Name="SearchBox" Grid.Column="0" Grid.Row="1" Width="200" Height="32" HorizontalAlignment="Right" QuerySubmitted="{x:Bind _vm.SearchQuerySubmitted}" QueryText="{x:Bind _vm.QueryText, Mode=TwoWay}"/>
         <Rectangle Name="HorizontalSplitter" Grid.Row="2" HorizontalAlignment="Stretch" Fill="Gray" Height="1"/>
         <local:PostViewControl x:Name="PostsList" Posts="{Binding _vm._Subreddit.posts}" Grid.Row="3"/>
         <ProgressRing Name="LoadingRing" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4" Height="100" Width="100"/>

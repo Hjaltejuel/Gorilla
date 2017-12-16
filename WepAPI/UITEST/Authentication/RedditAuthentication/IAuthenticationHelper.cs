@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Windows.Security.Credentials;
 
-namespace Gorilla.RedditAuthentication
+namespace UITEST.Authentication.RedditAuthentication
 {
     public interface IAuthenticationHelper
     {

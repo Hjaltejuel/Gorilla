@@ -1,28 +1,27 @@
 ﻿using Entities.RedditEntities;
-using Gorilla.Model;
-using Gorilla.Model.GorillaRestInterfaces;
-using Model;
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using UITEST.RedditInterfaces;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
+using UITEST.Model;
+using UITEST.Model.GorillaRestInterfaces;
+using UITEST.Model.RedditRestInterfaces;
+
 namespace UITEST.ViewModel
 {
     public class ProfilePageViewModel : BaseViewModel
     {
         
-        private ObservableCollection<Post> posts;
+        private ObservableCollection<Post> _posts;
 
         public ObservableCollection<Post> Posts
         {
-            get => posts;
-            set { posts = value; OnPropertyChanged(); }
+            get => _posts;
+            set { _posts = value; OnPropertyChanged(); }
         }
 
         //ProfileInformation i region
@@ -49,7 +48,7 @@ namespace UITEST.ViewModel
         public ICommand GoToPostPageCommand { get; set; }
         private readonly IRestUserRepository _repository;
         private readonly IRestPostRepository _restPostRepository;
-        private readonly IRedditAPIConsumer _consumer;
+        private readonly IRedditApiConsumer _consumer;
         private ImageSource _image;
         public ImageSource Image
         {
@@ -79,7 +78,7 @@ namespace UITEST.ViewModel
             }
         }
 
-        public ProfilePageViewModel(INavigationService service, IRestUserRepository repository, IRedditAPIConsumer consumer, IRestPostRepository restPostRepository) : base(service)
+        public ProfilePageViewModel(INavigationService service, IRestUserRepository repository, IRedditApiConsumer consumer, IRestPostRepository restPostRepository) : base(service)
         {
             _restPostRepository = restPostRepository;
 
@@ -105,26 +104,22 @@ namespace UITEST.ViewModel
             {
                 Posts.Add(await _consumer.GetPostAndCommentsByIdAsync(post.Id));
             }
-            PostsReadyEvent.Invoke();
+            PostsReadyEvent?.Invoke();
         }
 
         private async Task GetCurrentProfile()
         {
             var redditUser = UserFactory.GetInfo();
             var subscriptions = await _consumer.GetSubscribedSubredditsAsync();
-            var userPosts = await _consumer.GetUserComments(redditUser.name);
-            string numberOfPosts;
-            if (userPosts.Count > 25) numberOfPosts = "25+";
-            else numberOfPosts = userPosts.Count.ToString();
-            var UserComments = await _consumer.GetUserComments(redditUser.name);
-            string numberOfComments;
-            if (UserComments.Count > 25) numberOfComments = "25+";
-            else numberOfComments = UserComments.Count.ToString();
-            var unix = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            var userPosts = await _consumer.GetUserPosts(redditUser.name);
+            var numberOfPosts = userPosts.Count > 25 ? "25+" : userPosts.Count.ToString();
+            var userComments = await _consumer.GetUserComments(redditUser.name);
+            var numberOfComments = userComments.Count > 25 ? "25+" : userComments.Count.ToString();
+            var unix = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             var time = unix.AddSeconds(redditUser.created);
             
             Username = redditUser.name;
-            AmountOfSubRedditsSubscribedTo = subscriptions.Count();
+            AmountOfSubRedditsSubscribedTo = subscriptions.Count;
             JoinDate = time;
             CommentKarma = redditUser.comment_karma;
             LinkKarma = redditUser.link_karma;

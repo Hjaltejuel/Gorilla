@@ -6,21 +6,15 @@ using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Formatters;
-using Model;
 using Model.Repositories;
-using Entities;
-using WepAPI.Models;
-using Extensions;
-using System.IO;
-using Microsoft.AspNetCore.Hosting.Internal;
 using Entities.GorillaAPI.Interfaces;
+using Entities.GorillaEntities;
+using Gorilla.Extensions;
 
 namespace Gorilla
 {
@@ -36,9 +30,9 @@ namespace Gorilla
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<RedditDBContext>(o =>
+            services.AddDbContext<RedditDbContext>(o =>
              o.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddScoped<IRedditDBContext, RedditDBContext>();
+            services.AddScoped<IRedditDbContext, RedditDbContext>();
             services.AddScoped<ISubredditRepository, SubredditRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPostRepository, PostRepository>();

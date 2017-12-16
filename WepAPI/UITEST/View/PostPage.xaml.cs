@@ -6,8 +6,9 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
-using Gorilla.Model;
-using Gorilla.Model.GorillaRestInterfaces;
+using UITEST.Model;
+using UITEST.Model.GorillaRestInterfaces;
+
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 namespace UITEST.View
 {
@@ -21,7 +22,7 @@ namespace UITEST.View
         
         public PostPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             LoadingRing.IsActive = true;
            
             _repository = App.ServiceProvider.GetService<IRestPostRepository>();
@@ -47,7 +48,7 @@ namespace UITEST.View
             {
                 PostText.Visibility = Visibility.Collapsed;
             }
-            _repository.CreateAsync(new Entities.Post { Id = post.id, username = UserFactory.GetInfo().name });
+            _repository.CreateAsync(new Entities.GorillaEntities.Post { Id = post.id, username = UserFactory.GetInfo().name });
             _vm.Initialize(post);
         }
         private void ChangeListViewWhenSizedChanged(object sender, SizeChangedEventArgs e)
@@ -92,11 +93,12 @@ namespace UITEST.View
         }
         private void DrawComments()
         {
-            foreach (var comment in _vm.CurrentPost.Replies)
+            foreach (var _comment in _vm.CurrentPost.Replies)
             {
+                var comment = _comment as Comment;
                 if (comment.body == null) { continue; }
-                var TopCommentPanel = new CommentControl(comment);
-                PostView.Items.Add(TopCommentPanel);
+                var topCommentPanel = new CommentControl(comment);
+                PostView.Items.Add(topCommentPanel);
             }
         }
     }

@@ -1,26 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Gorilla.Model;
-using Gorilla.Model.GorillaRestInterfaces;
-using Model;
-using UITEST.RedditInterfaces;
-using UITEST.ViewModel;
+﻿using UITEST.Model;
+using UITEST.Model.GorillaRestInterfaces;
+using UITEST.Model.RedditRestInterfaces;
 
-namespace Gorilla.ViewModel
+namespace UITEST.ViewModel
 {
     public class CommentViewModel : BaseViewModel
     {
-        IRedditAPIConsumer _redditAPIConsumer;
+        IRedditApiConsumer _redditApiConsumer;
         IRestUserPreferenceRepository _restUserPreferenceRepository;
         IRestPostRepository _repository;
-        public CommentViewModel(INavigationService service, IRestPostRepository repository, IRestUserPreferenceRepository restUserPreferenceRepository, IRedditAPIConsumer redditApiConsumer) : base(service)
+        public CommentViewModel(INavigationService service, IRestPostRepository repository, IRestUserPreferenceRepository restUserPreferenceRepository, IRedditApiConsumer redditApiConsumer) : base(service)
         {
             _repository = repository;
             _restUserPreferenceRepository = restUserPreferenceRepository;
-            _redditAPIConsumer = redditApiConsumer;
+            _redditApiConsumer = redditApiConsumer;
         }
     }
 }

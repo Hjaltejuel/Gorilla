@@ -1,14 +1,13 @@
-﻿using Entities;
-using Exceptions;
-using Microsoft.Data.Sqlite;
+﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Entities.Exceptions;
+using Entities.GorillaEntities;
+using Model.Repositories;
 using Xunit;
 
 namespace Model.Test
@@ -22,10 +21,10 @@ namespace Model.Test
             {
                 connection.Open();
 
-                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
                                   .UseSqlite(connection);
 
-                var context = new RedditDBContext(builder.Options);
+                var context = new RedditDbContext(builder.Options);
                 await context.Database.EnsureCreatedAsync();
                 var userPreference = new UserPreference()
                 {
@@ -67,10 +66,10 @@ namespace Model.Test
             {
                 connection.Open();
 
-                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
                                   .UseSqlite(connection);
 
-                var context = new RedditDBContext(builder.Options);
+                var context = new RedditDbContext(builder.Options);
                 await context.Database.EnsureCreatedAsync();
                 var userPreference = new UserPreference()
                 {
@@ -105,10 +104,10 @@ namespace Model.Test
             {
                 connection.Open();
 
-                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
                                   .UseSqlite(connection);
 
-                var context = new RedditDBContext(builder.Options);
+                var context = new RedditDbContext(builder.Options);
                 await context.Database.EnsureCreatedAsync();
             
                 var userPreference = new UserPreference()
@@ -116,12 +115,12 @@ namespace Model.Test
                     Username = "hello",
                     SubredditName = "TestSub"
                 };
-                var Subreddit = new Subreddit()
+                var subreddit = new Subreddit()
                 {
                     SubredditName = "TestSub"
                 };
 
-                context.Subreddits.Add(Subreddit);
+                context.Subreddits.Add(subreddit);
                 await context.SaveChangesAsync();
 
                 using (var repository = new UserPreferenceRepository(context))
@@ -140,10 +139,10 @@ namespace Model.Test
             {
                 connection.Open();
 
-                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
                                   .UseSqlite(connection);
 
-                var context = new RedditDBContext(builder.Options);
+                var context = new RedditDbContext(builder.Options);
                 await context.Database.EnsureCreatedAsync();
 
                 var userPreference = new UserPreference()
@@ -151,12 +150,12 @@ namespace Model.Test
                     Username = "hello",
                     SubredditName = "TestSub"
                 };
-                var User = new User()
+                var user = new User()
                 {
                     Username = "hello"
                 };
 
-                context.Users.Add(User);
+                context.Users.Add(user);
                 await context.SaveChangesAsync();
                 using (var repository = new UserPreferenceRepository(context))
                 {
@@ -173,10 +172,10 @@ namespace Model.Test
             {
                 connection.Open();
 
-                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
                                   .UseSqlite(connection);
 
-                var context = new RedditDBContext(builder.Options);
+                var context = new RedditDbContext(builder.Options);
                 await context.Database.EnsureCreatedAsync();
                 var userPreference = new UserPreference()
                 {
@@ -215,10 +214,10 @@ namespace Model.Test
             {
                 connection.Open();
 
-                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
                                   .UseSqlite(connection);
 
-                var context = new RedditDBContext(builder.Options);
+                var context = new RedditDbContext(builder.Options);
                 await context.Database.EnsureCreatedAsync();
 
                 using (var repository = new UserPreferenceRepository(context))
@@ -237,10 +236,10 @@ namespace Model.Test
             {
                 connection.Open();
 
-                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
                                   .UseSqlite(connection);
 
-                var context = new RedditDBContext(builder.Options);
+                var context = new RedditDbContext(builder.Options);
                 await context.Database.EnsureCreatedAsync();
 
                 var entity = new UserPreference()
@@ -277,14 +276,12 @@ namespace Model.Test
 
                 preference.Add(entity2);
                 preference.Add(entity);
-                
-                var Username = entity.Username;
 
                 using (var repository = new UserPreferenceRepository(context))
                 {
                     var userPreference = await repository.FindAsync(entity.Username);
 
-                    Assert.Equal(preference.Count,userPreference.Count());
+                    Assert.Equal(preference.Count,userPreference.Count);
 
                 }
             }
@@ -295,7 +292,7 @@ namespace Model.Test
         [Fact]
         public async Task Update_given_existing_UserPreference_returns_true()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
             var entity = new UserPreference { Username = "name", SubredditName = "TestSub" };
             context.Setup(c => c.UserPreferences.FindAsync("name","TestSub")).ReturnsAsync(entity);
 
@@ -312,7 +309,7 @@ namespace Model.Test
         [Fact]
         public async Task Update_given_non_existing_UserPreference_returns_false()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
             context.Setup(c => c.UserPreferences.FindAsync("name","TestSub")).ReturnsAsync(default(UserPreference));
 
             using (var repository = new UserPreferenceRepository(context.Object))
@@ -328,7 +325,7 @@ namespace Model.Test
         [Fact]
         public async Task Update_given_existing_UserPreference_Updates_properties()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
             var entity = new UserPreference { Username = "name" , SubredditName = "TestSub", PriorityMultiplier = 5 };
             context.Setup(c => c.UserPreferences.FindAsync("name","TestSub")).ReturnsAsync(entity);
 
@@ -352,7 +349,7 @@ namespace Model.Test
         [Fact]
         public async Task Update_given_existing_UserPreference_calls_SaveChangesAsync()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
             var entity = new UserPreference { Username = "name" , SubredditName = "TestSub" };
             context.Setup(c => c.UserPreferences.FindAsync("name","TestSub")).ReturnsAsync(entity);
 
@@ -369,7 +366,7 @@ namespace Model.Test
         [Fact]
         public async Task Update_given_non_existing_UserPreference_does_not_call_SaveChangesAsync()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
             context.Setup(c => c.UserPreferences.FindAsync("name","TestSub")).ReturnsAsync(default(UserPreference));
 
             using (var repository = new UserPreferenceRepository(context.Object))
@@ -394,10 +391,10 @@ namespace Model.Test
             {
                 connection.Open();
 
-                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
                                   .UseSqlite(connection);
 
-                var context = new RedditDBContext(builder.Options);
+                var context = new RedditDbContext(builder.Options);
                 await context.Database.EnsureCreatedAsync();
 
                 var entity = new UserPreference()
@@ -439,10 +436,10 @@ namespace Model.Test
             {
                 connection.Open();
 
-                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
                                   .UseSqlite(connection);
 
-                var context = new RedditDBContext(builder.Options);
+                var context = new RedditDbContext(builder.Options);
                 await context.Database.EnsureCreatedAsync();
 
                 var entity = new UserPreference()
@@ -484,10 +481,10 @@ namespace Model.Test
             {
                 connection.Open();
 
-                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
                                   .UseSqlite(connection);
 
-                var context = new RedditDBContext(builder.Options);
+                var context = new RedditDbContext(builder.Options);
                 await context.Database.EnsureCreatedAsync();
 
 
@@ -507,11 +504,9 @@ namespace Model.Test
         [Fact]
         public void Dispose_disposes_context()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
 
-            using (var repository = new UserPreferenceRepository(context.Object))
-            {
-            }
+            new UserPreferenceRepository(context.Object).Dispose();
 
             context.Verify(c => c.Dispose());
         }

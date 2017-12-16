@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Exceptions
+namespace Entities.Exceptions
 {
     public class AlreadyThereException : Exception
     {
-        public AlreadyThereException(String E) : base(E)
+        public AlreadyThereException(String e) : base(e)
         {
           
         }

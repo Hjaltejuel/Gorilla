@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Security.Authentication.Web;
 
-namespace Gorilla.RedditAuthentication
+namespace UITEST.Authentication.RedditAuthentication
 {
     public class Settings : ISettings
     {

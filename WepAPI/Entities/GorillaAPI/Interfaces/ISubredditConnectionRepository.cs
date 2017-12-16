@@ -1,10 +1,9 @@
-﻿using Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using Entities.GorillaEntities;
 
-namespace Model
+namespace Entities.GorillaAPI.Interfaces
 {
     public interface ISubredditConnectionRepository : IDisposable
     {

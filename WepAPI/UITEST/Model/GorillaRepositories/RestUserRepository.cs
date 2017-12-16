@@ -1,26 +1,18 @@
-﻿using Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Entities;
-
-using Gorilla.AuthenticationGorillaAPI;
-using Newtonsoft.Json;
-
-using System.Text;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using Newtonsoft.Json.Linq;
-using System.Threading;
-using System.Net;
+using System.Threading.Tasks;
+using Entities.GorillaEntities;
+using UITEST.Authentication.GorillaAuthentication;
+using UITEST.Model.GorillaRestInterfaces;
 
-namespace WebApplication2.Models.GorillaApiConsumeRepositories
+namespace UITEST.Model.GorillaRepositories
 {
     public class RestUserRepository : IRestUserRepository
     {
-        private readonly Uri _baseAddress = new Uri("https://gorillaapi.azurewebsites.net/");
-
         private readonly HttpClient _client;
 
         private readonly IAuthenticationHelper _helper;
@@ -43,9 +35,9 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
             
             using(var h = new HttpClient())
             {
-                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("POST"), new Uri("https://gorillaapi.azurewebsites.net/api/User"));
-                request.Content = user.ToHttpContent();
-                
+                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("POST"),
+                    new Uri("https://gorillaapi.azurewebsites.net/api/User")) {Content = user.ToHttpContent()};
+
                 var token = await _helper.AcquireTokenSilentAsync();
 
 
@@ -82,7 +74,7 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
 
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.To<Entities.User>();
+                return await response.Content.To<User>();
             }
 
             return null;
@@ -109,7 +101,7 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
 
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.To<IReadOnlyCollection<Entities.User>>();
+                return await response.Content.To<IReadOnlyCollection<User>>();
             }
 
             return null;
@@ -123,11 +115,11 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
         }
 
         #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+        private bool _disposedValue; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
@@ -138,7 +130,7 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.
 
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 

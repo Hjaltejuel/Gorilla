@@ -1,20 +1,18 @@
-﻿using Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Entities;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using Gorilla.AuthenticationGorillaAPI;
-using System.Net;
+using System.Threading.Tasks;
+using Entities.GorillaEntities;
+using UITEST.Authentication.GorillaAuthentication;
+using UITEST.Model.GorillaRestInterfaces;
 
-namespace WebApplication2.Models.GorillaApiConsumeRepositories
+namespace UITEST.Model.GorillaRepositories
 {
     public class RestSubredditRepository : IRestSubredditRepository
     {
-        private readonly Uri _baseAddress = new Uri("https://gorillaapi.azurewebsites.net/");
-
         private readonly HttpClient _client;
         private readonly IAuthenticationHelper _helper;
 
@@ -30,12 +28,15 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
 
             _client = client;
         }
-        public async Task<string> CreateAsync(Entities.Subreddit subreddit)
+        public async Task<string> CreateAsync(Subreddit subreddit)
         {
             using (var h = new HttpClient())
             {
-                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("POST"), new Uri("https://gorillaapi.azurewebsites.net/api/subreddit"));
-                request.Content = subreddit.ToHttpContent();
+                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("POST"),
+                    new Uri("https://gorillaapi.azurewebsites.net/api/subreddit"))
+                {
+                    Content = subreddit.ToHttpContent()
+                };
 
                 var token = await _helper.AcquireTokenSilentAsync();
 
@@ -65,25 +66,25 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
         }
 
      
-        public async Task<Entities.Subreddit> FindAsync(string subredditName)
+        public async Task<Subreddit> FindAsync(string subredditName)
         {
             var response = await _client.GetAsync($"api/subreddit/{subredditName}");
 
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.To<Entities.Subreddit>();
+                return await response.Content.To<Subreddit>();
             }
 
             return null;
         }
 
-        public async Task<IReadOnlyCollection<Entities.Subreddit>> ReadAsync()
+        public async Task<IReadOnlyCollection<Subreddit>> ReadAsync()
         {
             var response = await _client.GetAsync("api/subreddit");
 
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.To<IReadOnlyCollection<Entities.Subreddit>>();
+                return await response.Content.To<IReadOnlyCollection<Subreddit>>();
             }
 
             return null;
@@ -91,11 +92,11 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
 
 
         #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+        private bool _disposedValue; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
@@ -106,7 +107,7 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.
 
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 

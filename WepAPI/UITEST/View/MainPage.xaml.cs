@@ -18,7 +18,7 @@ namespace UITEST.View
 
         public MainPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             _vm = App.ServiceProvider.GetService<MainPageViewModel>();
             DataContext = _vm;
             SizeChanged += ChangeListViewWhenSizedChanged;

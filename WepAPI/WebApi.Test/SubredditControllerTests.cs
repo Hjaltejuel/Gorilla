@@ -1,38 +1,28 @@
-﻿
-using Entities;
-using Exceptions;
-using Microsoft.AspNetCore.Authorization;
+﻿using System.Threading.Tasks;
+using Entities.Exceptions;
+using Entities.GorillaAPI.Interfaces;
+using Entities.GorillaEntities;
+using Gorilla.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using Model;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WepAPI.Controllers;
 using Xunit;
 
-namespace WebApi.Test
+namespace Gorilla.Test
 {
     public class SubredditControllerTests
     {
-      
-
         [Fact(DisplayName = "Read returns Ok with subreddits")]
         public async Task Read_returns_Ok_with_subreddits()
         {
             
-            var subreddits = new Subreddit[1] { new Subreddit { SubredditName = "Hello" } };
+            var subreddits = new[] { new Subreddit { SubredditName = "Hello" } };
 
             var repository = new Mock<ISubredditRepository>();
             repository.Setup(r => r.ReadAsync()).ReturnsAsync(subreddits);
 
             var controller = new SubredditController(repository.Object);
 
-            var result = await controller.ReadAsync() as OkObjectResult;
-
-            Assert.Equal(subreddits, result.Value);
+            if (await controller.ReadAsync() is OkObjectResult result) Assert.Equal(subreddits, result.Value);
         }
 
         [Fact(DisplayName = "Read returns NoContent with list of zero size")]
@@ -54,16 +44,14 @@ namespace WebApi.Test
         [Fact(DisplayName = "Get given existing SubredditName returns Ok with Subreddit")]
         public async Task Get_given_existing_id_returns_Ok_with_track()
         {
-            var Subreddit = new Subreddit();
+            var subreddit = new Subreddit();
 
             var repository = new Mock<ISubredditRepository>();
-            repository.Setup(r => r.FindAsync("test")).ReturnsAsync(Subreddit);
+            repository.Setup(r => r.FindAsync("test")).ReturnsAsync(subreddit);
 
             var controller = new SubredditController(repository.Object);
 
-            var result = await controller.GetAsync("test") as OkObjectResult;
-
-            Assert.Equal(Subreddit, result.Value);
+            if (await controller.GetAsync("test") is OkObjectResult result) Assert.Equal(subreddit, result.Value);
         }
 
         [Fact(DisplayName = "Get given non-existing SubredditName returns NotFound")]
@@ -87,8 +75,8 @@ namespace WebApi.Test
             var controller = new SubredditController(repository.Object);
             controller.ModelState.AddModelError(string.Empty, "Error");
 
-            var Subreddit = new Subreddit();
-            var result = await controller.PostAsync(Subreddit);
+            var subreddit = new Subreddit();
+            var result = await controller.PostAsync(subreddit);
 
             Assert.IsType<BadRequestObjectResult>(result);
         }
@@ -101,8 +89,8 @@ namespace WebApi.Test
             var controller = new SubredditController(repository.Object);
             controller.ModelState.AddModelError(string.Empty, "Error");
 
-            var Subreddit = new Subreddit();
-            await controller.PostAsync(Subreddit);
+            var subreddit = new Subreddit();
+            await controller.PostAsync(subreddit);
 
             repository.Verify(r => r.CreateAsync(It.IsAny<Subreddit>()), Times.Never);
         }
@@ -114,10 +102,10 @@ namespace WebApi.Test
 
             var controller = new SubredditController(repository.Object);
 
-            var Subreddit = new Subreddit();
-            await controller.PostAsync(Subreddit);
+            var subreddit = new Subreddit();
+            await controller.PostAsync(subreddit);
 
-            repository.Verify(r => r.CreateAsync(Subreddit));
+            repository.Verify(r => r.CreateAsync(subreddit));
         }
 
         [Fact(DisplayName = "Post given valid Subreddit returns CreatedAtAction")]
@@ -127,8 +115,8 @@ namespace WebApi.Test
             repository.Setup(r => r.CreateAsync(It.IsAny<Subreddit>())).ReturnsAsync("test");
             var controller = new SubredditController(repository.Object);
 
-            var Subreddit = new Subreddit();
-            var result = await controller.PostAsync(Subreddit) as CreatedAtActionResult;
+            var subreddit = new Subreddit();
+            var result = await controller.PostAsync(subreddit) as CreatedAtActionResult;
 
             Assert.Equal(nameof(SubredditController.GetAsync), result.ActionName);
             Assert.Equal("test", result.RouteValues["id"]);
@@ -141,8 +129,7 @@ namespace WebApi.Test
             repository.Setup(r => r.DeleteAsync("test")).ReturnsAsync(false);
 
             var controller = new SubredditController(repository.Object);
-
-            var Subreddit = new Subreddit();
+            
             var result = await controller.DeleteAsync("test");
 
             Assert.IsType<NotFoundResult>(result);
@@ -155,8 +142,7 @@ namespace WebApi.Test
             repository.Setup(r => r.DeleteAsync("test")).ReturnsAsync(true);
 
             var controller = new SubredditController(repository.Object);
-
-            var Subreddit = new Subreddit();
+            
             var result = await controller.DeleteAsync("test");
 
             Assert.IsType<NoContentResult>(result);

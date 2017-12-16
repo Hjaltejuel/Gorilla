@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Exceptions
+namespace Entities.Exceptions
 {
     public class NotFoundException : Exception
     {
-        public NotFoundException(String E) : base(E) { }
+        public NotFoundException(String e) : base(e) { }
     }
 }

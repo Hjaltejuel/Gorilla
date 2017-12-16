@@ -1,21 +1,19 @@
-﻿using Entities;
-using Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using Gorilla.AuthenticationGorillaAPI;
-using System.Net;
-using System.Diagnostics;
+using Entities.GorillaEntities;
+using UITEST.Authentication.GorillaAuthentication;
+using UITEST.Model.GorillaRestInterfaces;
 
-namespace WebApplication2.Models.GorillaApiConsumeRepositories
+namespace UITEST.Model.GorillaRepositories
 {
     public class RestSubredditConnectionRepository: IRestSubredditConnectionRepository
     {
-        private readonly Uri _baseAddress = new Uri("http://gorillaapi.azurewebsites.net/");
-
         private readonly IAuthenticationHelper _helper;
 
         private readonly HttpClient _client;
@@ -37,8 +35,11 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
         {
             using (var h = new HttpClient())
             {
-                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("POST"), new Uri("https://gorillaapi.azurewebsites.net/api/SubredditConnection"));
-                request.Content = subredditConnection.ToHttpContent();
+                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("POST"),
+                    new Uri("https://gorillaapi.azurewebsites.net/api/SubredditConnection"))
+                {
+                    Content = subredditConnection.ToHttpContent()
+                };
 
                 var token = await _helper.AcquireTokenSilentAsync();
 
@@ -64,8 +65,11 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
         {
             using (var h = new HttpClient())
             {
-                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("GET"), new Uri("https://gorillaapi.azurewebsites.net/api/SubredditConnection/GetAllPrefs"));
-                request.Content = subredditFromNames.ToHttpContent();
+                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("GET"),
+                    new Uri("https://gorillaapi.azurewebsites.net/api/SubredditConnection/GetAllPrefs"))
+                {
+                    Content = subredditFromNames.ToHttpContent()
+                };
 
                 var token = await _helper.AcquireTokenSilentAsync();
 
@@ -133,17 +137,17 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
 
         public async Task<bool> UpdateAsync(SubredditConnection subredditConnection)
         {
-            var response = await _client.PutAsync($"api/subredditConnection", subredditConnection.ToHttpContent());
+            var response = await _client.PutAsync("api/subredditConnection", subredditConnection.ToHttpContent());
 
             return response.IsSuccessStatusCode;
         }
 
         #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+        private bool _disposedValue; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
@@ -154,7 +158,7 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.
 
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 

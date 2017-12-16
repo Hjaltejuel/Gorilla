@@ -1,9 +1,9 @@
-﻿using Entities.RedditEntities;
-using Microsoft.Extensions.DependencyInjection;
-using UITEST.ViewModel;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Entities.RedditEntities;
+using Microsoft.Extensions.DependencyInjection;
+using UITEST.ViewModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -15,11 +15,11 @@ namespace UITEST.View
     public sealed partial class DiscoverPage : Page
     {
         private readonly DiscoverPageViewModel _vm;
-        private Subreddit selectedSubReddit = null;
+        private Subreddit _selectedSubReddit;
 
         public DiscoverPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             LoadingRing.IsActive = true;
 
             _vm = App.ServiceProvider.GetService<DiscoverPageViewModel>();
@@ -31,7 +31,7 @@ namespace UITEST.View
         }
         private void ChangeListViewWhenSizedChanged(object sender, SizeChangedEventArgs e)
         {
-            DiscoverList.Height = e.NewSize.Height - (commandBar.ActualHeight+75);
+            DiscoverList.Height = e.NewSize.Height - (CommandBar.ActualHeight+75);
         }
 
         public void NoElementsEvent()
@@ -42,7 +42,7 @@ namespace UITEST.View
             {
                 Height = 100,
                 Width = 200,
-                Text = "No User preference was found",
+                Text = "No User preference was found"
             };
             Grid.SetRow(block, 3);
             GridPanel.Children.Add(block);
@@ -62,9 +62,9 @@ namespace UITEST.View
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var list = sender as ListView;
-            selectedSubReddit = list.SelectedItem as Subreddit;
-            if(selectedSubReddit != null)
-                _vm.GoToSubRedditPage.Execute(selectedSubReddit.display_name);
+            _selectedSubReddit = list.SelectedItem as Subreddit;
+            if(_selectedSubReddit != null)
+                _vm.GoToSubRedditPage.Execute(_selectedSubReddit.display_name);
         }
     }
 }

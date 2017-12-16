@@ -74,7 +74,7 @@ namespace Entities.RedditEntities
 
         public Post()
         {
-            Replies = new ObservableCollection<Comment>();
+            Replies = new ObservableCollection<AbstractCommentable>();
         }
         // er det saadan det skal virke? 
         public string PostSerialize() {

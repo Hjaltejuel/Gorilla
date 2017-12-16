@@ -1,11 +1,10 @@
-﻿
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Model;
-using Entities;
-using Exceptions;
+using Entities.Exceptions;
+using Entities.GorillaAPI.Interfaces;
+using Entities.GorillaEntities;
 
 
 namespace Gorilla.Controllers
@@ -15,22 +14,22 @@ namespace Gorilla.Controllers
     [Route("api/[controller]")]
     public class SubredditConnectionController : Controller
     {
-        private readonly ISubredditConnectionRepository repository;
+        private readonly ISubredditConnectionRepository _repository;
 
-        public SubredditConnectionController(ISubredditConnectionRepository _repository)
+        public SubredditConnectionController(ISubredditConnectionRepository repository)
         {
-            repository = _repository;
+            _repository = repository;
         }
 
         // GET: api/UserPreference/5
         [HttpGet("{subredditFromName}", Name = "Find")]
         public async Task<IActionResult> FindAsync(string subredditFromName)
         {
-            var result = await repository.FindAsync(subredditFromName);
+            var result = await _repository.FindAsync(subredditFromName);
             if (result == null)
             {
                 return NotFound();
-            } else if (result.Count() == 0)
+            } else if (!result.Any())
             {
                 return NoContent();
             }
@@ -38,14 +37,14 @@ namespace Gorilla.Controllers
             return Ok(result);
         }
         [HttpGet("GetAllPrefs")]
-        public async Task<IActionResult> GetAllPrefs([FromBody]string[] ListOfPrefs)
+        public async Task<IActionResult> GetAllPrefs([FromBody]string[] listOfPrefs)
             {
-            var result = await repository.GetAllPrefs(ListOfPrefs);
+            var result = await _repository.GetAllPrefs(listOfPrefs);
             if (result == null)
             {
                 return NotFound();
             }
-            else if (result.Count() == 0)
+            else if (!result.Any())
             {
                 return NoContent();
             }
@@ -54,12 +53,12 @@ namespace Gorilla.Controllers
         [HttpGet(Name = "Read")]
         public async Task<IActionResult> ReadAsync()
         {
-            var result = await repository.ReadAsync();
+            var result = await _repository.ReadAsync();
             if (result == null)
             {
                 return NotFound();
             }
-            else if (result.Count() == 0)
+            else if (!result.Any())
             {
                 return NoContent();
             }
@@ -69,7 +68,7 @@ namespace Gorilla.Controllers
         [HttpGet("{subredditFromName}, {subredditToName}", Name = "GetSubredditConnection")]
         public async Task<IActionResult> GetAsync(string subredditFromName, string subredditToName)
         {
-            var result = await repository.GetAsync(subredditFromName,subredditToName);
+            var result = await _repository.GetAsync(subredditFromName,subredditToName);
             if (result == null)
             {
                 return NotFound();
@@ -91,7 +90,7 @@ namespace Gorilla.Controllers
 
             try
             {
-                var result = await repository.CreateAsync(subredditConnection);
+                var result = await _repository.CreateAsync(subredditConnection);
                 return CreatedAtAction(nameof(GetAsync), new { result }, null);
             }
             catch (AlreadyThereException)
@@ -112,7 +111,7 @@ namespace Gorilla.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var updated = await repository.UpdateAsync(subredditConnection);
+            var updated = await _repository.UpdateAsync(subredditConnection);
             if (!updated)
             {
                 return NotFound();
@@ -124,7 +123,7 @@ namespace Gorilla.Controllers
         [HttpDelete("{subredditFromName},{subredditToName}")]
         public async Task<IActionResult> DeleteAsync(string subredditFromName, string subredditToName)
         {
-            var deleted = await repository.DeleteAsync(subredditFromName, subredditToName);
+            var deleted = await _repository.DeleteAsync(subredditFromName, subredditToName);
             if (!deleted)
             {
                 return NotFound();

@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Security.Authentication.Web.Core;
 using Windows.Security.Credentials;
 using Windows.Storage;
 
-namespace Gorilla.AuthenticationGorillaAPI
+namespace UITEST.Authentication.GorillaAuthentication
 {
     public class AuthenticationHelper: IAuthenticationHelper
     {
@@ -78,8 +75,8 @@ namespace Gorilla.AuthenticationGorillaAPI
             }
             else
             {
-                _appSettings.Values["userId"] = account?.Id;
-                _appSettings.Values["login_hint"] = account?.UserName;
+                _appSettings.Values["userId"] = account.Id;
+                _appSettings.Values["login_hint"] = account.UserName;
             }
 
             return account;

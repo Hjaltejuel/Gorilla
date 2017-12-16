@@ -1,17 +1,14 @@
-﻿using Gorilla.AuthenticationGorillaAPI;
-using Microsoft.Extensions.DependencyInjection;
-using Model;
-using System;
+﻿using System;
 using System.Net.Http;
-using Gorilla.ViewModel;
+using Microsoft.Extensions.DependencyInjection;
+using UITEST.Authentication.GorillaAuthentication;
+using UITEST.Model.GorillaRepositories;
+using UITEST.Model.GorillaRestInterfaces;
+using UITEST.Model.RedditRepositories;
+using UITEST.Model.RedditRestInterfaces;
 using UITEST.ViewModel;
-using WebApplication2.Models.GorillaApiConsumeRepositories;
-using Gorilla.Model.GorillaRestInterfaces;
-using Gorilla.Model.GorillaRepositories;
-using UITEST.RedditInterfaces;
-using UITEST.RedditRepositories;
 
-namespace Gorilla.Model
+namespace UITEST.Model
 {
     class IoCContainer
     {
@@ -31,7 +28,7 @@ namespace Gorilla.Model
             services.AddScoped<IRestUserPreferenceRepository, RestUserPreferenceRepository>();
             services.AddScoped<IRestUserRepository, RestUserRepository>();
             services.AddScoped<IRestPostRepository, RestPostRepository>();
-            services.AddScoped<IRedditAPIConsumer, RedditConsumerController>();
+            services.AddScoped<IRedditApiConsumer, RedditConsumerController>();
             services.AddScoped<MainPageViewModel>();
             
            

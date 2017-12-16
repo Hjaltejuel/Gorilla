@@ -1,20 +1,19 @@
 ﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using System.Net;
-using System.Collections.ObjectModel;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using UITEST.RedditInterfaces;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using Entities.RedditEntities;
+using Newtonsoft.Json.Linq;
 using UITEST.Authentication;
+using UITEST.Model.RedditRestInterfaces;
 
-namespace UITEST.RedditRepositories
+namespace UITEST.Model.RedditRepositories
 {
-    public class RedditConsumerController : IRedditAPIConsumer
+    public class RedditConsumerController : IRedditApiConsumer
     {
         public string BaseUrl => "https://oauth.reddit.com/";
 
@@ -25,12 +24,8 @@ namespace UITEST.RedditRepositories
         private const string SubscribeUrl = "api/subscribe";
         private const string SubscribedSubredditsUrl = "subreddits/mine/subscriber";
 
-        private const int limit = 10;
-
         RedditAuthHandler _authHandler;
-        private bool IsAuthenticated = false;
-        private string token = "";
-        private string refresh_token = "";
+
         //"51999737725-OYI8KJ5T56KSO4xAyvoVhA8t5TM";
         //
         public void Authenticate(RedditAuthHandler handler)
@@ -40,11 +35,11 @@ namespace UITEST.RedditRepositories
         private HttpRequestMessage CreateRequest(string stringUri, string method)
         {
             Uri uri;
-            var IsOAuth = false;
+            var isOAuth = false;
             if (!stringUri.StartsWith("https"))
             {
                 uri = new Uri(BaseUrl + stringUri + ".json?json_raw=1");
-                IsOAuth = true;
+                isOAuth = true;
             }
             else
                 uri = new Uri(stringUri + ".json?json_raw=1");
@@ -53,7 +48,7 @@ namespace UITEST.RedditRepositories
             {
                 RequestUri = uri
             };
-            if (IsOAuth)
+            if (isOAuth)
                 request = _authHandler.AuthenticateRequest(request);
 
             request.Method = new HttpMethod(method);
@@ -68,15 +63,7 @@ namespace UITEST.RedditRepositories
             {
                 var response = await client.SendAsync(request);
                 var stringResponse = await response.Content.ReadAsStringAsync();
-                JToken json;
-                if (stringResponse.Length > 0)
-                {
-                    json = JToken.Parse(stringResponse);
-                }
-                else
-                {
-                    json = JToken.Parse($"{{'error':{response.StatusCode}}}");
-                }
+                var json = JToken.Parse(stringResponse.Length > 0 ? stringResponse : $"{{'error':{response.StatusCode}}}");
                 return json;
             }
         }
@@ -106,9 +93,10 @@ namespace UITEST.RedditRepositories
                     try
                     {
                         subreddit.posts.Add(child.data.ToObject<Post>());
-                    } catch(Exception e) {
-                        var a = e;
-                        var b = "";
+                    }
+                    catch
+                    {
+                        // ignored
                     }
                 }
                 return subreddit;
@@ -116,9 +104,9 @@ namespace UITEST.RedditRepositories
             return null;
         }
         //t3 = comments on link / post & t5 = subreddit & t1 = comment
-        public async Task<Post> GetPostAndCommentsByIdAsync(string post_id)
+        public async Task<Post> GetPostAndCommentsByIdAsync(string postId)
         {
-            var uri = $"https://www.reddit.com/comments/{post_id}.json?json_raw=1";
+            var uri = $"https://www.reddit.com/comments/{postId}.json?json_raw=1";
 
             var request = CreateRequest(uri, "GET");
             var response = await SendRequest(request);
@@ -169,9 +157,9 @@ namespace UITEST.RedditRepositories
                 return (HttpStatusCode.OK, "Comment was posted!");
             return (HttpStatusCode.BadRequest, "Could not post comment");
         }
-        public async Task<(HttpStatusCode, string)> SubscribeToSubreddit(Subreddit subreddit, bool IsSubscribing)
+        public async Task<(HttpStatusCode, string)> SubscribeToSubreddit(Subreddit subreddit, bool isSubscribing)
         {
-            var action = IsSubscribing ? "sub" : "unsub";
+            var action = isSubscribing ? "sub" : "unsub";
             var data = $"action={action}&sr={subreddit.name}";
             var request = CreateRequest(SubscribeUrl, "POST");
             request.Content = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
@@ -200,11 +188,11 @@ namespace UITEST.RedditRepositories
         // if kind is link, then url must be specified
         public async Task<(HttpStatusCode, string)> CreatePostAsync(Subreddit toSubreddit, string title, string kind, string text = "", string url = "")
         {
-            string data;
+            var data = $"sr={toSubreddit.display_name}&kind={kind}&title={title}";
             if (kind.Equals("link"))
-                data = $"sr={toSubreddit.display_name}&kind={kind}&title={title}&url={url}";
+                data += $"&url={url}";
             else
-                data = $"sr={toSubreddit.display_name}&kind={kind}&title={title}&text={text}";
+                data = $"&text={text}";
 
             var request = CreateRequest(CreatePostUrl, "POST");
             request.Content = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
@@ -217,10 +205,10 @@ namespace UITEST.RedditRepositories
             return (HttpStatusCode.BadRequest, "Could not create post");
         }
 
-        public async Task<ObservableCollection<Comment>> GetMoreComments(string parentPostID, string[] children, int depth, int maxCommentsAmount = 10)
+        public async Task<ObservableCollection<Comment>> GetMoreComments(string parentPostId, string[] children, int depth, int maxCommentsAmount = 10)
         {
             var childrenString = string.Join(",", children);
-            var moreChildrenUrl = $"/api/morechildren.json?api_type=json&link_id={parentPostID}&sort=hot&children={childrenString}&depth=20";
+            var moreChildrenUrl = $"/api/morechildren.json?api_type=json&link_id={parentPostId}&sort=hot&children={childrenString}&depth=20";
             var request = CreateRequest(moreChildrenUrl, "GET");
             var response = await SendRequest(request);
             if (response == null)
@@ -277,7 +265,7 @@ namespace UITEST.RedditRepositories
         }
         public ObservableCollection<AbstractableComment> CreateUserInfoCollection<AbstractableComment>(JToken response)
         {
-            List<AbstractableComment> list = new List<AbstractableComment>();
+            var list = new List<AbstractableComment>();
 
             var listing = response.ToObject<Listing>();
             if (listing != null)

@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Gorilla.Model;
-using Entities.RedditEntities;
 using System.Windows.Input;
-using System.Collections.ObjectModel;
-using Gorilla.AuthenticationGorillaAPI;
-using Gorilla.View;
-using UITEST.RedditInterfaces;
-using Model;
-using Gorilla.ViewModel;
+using Entities.GorillaEntities;
+using UITEST.Authentication.GorillaAuthentication;
+using UITEST.Model;
+using UITEST.Model.GorillaRestInterfaces;
+using UITEST.Model.RedditRestInterfaces;
+using CreatePostPage = UITEST.View.CreatePostPage;
+using Subreddit = Entities.RedditEntities.Subreddit;
 
 namespace UITEST.ViewModel
 {
@@ -19,42 +16,44 @@ namespace UITEST.ViewModel
     {
         public ICommand GoToCreatePostPageCommand { get; set; }
 
-        IRestUserPreferenceRepository _repository;
+        private readonly IRestUserPreferenceRepository _repository;
         public Subreddit _Subreddit;
         private List<string> _SortTypes;
         public List<string> SortTypes
         {
-            get { return _SortTypes; }
+            get => _SortTypes;
             set { _SortTypes = value; OnPropertyChanged(); }
         }
 
         private string  _subscribeString;
-        public string subscribeString { get { return _subscribeString; } set { _subscribeString = value;  OnPropertyChanged(); }}
+        public string SubscribeString { get => _subscribeString;
+            set { _subscribeString = value;  OnPropertyChanged(); }}
 
         private string _subredditName;
-        public string SubredditName { get { return _subredditName; }  set  { if (value != _subredditName){ _subredditName = value;OnPropertyChanged();}}}
+        public string SubredditName { get => _subredditName;
+            set  { if (value != _subredditName){ _subredditName = value;OnPropertyChanged();}}}
 
-        bool userIsSubscribed;
+        bool _userIsSubscribed;
         bool UserIsSubscribed
         {
-            get => userIsSubscribed;
+            get => _userIsSubscribed;
             set
             {
-                userIsSubscribed = value;
-                subscribeString = value ? "Unsubscribe" : "Subscribe";
+                _userIsSubscribed = value;
+                SubscribeString = value ? "Unsubscribe" : "Subscribe";
                 OnPropertyChanged("subscribeString");
             }
         }
-        public SubredditPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer, IRestUserPreferenceRepository repository ) : base(helper, service, consumer)
+        public SubredditPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditApiConsumer consumer, IRestUserPreferenceRepository repository ) : base(helper, service, consumer)
         {
             _repository = repository;
-            GoToCreatePostPageCommand = new RelayCommand(o => _service.Navigate(typeof(CreatePostPage), _Subreddit));
+            GoToCreatePostPageCommand = new RelayCommand(o => Service.Navigate(typeof(CreatePostPage), _Subreddit));
             SortTypes = new List<string>() { "hot", "new", "rising", "top", "controversial" };
         }
         public async Task GeneratePosts(string subredditName, string sort = "hot")
         {
             InvokeLoadSwitchEvent();
-            _Subreddit = await _consumer.GetSubredditAsync(subredditName, sort);
+            _Subreddit = await Consumer.GetSubredditAsync(subredditName, sort);
             if (_Subreddit?.name == null)
             {
                 InvokeLoadSwitchEvent();
@@ -68,7 +67,7 @@ namespace UITEST.ViewModel
 
         private async Task IsUserSubscribed()
         {
-            List<Subreddit> subs = await _consumer.GetSubscribedSubredditsAsync();
+            List<Subreddit> subs = await Consumer.GetSubscribedSubredditsAsync();
             UserIsSubscribed = (from b in subs
                                 where b.display_name.Equals(_Subreddit.display_name)
                                 select b).Any();
@@ -77,14 +76,14 @@ namespace UITEST.ViewModel
         public async Task SubscribeToSubreddit()
         {
             UserIsSubscribed = !UserIsSubscribed;
-            await _consumer.SubscribeToSubreddit(_Subreddit, UserIsSubscribed);
+            await Consumer.SubscribeToSubreddit(_Subreddit, UserIsSubscribed);
             if (UserIsSubscribed)
             {
-                await _repository.UpdateAsync(new Entities.UserPreference { Username = UserFactory.GetInfo().name, SubredditName = _Subreddit.display_name, PriorityMultiplier = 10 });
+                await _repository.UpdateAsync(new UserPreference { Username = UserFactory.GetInfo().name, SubredditName = _Subreddit.display_name, PriorityMultiplier = 10 });
 
             } else
             {
-                await _repository.UpdateAsync(new Entities.UserPreference { Username = UserFactory.GetInfo().name, SubredditName = _Subreddit.display_name, PriorityMultiplier = -10 });
+                await _repository.UpdateAsync(new UserPreference { Username = UserFactory.GetInfo().name, SubredditName = _Subreddit.display_name, PriorityMultiplier = -10 });
             }
         }
     }

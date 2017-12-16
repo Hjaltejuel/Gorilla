@@ -7,8 +7,8 @@
     <ProjectGuid>{E1BD4360-1F27-4E2D-AA3C-655467FCE5F0}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Gorilla</RootNamespace>
-    <AssemblyName>Gorilla</AssemblyName>
+    <RootNamespace>UITEST</RootNamespace>
+    <AssemblyName>UITEST</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.16299.0</TargetPlatformVersion>

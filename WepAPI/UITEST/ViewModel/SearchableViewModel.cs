@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Gorilla.Model;
-using UITEST.ViewModel;
-using System.Windows.Input;
-using UITEST.RedditInterfaces;
-using Model;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using Entities.RedditEntities;
-using Gorilla.AuthenticationGorillaAPI;
-using Gorilla.View;
+using UITEST.Authentication.GorillaAuthentication;
+using UITEST.Model;
+using UITEST.Model.GorillaRestInterfaces;
+using UITEST.Model.RedditRestInterfaces;
 using UITEST.View;
 
 namespace UITEST.ViewModel
@@ -20,31 +12,32 @@ namespace UITEST.ViewModel
     {
         public delegate void LoadingEvent();
         public event LoadingEvent LoadSwitch;
-        public bool firstTime = true;
-        public IRedditAPIConsumer _consumer;
-        public IRestUserRepository _repository;
+        public bool FirstTime = true;
+        public IRedditApiConsumer Consumer;
+        public IRestUserRepository Repository;
         private string _queryText;
-        public string queryText { get { return _queryText; } set { if (_queryText != value) { _queryText = value; OnPropertyChanged(); } } }
+        public string QueryText { get => _queryText;
+            set { if (_queryText != value) { _queryText = value; OnPropertyChanged(); } } }
 
-        public ObservableCollection<Post> posts;
+        private ObservableCollection<Post> posts;
         public ObservableCollection<Post> Posts
         {
-            get => posts; set { posts = value; OnPropertyChanged("Posts"); }
+            get => posts; set { posts = value; OnPropertyChanged(); }
         }
-        protected SearchableViewModel(IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer) : base(service)
+        protected SearchableViewModel(IAuthenticationHelper helper, INavigationService service, IRedditApiConsumer consumer) : base(service)
         {
-            _consumer = consumer;
-            _helper = helper;
+            Consumer = consumer;
+            Helper = helper;
         }
 
         public void SearchQuerySubmitted()
         {
-            _service.Navigate(typeof(SubredditPage), queryText);
+            Service.Navigate(typeof(SubredditPage), QueryText);
         }
 
         public void InvokeLoadSwitchEvent()
         {
-            LoadSwitch.Invoke();
+            LoadSwitch?.Invoke();
         }
     }
 }

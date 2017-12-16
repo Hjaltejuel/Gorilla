@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace Gorilla.Model
+namespace UITEST.Model
 {
     public class NavigationService : INavigationService
     {
@@ -22,8 +18,7 @@ namespace Gorilla.Model
 
         public void GoBack()
         {
-            var f = Window.Current.Content as Frame;
-            f.GoBack();
+            if (Window.Current.Content is Frame f) f.GoBack();
         }
     }
 }

@@ -1,10 +1,9 @@
-﻿using Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using Entities.GorillaEntities;
 
-namespace Model
+namespace UITEST.Model.GorillaRestInterfaces
 {
     public interface IRestSubredditConnectionRepository : IDisposable
     {

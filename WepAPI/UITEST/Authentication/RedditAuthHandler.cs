@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net.Cache;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Entities.RedditEntities;
 using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.DependencyInjection;
-using UITEST;
 using Windows.Storage;
-using UITEST.RedditInterfaces;
+using UITEST.Model.RedditRestInterfaces;
 
 namespace UITEST.Authentication
 {
@@ -65,16 +61,19 @@ namespace UITEST.Authentication
             request.Headers.Authorization = new AuthenticationHeaderValue("bearer", _token);
             return request;
         }
-        private async Task<JToken> SendRequest(string Body)
+        private async Task<JToken> SendRequest(string body)
         {
             var uri = new Uri(AccessTokenUrl);
 
-            var request = new HttpRequestMessage() { RequestUri = uri };
-            request.Method = new HttpMethod("POST");
+            var request = new HttpRequestMessage
+            {
+                RequestUri = uri,
+                Method = new HttpMethod("POST")
+            };
             request.Headers.Add("User-Agent", "Gorilla");
             var basicAuth = Convert.ToBase64String(Encoding.UTF8.GetBytes(ClientId + ":"));
             request.Headers.Authorization = new AuthenticationHeaderValue("Basic", basicAuth);
-            request.Content = new StringContent(Body,
+            request.Content = new StringContent(body,
                 Encoding.UTF8,
                 "application/x-www-form-urlencoded");
             using (var client = new HttpClient())
@@ -98,7 +97,7 @@ namespace UITEST.Authentication
 
         public async Task RefreshToken()
         {
-            var consumer = App.ServiceProvider.GetService<IRedditAPIConsumer>();
+            var consumer = App.ServiceProvider.GetService<IRedditApiConsumer>();
             var contentBody = await SendRequest($"grant_type=refresh_token&refresh_token={_refreshToken}");
             _token = contentBody["access_token"].ToObject<string>();
             consumer.Authenticate(this);
@@ -106,7 +105,7 @@ namespace UITEST.Authentication
         public async Task Authenticate(string data)
         {
             var code = GetAuthCode(data);
-            var consumer = App.ServiceProvider.GetService<IRedditAPIConsumer>();
+            var consumer = App.ServiceProvider.GetService<IRedditApiConsumer>();
             var contentBody = await SendRequest($"grant_type=authorization_code&code={code}&redirect_uri=https://gorillaapi.azurewebsites.net/");
             _token = contentBody["access_token"].ToObject<string>();
             _refreshToken = contentBody["refresh_token"].ToObject<string>();

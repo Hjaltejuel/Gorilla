@@ -1,11 +1,8 @@
-﻿using Swashbuckle.AspNetCore.Swagger;
+﻿using System.Linq;
+using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace WepAPI.Models
+namespace Gorilla.Extensions
 {
   
      public class LowerCaseDocumentFilter : IDocumentFilter

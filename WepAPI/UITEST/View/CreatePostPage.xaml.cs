@@ -1,17 +1,12 @@
-﻿using UITEST;
-using UITEST.ViewModel;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Entities.RedditEntities;
-using Windows.UI.Popups;
-using System.Net;
-using System.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
+using UITEST.ViewModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace Gorilla.View
+namespace UITEST.View
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -19,7 +14,6 @@ namespace Gorilla.View
     public sealed partial class CreatePostPage : Page
     {
         CreatePostPageViewModel _vm;
-        private MessageDialog messageDialog;
 
         public CreatePostPage()
         {
@@ -30,12 +24,12 @@ namespace Gorilla.View
         
         private void SwitchLoadingRingIsActive()
         {
-            LoadingRing.IsActive = LoadingRing.IsActive == true ? false : true;
+            LoadingRing.IsActive = LoadingRing.IsActive != true;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            _vm.currentSubreddit = e.Parameter as Subreddit;
+            _vm.CurrentSubreddit = e.Parameter as Subreddit;
             base.OnNavigatedTo(e);
         }
     }

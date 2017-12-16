@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Entities;
-using Exceptions;
+using Entities.Exceptions;
+using Entities.GorillaAPI.Interfaces;
+using Entities.GorillaEntities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Model
+namespace Model.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly IRedditDBContext context;
+        private readonly IRedditDbContext _context;
 
-        public UserRepository(IRedditDBContext _context)
+        public UserRepository(IRedditDbContext context)
         {
-            context = _context;
+            _context = context;
         }
         public async Task<string> CreateAsync(User user) 
         {
@@ -23,34 +22,34 @@ namespace Model
             {
                 throw new AlreadyThereException("A user witht that username alreay exist");
             }
-            context.Users.Add(user);
-            await context.SaveChangesAsync();
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
             return user.Username;
         }
 
         public async Task<bool> DeleteAsync(string username)
         {
-            var User = await context.Users.FindAsync(username);
+            var user = await _context.Users.FindAsync(username);
 
-            if (User == null)
+            if (user == null)
             {
                 return false;
             }
 
-            context.Users.Remove(User);
+            _context.Users.Remove(user);
 
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return true;
         }
 
         public async Task<bool> UpdateAsync(User user)
         {
-            User userTest = await context.Users.FindAsync(user.Username);
+            User userTest = await _context.Users.FindAsync(user.Username);
             if (userTest != null)
             {
                 userTest.PathToProfilePicture = user.PathToProfilePicture;
-                await context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
@@ -58,30 +57,30 @@ namespace Model
 
         public async Task<User> FindAsync(string username)
         {
-            return await context.Users.FindAsync(username);
+            return await _context.Users.FindAsync(username);
         }
 
         public async Task<IReadOnlyCollection<User>> ReadAsync()
         {
-            return await (from u in context.Users
+            return await (from u in _context.Users
                     select u).ToListAsync();
         }
 
-        private bool disposedValue = false;
+        private bool _disposedValue;
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
                     // TODO: dispose managed state (managed objects).
-                    context.Dispose();
+                    _context.Dispose();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.
 
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 

@@ -1,13 +1,14 @@
 ﻿using Entities.RedditEntities;
-using Gorilla.Model;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using Windows.UI.Xaml;
-using Gorilla.Model.GorillaRestInterfaces;
-using UITEST.RedditInterfaces;
-using Model;
 using System.Windows.Input;
+using Entities.GorillaEntities;
+using UITEST.Misc;
+using UITEST.Model;
+using UITEST.Model.GorillaRestInterfaces;
+using UITEST.Model.RedditRestInterfaces;
+using Post = Entities.RedditEntities.Post;
 
 namespace UITEST.ViewModel
 {
@@ -15,32 +16,32 @@ namespace UITEST.ViewModel
     {
         public delegate void Comments();
         public event Comments CommentsReadyEvent;
-        readonly IRedditAPIConsumer _redditAPIConsumer;
+        readonly IRedditApiConsumer _redditApiConsumer;
         readonly IRestUserPreferenceRepository _restUserPreferenceRepository;
         readonly IRestPostRepository _repository;
         public ICommand PostLiked;
         public ICommand PostDisliked;
-        private bool IsLiked;
-        private bool IsDisliked;
+        private bool _isLiked;
+        private bool _isDisliked;
         private Style _likeButton;
-        public Style likeButton { get => _likeButton;
+        public Style LikeButton { get => _likeButton;
             set { _likeButton = value; OnPropertyChanged(); } }
         private Style _dislikeButton;
-        public Style dislikeButton { get => _dislikeButton;
+        public Style DislikeButton { get => _dislikeButton;
             set { _dislikeButton = value; OnPropertyChanged(); } }
         private int _votes;
-        public int votes { get => _votes;
+        public int Votes { get => _votes;
             set { _votes = value; OnPropertyChanged(); } }
         private Post _currentComment;
         public Post CurrentPost { get => _currentComment;
             set { _currentComment = value; OnPropertyChanged();  } }
         private string _timeSinceCreation;
-        public string timeSinceCreation { get => _timeSinceCreation;
+        public string TimeSinceCreation { get => _timeSinceCreation;
             set { _timeSinceCreation = value; OnPropertyChanged(); }}
 
-        public PostPageViewModel(INavigationService service, IRestPostRepository repository, IRestUserPreferenceRepository restUserPreferenceRepository, IRedditAPIConsumer redditAPIConsumer) : base(service)
+        public PostPageViewModel(INavigationService service, IRestPostRepository repository, IRestUserPreferenceRepository restUserPreferenceRepository, IRedditApiConsumer redditApiConsumer) : base(service)
         {
-            _redditAPIConsumer = redditAPIConsumer;
+            _redditApiConsumer = redditApiConsumer;
             _repository = repository;
             _restUserPreferenceRepository = restUserPreferenceRepository;
             PostLiked = new RelayCommand(async o => { await PostLikedAsync(); });
@@ -48,20 +49,20 @@ namespace UITEST.ViewModel
         }
         public async void GetCurrentPost(Post post)
         {
-            CurrentPost = await _redditAPIConsumer.GetPostAndCommentsByIdAsync(post.id);
-            await _repository.CreateAsync(new Entities.Post { Id = post.id, username = UserFactory.GetInfo().name });
+            CurrentPost = await _redditApiConsumer.GetPostAndCommentsByIdAsync(post.id);
+            await _repository.CreateAsync(new Entities.GorillaEntities.Post { Id = post.id, username = UserFactory.GetInfo().name });
 
-            CommentsReadyEvent.Invoke();
+            CommentsReadyEvent?.Invoke();
         }
 
         public void Initialize(Post post)
         {
             CurrentPost = post;
-            votes = CurrentPost.score;
+            Votes = CurrentPost.score;
             GetCurrentPost(post);
-            timeSinceCreation = TimeHelper.CalcCreationDateByUser(CurrentPost);
-            likeButton = App.Current.Resources["LikeButton"] as Style;
-            dislikeButton = App.Current.Resources["DislikeButton"] as Style;
+            TimeSinceCreation = TimeHelper.CalcCreationDateByUser(CurrentPost);
+            LikeButton = Application.Current.Resources["LikeButton"] as Style;
+            DislikeButton = Application.Current.Resources["DislikeButton"] as Style;
         }
 
         public async Task<Comment> AddCommentAsync(AbstractCommentable commentableToCommentOn, string newCommentText)
@@ -76,8 +77,8 @@ namespace UITEST.ViewModel
                 author = username,
                 created_utc = timeInSeconds
             };
-            await _redditAPIConsumer.CreateCommentAsync(commentableToCommentOn, newComment.body);
-            await  _restUserPreferenceRepository.UpdateAsync(new Entities.UserPreference { Username = username, SubredditName = CurrentPost.subreddit, PriorityMultiplier = 3 });
+            await _redditApiConsumer.CreateCommentAsync(commentableToCommentOn, newComment.body);
+            await  _restUserPreferenceRepository.UpdateAsync(new UserPreference { Username = username, SubredditName = CurrentPost.subreddit, PriorityMultiplier = 3 });
             return newComment;
         }
 
@@ -85,52 +86,52 @@ namespace UITEST.ViewModel
         {
             int direction;
 
-            if (IsLiked)
+            if (_isLiked)
             {
-                votes -= 1;
+                Votes -= 1;
                 direction = 0;
-                likeButton = App.Current.Resources["LikeButton"] as Style;
+                LikeButton = Application.Current.Resources["LikeButton"] as Style;
             }
             else
             {
-                if (IsDisliked)
-                    votes += 2;
+                if (_isDisliked)
+                    Votes += 2;
                 else
-                    votes += 1;
+                    Votes += 1;
                 direction = 1;
-                likeButton = App.Current.Resources["LikeButtonClicked"] as Style;
+                LikeButton = Application.Current.Resources["LikeButtonClicked"] as Style;
             }
-            IsDisliked = false;
-            IsLiked = !IsLiked;
-            dislikeButton = App.Current.Resources["DislikeButton"] as Style;
-            await _redditAPIConsumer.VoteAsync(_currentComment, direction);
-            await _restUserPreferenceRepository.UpdateAsync(new Entities.UserPreference { Username = UserFactory.GetInfo().name, SubredditName = CurrentPost.subreddit, PriorityMultiplier = 1 });
+            _isDisliked = false;
+            _isLiked = !_isLiked;
+            DislikeButton = Application.Current.Resources["DislikeButton"] as Style;
+            await _redditApiConsumer.VoteAsync(_currentComment, direction);
+            await _restUserPreferenceRepository.UpdateAsync(new UserPreference { Username = UserFactory.GetInfo().name, SubredditName = CurrentPost.subreddit, PriorityMultiplier = 1 });
         }
 
         public async Task PostDislikedAsync()
         {
             int direction;
 
-            if (IsDisliked)
+            if (_isDisliked)
             {
-                votes += 1;
+                Votes += 1;
                 direction = 0;
-                dislikeButton = App.Current.Resources["DislikeButton"] as Style;
+                DislikeButton = Application.Current.Resources["DislikeButton"] as Style;
             }
             else
             {
-                if (IsLiked)
-                    votes -= 2;
+                if (_isLiked)
+                    Votes -= 2;
                 else
-                    votes -= 1;
+                    Votes -= 1;
                 direction = -1;
-                dislikeButton = App.Current.Resources["DislikeButtonClicked"] as Style;
+                DislikeButton = Application.Current.Resources["DislikeButtonClicked"] as Style;
             }
-            IsLiked = false;
-            IsDisliked = !IsDisliked;
-            likeButton = App.Current.Resources["LikeButton"] as Style;
-            await _redditAPIConsumer.VoteAsync(_currentComment, direction);
-            await _restUserPreferenceRepository.UpdateAsync(new Entities.UserPreference { Username = UserFactory.GetInfo().name, SubredditName = CurrentPost.subreddit, PriorityMultiplier = 1 });
+            _isLiked = false;
+            _isDisliked = !_isDisliked;
+            LikeButton = Application.Current.Resources["LikeButton"] as Style;
+            await _redditApiConsumer.VoteAsync(_currentComment, direction);
+            await _restUserPreferenceRepository.UpdateAsync(new UserPreference { Username = UserFactory.GetInfo().name, SubredditName = CurrentPost.subreddit, PriorityMultiplier = 1 });
         }
     }
 }

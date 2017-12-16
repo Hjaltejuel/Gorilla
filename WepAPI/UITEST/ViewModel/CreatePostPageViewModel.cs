@@ -1,80 +1,91 @@
-﻿using Entities.RedditEntities;
-using Gorilla.AuthenticationGorillaAPI;
-using Gorilla.Model;
-using Model;
-using System.Diagnostics;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using UITEST.RedditInterfaces;
 using Windows.UI.Popups;
+using Entities.GorillaEntities;
+using UITEST.Authentication.GorillaAuthentication;
+using UITEST.Model;
+using UITEST.Model.GorillaRestInterfaces;
+using UITEST.Model.RedditRestInterfaces;
+using Subreddit = Entities.RedditEntities.Subreddit;
 
 namespace UITEST.ViewModel
 {
     public class CreatePostPageViewModel : BaseViewModel
     {
-        private readonly IRedditAPIConsumer _consumer;
-        private Subreddit CurrentSubreddit;
+        private readonly IRedditApiConsumer _consumer;
+        private Subreddit _currentSubreddit;
 
         public delegate void LoadingRingSwitch();
         public event LoadingRingSwitch LoadingRingOnOf;
         public ICommand SubmitPostCommand { get; set; }
         private string _title;
-        public string title { get { return _title; } set { _title = value; OnPropertyChanged(); } }
+        public string Title { get => _title;
+            set { _title = value; OnPropertyChanged(); } }
 
         private string _body;
-        public string body{ get { return _body; }set { _body = value; OnPropertyChanged(); }}
+        public string Body{ get => _body;
+            set { _body = value; OnPropertyChanged(); }}
       
-        public Subreddit currentSubreddit
+        public Subreddit CurrentSubreddit
         {
-            get { return CurrentSubreddit; }
+            get => _currentSubreddit;
             set
             {
-                if (value != CurrentSubreddit)
+                if (value != _currentSubreddit)
                 {
-                    CurrentSubreddit = value;
-                    OnPropertyChanged("CurrentSubreddit");
+                    _currentSubreddit = value;
+                    OnPropertyChanged();
                 }
             }
         }
         private readonly IRestUserPreferenceRepository _repository;
 
-        public CreatePostPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditAPIConsumer consumer, IRestUserPreferenceRepository repository) : base(service)
+        public CreatePostPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditApiConsumer consumer, IRestUserPreferenceRepository repository) : base(service)
         {
             _repository = repository;
             _consumer = consumer;
-            _helper = helper;
-            SubmitPostCommand = new RelayCommand(async o => { await CreateNewPostAsync(title, body); });
+            Helper = helper;
+            SubmitPostCommand = new RelayCommand(async o => { await CreateNewPostAsync(Title, Body); });
         }
 
         public async Task CreateNewPostAsync(string title, string body = "")
         {
-            MessageDialog messageDialog;
+            MessageDialog messageDialog = null;
             if (string.IsNullOrEmpty(title) || string.IsNullOrWhiteSpace(title))
             {
                 messageDialog = new MessageDialog("A post needs a title");
                 messageDialog.ShowAsync();
                 return;
             }
-            LoadingRingOnOf.Invoke();
-            var response = await _consumer.CreatePostAsync(CurrentSubreddit, title, "self", body);
-            LoadingRingOnOf.Invoke();
-            if (response.Item1 == HttpStatusCode.OK)
+            if (LoadingRingOnOf != null)
             {
-                messageDialog = new MessageDialog("Back to subreddit", "Succes");
-                messageDialog.Commands.Add(new UICommand("Ok", new UICommandInvokedHandler(BackToSubreddit)));
-                await _repository.UpdateAsync(new Entities.UserPreference { Username = UserFactory.GetInfo().name, SubredditName = CurrentSubreddit.display_name, PriorityMultiplier = 5 });
+                LoadingRingOnOf.Invoke();
+                var response = await _consumer.CreatePostAsync(_currentSubreddit, title, "self", body);
+                LoadingRingOnOf.Invoke();
+                if (response.Item1 == HttpStatusCode.OK)
+                {
+                    messageDialog = new MessageDialog("Back to subreddit", "Succes");
+                    messageDialog.Commands.Add(new UICommand("Ok", BackToSubreddit));
+                    await _repository.UpdateAsync(new UserPreference
+                    {
+                        Username = UserFactory.GetInfo().name,
+                        SubredditName = _currentSubreddit.display_name,
+                        PriorityMultiplier = 5
+                    });
+                }
+                else
+                {
+                    messageDialog = new MessageDialog("Clicking Ok will keep you at the current page",
+                        "Could not create post");
+                }
             }
-            else
-            {
-                messageDialog = new MessageDialog("Clicking Ok will keep you at the current page", "Could not create post");
-            }
-            messageDialog.ShowAsync();
+            messageDialog?.ShowAsync();
         }
 
         private void BackToSubreddit(IUICommand command)
         {
-            _service.GoBack();
+            Service.GoBack();
         }
     }
 }

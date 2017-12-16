@@ -17,7 +17,7 @@ namespace UITEST.ViewModel
 
         public bool CanExecute(object parameter)
         {
-            return _canExecute == null ? true : _canExecute(parameter);
+            return _canExecute?.Invoke(parameter) ?? true;
         }
 
         public event EventHandler CanExecuteChanged;

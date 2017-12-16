@@ -30,9 +30,6 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
 
             <!-- Venstre Side -->
             <RelativePanel Grid.Column="0" Grid.Row="0" Name="Left" >

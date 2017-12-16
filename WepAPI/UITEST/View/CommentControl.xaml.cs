@@ -1,42 +1,40 @@
 ﻿using Entities.RedditEntities;
-using Gorilla.Model;
-using Gorilla.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
-using Model;
 using System;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using UITEST.RedditInterfaces;
 using Windows.UI;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Entities.GorillaEntities;
+using UITEST.Misc;
+using UITEST.Model;
+using UITEST.Model.GorillaRestInterfaces;
+using UITEST.Model.RedditRestInterfaces;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace UITEST.View
 {
-    public sealed partial class CommentControl : UserControl
+    public sealed partial class CommentControl
     {
-        CommentViewModel _vm;
-        private readonly Comment currentComment;
-        private TextBox CommentTextBox;
-        private TextBlock errorText;
-        private RelativePanel InsertCommentPanel;
-        private IRedditAPIConsumer redditAPIConsumer;
+        private readonly Comment _currentComment;
+        private TextBox _commentTextBox;
+        private TextBlock _errorText;
+        private RelativePanel _insertCommentPanel;
+        private readonly IRedditApiConsumer _redditApiConsumer;
         private readonly IRestUserPreferenceRepository _repository;
-        private bool IsLiked;
-        private bool IsDisliked;
+        private bool _isLiked;
+        private bool _isDisliked;
 
         public CommentControl(Comment comment)
         {
-            redditAPIConsumer = App.ServiceProvider.GetService<IRedditAPIConsumer>();
+            _redditApiConsumer = App.ServiceProvider.GetService<IRedditApiConsumer>();
             _repository = App.ServiceProvider.GetService<IRestUserPreferenceRepository>();
-            this.InitializeComponent();
-            _vm = App.ServiceProvider.GetService<CommentViewModel>();
-            currentComment = comment;
+            InitializeComponent();
+            _currentComment = comment;
 
             //If the comment is a 'more' type
             if (comment.body == null)
@@ -60,7 +58,10 @@ namespace UITEST.View
                 }
 
                 if (comment.depth % 2 == 0)
-                    CommentStackPanel.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                {
+                    if (CommentStackPanel != null)
+                        CommentStackPanel.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                }
                 else
                     CommentStackPanel.Background = new SolidColorBrush(Color.FromArgb(255, 240, 240, 240));
 
@@ -72,7 +73,7 @@ namespace UITEST.View
 
         private void CheckNumberOfPointsIsOnlyOne()
         {
-            if (currentComment.score == 1)
+            if (_currentComment.score == 1)
             {
                 PointsOrPoint.Text = "point";
             }
@@ -80,12 +81,12 @@ namespace UITEST.View
 
         private void SetUpTimeText()
         {
-            TimeText.Text = TimeHelper.CalcCreationDate(currentComment);
+            TimeText.Text = TimeHelper.CalcCreationDate(_currentComment);
         }
 
         public void CreateChildComments()
         {
-            foreach (Comment comment in currentComment.Replies)
+            foreach (Comment comment in _currentComment.Replies)
             {
                 CommentStackPanel.Children.Add(new CommentControl(comment));
             }
@@ -100,125 +101,148 @@ namespace UITEST.View
 
         private async void LoadMoreComments()
         {
-            var parentPanel = this.Parent as StackPanel;
-            var parentGrid = parentPanel.Parent as Grid;
-            var parentCommentControl = parentGrid.Parent as CommentControl;
-            var parentComment = parentCommentControl.currentComment;
-            var postID = parentComment.link_id;
-            var children = currentComment.children;
-
-            //parentCommentControl.CommentStackPanel.Children.Remove(parentCommentControl);
-            if (postID != null && children.Length != 0)
+            var parentPanel = Parent as StackPanel;
+            var parentGrid = parentPanel?.Parent as Grid;
+            if (parentGrid?.Parent is CommentControl parentCommentControl)
             {
-                var list = await redditAPIConsumer.GetMoreComments(postID, children, currentComment.depth);
-                foreach (var comment in list)
+                var parentComment = parentCommentControl._currentComment;
+                var postId = parentComment.link_id;
+                var children = _currentComment.children;
+
+                //parentCommentControl.CommentStackPanel.Children.Remove(parentCommentControl);
+                if (postId != null && children.Length != 0)
                 {
-                    parentPanel.Children.Add(new CommentControl(comment));
-                    //this.InsertMoreComment(comment);
+                    var list = await _redditApiConsumer.GetMoreComments(postId, children, _currentComment.depth);
+                    foreach (var comment in list)
+                    {
+                        parentPanel.Children.Add(new CommentControl(comment));
+                        //this.InsertMoreComment(comment);
+                    }
                 }
             }
-            parentPanel.Children.Remove(this);
+            parentPanel?.Children.Remove(this);
         }
 
         private async void UpvoteButton_Click(object sender, RoutedEventArgs e)
         {
             await CommentLikedAsync();
-            await _repository.UpdateAsync(new Entities.UserPreference { Username = UserFactory.GetInfo().name, SubredditName = currentComment.subreddit, PriorityMultiplier = 1 });
+            await _repository.UpdateAsync(new UserPreference
+            {
+                Username = UserFactory.GetInfo().name,
+                SubredditName = _currentComment.subreddit,
+                PriorityMultiplier = 1
+            });
         }
 
         private async void DownvoteButton_Click(object sender, RoutedEventArgs e)
         {
             await CommentDislikedAsync();
-            await _repository.UpdateAsync(new Entities.UserPreference { Username = UserFactory.GetInfo().name, SubredditName = currentComment.subreddit, PriorityMultiplier = 1 });
+            await _repository.UpdateAsync(new UserPreference
+            {
+                Username = UserFactory.GetInfo().name,
+                SubredditName = _currentComment.subreddit,
+                PriorityMultiplier = 1
+            });
         }
+
         private int GetNewVoteDirection(int voteDirection) // 1 = upvote | -1 = downvote
         {
             var currentDirection = 0;
-            if (IsLiked) { currentDirection = 1; }
-            else if (IsDisliked) { currentDirection = -1; }
+            if (_isLiked)
+            {
+                currentDirection = 1;
+            }
+            else if (_isDisliked)
+            {
+                currentDirection = -1;
+            }
             if (currentDirection + voteDirection == 0)
             {
                 return voteDirection;
             }
             return (currentDirection + voteDirection) % 2;
         }
-        private void UpdateVoteUI(int voteDirection) // 1 = upvote | -1 = downvote
+
+        private void UpdateVoteUi(int voteDirection) // 1 = upvote | -1 = downvote
         {
-            Downvote.Style = DownvoteNotClickedStyle;
-            Upvote.Style = UpvoteNotClickedStyle;
-            if (voteDirection==1) { Upvote.Style = UpvoteClickedStyle; }
-            else if (voteDirection == -1) { Downvote.Style = DownvoteClickedStyle; }
-            
-            currentComment.score += voteDirection;
-            if (IsLiked)
+            Downvote.Style = _downvoteNotClickedStyle;
+            Upvote.Style = _upvoteNotClickedStyle;
+            if (voteDirection == 1)
+            {
+                Upvote.Style = _upvoteClickedStyle;
+            }
+            else if (voteDirection == -1)
+            {
+                Downvote.Style = _downvoteClickedStyle;
+            }
+
+            _currentComment.score += voteDirection;
+            if (_isLiked)
                 if (voteDirection == 0 || voteDirection == -1)
-                    currentComment.score -= 1;
+                    _currentComment.score -= 1;
 
-            else if (IsDisliked)
-                if (voteDirection == 0 || voteDirection == 1)
-                    currentComment.score += 1;
-            
-            PointsTextBlock.Text = currentComment.score.ToString();
+                else if (_isDisliked)
+                    if (voteDirection == 0 || voteDirection == 1)
+                        _currentComment.score += 1;
 
-            IsLiked = (voteDirection == 1);
-            IsDisliked = (voteDirection == -1);
+            PointsTextBlock.Text = _currentComment.score.ToString();
+
+            _isLiked = (voteDirection == 1);
+            _isDisliked = (voteDirection == -1);
         }
+
         //Hvor skal det her stå? vi har ikke en viewmodel
         //TODO hvis vi ikke kan få observer pattern til at virke kan vi slette de der currentcomment.score - og + statements
         public async Task CommentLikedAsync()
         {
             var newDirection = GetNewVoteDirection(1);
-            UpdateVoteUI(newDirection);
-            await redditAPIConsumer.VoteAsync(currentComment, newDirection);
+            UpdateVoteUi(newDirection);
+            await _redditApiConsumer.VoteAsync(_currentComment, newDirection);
         }
+
         public async Task CommentDislikedAsync()
         {
             var newDirection = GetNewVoteDirection(-1);
-            UpdateVoteUI(newDirection);
-            await redditAPIConsumer.VoteAsync(currentComment, newDirection);
+            UpdateVoteUi(newDirection);
+            await _redditApiConsumer.VoteAsync(_currentComment, newDirection);
         }
 
         //Grimt i know.. what to do? det er et midlertidligt workaround
-        private Style UpvoteClickedStyle = App.Current.Resources["LikeButtonClicked"] as Style;
-        private Style UpvoteNotClickedStyle = App.Current.Resources["LikeButton"] as Style;
-        private Style DownvoteClickedStyle = App.Current.Resources["DislikeButtonClicked"] as Style;
-        private Style DownvoteNotClickedStyle = App.Current.Resources["DislikeButton"] as Style;
+        private readonly Style _upvoteClickedStyle = Application.Current.Resources["LikeButtonClicked"] as Style;
+
+        private readonly Style _upvoteNotClickedStyle = Application.Current.Resources["LikeButton"] as Style;
+        private readonly Style _downvoteClickedStyle = Application.Current.Resources["DislikeButtonClicked"] as Style;
+        private readonly Style _downvoteNotClickedStyle = Application.Current.Resources["DislikeButton"] as Style;
+
         private void TextButton_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
-            var btn = sender as Button;
-            btn.FontWeight = FontWeights.Bold;
+            if (sender is Button btn) btn.FontWeight = FontWeights.Bold;
         }
 
         private void TextButton_PointerLeaved(object sender, PointerRoutedEventArgs e)
         {
-            var btn = sender as Button;
-            btn.FontWeight = FontWeights.SemiBold;
+            if (sender is Button btn) btn.FontWeight = FontWeights.SemiBold;
         }
 
-        private async void CommentButton_Click(object sender, RoutedEventArgs e)
+        private void CommentButton_Click(object sender, RoutedEventArgs e)
         {
-            var CommentBtn = sender as Button;
-
-            if (InsertCommentPanel == null)
+            if (_insertCommentPanel == null)
             {
-                await CreateCommentPanel();
-                var CommentExtraTextPanel = CommentBtn.Parent as RelativePanel;
-                TextInfoPanel.Children.Add(InsertCommentPanel);
+                CreateCommentPanel();
+                TextInfoPanel.Children.Add(_insertCommentPanel);
             }
             else
             {
-                TextInfoPanel.Children.Remove(InsertCommentPanel);
-                InsertCommentPanel = null;
+                TextInfoPanel.Children.Remove(_insertCommentPanel);
+                _insertCommentPanel = null;
             }
         }
-        private async Task CreateCommentPanel()
+
+        private void CreateCommentPanel()
         {
-            if (InsertCommentPanel != null)
-            {
-                InsertCommentPanel = null;
-            }
-            InsertCommentPanel = new RelativePanel() { Margin = new Thickness(0, 40, 0, 0) };
-            CommentTextBox = new TextBox()
+            _insertCommentPanel = null;
+            _insertCommentPanel = new RelativePanel() { Margin = new Thickness(0, 40, 0, 0) };
+            _commentTextBox = new TextBox()
             {
                 Height = 200,
                 Width = 600,
@@ -228,72 +252,85 @@ namespace UITEST.View
                 Language = "en-US"
             };
 
-            var SubmitButton = new Button()
+            RelativePanel.SetBelow(new Button()
             {
                 Content = "Save",
                 Margin = new Thickness(0, 10, 10, 0)
-            };
-            RelativePanel.SetBelow(SubmitButton, CommentTextBox);
-            errorText = new TextBlock() { Visibility = Visibility.Collapsed, Margin = new Thickness(10, 7, 0, 0), FontSize = 14 };
-            RelativePanel.SetRightOf(errorText, SubmitButton);
-            RelativePanel.SetBelow(errorText, CommentTextBox);
-            RelativePanel.SetAlignVerticalCenterWith(errorText, SubmitButton);
-            SubmitButton.Click += CommentSaveClick;
+            }, _commentTextBox);
 
-            InsertCommentPanel.Children.Add(CommentTextBox);
-            InsertCommentPanel.Children.Add(SubmitButton);
-            InsertCommentPanel.Children.Add(errorText);
+            _errorText = new TextBlock()
+            {
+                Visibility = Visibility.Collapsed,
+                Margin = new Thickness(10, 7, 0, 0),
+                FontSize = 14
+            };
+            RelativePanel.SetRightOf(_errorText, new Button()
+            {
+                Content = "Save",
+                Margin = new Thickness(0, 10, 10, 0)
+            });
+            RelativePanel.SetBelow(_errorText, _commentTextBox);
+            RelativePanel.SetAlignVerticalCenterWith(_errorText, new Button()
+            {
+                Content = "Save",
+                Margin = new Thickness(0, 10, 10, 0)
+            });
+            new Button()
+            {
+                Content = "Save",
+                Margin = new Thickness(0, 10, 10, 0)
+            }.Click += CommentSaveClick;
+
+            _insertCommentPanel.Children.Add(_commentTextBox);
+            _insertCommentPanel.Children.Add(new Button()
+            {
+                Content = "Save",
+                Margin = new Thickness(0, 10, 10, 0)
+            });
+            _insertCommentPanel.Children.Add(_errorText);
         }
 
         private async void CommentSaveClick(object sender, RoutedEventArgs e)
         {
-            await InsertComment(currentComment);
-        }
-
-        private void InsertMoreComment(Comment comment)
-        {
-
-            string text = comment.body;
-
-            currentComment.Replies.Insert(0, comment);
-
-            TextInfoPanel.Children.Remove(InsertCommentPanel);
-            InsertCommentPanel = null;
-            comment.depth += 3;
-            CommentStackPanel.Children.Add(new CommentControl(comment));
+            await InsertComment(_currentComment);
         }
 
         private async Task InsertComment(AbstractCommentable abstractCommentableToCommentOn)
         {
-            var text = CommentTextBox.Text;
+            var text = _commentTextBox.Text;
             if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
             {
-                errorText.Text = "We need something in the textbox";
-                errorText.Visibility = Visibility.Visible;
+                _errorText.Text = "We need something in the textbox";
+                _errorText.Visibility = Visibility.Visible;
             }
             else
             {
                 var old = new DateTime(1970, 1, 1);
                 var totaltime = DateTime.Now - old;
-                var timeInSeconds = (int)totaltime.TotalSeconds;
+                var timeInSeconds = (int) totaltime.TotalSeconds;
                 var newComment = new Comment()
                 {
-                    body = CommentTextBox.Text,
+                    body = _commentTextBox.Text,
                     author = "ASD",
-                    depth = currentComment.depth + 1,
+                    depth = _currentComment.depth + 1,
                     created_utc = timeInSeconds
                 };
 
-                await redditAPIConsumer.CreateCommentAsync(abstractCommentableToCommentOn, newComment.body);
+                await _redditApiConsumer.CreateCommentAsync(abstractCommentableToCommentOn, newComment.body);
 
-                currentComment.Replies.Insert(0, newComment);
+                _currentComment.Replies.Insert(0, newComment);
 
-                CommentTextBox.Text = "";
-                TextInfoPanel.Children.Remove(InsertCommentPanel);
-                InsertCommentPanel = null;
+                _commentTextBox.Text = "";
+                TextInfoPanel.Children.Remove(_insertCommentPanel);
+                _insertCommentPanel = null;
 
                 CommentStackPanel.Children.Insert(1, new CommentControl(newComment));
-                await _repository.UpdateAsync(new Entities.UserPreference { Username = UserFactory.GetInfo().name, SubredditName = currentComment.subreddit, PriorityMultiplier = 3 });
+                await _repository.UpdateAsync(new UserPreference
+                {
+                    Username = UserFactory.GetInfo().name,
+                    SubredditName = _currentComment.subreddit,
+                    PriorityMultiplier = 3
+                });
             }
         }
     }

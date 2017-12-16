@@ -1,4 +1,4 @@
-﻿namespace Extensions
+﻿namespace Gorilla.Extensions
 {
     public class AzureAdOptions
     {

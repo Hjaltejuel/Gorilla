@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Entities;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using Gorilla.AuthenticationGorillaAPI;
-using System.Net;
-using Model;
-using System.Diagnostics;
+using System.Threading.Tasks;
+using Entities.GorillaEntities;
+using UITEST.Authentication.GorillaAuthentication;
+using UITEST.Model.GorillaRestInterfaces;
 
-namespace WebApplication2.Models.GorillaApiConsumeRepositories
+namespace UITEST.Model.GorillaRepositories
 {
     public class RestUserPreferenceRepository : IRestUserPreferenceRepository
-    {   
-
-        private readonly Uri _baseAddress = new Uri("https://gorillaapi.azurewebsites.net/");
-
+    {
         private readonly HttpClient _client;
 
         private readonly IAuthenticationHelper _helper;
@@ -38,8 +34,11 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
         {
             using (var h = new HttpClient())
             {
-                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("POST"), new Uri("https://gorillaapi.azurewebsites.net/api/Userpreference"));
-                request.Content = userPreference.ToHttpContent();
+                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("POST"),
+                    new Uri("https://gorillaapi.azurewebsites.net/api/Userpreference"))
+                {
+                    Content = userPreference.ToHttpContent()
+                };
 
                 var token = await _helper.AcquireTokenSilentAsync();
 
@@ -75,7 +74,7 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
             if (response.IsSuccessStatusCode)
             {
                 
-                return await response.Content.To<IReadOnlyCollection<Entities.UserPreference>>();
+                return await response.Content.To<IReadOnlyCollection<UserPreference>>();
             }
 
             return null;
@@ -83,17 +82,17 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
 
         public async Task<bool> UpdateAsync(UserPreference userPreference)
         {
-            var response = await _client.PutAsync($"api/UserPreference/", userPreference.ToHttpContent());
+            var response = await _client.PutAsync("api/UserPreference/", userPreference.ToHttpContent());
 
             return response.IsSuccessStatusCode;
         }
 
         #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+        private bool _disposedValue; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
@@ -104,7 +103,7 @@ namespace WebApplication2.Models.GorillaApiConsumeRepositories
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.
 
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 

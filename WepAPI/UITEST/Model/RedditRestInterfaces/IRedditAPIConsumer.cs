@@ -1,27 +1,25 @@
-﻿using Entities.RedditEntities;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Entities.RedditEntities;
 using UITEST.Authentication;
 
-namespace UITEST.RedditInterfaces
+namespace UITEST.Model.RedditRestInterfaces
 {
-    public interface IRedditAPIConsumer
+    public interface IRedditApiConsumer
     {
-        Task<Post> GetPostAndCommentsByIdAsync(string name_id);
+        Task<Post> GetPostAndCommentsByIdAsync(string nameId);
         Task<Subreddit> GetSubredditAsync(string subredditName, string sortBy = "hot");
 
         void Authenticate(RedditAuthHandler code);
         Task<List<Subreddit>> GetSubscribedSubredditsAsync();
         Task<(HttpStatusCode, string)> CreateCommentAsync(AbstractCommentable thing, string commentText);
-        Task<(HttpStatusCode, string)> SubscribeToSubreddit(Subreddit subreddit, bool IsSubscribing);
-        Task<(HttpStatusCode, string)> CreatePostAsync(Subreddit ToSubreddit, string title, string kind, string text = "", string url = "");
+        Task<(HttpStatusCode, string)> SubscribeToSubreddit(Subreddit subreddit, bool isSubscribing);
+        Task<(HttpStatusCode, string)> CreatePostAsync(Subreddit toSubreddit, string title, string kind, string text = "", string url = "");
         Task<(HttpStatusCode, string)> VoteAsync(AbstractCommentable commentable, int direction);
         Task<ObservableCollection<Post>> GetHomePageContent();
-        Task<ObservableCollection<Comment>> GetMoreComments(string parentPostID, string[] children, int depth, int maxCommentsAmount = 10);
+        Task<ObservableCollection<Comment>> GetMoreComments(string parentPostId, string[] children, int depth, int maxCommentsAmount = 10);
         Task<ObservableCollection<Post>> GetUserPosts(string user);
         
         Task<ObservableCollection<Comment>> GetUserComments(string user);

@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Gorilla.Model;
-using UITEST.ViewModel;
-using UITEST.Authentication;
-using Windows.UI.Xaml.Controls;
+﻿using UITEST.Authentication;
+using UITEST.Model;
 using UITEST.View;
 
-namespace Gorilla.ViewModel
+namespace UITEST.ViewModel
 {
     class LoginPageViewModel : BaseViewModel
     {
@@ -20,13 +13,13 @@ namespace Gorilla.ViewModel
 
         public async void BeginAuthentication()
         {
-            var AuthHandler = new RedditAuthHandler();
-            await AuthHandler.BeginAuth();
+            var authHandler = new RedditAuthHandler();
+            await authHandler.BeginAuth();
             HasAuthenticated();
         }
         public void HasAuthenticated()
         {
-            _service.Navigate(typeof(MainPage), null);
+            Service.Navigate(typeof(MainPage), null);
         }
     }
 }

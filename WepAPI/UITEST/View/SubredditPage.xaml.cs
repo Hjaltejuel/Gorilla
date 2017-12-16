@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using UITEST.ViewModel;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿using UITEST.ViewModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Extensions.DependencyInjection;
 using Entities.RedditEntities;
@@ -26,7 +15,7 @@ namespace UITEST.View
     {
         public SubredditPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             _vm = App.ServiceProvider.GetService<SubredditPageViewModel>();
             DataContext = _vm;
             SizeChanged += ChangeListViewWhenSizedChanged;
@@ -78,9 +67,11 @@ namespace UITEST.View
 
         private async void SortBy_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var comboBox = sender as ComboBox;
-            var SortString = comboBox.SelectedItem as string;
-            await _vm.GeneratePosts(_vm._Subreddit.display_name, SortString);
+            if (sender is ComboBox comboBox)
+            {
+                var sortString = comboBox.SelectedItem as string;
+                await _vm.GeneratePosts(_vm._Subreddit.display_name, sortString);
+            }
         }
     }
 }

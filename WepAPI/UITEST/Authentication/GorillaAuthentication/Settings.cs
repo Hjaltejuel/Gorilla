@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Security.Authentication.Web;
 
-namespace Gorilla.AuthenticationGorillaAPI
+namespace UITEST.Authentication.GorillaAuthentication
 {
     public class Settings : ISettings
     {

@@ -1,36 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Entities;
-using Model;
-using Exceptions;
+using Entities.Exceptions;
+using Entities.GorillaAPI.Interfaces;
+using Entities.GorillaEntities;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
-namespace WepAPI.Controllers
+namespace Gorilla.Controllers
 {
     
     [Produces("application/json")]
     [Route("api/[controller]")]
     public class SubredditController : Controller
     {
-        private readonly ISubredditRepository repository;
-        public SubredditController(ISubredditRepository _repository)
+        private readonly ISubredditRepository _repository;
+        public SubredditController(ISubredditRepository repository)
         {
-            repository = _repository;
+            _repository = repository;
         }
         // GET api
         [HttpGet]
         public async Task<IActionResult> ReadAsync()
         {
 
-            var result = await repository.ReadAsync();
+            var result = await _repository.ReadAsync();
             if(result == null)
             {
                 return NotFound();
-            } else if(result.Count() == 0)
+            } else if(!result.Any())
             {
                 return NoContent();
             }
@@ -42,7 +39,7 @@ namespace WepAPI.Controllers
         public async Task<IActionResult> GetAsync(string name)
         {
             {
-                var result = await repository.FindAsync(name);
+                var result = await _repository.FindAsync(name);
                 if (result == null)
                 {
                     return NotFound();
@@ -62,7 +59,7 @@ namespace WepAPI.Controllers
            
             try
             {
-                var id = await repository.CreateAsync(subreddit);
+                var id = await _repository.CreateAsync(subreddit);
                 return CreatedAtAction(nameof(GetAsync), new { id }, null);
             } catch (AlreadyThereException)
             {
@@ -78,7 +75,7 @@ namespace WepAPI.Controllers
         public async Task<IActionResult> DeleteAsync(string name)
         {
             {
-                var deleted = await repository.DeleteAsync(name);
+                var deleted = await _repository.DeleteAsync(name);
 
                 if (!deleted)
                 {

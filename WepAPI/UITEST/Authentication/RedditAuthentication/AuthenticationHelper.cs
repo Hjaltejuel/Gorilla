@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Security.Authentication.Web.Core;
 using Windows.Security.Credentials;
 using Windows.Storage;
 
-namespace Gorilla.RedditAuthentication
+namespace UITEST.Authentication.RedditAuthentication
 {
     public class AuthenticationHelper: IAuthenticationHelper
     {
@@ -75,8 +72,8 @@ namespace Gorilla.RedditAuthentication
             }
             else
             {
-                _appSettings.Values["userId"] = account?.Id;
-                _appSettings.Values["login_hint"] = account?.UserName;
+                _appSettings.Values["userId"] = account.Id;
+                _appSettings.Values["login_hint"] = account.UserName;
             }
 
             return account;

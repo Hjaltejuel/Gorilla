@@ -1,25 +1,21 @@
-﻿using Entities.RedditEntities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UITEST.RedditInterfaces;
+﻿using System.Threading.Tasks;
+using Entities.RedditEntities;
+using UITEST.Model.RedditRestInterfaces;
 
-namespace Gorilla.Model
+namespace UITEST.Model
 {
     public static class UserFactory
     {
 
-        private static User user;
+        private static User _user;
 
-        public async static Task initialize(IRedditAPIConsumer consumer)
+        public static async Task Initialize(IRedditApiConsumer consumer)
         {
-            user = await consumer.GetAccountDetailsAsync();
+            _user = await consumer.GetAccountDetailsAsync();
         }
         public static User GetInfo()
         {
-            return user;
+            return _user;
         }
     }
 }

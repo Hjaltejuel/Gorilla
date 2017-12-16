@@ -1,16 +1,11 @@
-﻿using Gorilla.AuthenticationGorillaAPI;
-using Gorilla.Model;
-using Model;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using UITEST.View;
 using Windows.Security.Credentials;
+using UITEST.Authentication.GorillaAuthentication;
+using UITEST.Model;
 
 namespace UITEST.ViewModel
 {
@@ -21,18 +16,18 @@ namespace UITEST.ViewModel
         public ICommand GoToProfilePageCommand { get; set; }
 
         
-        protected IAuthenticationHelper _helper;
-        protected INavigationService _service;
+        protected IAuthenticationHelper Helper;
+        protected INavigationService Service;
 
 
         private WebAccount _account;
 
-        public BaseViewModel(INavigationService service)
+        protected BaseViewModel(INavigationService service)
         {
-            GoToHomePageCommand = new RelayCommand(o => _service.Navigate(typeof(MainPage), o));
-            GoToDiscoverPageCommand = new RelayCommand(o => _service.Navigate(typeof(DiscoverPage), o));
-            GoToProfilePageCommand = new RelayCommand(o => _service.Navigate(typeof(ProfilePage), o));
-            _service = service;
+            GoToHomePageCommand = new RelayCommand(o => Service.Navigate(typeof(MainPage), o));
+            GoToDiscoverPageCommand = new RelayCommand(o => Service.Navigate(typeof(DiscoverPage), o));
+            GoToProfilePageCommand = new RelayCommand(o => Service.Navigate(typeof(ProfilePage), o));
+            Service = service;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -50,7 +45,7 @@ namespace UITEST.ViewModel
             }
             else
             {
-                _account = await _helper.SignInAsync();
+                _account = await Helper.SignInAsync();
             }
             return _account;
         }

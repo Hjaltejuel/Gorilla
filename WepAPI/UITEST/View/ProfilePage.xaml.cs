@@ -18,7 +18,7 @@ namespace UITEST.View
 
         public ProfilePage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             _vm = App.ServiceProvider.GetService<ProfilePageViewModel>();
 
             DataContext = _vm;
@@ -44,10 +44,6 @@ namespace UITEST.View
             await _vm.Initialize();
         }
 
-        private void ListView_SelectionItem(object sender, SelectionChangedEventArgs e)
-        {
-            Frame.Navigate(typeof(PostPage), e.AddedItems[0]);
-        }
         private void PostReadyEvent()
         {
             LoadingRing.IsActive = false;

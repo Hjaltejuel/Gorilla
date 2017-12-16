@@ -2,7 +2,6 @@
     x:Class="UITEST.View.CommentControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:UITEST.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -11,7 +10,7 @@
 
     <Grid>
         <StackPanel Name="CommentStackPanel" Margin = "20, 5, 0, 5">
-            <RelativePanel Name="CommentPanel" DataContext="{x:Bind Path = currentComment}">
+            <RelativePanel Name="CommentPanel" DataContext="{x:Bind Path = _currentComment}">
                 <RelativePanel Margin="10,10,15,0" Name="VotePanel">
                     <Button Content="Like" Style="{StaticResource LikeButton}" Name="Upvote" Click="UpvoteButton_Click" Width="20" Height="20"/>
 

@@ -5,11 +5,11 @@ namespace UITEST.CustomUI
 {
     public class CustomButton : Button
     {
-        public AbstractCommentable Commentable { get; private set; }
+        public AbstractCommentable Commentable { get; }
 
-        public CustomButton(AbstractCommentable _abstractCommentable)
+        public CustomButton(AbstractCommentable abstractCommentable)
         {
-            Commentable = _abstractCommentable;
+            Commentable = abstractCommentable;
         }
     }
 }

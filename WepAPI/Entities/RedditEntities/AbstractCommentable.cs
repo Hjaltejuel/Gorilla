@@ -6,7 +6,7 @@ namespace Entities.RedditEntities
 {
     public abstract class AbstractCommentable : INotifyPropertyChanged
     {
-        public ObservableCollection<Comment> Replies { get; set; }
+        public ObservableCollection<AbstractCommentable> Replies { get; set; }
         public int created_utc { get; set; }
         public string author { get; set; }
         //public int score { get; set; }
@@ -14,7 +14,7 @@ namespace Entities.RedditEntities
 
         public int score
         {
-            get { return Score; }
+            get => Score;
             set {
                 if (value != Score)
                 {
@@ -42,12 +42,10 @@ namespace Entities.RedditEntities
 
         public void BuildReplies(Listing listing)
         {
-            if (listing != null)
+            if (listing == null) { return; }
+            foreach (var ch in listing.data.children)
             {
-                foreach (ChildNode ch in listing.data.children)
-                {
-                    Replies.Add(ch.data.ToObject<Comment>());
-                }
+                Replies.Add(ch.data.ToObject<Comment>());
             }
         }
 
