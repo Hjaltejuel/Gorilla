@@ -17,7 +17,6 @@ namespace UITEST.ViewModel
     public abstract class BaseViewModel : INotifyPropertyChanged
     {
         public ICommand GoToHomePageCommand { get; set; }
-        public ICommand GoToTrendingPageCommand { get; set; }
         public ICommand GoToDiscoverPageCommand { get; set; }
         public ICommand GoToProfilePageCommand { get; set; }
 
