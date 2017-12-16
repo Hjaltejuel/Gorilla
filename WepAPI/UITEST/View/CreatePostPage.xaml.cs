@@ -7,6 +7,7 @@ using Windows.UI.Xaml.Navigation;
 using Entities.RedditEntities;
 using Windows.UI.Popups;
 using System.Net;
+using System.Diagnostics;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -24,48 +25,12 @@ namespace Gorilla.View
         {
             _vm = App.ServiceProvider.GetService<CreatePostPageViewModel>();
             this.InitializeComponent();
-            StopLoadingRing();
-            _vm.SentSuccesfulEvent += StopLoadingRing;
-            _vm.SentSuccesfulEvent += CreatePopUpResponseSuccesful;
-            _vm.SentUnsuccesfulEvent += StopLoadingRing;
-            _vm.SentUnsuccesfulEvent += CreatePopUpResponseUnsuccesful;
+            _vm.LoadingRingOnOf += SwitchLoadingRingIsActive;
         }
-
-        private void SubmitPostButton_Click(object sender, RoutedEventArgs e)
+        
+        private void SwitchLoadingRingIsActive()
         {
-            var title = TitleText.Text;
-            if (string.IsNullOrEmpty(title) || string.IsNullOrWhiteSpace(title))
-            {
-                messageDialog = new MessageDialog("A post needs a title");
-                messageDialog.ShowAsync();
-                return;
-            }
-
-            var body = BodyText.Text;
-            LoadingRing.IsActive = true;
-            _vm.CreateNewPostAsync(title, body);
-        }
-
-        private void StopLoadingRing()
-        {
-            LoadingRing.IsActive = false;
-        }
-
-        private void CreatePopUpResponseSuccesful()
-        {
-            messageDialog = new MessageDialog("Back to subreddit", "Succes");
-            messageDialog.Commands.Add(new UICommand("Ok", new UICommandInvokedHandler(BackToSubreddit)));
-            messageDialog.ShowAsync();
-        }
-        private void CreatePopUpResponseUnsuccesful()
-        {
-            messageDialog = new MessageDialog("Clicking Ok will keep you at the current page", "Could not create post");
-            messageDialog.ShowAsync();
-        }
-
-        private void BackToSubreddit(IUICommand command)
-        {
-            this.Frame.GoBack();
+            LoadingRing.IsActive = LoadingRing.IsActive == true ? false : true;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -73,6 +38,5 @@ namespace Gorilla.View
             _vm.currentSubreddit = e.Parameter as Subreddit;
             base.OnNavigatedTo(e);
         }
-
     }
 }
