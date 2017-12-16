@@ -32,21 +32,11 @@ namespace UITEST.View
             _vm = App.ServiceProvider.GetService<LoginPageViewModel>();
             DataContext = _vm;
         }
-        public void HasAuthenticated()
-        {
-            Frame.Navigate(typeof(MainPage));
-        }
+        
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             Storyboard fadeIn = this.Resources["FadeIn"] as Storyboard;
             fadeIn.Begin();
-            BeginAuthentication();
-        }
-        public async void BeginAuthentication()
-        {
-            var AuthHandler = new RedditAuthHandler();
-            await AuthHandler.BeginAuth();
-            HasAuthenticated();
         }
     }
 }
