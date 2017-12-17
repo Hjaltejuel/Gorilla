@@ -15,6 +15,7 @@ namespace UITEST.ViewModel
     class SubredditPageViewModel : SearchableViewModel
     {
         public ICommand GoToCreatePostPageCommand { get; set; }
+        public ICommand SubscribeToSubredditCommand { get; set; }
 
         private readonly IRestUserPreferenceRepository _repository;
         public Subreddit _Subreddit;
@@ -48,6 +49,7 @@ namespace UITEST.ViewModel
         {
             _repository = repository;
             GoToCreatePostPageCommand = new RelayCommand(o => Service.Navigate(typeof(CreatePostPage), _Subreddit));
+            SubscribeToSubredditCommand = new RelayCommand(async o => { await SubscribeToSubreddit(); });
             SortTypes = new List<string>() { "hot", "new", "rising", "top", "controversial" };
         }
         public async Task GeneratePosts(string subredditName, string sort = "hot")

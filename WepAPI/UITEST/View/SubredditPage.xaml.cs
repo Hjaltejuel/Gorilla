@@ -59,11 +59,6 @@ namespace UITEST.View
             PageTitleText.Visibility = Visibility.Collapsed;
         }
 
-        private async void SubsribeToSubredditButton_Click(object sender, RoutedEventArgs e)
-        {
-            await _vm.SubscribeToSubreddit();
-        }
-
         private async void SortBy_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is ComboBox comboBox)
