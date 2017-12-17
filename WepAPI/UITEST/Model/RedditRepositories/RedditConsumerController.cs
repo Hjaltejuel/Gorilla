@@ -16,6 +16,7 @@ namespace UITEST.Model.RedditRepositories
 {
     public class RedditConsumerController : IRedditApiConsumer
     {
+        private static HttpClient _client = new HttpClient();
         public string BaseUrl => "https://oauth.reddit.com/";
         private const string CommentUrl = "api/comment";
         private const string MeUrl = "api/v1/me";
@@ -25,7 +26,7 @@ namespace UITEST.Model.RedditRepositories
         private const string SubscribedSubredditsUrl = "subreddits/mine/subscriber";
         private const string GetByIdUrl = "by_id/{0}";
         RedditAuthHandler _authHandler;
-
+        
         public void Authenticate(RedditAuthHandler handler)
         {
             _authHandler = handler;
@@ -61,24 +62,21 @@ namespace UITEST.Model.RedditRepositories
         public async Task<(HttpStatusCode, JToken)> SendRequest(HttpRequestMessage request)
         {
             if (request == null) throw new ArgumentException("No requests specified");
-            using (var client = new HttpClient())
-            {
-                var response = await client.SendAsync(request);
-                var stringResponse = await response.Content.ReadAsStringAsync();
-                if (!response.IsSuccessStatusCode) return (response.StatusCode, null);
-                if (stringResponse.Length == 0) return (HttpStatusCode.BadRequest, null);
+            var response = await _client.SendAsync(request);
+            var stringResponse = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode) return (response.StatusCode, null);
+            if (stringResponse.Length == 0) return (HttpStatusCode.BadRequest, null);
 
-                var json = JToken.Parse(stringResponse);
-                try
-                {
-                    if (json.Value<string>("error") != null) return (HttpStatusCode.BadRequest, json["error"]);
-                }
-                catch
-                {
-                    //This is actually good - so no need to handle the catch
-                }
-                return (HttpStatusCode.OK, json);
+            var json = JToken.Parse(stringResponse);
+            try
+            {
+                if (json.Value<string>("error") != null) return (HttpStatusCode.BadRequest, json["error"]);
             }
+            catch
+            {
+                //This is actually good - so no need to handle the catch
+            }
+            return (HttpStatusCode.OK, json);
         }
         public async Task<(HttpStatusCode, ObservableCollection<Post>)> GetPostsByIdAsync(string things)
         {
