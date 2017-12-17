@@ -23,9 +23,9 @@
         <ListView Grid.Row="4" Name="PostView" SelectionMode="None" HorizontalAlignment="Stretch">
             <RelativePanel Name="TopInfo" Margin="20, 20, 0, 0" Height="Auto">
                 <RelativePanel Name="OpOgNed" Width="Auto" Margin="0,0,10,0">
-                    <Button Content="Like" Height="20" Width="20" Name="Upvote" Style="{Binding LikeButton}" Command="{Binding PostLiked}" PointerEntered="{x:Bind _vm.SetHandCursor}" PointerExited="{x:Bind _vm.SetArrowCursor}"/>
-                    <TextBlock Text="{Binding votes}" Name="Votes" HorizontalAlignment="Left" Margin="0, 8, 0, 0"/>
-                    <Button Content="Dislike" Height="20" FontSize="30" Name="Downvote" RelativePanel.Below="Upvote" Style="{Binding DislikeButton}" Command="{Binding PostDisliked}" PointerEntered="{x:Bind _vm.SetHandCursor}" PointerExited="{x:Bind _vm.SetArrowCursor}"/>
+                    <Button Content="Like" Height="20" Width="20" Name="Upvote" Style="{Binding LikeButton}" Command="{x:Bind _vm.PostLiked}" PointerEntered="{x:Bind _vm.SetHandCursor}" PointerExited="{x:Bind _vm.SetArrowCursor}"/>
+                    <TextBlock Text="{Binding Votes}" Name="Votes" HorizontalAlignment="Left" Margin="0, 8, 0, 0"/>
+                    <Button Content="Dislike" Height="20" FontSize="30" Name="Downvote" RelativePanel.Below="Upvote" Style="{Binding DislikeButton}" Command="{x:Bind _vm.PostDisliked}" PointerEntered="{x:Bind _vm.SetHandCursor}" PointerExited="{x:Bind _vm.SetArrowCursor}"/>
                     <Image Source="{x:Bind Path = _vm.CurrentPost.thumbnail}" Height="40" Width="40" Name="Box" Margin="20, 0, 0, 0" RelativePanel.RightOf="Upvote"/>
                 </RelativePanel>
                 <RelativePanel Name="TitlePanel" RelativePanel.RightOf="OpOgNed">
