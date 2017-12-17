@@ -20,24 +20,21 @@ namespace UITEST.ViewModel
         private readonly IRestUserPreferenceRepository _repository;
         public Subreddit _Subreddit;
         private List<string> _SortTypes;
-        public List<string> SortTypes
-        {
-            get => _SortTypes;
+        public List<string> SortTypes{ get => _SortTypes;
             set { _SortTypes = value; OnPropertyChanged(); }
         }
 
         private string  _subscribeString;
         public string SubscribeString { get => _subscribeString;
-            set { _subscribeString = value;  OnPropertyChanged(); }}
+            set { if (value != _subscribeString) { _subscribeString = value; OnPropertyChanged(); } }
+        }
 
         private string _subredditName;
         public string SubredditName { get => _subredditName;
-            set  { if (value != _subredditName){ _subredditName = value;OnPropertyChanged();}}}
+            set  { if (value != _subredditName) { _subredditName = value; OnPropertyChanged();}}}
 
-        bool _userIsSubscribed;
-        bool UserIsSubscribed
-        {
-            get => _userIsSubscribed;
+        private bool _userIsSubscribed;
+        public bool UserIsSubscribed { get => _userIsSubscribed;
             set
             {
                 _userIsSubscribed = value;
@@ -45,6 +42,13 @@ namespace UITEST.ViewModel
                 OnPropertyChanged("subscribeString");
             }
         }
+
+        private string _selectedSort;
+
+        public string selectedSort { get { return _selectedSort; }
+            set { if (value != _selectedSort) { _selectedSort = value; } }
+        }
+
         public SubredditPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditApiConsumer consumer, IRestUserPreferenceRepository repository ) : base(helper, service, consumer)
         {
             _repository = repository;
@@ -88,6 +92,11 @@ namespace UITEST.ViewModel
             {
                 await _repository.UpdateAsync(new UserPreference { Username = UserFactory.GetInfo().name, SubredditName = _Subreddit.display_name, PriorityMultiplier = -10 });
             }
+        }
+
+        public async void SortBy()
+        {
+            await GeneratePosts(_Subreddit.display_name, selectedSort);
         }
     }
 }

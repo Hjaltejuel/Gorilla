@@ -20,7 +20,7 @@
             <AppBarButton Icon="Contact" Label="Profile" Command="{Binding GoToProfilePageCommand}"/>
         </CommandBar>
         <TextBlock Name="PageTitleText" Grid.Column="0" Grid.Row="1" Text="{Binding SubredditName}" Style="{StaticResource PageTitleText}"/>
-        <ComboBox Name="SortBy" ItemsSource="{Binding SortTypes}" PlaceholderText="Sort by" SelectionChanged="SortBy_SelectionChanged" Grid.Column="0" Grid.Row="1" Width="100" HorizontalAlignment="Right" Margin="0, 10, 450, 0"/>
+        <ComboBox Name="SortBy" ItemsSource="{Binding SortTypes}" PlaceholderText="Sort by" SelectedItem="{x:Bind _vm.selectedSort, Mode=TwoWay}" SelectionChanged="{x:Bind _vm.SortBy}" Grid.Column="0" Grid.Row="1" Width="100" HorizontalAlignment="Right" Margin="0, 10, 450, 0"/>
         <Button Name="SubsribeToSubredditButton" Content="{Binding SubscribeString}" Grid.Column="0" Grid.Row="1" Command="{x:Bind _vm.SubscribeToSubredditCommand}" HorizontalAlignment="Right" Margin="0, 0, 335, 0"/>
         <Button Name="CreatePostButton" Content="Create post" Grid.Column="0" Grid.Row="1" Command="{Binding GoToCreatePostPageCommand}" HorizontalAlignment="Right" RelativePanel.LeftOf="SearchBox" Margin="0, 0, 220, 0"/>
         <SearchBox Name="SearchBox" Grid.Column="0" Grid.Row="1" Width="200" Height="32" HorizontalAlignment="Right" QuerySubmitted="{x:Bind _vm.SearchQuerySubmitted}" QueryText="{x:Bind _vm.QueryText, Mode=TwoWay}"/>

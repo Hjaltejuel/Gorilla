@@ -58,14 +58,5 @@ namespace UITEST.View
             CreatePostButton.Visibility = Visibility.Collapsed;
             PageTitleText.Visibility = Visibility.Collapsed;
         }
-
-        private async void SortBy_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (sender is ComboBox comboBox)
-            {
-                var sortString = comboBox.SelectedItem as string;
-                await _vm.GeneratePosts(_vm._Subreddit.display_name, sortString);
-            }
-        }
     }
 }
