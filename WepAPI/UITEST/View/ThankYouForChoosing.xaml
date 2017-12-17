@@ -7,10 +7,18 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="DimGray">
-        <RelativePanel HorizontalAlignment="Center" VerticalAlignment="Top">
+    <Grid>
+        <Grid.Background>
 
-            <TextBlock FontFamily="/Assets/Enlighten.ttf" Text="Thanks for choosing! &#x0a; we are preparing &#x0a; your gorilla " FontSize="150" Foreground="#603BBF" TextAlignment="Center"/>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="Gray" Offset="0.2" />
+
+                <GradientStop Color="DimGray" Offset="1" />
+            </LinearGradientBrush>
+        </Grid.Background>
+        <RelativePanel >
+
+            <Image Source="/Assets/Picks.png" Margin="50,30,-50,-30"/>
 
         </RelativePanel>
     </Grid>

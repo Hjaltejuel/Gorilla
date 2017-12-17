@@ -7,7 +7,15 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="DimGray" >
+    <Grid >
+        <Grid.Background>
+
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="Gray" Offset="0.2" />
+                
+                <GradientStop Color="DimGray" Offset="1" />
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.ColumnDefinitions>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -16,10 +24,11 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+
+
         
-            <TextBlock Name="PageTitleText" Text="Choose below" Style="{StaticResource PageTitleText}" Foreground="#603BBF"/>
-            <Rectangle Name="HorizontalSplitter" Grid.Row="2" HorizontalAlignment="Stretch" Fill="#603BBF" Height="1"/>
-        <RelativePanel Grid.Column="0" Grid.Row="3" Margin="400,216,-400,-520">
+        <Image Source="/Assets/dontworry.png" Margin="-20,-110,20,-640" Grid.RowSpan="4"> </Image>
+        <RelativePanel Name="OuterPanel" Grid.Column="0" Grid.Row="3" Margin="330,295,-330,-769">
             <RelativePanel Name="1"  Padding="10">
             <Image Name="carsPicture"  Source="/Assets/Cars.jpg" Width="150" Height="150" />
             <CheckBox Name="cars" Content=" Cars" Checked="" RelativePanel.Below="carsPicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
@@ -65,10 +74,10 @@
                 <CheckBox Name="technology" Content=" Technology" Checked="" RelativePanel.Below="Technologypicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
 
             </RelativePanel>
-            <Button Content="hejjsa" RelativePanel.Below="7" Width="200" Height="200" Margin="300,0,0,0" />
+            <Button Click="Button_Click"  Content="Set me up!" RelativePanel.Below="7" Width="100" Height="50" Margin="380,20,-80,0" />
 
         </RelativePanel>
-
+        
     </Grid>
 </Page>
  

@@ -14,6 +14,9 @@ using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
+using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -27,6 +30,17 @@ namespace UITEST.View
         public StartupQuestions()
         {
             this.InitializeComponent();
+        }
+
+        private void nextpage_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(ChooseYourCategories));
+        }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            Storyboard fadeIn = this.Resources["FadeIn"] as Storyboard;
+            fadeIn.Begin();
+           
         }
     }
 }

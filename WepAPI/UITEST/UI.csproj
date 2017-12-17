@@ -181,7 +181,9 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="Assets\dontworry.png" />
     <Content Include="Assets\food.jpeg" />
+    <Content Include="Assets\Picks.png" />
     <Content Include="Assets\Science.jpg" />
     <Content Include="Assets\Enlighten.ttf" />
     <Content Include="Assets\Cars.jpg" />
@@ -244,6 +246,7 @@
     <Content Include="Assets\StoreLogo.scale-400.png" />
     <Content Include="Assets\Textpost.png" />
     <Content Include="Assets\Video.png" />
+    <Content Include="Assets\Welcome.png" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
