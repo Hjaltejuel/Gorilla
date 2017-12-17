@@ -28,7 +28,7 @@ namespace UITEST.ViewModel
             GoToHomePageCommand = new RelayCommand(o => Service.Navigate(typeof(MainPage), o));
             GoToDiscoverPageCommand = new RelayCommand(o => Service.Navigate(typeof(DiscoverPage), o));
             GoToProfilePageCommand = new RelayCommand(o => Service.Navigate(typeof(ProfilePage), o));
-            //LogOutPageCommand = new RelayCommand(o => Service.Navigate(typeof(ProfilePage), o));
+            LogOutPageCommand = new RelayCommand(o => Service.Navigate(typeof(LoginPage), "logout"));
             Service = service;
         }
 

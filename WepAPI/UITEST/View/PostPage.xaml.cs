@@ -6,6 +6,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
+using Castle.Core.Internal;
 using UITEST.Model;
 using UITEST.Model.GorillaRestInterfaces;
 
@@ -41,7 +42,7 @@ namespace UITEST.View
         {
             base.OnNavigatedTo(e);
             var post = e.Parameter as Post;
-            if (post.selftext == null)
+            if (post != null && post.selftext.IsNullOrEmpty())
             {
                 TextPanel.Visibility = Visibility.Collapsed;
             }

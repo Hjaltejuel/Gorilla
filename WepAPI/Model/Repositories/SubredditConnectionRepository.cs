@@ -21,8 +21,6 @@ namespace Model.Repositories
 
         public async Task<(string, string)> CreateAsync(SubredditConnection subredditConnection)
         {
-
-
             Subreddit subredditFrom= await _context.Subreddits.FindAsync(subredditConnection.SubredditFromName);
             Subreddit subredditTo = await _context.Subreddits.FindAsync(subredditConnection.SubredditToName);
             var pref = await (from a in _context.SubredditConnections

@@ -12,17 +12,24 @@ namespace UITEST.View
     /// </summary>
     public sealed partial class LoginPage : Page
     {
+        private readonly LoginPageViewModel _vm;
         public LoginPage()
         {
+            _vm = App.ServiceProvider.GetService<LoginPageViewModel>();
+            DataContext = _vm;
             InitializeComponent();
-            var vm = App.ServiceProvider.GetService<LoginPageViewModel>();
-            DataContext = vm;
         }
         
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             Storyboard fadeIn = Resources["FadeIn"] as Storyboard;
             fadeIn.Begin();
+            var navParam = e.Parameter as string;
+            if (navParam.Equals("logout"))
+            {
+                _vm.LogOut();
+            }
+            _vm.BeginAuthentication();
         }
     }
 }

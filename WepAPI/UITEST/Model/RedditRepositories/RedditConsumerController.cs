@@ -26,13 +26,10 @@ namespace UITEST.Model.RedditRepositories
         private const string GetByIdUrl = "by_id/{0}";
         RedditAuthHandler _authHandler;
 
-        //"51999737725-OYI8KJ5T56KSO4xAyvoVhA8t5TM";
-        //
         public void Authenticate(RedditAuthHandler handler)
         {
             _authHandler = handler;
         }
-
 
         private HttpRequestMessage CreateRequest(string stringUri, string method, string data = "")
         {
