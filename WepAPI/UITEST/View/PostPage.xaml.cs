@@ -9,6 +9,7 @@ using Windows.UI.Xaml.Navigation;
 using Castle.Core.Internal;
 using UITEST.Model;
 using UITEST.Model.GorillaRestInterfaces;
+using System;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 namespace UITEST.View
@@ -28,10 +29,17 @@ namespace UITEST.View
             DataContext = _vm;
             SetEventMethods();
         }
+        private void SetNumberOfCommentsTextInSingularOrPlural()
+        {
+            comments.Text = _vm.CurrentPost.Replies.Count == 1 ? "comment" : "comments";
+        }
+
         private void CommentsReadyEvent()
         {
             LoadingRing.IsActive = false;
             DrawComments();
+            SetNumberOfCommentsTextInSingularOrPlural();
+
         }
         private void SetEventMethods()
         {
@@ -55,10 +63,12 @@ namespace UITEST.View
         private void TextButton_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
             if (sender is Button btn) btn.FontWeight = FontWeights.Bold;
+            _vm.SetHandCursor();
         }
         private void TextButton_PointerLeaved(object sender, PointerRoutedEventArgs e)
         {
             if (sender is Button btn) btn.FontWeight = FontWeights.SemiBold;
+            _vm.SetArrowCursor();
         }
         private void PostTextComment_Click(object sender, RoutedEventArgs e)
         {
