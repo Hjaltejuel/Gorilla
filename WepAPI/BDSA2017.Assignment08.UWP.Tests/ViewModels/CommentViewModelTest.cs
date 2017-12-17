@@ -1,16 +1,15 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Moq;
-using UI.Lib.Model.RedditRestInterfaces;
-using Xunit;
 using Entities.RedditEntities;
+using Moq;
 using UI.Lib.Model;
 using UI.Lib.Model.GorillaRestInterfaces;
+using UI.Lib.Model.RedditRestInterfaces;
 using UI.Lib.ViewModel;
+using Xunit;
 
-namespace BDSA2017.Assignment08.UWP.Tests.ViewModels
+namespace UI.Test.ViewModels
 {
     public class CommentViewModelTest
     {

@@ -1,16 +1,11 @@
 ﻿using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UI.Lib.Authentication.GorillaAuthentication;
 using UI.Lib.Model;
 using UI.Lib.Model.GorillaRestInterfaces;
 using UI.Lib.Model.RedditRestInterfaces;
 using Xunit;
 
-namespace UI.Tests.ViewModels
+namespace UI.Test.ViewModels
 {
     public class SubredditPageViewModelTests
     {

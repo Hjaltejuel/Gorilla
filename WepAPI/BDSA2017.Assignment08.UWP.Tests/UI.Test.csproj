@@ -7,8 +7,8 @@
     <ProjectGuid>{BA629CCC-6BE0-4513-A74F-E3A9A5E73A05}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BDSA2017.Assignment08.UWP.Tests</RootNamespace>
-    <AssemblyName>BDSA2017.Assignment08.UWP.Tests</AssemblyName>
+    <RootNamespace>UI.Test</RootNamespace>
+    <AssemblyName>UI.Test</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.16299.0</TargetPlatformVersion>
@@ -103,7 +103,6 @@
     <Compile Include="ViewModels\CommentableViewModelTest.cs" />
     <Compile Include="ViewModels\CommentViewModelTest.cs" />
     <Compile Include="ViewModels\SubredditPageViewModelTests.cs" />
-    <Compile Include="ViewModels\TrackPageViewModelTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="UnitTestApp.xaml">
