@@ -1,5 +1,9 @@
 ﻿using Moq;
-
+using UITEST.Authentication.GorillaAuthentication;
+using UITEST.Model;
+using UITEST.Model.GorillaRestInterfaces;
+using UITEST.Model.RedditRestInterfaces;
+using UITEST.ViewModel;
 using Xunit;
 
 namespace BDSA2017.Assignment08.UWP.Tests.ViewModels
@@ -9,14 +13,14 @@ namespace BDSA2017.Assignment08.UWP.Tests.ViewModels
         [Fact]
         public void TestThatThereIsAlways1()
         {
-            /*
+            
             var mock = new Mock<INavigationService>();
-            var PostMock = new Mock<IRestPostRepository>();
+            var auth = new Mock<IAuthenticationHelper>();
+            var PostMock = new Mock<IRestUserRepository>();
             var redditMock = new Mock<IRedditApiConsumer>();
-            var userRepMock = new Mock<IRestUserPreferenceRepository>();
-            PostPageViewModel postPageViewModel = new PostPageViewModel(mock.Object, PostMock.Object, userRepMock.Object, redditMock.Object);
+            MainPageViewModel view = new MainPageViewModel(auth.Object, mock.Object, redditMock.Object, PostMock.Object);
             Assert.True(true);
-            */
+            
         }
 
     }

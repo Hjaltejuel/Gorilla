@@ -99,61 +99,18 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Authentication\RedditAuthentication\AuthenticationHelper.cs" />
-    <Compile Include="Authentication\RedditAuthentication\AuthorizedHandler.cs" />
-    <Compile Include="Authentication\RedditAuthentication\IAuthenticationHelper.cs" />
-    <Compile Include="Authentication\RedditAuthentication\ISettings.cs" />
-    <Compile Include="Authentication\RedditAuthentication\Settings.cs" />
-    <Compile Include="Authentication\RedditAuthHandler.cs" />
     <Compile Include="CommentPanel.xaml.cs">
       <DependentUpon>CommentPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\CommentableViewModel.cs" />
-    <Compile Include="ViewModel\CommentViewModel.cs" />
     <Compile Include="View\CommentControl.xaml.cs">
       <DependentUpon>CommentControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CustomUI\CustomButton.cs" />
-    <Compile Include="Authentication\GorillaAuthentication\AuthenticationHelper.cs" />
-    <Compile Include="Authentication\GorillaAuthentication\AuthorizedHandler.cs" />
-    <Compile Include="Authentication\GorillaAuthentication\IAuthenticationHelper.cs" />
-    <Compile Include="Authentication\GorillaAuthentication\ISettings.cs" />
-    <Compile Include="Authentication\GorillaAuthentication\Settings.cs" />
-    <Compile Include="Model\GorillaRepositories\Extensions.cs" />
-    <Compile Include="Model\GorillaRepositories\RestPostRepository.cs" />
-    <Compile Include="Model\GorillaRepositories\RestSubredditConnectionRepository.cs" />
-    <Compile Include="Model\GorillaRepositories\RestSubredditRepository.cs" />
-    <Compile Include="Model\GorillaRepositories\RestUserPreferenceRepository.cs" />
-    <Compile Include="Model\GorillaRepositories\RestUserRepository.cs" />
-    <Compile Include="Model\GorillaRestInterfaces\IRestPostRepository.cs" />
-    <Compile Include="Model\GorillaRestInterfaces\IRestSubredditConnectionRepository.cs" />
-    <Compile Include="Model\GorillaRestInterfaces\IRestSubredditRepository.cs" />
-    <Compile Include="Model\GorillaRestInterfaces\IRestUserPreferenceRepository.cs" />
-    <Compile Include="Model\GorillaRestInterfaces\IRestUserRepository.cs" />
-    <Compile Include="Model\INavigationService.cs" />
-    <Compile Include="Model\IoCContainer.cs" />
-    <Compile Include="Model\NavigationService.cs" />
-    <Compile Include="Misc\TimeHelper.cs" />
-    <Compile Include="Model\RedditRepositories\RedditConsumerController.cs" />
-    <Compile Include="Model\RedditRestInterfaces\IRedditAPIConsumer.cs" />
-    <Compile Include="Model\UserFactory.cs" />
-    <Compile Include="ViewModel\SearchableViewModel.cs" />
-    <Compile Include="ViewModel\SubredditPageViewModel.cs" />
     <Compile Include="View\SubredditPage.xaml.cs">
       <DependentUpon>SubredditPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\PostViewControl.xaml.cs">
       <DependentUpon>PostViewControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\BaseViewModel.cs" />
-    <Compile Include="ViewModel\CreatePostPageViewModel.cs" />
-    <Compile Include="ViewModel\DiscoverPageViewModel.cs" />
-    <Compile Include="ViewModel\LoginPageViewModel.cs" />
-    <Compile Include="ViewModel\MainPageViewModel.cs" />
-    <Compile Include="ViewModel\PostPageViewModel.cs" />
-    <Compile Include="ViewModel\ProfilePageViewModel.cs" />
-    <Compile Include="ViewModel\RelayCommand.cs" />
-    <Compile Include="ViewModel\TrendingPageViewModel.cs" />
     <Compile Include="View\CreatePostPage.xaml.cs">
       <DependentUpon>CreatePostPage.xaml</DependentUpon>
     </Compile>
@@ -193,6 +150,7 @@
     <Content Include="Assets\LargeTile.scale-150.png" />
     <Content Include="Assets\LargeTile.scale-200.png" />
     <Content Include="Assets\LargeTile.scale-400.png" />
+    <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\picturepost.png" />
     <Content Include="Assets\purpledown.png" />
     <Content Include="Assets\purpleup.png" />
@@ -204,10 +162,12 @@
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-125.png" />
     <Content Include="Assets\SplashScreen.scale-150.png" />
+    <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-400.png" />
     <Content Include="Assets\Square150x150Logo.scale-100.png" />
     <Content Include="Assets\Square150x150Logo.scale-125.png" />
     <Content Include="Assets\Square150x150Logo.scale-150.png" />
+    <Content Include="Assets\Square150x150Logo.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-400.png" />
     <Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-16.png" />
     <Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-256.png" />
@@ -216,9 +176,11 @@
     <Content Include="Assets\Square44x44Logo.scale-100.png" />
     <Content Include="Assets\Square44x44Logo.scale-125.png" />
     <Content Include="Assets\Square44x44Logo.scale-150.png" />
+    <Content Include="Assets\Square44x44Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.scale-400.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-16.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-24.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-256.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-32.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-48.png" />
@@ -232,16 +194,9 @@
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
-    <Content Include="Assets\Wide310x150Logo.scale-400.png" />
-    <Content Include="MockUpPictures\CarsBanner.png" />
-    <Content Include="MockUpPictures\Destiny2Banner.png" />
-    <Content Include="Properties\Default.rd.xml" />
-    <Content Include="Assets\LockScreenLogo.scale-200.png" />
-    <Content Include="Assets\SplashScreen.scale-200.png" />
-    <Content Include="Assets\Square150x150Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -307,6 +262,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BDSA2017.Assignment08.UWP.Lib\UI.Lib.csproj">
+      <Project>{0d77cc78-f88c-4c05-a0da-6d105d0d07fe}</Project>
+      <Name>UI.Lib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Entities\Entities.csproj">
       <Project>{CF14D305-4981-4992-B0F5-EC293867A83B}</Project>
       <Name>Entities</Name>
