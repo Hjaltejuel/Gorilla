@@ -11,6 +11,9 @@
             <Setter Property="IsOpen" Value="True"/>
             <Setter Property="IsSticky" Value="True"/>
         </Style>
+        <Style x:Key="Enlighten">
+            <Setter Property="TextElement.FontFamily" Value="/Assets/Enlighten.ttf" />
+        </Style>
 
         <Style TargetType="TextBlock" x:Key="PageTitleText">
             <Setter Property="FontSize" Value="40"/>

@@ -7,16 +7,17 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="DimGray">
-        <RelativePanel HorizontalAlignment="Center" VerticalAlignment="Top">
+    <Grid>
+        <Grid.Background>
 
-            <TextBlock FontFamily="/Assets/Enlighten.ttf" Text="Welcome to &#x0a; Gorilla" FontSize="200" Foreground="#603BBF" TextAlignment="Center"/>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="Gray" Offset="0.2" />
 
-        </RelativePanel>
-        <RelativePanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Name="greeting" FontSize="20" Text="Before you can start using the application we need you to setup your interests, &#x0a; so we know what to show you!" TextAlignment="Center" Foreground="#ffffff" />
-        </RelativePanel>
-        <Button Click="" RelativePanel.Below="greeting" x:Name="nextpage" HorizontalAlignment="Center" VerticalAlignment="Center" Background="LightGray" Foreground="#603BBF" Margin="685,540,685,424" Height="36" Width="130">
+                <GradientStop Color="DimGray" Offset="1" />
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Image Source="/Assets/Welcome.png"/>
+        <Button Click="nextpage_Click" RelativePanel.Below="greeting" x:Name="nextpage"  Background="LightGray" Foreground="#603BBF" Margin="690,619,0,345" Height="36" Width="130" RenderTransformOrigin="0.574,4.444">
         Let's go!
         </Button>
 
