@@ -74,38 +74,5 @@ namespace UI.Tests.ViewModels
             var actual = vm._Subreddit.display_name;
             Assert.Null(actual);
         }
-
-        [Fact(DisplayName = "SubscribeToSubreddit Test where user unsubscribes and updateasync is called")]
-        public async void SubscribeToSubredditTestUserUnsubscribes()
-        {
-            //Arrange
-            var vm = new SubredditPageViewModel(helper.Object, service.Object, consumer.Object, repository.Object);
-            vm.UserIsSubscribed = true;
-            vm._Subreddit = new Entities.RedditEntities.Subreddit() { display_name = "Pubg"};
-            consumer.Setup(o => o.SubscribeToSubreddit(It.IsAny<Entities.RedditEntities.Subreddit>(), true));
-
-            //Act
-            await vm.SubscribeToSubreddit();
-
-            //Assert
-            repository.Verify(r => r.UpdateAsync(It.IsAny<UserPreference>()), Times.Once);
-            Assert.False(vm.UserIsSubscribed);
-        }
-
-        [Fact(DisplayName = "SubscribeToSubreddit Test where user subscribes and updateasync is called")]
-        public async void SubscribeToSubredditTestUserSubscribes()
-        {
-            //Arrange
-            var vm = new SubredditPageViewModel(helper.Object, service.Object, consumer.Object, repository.Object);
-            vm.UserIsSubscribed = false;
-            consumer.Setup(o => o.SubscribeToSubreddit(It.IsAny<Entities.RedditEntities.Subreddit>(), false));
-
-            //Act
-            await vm.SubscribeToSubreddit();
-
-            //Assert
-            repository.Verify(r => r.UpdateAsync(It.IsAny<UserPreference>()), Times.Once);
-            Assert.True(vm.UserIsSubscribed);
-        }
     }
 }

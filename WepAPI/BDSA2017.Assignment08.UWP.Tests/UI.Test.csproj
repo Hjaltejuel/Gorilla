@@ -101,7 +101,6 @@
       <DependentUpon>UnitTestApp.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\SubredditPageViewModelTests.cs" />
-    <Compile Include="ViewModels\TrackPageViewModelTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="UnitTestApp.xaml">
