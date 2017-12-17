@@ -1,42 +1,40 @@
-﻿using Entities;
-using Entities.GorillaAPI.Interfaces;
-using Exceptions;
+﻿using Entities.GorillaAPI.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Entities.Exceptions;
+using Entities.GorillaEntities;
 
 namespace Model.Repositories
 {
     public class PostRepository : IPostRepository
     {
 
-        private readonly IRedditDBContext context;
+        private readonly IRedditDbContext _context;
 
-        public PostRepository(IRedditDBContext _context)
+        public PostRepository(IRedditDbContext context)
         {
-            context = _context;
+            _context = context;
         }
         public async Task<string> CreateAsync(Post post)
         {
-            if (context.Posts.Find(post.Id,post.username) != null)
+            if (_context.Posts.Find(post.Id,post.username) != null)
             {
                 throw new AlreadyThereException("");
             }
 
-            if ((await ReadAsync(post.username)).Count() > 5)
+            if ((await ReadAsync(post.username)).Count > 5)
             {
                
-                Post remove = await (from a in context.Posts
+                Post remove = await (from a in _context.Posts
                                  where a.username.Equals(post.username)
                                  select a).FirstOrDefaultAsync();
-                context.Posts.Remove(remove);
+                _context.Posts.Remove(remove);
             }
 
-            context.Posts.Add(post);
-            await context.SaveChangesAsync();
+            _context.Posts.Add(post);
+            await _context.SaveChangesAsync();
 
           
             return post.Id;
@@ -44,26 +42,26 @@ namespace Model.Repositories
 
         public async Task<IReadOnlyCollection<Post>> ReadAsync(string username)
         {
-            return await (from s in context.Posts
+            return await (from s in _context.Posts
                           where username.Equals(s.username) 
                           select s).ToListAsync();
         }
 
-        private bool disposedValue = false;
+        private bool _disposedValue;
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
                     // TODO: dispose managed state (managed objects).
-                    context.Dispose();
+                    _context.Dispose();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.
 
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 

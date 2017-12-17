@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:customControl="using:UITEST.View"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -25,10 +24,7 @@
                             <TextBlock Text="{Binding author}" RelativePanel.Below ="Title" RelativePanel.RightOf="Box" Style="{StaticResource AuthorText}" Name="Author"/>
                             <TextBlock Text="{Binding subreddit_name_prefixed}" RelativePanel.RightOf="Author" RelativePanel.Below ="Title" Style="{StaticResource AuthorText}" Margin="4, 0, 0, 0"/>
                             <TextBlock Text="{Binding num_comments}" RelativePanel.Below ="Author" RelativePanel.RightOf="Box" FontSize="10" Name="CommentsAmount"/>
-                            <TextBlock Text="share" RelativePanel.Below ="Author" RelativePanel.RightOf="CommentsAmount" Style="{StaticResource MiniNavigationText}" Name="ShareText" Margin="4, 0, 0, 0"/>
-                            <TextBlock Text="save" RelativePanel.Below ="Author" RelativePanel.RightOf="ShareText" Style="{StaticResource MiniNavigationText}" Name="SaveText" Margin="4, 0, 0, 0"/>
-                            <TextBlock Text="hide" RelativePanel.Below ="Author" RelativePanel.RightOf="SaveText" Style="{StaticResource MiniNavigationText}" Name="HideText" Margin="4, 0, 0, 0"/>
-                            <TextBlock Text="report" RelativePanel.Below ="Author" RelativePanel.RightOf="HideText" Style="{StaticResource MiniNavigationText}" Name="ReportTex" Margin="4, 0, 0, 0"/>
+                            <TextBlock Text="comments" Name="comments" RelativePanel.Below ="Author" RelativePanel.RightOf="CommentsAmount" FontSize="10" Margin="5, 0, 0, 0"/>
                         </RelativePanel>
                     </RelativePanel>
                 </DataTemplate>

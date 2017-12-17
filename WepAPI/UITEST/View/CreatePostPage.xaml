@@ -1,8 +1,7 @@
 ﻿<Page
-    x:Class="Gorilla.View.CreatePostPage"
+    x:Class="UITEST.View.CreatePostPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Gorilla.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -14,8 +13,6 @@
     </Page.Transitions>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid.ColumnDefinitions>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -30,16 +27,16 @@
         </CommandBar>
         <RelativePanel Grid.Column="0" Grid.Row="1">
             <TextBlock Name="Title" Text="Title" FontSize="20" Margin="10, 10, 0, 0"/>
-            <TextBox Name="TitleText" TextWrapping="Wrap" Width="400" Height="auto" PlaceholderText="Insert your title here" IsSpellCheckEnabled="True" Language="en-US" RelativePanel.Below="Title" Margin="10, 10, 0, 0"/>
+            <TextBox Name="TitleText" Text="{x:Bind _vm.Title, Mode=TwoWay}" TextWrapping="Wrap" Width="400" Height="auto" PlaceholderText="Insert your title here" IsSpellCheckEnabled="True" Language="en-US" RelativePanel.Below="Title" Margin="10, 10, 0, 0"/>
             <TextBlock Name="Body" Text="Text " FontSize="20" RelativePanel.Below="TitleText" Margin="10, 10, 5, 0"/>
             <TextBlock Name="BodyOptionalText" Text="(optional)" FontSize="14" Foreground="Gray" RelativePanel.RightOf="Body" RelativePanel.AlignVerticalCenterWith="Body" Margin="0, 15, 0, 0"/>
-            <TextBox Name="BodyText" TextWrapping="Wrap" Width="400" Height="300" PlaceholderText="Insert your text here" IsSpellCheckEnabled="True" Language="en-US" RelativePanel.AlignHorizontalCenterWith="TitleText" RelativePanel.Below="Body" Margin="10, 10, 0, 0"/>
+            <TextBox Name="BodyText" Text="{x:Bind _vm.Body, Mode=TwoWay}" TextWrapping="Wrap" Width="400" Height="300" PlaceholderText="Insert your text here" IsSpellCheckEnabled="True" Language="en-US" RelativePanel.AlignHorizontalCenterWith="TitleText" RelativePanel.Below="Body" Margin="10, 10, 0, 0"/>
 
             <TextBlock Name="PostingTo" Text="Posting to " FontSize="10" Foreground="Gray" RelativePanel.AlignVerticalCenterWith="SubmitPostButton" Margin="5, 20, 0, 0"/>
-            <TextBlock Text="{x:Bind Path = _vm.currentSubreddit.display_name_prefixed}" FontSize="10" Foreground="Gray" RelativePanel.AlignVerticalCenterWith="PostingTo" RelativePanel.RightOf="PostingTo" Margin="3, 20, 0, 0"/>
-            <Button Name="SubmitPostButton" Content="Submit post" Click="SubmitPostButton_Click" RelativePanel.Below="BodyText" RelativePanel.AlignRightWith="BodyText" Margin="0, 20, 0, 0"/>
+            <TextBlock Text="{x:Bind Path = _vm.CurrentSubreddit.display_name_prefixed}" FontSize="10" Foreground="Gray" RelativePanel.AlignVerticalCenterWith="PostingTo" RelativePanel.RightOf="PostingTo" Margin="3, 20, 0, 0"/>
+            <Button Name="SubmitPostButton" Content="Submit post" Command="{x:Bind _vm.SubmitPostCommand}" RelativePanel.Below="BodyText" RelativePanel.AlignRightWith="BodyText" Margin="0, 20, 0, 0"/>
         </RelativePanel>
 
-        <ProgressRing Name="LoadingRing" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Height="200" Width="200"/>
+        <ProgressRing Name="LoadingRing" IsActive="False" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Height="200" Width="200"/>
     </Grid>
 </Page>

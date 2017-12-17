@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
+﻿using System.Collections.ObjectModel;
 
 namespace Entities.RedditEntities
 {
@@ -44,7 +41,7 @@ namespace Entities.RedditEntities
 
         public Comment()
         {
-            Replies = new ObservableCollection<Comment>();
+            Replies = new ObservableCollection<AbstractCommentable>();
         }
         
     }

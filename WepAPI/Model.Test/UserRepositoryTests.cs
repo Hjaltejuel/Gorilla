@@ -1,14 +1,12 @@
-﻿using Entities;
-using Exceptions;
-using Microsoft.Data.Sqlite;
+﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Entities.Exceptions;
+using Entities.GorillaEntities;
+using Model.Repositories;
 using Xunit;
 
 namespace Model.Test
@@ -19,7 +17,7 @@ namespace Model.Test
         public async Task Create_given_User_adds_it()
         {
             var entity = default(User);
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
             context.Setup(c => c.Users.Add(It.IsAny<User>())).Callback<User>(t => entity = t);
 
             using (var repository = new UserRepository(context.Object))
@@ -39,7 +37,7 @@ namespace Model.Test
         [Fact]
         public async Task Create_given_User_calls_SaveChangesAsync()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
             context.Setup(c => c.Users.Add(It.IsAny<User>()));
 
             using (var repository = new UserRepository(context.Object))
@@ -59,10 +57,10 @@ namespace Model.Test
             {
                 connection.Open();
 
-                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
                                   .UseSqlite(connection);
 
-                var context = new RedditDBContext(builder.Options);
+                var context = new RedditDbContext(builder.Options);
                 await context.Database.EnsureCreatedAsync();
                 var user = new User() { Username = "name" };
                 context.Users.Add(user);
@@ -80,7 +78,7 @@ namespace Model.Test
         {
             var entity = default(User);
 
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
             context.Setup(c => c.Users.Add(It.IsAny<User>()))
                 .Callback<User>(t => entity = t);
             context.Setup(c => c.SaveChangesAsync(default(CancellationToken)))
@@ -104,10 +102,10 @@ namespace Model.Test
             {
                 connection.Open();
 
-                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
                                   .UseSqlite(connection);
 
-                var context = new RedditDBContext(builder.Options);
+                var context = new RedditDbContext(builder.Options);
                 await context.Database.EnsureCreatedAsync();
 
                 using (var repository = new UserRepository(context))
@@ -126,10 +124,10 @@ namespace Model.Test
             {
                 connection.Open();
 
-                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
                                   .UseSqlite(connection);
 
-                var context = new RedditDBContext(builder.Options);
+                var context = new RedditDbContext(builder.Options);
                 await context.Database.EnsureCreatedAsync();
 
                 var entity = new User
@@ -140,7 +138,6 @@ namespace Model.Test
 
                 context.Users.Add(entity);
                 await context.SaveChangesAsync();
-                var Username = entity.Username;
 
                 using (var repository = new UserRepository(context))
                 {
@@ -158,10 +155,10 @@ namespace Model.Test
             var connection = new SqliteConnection("DataSource=:memory:");
             connection.Open();
 
-            var builder = new DbContextOptionsBuilder<RedditDBContext>()
+            var builder = new DbContextOptionsBuilder<RedditDbContext>()
                               .UseSqlite(connection);
 
-            var context = new RedditDBContext(builder.Options);
+            var context = new RedditDbContext(builder.Options);
             context.Database.EnsureCreated();
 
             var entity = new User
@@ -172,7 +169,6 @@ namespace Model.Test
 
             context.Users.Add(entity);
             await context.SaveChangesAsync();
-            var Username = entity.Username;
 
             using (var repository = new UserRepository(context))
             {
@@ -188,7 +184,7 @@ namespace Model.Test
         [Fact]
         public async Task Update_given_existing_User_returns_true()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
             var entity = new User { Username = "name" };
             context.Setup(c => c.Users.FindAsync("name")).ReturnsAsync(entity);
 
@@ -205,7 +201,7 @@ namespace Model.Test
         [Fact]
         public async Task Update_given_non_existing_User_returns_false()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
             context.Setup(c => c.Users.FindAsync("name")).ReturnsAsync(default(User));
 
             using (var repository = new UserRepository(context.Object))
@@ -221,7 +217,7 @@ namespace Model.Test
         [Fact]
         public async Task Update_given_existing_track_Updates_properties()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
             var entity = new User { Username = "name" };
             context.Setup(c => c.Users.FindAsync("name")).ReturnsAsync(entity);
 
@@ -243,7 +239,7 @@ namespace Model.Test
         [Fact]
         public async Task Update_given_existing_User_calls_SaveChangesAsync()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
             var entity = new User { Username = "name" };
             context.Setup(c => c.Users.FindAsync("name")).ReturnsAsync(entity);
 
@@ -260,7 +256,7 @@ namespace Model.Test
         [Fact]
         public async Task Update_given_non_existing_User_does_not_call_SaveChangesAsync()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
             context.Setup(c => c.Users.FindAsync("name")).ReturnsAsync(default(User));
 
             using (var repository = new UserRepository(context.Object))
@@ -277,7 +273,7 @@ namespace Model.Test
         [Fact]
         public async Task Delete_given_existing_username_removes_it()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
             var user = new User{ Username = "name" };
             context.Setup(c => c.Users.FindAsync("name")).ReturnsAsync(user);
 
@@ -292,7 +288,7 @@ namespace Model.Test
         [Fact]
         public async Task Delete_given_existing_username_calls_SaveChangesAsync()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
             var user = new User{ Username = "name" };
             context.Setup(c => c.Users.FindAsync("name")).ReturnsAsync(user);
 
@@ -307,7 +303,7 @@ namespace Model.Test
         [Fact]
         public async Task Delete_given_existing_username_returns_true()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
             var user = new User{ Username = "name" };
             context.Setup(c => c.Users.FindAsync("name")).ReturnsAsync(user);
 
@@ -322,7 +318,7 @@ namespace Model.Test
         [Fact]
         public async Task Delete_given_non_existing_username_does_not_call_SaveChangesAsync()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
             context.Setup(c => c.Users.FindAsync("name")).ReturnsAsync(default(User));
 
             using (var repository = new UserRepository(context.Object))
@@ -336,7 +332,7 @@ namespace Model.Test
         [Fact]
         public async Task Delete_given_non_existing_username_does_not_remove_it()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
             context.Setup(c => c.Users.FindAsync("name")).ReturnsAsync(default(User));
 
             using (var repository = new UserRepository(context.Object))
@@ -350,7 +346,7 @@ namespace Model.Test
         [Fact]
         public async Task Delete_given_non_existing_username_returns_false()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
             context.Setup(c => c.Users.FindAsync("name")).ReturnsAsync(default(User));
 
             using (var repository = new UserRepository(context.Object))
@@ -364,11 +360,9 @@ namespace Model.Test
         [Fact]
         public void Dispose_disposes_context()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
 
-            using (var repository = new UserRepository(context.Object))
-            {
-            }
+            new UserRepository(context.Object);
 
             context.Verify(c => c.Dispose());
         }

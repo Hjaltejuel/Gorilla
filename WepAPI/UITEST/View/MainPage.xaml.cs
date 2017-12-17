@@ -1,15 +1,13 @@
-﻿
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Extensions.DependencyInjection;
 using UITEST.ViewModel;
 using Entities.RedditEntities;
-using System.Collections.Generic;
 using Windows.UI.Core;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
+// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 namespace UITEST.View
 {
     /// <summary>
@@ -21,14 +19,12 @@ namespace UITEST.View
 
         public MainPage()
         {
-            this.InitializeComponent();
-            
+            InitializeComponent();
             _vm = App.ServiceProvider.GetService<MainPageViewModel>();
-
             DataContext = _vm;
+        
             SizeChanged += ChangeListViewWhenSizedChanged;
-            _vm.PostsReadyEvent += PostReadyEvent;
-            _vm.PostsStartedLoading += StartedLoading;
+            _vm.LoadSwitch += LoadingRingSwitch;
             PostsList.OnNagivated += PostsList_OnNagivated;
         }
 
@@ -36,28 +32,18 @@ namespace UITEST.View
         {
             Frame.Navigate(typeof(PostPage), post);
         }
-
         private void ChangeListViewWhenSizedChanged(object sender, SizeChangedEventArgs e)
         {
             PostsList.Height = e.NewSize.Height - (commandBar.ActualHeight+75);
         }
-        private void PostReadyEvent()
+        private void LoadingRingSwitch()
         {
-            LoadingRing.IsActive = false;
-        }
-        private void StartedLoading()
-        {
-            LoadingRing.IsActive = true;
+            LoadingRing.IsActive = !LoadingRing.IsActive;
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
-        }
-        private void SearchBox_QuerySubmitted(SearchBox sender, SearchBoxQuerySubmittedEventArgs args)
-        {
-            LoadingRing.IsActive = true;
-            Frame.Navigate(typeof(SubredditPage), args.QueryText);
         }
     }
 }

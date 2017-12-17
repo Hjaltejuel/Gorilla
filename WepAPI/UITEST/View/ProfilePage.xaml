@@ -16,7 +16,6 @@
         </Grid.RowDefinitions>
         <CommandBar Name="commandBar" OverflowButtonVisibility="Collapsed" Grid.Row="0" Style="{StaticResource StandardCommandBar}">
             <AppBarButton Icon="Home" Label="Home" Command="{Binding GoToHomePageCommand}"/>
-            <AppBarButton Icon="ZeroBars" Label="Trending" Command="{Binding GoToTrendingPageCommand}"/>
             <AppBarButton Icon="OutlineStar" Label="Discover" Command="{Binding GoToDiscoverPageCommand}"/>
             <AppBarButton Icon="Contact" Label="Profile" Command="{Binding GoToProfilePageCommand}"/>
         </CommandBar>
@@ -31,9 +30,6 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
 
             <!-- Venstre Side -->
             <RelativePanel Grid.Column="0" Grid.Row="0" Name="Left" >

@@ -28,7 +28,19 @@ namespace Entities.RedditEntities
         public bool over_18 { get; set; }
         public bool hidden { get; set; }
         public int num_comments { get; set; }
-        public string thumbnail { get; set; }
+        private string _thumbnail;
+        public string thumbnail
+        {
+            get
+            {
+                if (is_self)
+                    return "/Assets/Textpost.png";
+                if (_thumbnail == "default")
+                    return "/Assets/Externallink.png";
+                return _thumbnail;
+            }
+            set => _thumbnail = value;
+        }
         public string subreddit_id { get; set; }
         public bool hide_score { get; set; }
         public string link_flair_css_class { get; set; }
@@ -62,7 +74,7 @@ namespace Entities.RedditEntities
 
         public Post()
         {
-            Replies = new ObservableCollection<Comment>();
+            Replies = new ObservableCollection<AbstractCommentable>();
         }
         // er det saadan det skal virke? 
         public string PostSerialize() {

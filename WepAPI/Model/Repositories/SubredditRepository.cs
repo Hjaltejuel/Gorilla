@@ -1,26 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Entities;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Exceptions;
+using System.Threading.Tasks;
+using Entities.Exceptions;
+using Entities.GorillaAPI.Interfaces;
+using Entities.GorillaEntities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Model
+namespace Model.Repositories
 {
     public class SubredditRepository : ISubredditRepository
     {
-        private readonly IRedditDBContext context;
+        private readonly IRedditDbContext _context;
 
-        public SubredditRepository(IRedditDBContext _context)
+        public SubredditRepository(IRedditDbContext context)
         {
-            context = _context;
+            _context = context;
         }
 
         public async Task<Subreddit> FindAsync(string subredditName)
         {
-            return await context.Subreddits.FindAsync(subredditName);
+            return await _context.Subreddits.FindAsync(subredditName);
             
         }
 
@@ -30,48 +29,48 @@ namespace Model
             {
                 throw new AlreadyThereException("A subreddit with that name already exist");
             }
-            context.Subreddits.Add(subreddit);
-            await context.SaveChangesAsync();
+            _context.Subreddits.Add(subreddit);
+            await _context.SaveChangesAsync();
             return subreddit.SubredditName;
         }
         public async Task<bool> DeleteAsync(string subredditName)
         {
-            var subreddit = await context.Subreddits.FindAsync(subredditName);
+            var subreddit = await _context.Subreddits.FindAsync(subredditName);
 
             if (subreddit == null)
             {
                 return false;
             }
 
-            context.Subreddits.Remove(subreddit);
+            _context.Subreddits.Remove(subreddit);
 
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return true;
         }
 
         public async Task<IReadOnlyCollection<Subreddit>> ReadAsync()
         {
-            return await (from s in context.Subreddits
+            return await (from s in _context.Subreddits
                    select s).ToListAsync();
         }
 
 
-        private bool disposedValue = false;
+        private bool _disposedValue;
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
                     // TODO: dispose managed state (managed objects).
-                    context.Dispose();
+                    _context.Dispose();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.
 
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 

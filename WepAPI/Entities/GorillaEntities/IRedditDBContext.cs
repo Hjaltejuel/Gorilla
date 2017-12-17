@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
-namespace Entities
+namespace Entities.GorillaEntities
 {
-    public interface IRedditDBContext : IDisposable
+    public interface IRedditDbContext : IDisposable
     {
         DbSet<CategorySubreddit> CategorySubreddits { get; set; }
         DbSet<SubredditConnection> SubredditConnections { get; set; }

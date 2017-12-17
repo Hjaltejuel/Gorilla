@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 
 namespace Entities.RedditEntities
 {
     public class Subreddit
     {
+        public string interest { get; set; }
         public string user_is_contributor { get; set; }
         public string banner_img { get; set; }
         public string user_flair_text { get; set; }
@@ -68,18 +67,5 @@ namespace Entities.RedditEntities
         public string submission_type { get; set; }
         public string user_is_subscriber { get; set; }
         public ObservableCollection<Post> posts { get; set; }
-
-        public override bool Equals(object obj)
-        {
-            var sub = obj as Subreddit;
-            if (sub.display_name.Equals(this.display_name))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
     }
 }

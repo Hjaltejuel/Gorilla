@@ -1,26 +1,20 @@
-using Entities;
-using Exceptions;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Model;
-using Moq;
-using System;
-using System.Linq;
 using System.Threading.Tasks;
-using WepAPI.Controllers;
+using Entities.Exceptions;
+using Entities.GorillaAPI.Interfaces;
+using Entities.GorillaEntities;
+using Gorilla.Controllers;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
 using Xunit;
-using static System.Net.Mime.MediaTypeNames;
 
-namespace WebApi.Test
+namespace Gorilla.Test
 {
     public class UserControllerTest
     {
- 
-
         [Fact(DisplayName = "Read returns Ok with users")]
         public async Task Get_returns_Ok_with_tracks()
         {
-            var users = new User[1] { new User { Username = "test" } };
+            var users = new[] { new User { Username = "test" } };
 
             var repository = new Mock<IUserRepository>();
             repository.Setup(r => r.ReadAsync()).ReturnsAsync(users);
@@ -254,8 +248,7 @@ namespace WebApi.Test
             repository.Setup(r => r.DeleteAsync("test")).ReturnsAsync(true);
 
             var controller = new UserController(repository.Object);
-
-            var user = new User();
+            
             var result = await controller.DeleteAsync("test");
 
             Assert.IsType<NoContentResult>(result);

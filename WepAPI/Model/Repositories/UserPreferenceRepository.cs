@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Exceptions;
+using System.Threading.Tasks;
+using Entities.Exceptions;
+using Entities.GorillaAPI.Interfaces;
+using Entities.GorillaEntities;
+using Microsoft.EntityFrameworkCore;
 
-namespace Model
+namespace Model.Repositories
 {
     public class UserPreferenceRepository : IUserPreferenceRepository
     {
-        private readonly IRedditDBContext context;
+        private readonly IRedditDbContext _context;
 
-        public UserPreferenceRepository(IRedditDBContext _context)
+        public UserPreferenceRepository(IRedditDbContext context)
         {
-            context = _context;
+            _context = context;
             
         }
 
@@ -23,9 +22,9 @@ namespace Model
         {
           
             
-            User user =await context.Users.FindAsync(userPreference.Username);
-            Subreddit subreddit = await context.Subreddits.FindAsync(userPreference.SubredditName);
-            var pref = await (from a in context.UserPreferences
+            User user =await _context.Users.FindAsync(userPreference.Username);
+            Subreddit subreddit = await _context.Subreddits.FindAsync(userPreference.SubredditName);
+            var pref = await (from a in _context.UserPreferences
                               where a.Username.Equals(userPreference.Username) && a.SubredditName.Equals(userPreference.SubredditName)
                               select a).FirstOrDefaultAsync();
         
@@ -35,8 +34,8 @@ namespace Model
                 {
                     throw new AlreadyThereException("There is already a userPreference connected");
                 } 
-                context.UserPreferences.Add(userPreference);
-                await context.SaveChangesAsync();
+                _context.UserPreferences.Add(userPreference);
+                await _context.SaveChangesAsync();
                 return (userPreference.Username, userPreference.SubredditName);
             }
             throw new NotFoundException("There is no subreddit or user to that userPreference");    
@@ -45,13 +44,13 @@ namespace Model
 
         public async Task<bool> DeleteAsync(string username, string subredditName)
         {
-            var preference = (from a in context.UserPreferences.AsParallel()
+            var preference = (from a in _context.UserPreferences.AsParallel()
                               where a.Username.Equals(username) && a.SubredditName.Equals(subredditName)
                               select a).FirstOrDefault();
             if (preference!=null)
             {
-                context.UserPreferences.Remove(preference);
-                await context.SaveChangesAsync();
+                _context.UserPreferences.Remove(preference);
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
@@ -61,11 +60,11 @@ namespace Model
         public async Task<IReadOnlyCollection<UserPreference>> FindAsync(string username)
         {
            
-            var prefs = await (from a in context.UserPreferences
+            var prefs = await (from a in _context.UserPreferences
                          where a.Username.Equals(username)
                          select a).ToListAsync();
             
-            if (prefs.Count() == 0)
+            if (!prefs.Any())
             {
                 return null;
             }    
@@ -77,15 +76,15 @@ namespace Model
 
         public async Task<bool> UpdateAsync(UserPreference userPreference)
         {
-            User user = await context.Users.FindAsync(userPreference.Username);
-            Subreddit subreddit = await context.Subreddits.FindAsync(userPreference.SubredditName);
-            var preference = await (from a in context.UserPreferences
+            await _context.Users.FindAsync(userPreference.Username);
+            await _context.Subreddits.FindAsync(userPreference.SubredditName);
+            var preference = await (from a in _context.UserPreferences
                               where a.Username.Equals(userPreference.Username) && a.SubredditName.Equals(userPreference.SubredditName)
                               select a).FirstOrDefaultAsync();
             if (preference != null)
             {
                 preference.PriorityMultiplier += userPreference.PriorityMultiplier;
-                await context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
                 return true;
             }
             else {
@@ -97,24 +96,22 @@ namespace Model
 
                 return true;
             }
-
-           
         }
-        private bool disposedValue = false;
+        private bool _disposedValue;
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
                     // TODO: dispose managed state (managed objects).
-                    context.Dispose();
+                    _context.Dispose();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.
 
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 

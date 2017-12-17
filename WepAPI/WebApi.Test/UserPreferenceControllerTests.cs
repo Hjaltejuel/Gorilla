@@ -1,19 +1,13 @@
-﻿using Entities;
-using Exceptions;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
+using Entities.Exceptions;
+using Entities.GorillaAPI.Interfaces;
+using Entities.GorillaEntities;
+using Gorilla.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using Model;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WepAPI.Controllers;
 using Xunit;
 
-namespace WebApi.Test
+namespace Gorilla.Test
 {
     public class UserPreferenceControllerTest
     {
@@ -21,25 +15,25 @@ namespace WebApi.Test
         [Fact(DisplayName = "Find returns Ok with UserPreference")]
         public async Task Find_returns_Ok_with_tracks()
         {
-            var SubredditConnections = new UserPreference[1] { new UserPreference {Username = "test", SubredditName = "name" } };
+            var subredditConnections = new[] { new UserPreference {Username = "test", SubredditName = "name" } };
 
             var repository = new Mock<IUserPreferenceRepository>();
-            repository.Setup(r => r.FindAsync("test")).ReturnsAsync(SubredditConnections);
+            repository.Setup(r => r.FindAsync("test")).ReturnsAsync(subredditConnections);
 
             var controller = new UserPreferenceController(repository.Object);
 
             var result = await controller.FindAsync("test") as OkObjectResult;
 
-            Assert.Equal(SubredditConnections, result.Value);
+            Assert.Equal(subredditConnections, result.Value);
         }
 
         [Fact(DisplayName = "Find returns NoContent")]
         public async Task Find_returns_NoContent()
         {
-            var SubredditConnections = new UserPreference[0];
+            var subredditConnections = new UserPreference[0];
 
             var repository = new Mock<IUserPreferenceRepository>();
-            repository.Setup(r => r.FindAsync("test")).ReturnsAsync(SubredditConnections);
+            repository.Setup(r => r.FindAsync("test")).ReturnsAsync(subredditConnections);
 
             var controller = new UserPreferenceController(repository.Object);
 
@@ -196,8 +190,7 @@ namespace WebApi.Test
             repository.Setup(r => r.DeleteAsync("test","test")).ReturnsAsync(false);
 
             var controller = new UserPreferenceController(repository.Object);
-
-            var userPreference = new UserPreference();
+            
             var result = await controller.DeleteAsync("test","test");
 
             Assert.IsType<NotFoundResult>(result);
@@ -210,8 +203,7 @@ namespace WebApi.Test
             repository.Setup(r => r.DeleteAsync("test","test")).ReturnsAsync(true);
 
             var controller = new UserPreferenceController(repository.Object);
-
-            var userPreference = new UserPreference();
+            
             var result = await controller.DeleteAsync("test","test");
 
             Assert.IsType<NoContentResult>(result);

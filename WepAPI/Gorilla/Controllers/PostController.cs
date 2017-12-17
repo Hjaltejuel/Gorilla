@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Model;
-using Entities;
-using Exceptions;
-using Microsoft.AspNetCore.Authorization;
+using Entities.Exceptions;
 using Entities.GorillaAPI.Interfaces;
+using Entities.GorillaEntities;
 
 namespace Gorilla.Controllers
 {
@@ -17,22 +13,22 @@ namespace Gorilla.Controllers
     public class PostController : Controller
     {
 
-        private readonly IPostRepository repository;
-        public PostController(IPostRepository _repository)
+        private readonly IPostRepository _repository;
+        public PostController(IPostRepository repository)
         {
-            repository = _repository;
+            _repository = repository;
         }
         // GET: api/Post
         [HttpGet("{username}")]
         public async Task<IActionResult> ReadAsync(string username)
         {
 
-            var result = await repository.ReadAsync(username);
+            var result = await _repository.ReadAsync(username);
             if (result == null)
             {
                 return NotFound();
             }
-            else if (result.Count() == 0)
+            else if (!result.Any())
             {
                 return NoContent();
             }
@@ -52,7 +48,7 @@ namespace Gorilla.Controllers
 
             try
             {
-                var id = await repository.CreateAsync(post);
+                var id = await _repository.CreateAsync(post);
                 return CreatedAtAction(nameof(ReadAsync), new { id }, null);
             }
             catch ( AlreadyThereException )

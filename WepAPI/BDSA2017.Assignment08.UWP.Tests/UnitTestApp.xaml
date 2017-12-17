@@ -2,7 +2,6 @@
     x:Class="BDSA2017.Assignment08.UWP.Tests.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:BDSA2017.Assignment08.UWP.Tests"
     xmlns:ui="using:Xunit.Runners.UI"
     RequestedTheme="Light">
 

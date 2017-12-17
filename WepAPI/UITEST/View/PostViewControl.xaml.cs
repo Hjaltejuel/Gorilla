@@ -14,12 +14,12 @@ namespace UITEST.View
         public event NavigateToPostEvent OnNagivated;
         public PostViewControl()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
         public ObservableCollection<Post> Posts
         {
-            get { return (ObservableCollection<Post>)GetValue(PostsProperty); }
-            set { SetValue(PostsProperty, value); }
+            get => (ObservableCollection<Post>)GetValue(PostsProperty);
+            set => SetValue(PostsProperty, value);
         }
         public static readonly DependencyProperty PostsProperty = DependencyProperty.Register
         (

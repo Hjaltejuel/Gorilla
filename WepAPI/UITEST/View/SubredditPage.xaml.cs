@@ -1,20 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using UITEST.ViewModel;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿using UITEST.ViewModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Extensions.DependencyInjection;
 using Entities.RedditEntities;
+
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace UITEST.View
@@ -26,16 +16,15 @@ namespace UITEST.View
     {
         public SubredditPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             _vm = App.ServiceProvider.GetService<SubredditPageViewModel>();
             DataContext = _vm;
             SizeChanged += ChangeListViewWhenSizedChanged;
-            _vm.PostsReadyEvent += PostReadyEvent;
             PostsList.OnNagivated += PostsList_OnNagivated;
+            _vm.LoadSwitch += LoadingRingSwitch;
         }
 
         private readonly SubredditPageViewModel _vm;
-        private TextBlock NothingFoundTextBlock;
 
         private void PostsList_OnNagivated(Post post)
         {
@@ -46,48 +35,29 @@ namespace UITEST.View
         {
             PostsList.Height = e.NewSize.Height - (commandBar.ActualHeight + 75);
         }
-        private void PostReadyEvent()
+        private void LoadingRingSwitch()
         {
-            LoadingRing.IsActive = false;
+            LoadingRing.IsActive = !LoadingRing.IsActive;
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            var SubredditSearchString = e.Parameter as string;
-            ShowSubreddit(SubredditSearchString);
+            var subredditSearchString = e.Parameter as string;
+            ShowSubreddit(subredditSearchString);
         }
-        private async void ShowSubreddit(string SubredditSearchString)
+        private async void ShowSubreddit(string subredditSearchString)
         {
-            await _vm.GeneratePosts(SubredditSearchString);
+            await _vm.GeneratePosts(subredditSearchString);
             SubsribeToSubredditButton.Visibility = Visibility.Visible;
-            if (_vm._Subreddit == null || _vm._Subreddit.name == null)
-            {
-                NothingFoundTextBlock = new TextBlock() { Text = $"Nothing Found on r/{SubredditSearchString}", FontSize = 50, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
-                _Grid.Children.Add(NothingFoundTextBlock);
-                Grid.SetRow(NothingFoundTextBlock, 3);
-                SubsribeToSubredditButton.Visibility = Visibility.Collapsed;
-            }
-        }
-        private void SearchBox_QuerySubmitted(SearchBox sender, SearchBoxQuerySubmittedEventArgs args)
-        {
-            LoadingRing.IsActive = true;
-            if (!args.QueryText.Equals(_vm._Subreddit.display_name))
-                Frame.Navigate(typeof(SubredditPage), args.QueryText);
-        }
+            if (_vm._Subreddit?.name != null) return;
 
-        private async void SubsribeToSubredditButton_Click(object sender, RoutedEventArgs e)
-        {
-            await _vm.SubscribeToSubreddit();
-
-
-        }
-
-        private async void SortBy_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            LoadingRing.IsActive = true;
-            var comboBox = sender as ComboBox;
-            var SortString = comboBox.SelectedItem as string;
-            await _vm.GeneratePosts(_vm._Subreddit.display_name, SortString);
+            NothingFoundTextBlock.Visibility = Visibility.Visible;
+            NothingFoundTextBlock.Text = $"Nothing Found on r/{subredditSearchString}";
+            SubsribeToSubredditButton.Visibility = Visibility.Collapsed;
+            PostsList.Visibility = Visibility.Collapsed;
+            SortBy.Visibility = Visibility.Collapsed;
+            CreatePostButton.Visibility = Visibility.Collapsed;
+            PageTitleText.Visibility = Visibility.Collapsed;
         }
     }
 }

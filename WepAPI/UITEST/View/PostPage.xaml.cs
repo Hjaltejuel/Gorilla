@@ -1,28 +1,15 @@
 ﻿using Entities.RedditEntities;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
 using Microsoft.Extensions.DependencyInjection;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using UITEST.CustomUI;
 using UITEST.ViewModel;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using Gorilla.Model;
-using Gorilla.Model.GorillaRestInterfaces;
-using Gorilla.Model.GorillaRepositories;
-using Model;
+using Castle.Core.Internal;
+using UITEST.Model;
+using UITEST.Model.GorillaRestInterfaces;
+using System;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 namespace UITEST.View
@@ -33,22 +20,26 @@ namespace UITEST.View
     public sealed partial class PostPage : Page
     {
         private readonly PostPageViewModel _vm;
-        private readonly IRestPostRepository _repository;
         
         public PostPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             LoadingRing.IsActive = true;
-           
-            _repository = App.ServiceProvider.GetService<IRestPostRepository>();
             _vm = App.ServiceProvider.GetService<PostPageViewModel>();
             DataContext = _vm;
             SetEventMethods();
         }
+        private void SetNumberOfCommentsTextInSingularOrPlural()
+        {
+            comments.Text = _vm.CurrentPost.Replies.Count == 1 ? "comment" : "comments";
+        }
+
         private void CommentsReadyEvent()
         {
             LoadingRing.IsActive = false;
             DrawComments();
+            SetNumberOfCommentsTextInSingularOrPlural();
+
         }
         private void SetEventMethods()
         {
@@ -59,11 +50,10 @@ namespace UITEST.View
         {
             base.OnNavigatedTo(e);
             var post = e.Parameter as Post;
-            if (post.selftext == null)
+            if (post != null && post.selftext.IsNullOrEmpty())
             {
-                PostText.Visibility = Visibility.Collapsed;
+                TextPanel.Visibility = Visibility.Collapsed;
             }
-            _repository.CreateAsync(new Entities.Post { Id = post.id, username = UserFactory.GetInfo().name });
             _vm.Initialize(post);
         }
         private void ChangeListViewWhenSizedChanged(object sender, SizeChangedEventArgs e)
@@ -72,13 +62,13 @@ namespace UITEST.View
         }
         private void TextButton_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
-            var btn = sender as Button;
-            btn.FontWeight = FontWeights.Bold;
+            if (sender is Button btn) btn.FontWeight = FontWeights.Bold;
+            _vm.SetHandCursor();
         }
         private void TextButton_PointerLeaved(object sender, PointerRoutedEventArgs e)
         {
-            var btn = sender as Button;
-            btn.FontWeight = FontWeights.SemiBold;
+            if (sender is Button btn) btn.FontWeight = FontWeights.SemiBold;
+            _vm.SetArrowCursor();
         }
         private void PostTextComment_Click(object sender, RoutedEventArgs e)
         {
@@ -87,12 +77,7 @@ namespace UITEST.View
             CommentPanel.Visibility = CommentPanel.Visibility.Equals(Visibility.Visible) ? Visibility.Collapsed : Visibility.Visible;
         }
 
-        private void CommentSaveClick(object sender, RoutedEventArgs e)
-        {
-            InsertCommentAsync(_vm.CurrentPost);
-        }
-
-        private async void InsertCommentAsync(AbstractCommentable abstractCommentableToCommentOn)
+        private async void CommentSaveClick(object sender, RoutedEventArgs e)
         {
             var text = CommentTextBox.Text;
             if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
@@ -102,17 +87,18 @@ namespace UITEST.View
             else
             {
                 CommentPanel.Visibility = Visibility.Collapsed;
-                var newComment = await _vm.AddCommentAsync(abstractCommentableToCommentOn, text);
-                PostView.Items.Insert(2, new CommentControl(newComment));
+                var newComment = await _vm.CreateComment(_vm.CurrentPost, text);
+                PostView.Items?.Insert(2, new CommentControl(newComment));
             }
         }
         private void DrawComments()
         {
-            foreach (var comment in _vm.CurrentPost.Replies)
+            foreach (var _comment in _vm.CurrentPost.Replies)
             {
-                if (comment.body == null) { continue; }
-                var TopCommentPanel = new CommentControl(comment);
-                PostView.Items.Add(TopCommentPanel);
+                var comment = _comment as Comment;
+                if (comment?.body == null) { continue; }
+                var topCommentPanel = new CommentControl(comment);
+                PostView.Items.Add(topCommentPanel);
             }
         }
     }

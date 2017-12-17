@@ -1,15 +1,12 @@
-﻿using Entities;
-using Exceptions;
-using Microsoft.Data.Sqlite;
+﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Model.Repositories;
 using Moq;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Entities.Exceptions;
+using Entities.GorillaEntities;
 using Xunit;
 
 namespace Model.Test
@@ -23,17 +20,17 @@ namespace Model.Test
             {
                 connection.Open();
 
-                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
                                   .UseSqlite(connection);
 
-                var context = new RedditDBContext(builder.Options);
+                var context = new RedditDbContext(builder.Options);
                 await context.Database.EnsureCreatedAsync();
                 var subredditConnection = new SubredditConnection()
                 {
                     SubredditFromName = "name",
                     SubredditToName = "TestSub"
                 };
-                var Subreddit = new Subreddit()
+                var subreddit = new Subreddit()
                 {
                     SubredditName = "name"
                 };
@@ -41,7 +38,7 @@ namespace Model.Test
                 {
                     SubredditName = "TestSub"
                 };
-                context.Subreddits.Add(Subreddit);
+                context.Subreddits.Add(subreddit);
                 context.Subreddits.Add(subredit);
 
                 await context.SaveChangesAsync();
@@ -50,7 +47,6 @@ namespace Model.Test
 
                 using (var repository = new SubredditConnectionRepository(context))
                 {
-                    var db = context.SubredditConnections;
                     await repository.CreateAsync(subredditConnection);
                     Assert.Equal(subredditConnection, context.SubredditConnections.FirstOrDefault());
 
@@ -69,17 +65,17 @@ namespace Model.Test
             {
                 connection.Open();
 
-                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
                                   .UseSqlite(connection);
 
-                var context = new RedditDBContext(builder.Options);
+                var context = new RedditDbContext(builder.Options);
                 await context.Database.EnsureCreatedAsync();
                 var subredditConnection = new SubredditConnection()
                 {
                     SubredditFromName = "name",
                     SubredditToName = "TestSub"
                 };
-                var Subreddit = new Subreddit()
+                var subreddit = new Subreddit()
                 {
                     SubredditName = "name"
                 };
@@ -87,7 +83,7 @@ namespace Model.Test
                 {
                     SubredditName = "TestSub"
                 };
-                context.Subreddits.Add(Subreddit);
+                context.Subreddits.Add(subreddit);
                 context.Subreddits.Add(subredit);
                 context.SubredditConnections.Add(subredditConnection);
                 await context.SaveChangesAsync();
@@ -107,10 +103,10 @@ namespace Model.Test
             {
                 connection.Open();
 
-                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
                                   .UseSqlite(connection);
 
-                var context = new RedditDBContext(builder.Options);
+                var context = new RedditDbContext(builder.Options);
                 await context.Database.EnsureCreatedAsync();
 
                 var subredditConnection = new SubredditConnection()
@@ -118,12 +114,12 @@ namespace Model.Test
                     SubredditFromName = "hello",
                     SubredditToName = "TestSub"
                 };
-                var Subreddit = new Subreddit()
+                var subreddit = new Subreddit()
                 {
                     SubredditName = "TestSub"
                 };
 
-                context.Subreddits.Add(Subreddit);
+                context.Subreddits.Add(subreddit);
                 await context.SaveChangesAsync();
 
                 using (var repository = new SubredditConnectionRepository(context))
@@ -142,10 +138,10 @@ namespace Model.Test
             {
                 connection.Open();
 
-                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
                                   .UseSqlite(connection);
 
-                var context = new RedditDBContext(builder.Options);
+                var context = new RedditDbContext(builder.Options);
                 await context.Database.EnsureCreatedAsync();
 
                 var subredditConnection = new SubredditConnection()
@@ -153,12 +149,12 @@ namespace Model.Test
                     SubredditFromName = "hello",
                     SubredditToName = "TestSub"
                 };
-                var Subreddit = new Subreddit()
+                var subreddit = new Subreddit()
                 {
                     SubredditName = "hello"
                 };
 
-                context.Subreddits.Add(Subreddit);
+                context.Subreddits.Add(subreddit);
                 await context.SaveChangesAsync();
                 using (var repository = new SubredditConnectionRepository(context))
                 {
@@ -177,10 +173,10 @@ namespace Model.Test
             {
                 connection.Open();
 
-                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
                                   .UseSqlite(connection);
 
-                var context = new RedditDBContext(builder.Options);
+                var context = new RedditDbContext(builder.Options);
                 await context.Database.EnsureCreatedAsync();
 
                 using (var repository = new SubredditConnectionRepository(context))
@@ -198,17 +194,17 @@ namespace Model.Test
             {
                 connection.Open();
 
-                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
                                   .UseSqlite(connection);
 
-                var context = new RedditDBContext(builder.Options);
+                var context = new RedditDbContext(builder.Options);
                 await context.Database.EnsureCreatedAsync();
                 var subredditConnection = new SubredditConnection()
                 {
                     SubredditFromName = "name",
                     SubredditToName = "TestSub"
                 };
-                var Subreddit = new Subreddit()
+                var subreddit = new Subreddit()
                 {
                     SubredditName = "name"
                 };
@@ -216,7 +212,7 @@ namespace Model.Test
                 {
                     SubredditName = "TestSub"
                 };
-                context.Subreddits.Add(Subreddit);
+                context.Subreddits.Add(subreddit);
                 context.Subreddits.Add(subredit);
 
                 await context.SaveChangesAsync();
@@ -240,10 +236,10 @@ namespace Model.Test
             {
                 connection.Open();
 
-                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
                                   .UseSqlite(connection);
 
-                var context = new RedditDBContext(builder.Options);
+                var context = new RedditDbContext(builder.Options);
                 await context.Database.EnsureCreatedAsync();
 
                 using (var repository = new SubredditConnectionRepository(context))
@@ -262,10 +258,10 @@ namespace Model.Test
             {
                 connection.Open();
 
-                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
                                   .UseSqlite(connection);
 
-                var context = new RedditDBContext(builder.Options);
+                var context = new RedditDbContext(builder.Options);
                 await context.Database.EnsureCreatedAsync();
 
                 var entity = new SubredditConnection()
@@ -290,9 +286,6 @@ namespace Model.Test
      
                 await context.SaveChangesAsync();
 
-
-                var SubredditFromName = entity.SubredditFromName;
-
                 using (var repository = new SubredditConnectionRepository(context))
                 {
                     var subredditConnection = await repository.GetAsync(entity.SubredditFromName,entity.SubredditToName);
@@ -309,10 +302,10 @@ namespace Model.Test
             var connection = new SqliteConnection("DataSource=:memory:");
             connection.Open();
 
-            var builder = new DbContextOptionsBuilder<RedditDBContext>()
+            var builder = new DbContextOptionsBuilder<RedditDbContext>()
                               .UseSqlite(connection);
 
-            var context = new RedditDBContext(builder.Options);
+            var context = new RedditDbContext(builder.Options);
             await context.Database.EnsureCreatedAsync();
 
             var entity = new SubredditConnection
@@ -333,15 +326,15 @@ namespace Model.Test
             context.Subreddits.Add(subredditTo);
             context.SubredditConnections.Add(entity);
             await context.SaveChangesAsync();
-            var FromName = entity.SubredditFromName;
-            var ToName = entity.SubredditToName;
+            var fromName = entity.SubredditFromName;
+            var toName = entity.SubredditToName;
 
             using (var repository = new SubredditConnectionRepository(context))
             {
                 var subredditConnections = await repository.ReadAsync();
                 var subredditConnection = subredditConnections.First();
-                Assert.Equal(FromName, subredditConnection.SubredditFromName);
-                Assert.Equal(ToName, subredditConnection.SubredditToName);
+                Assert.Equal(fromName, subredditConnection.SubredditFromName);
+                Assert.Equal(toName, subredditConnection.SubredditToName);
 
             }
         }
@@ -351,7 +344,7 @@ namespace Model.Test
         [Fact]
         public async Task Update_given_existing_SubredditConnection_returns_true()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
             var entity = new SubredditConnection { SubredditFromName = "name", SubredditToName = "TestSub" };
             context.Setup(c => c.SubredditConnections.FindAsync("name", "TestSub")).ReturnsAsync(entity);
 
@@ -368,7 +361,7 @@ namespace Model.Test
         [Fact]
         public async Task Update_given_non_existing_SubredditConnection_returns_false()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
             context.Setup(c => c.SubredditConnections.FindAsync("name", "TestSub")).ReturnsAsync(default(SubredditConnection));
 
             using (var repository = new SubredditConnectionRepository(context.Object))
@@ -384,7 +377,7 @@ namespace Model.Test
         [Fact]
         public async Task Update_given_existing_SubredditConnection_Updates_properties()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
             var entity = new SubredditConnection { SubredditFromName = "name", SubredditToName = "TestSub", Similarity = "0.1"};
             context.Setup(c => c.SubredditConnections.FindAsync("name", "TestSub")).ReturnsAsync(entity);
 
@@ -407,7 +400,7 @@ namespace Model.Test
         [Fact]
         public async Task Update_given_existing_SubredditConnection_calls_SaveChangesAsync()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
             var entity = new SubredditConnection { SubredditFromName = "name", SubredditToName = "TestSub" };
             context.Setup(c => c.SubredditConnections.FindAsync("name", "TestSub")).ReturnsAsync(entity);
 
@@ -424,7 +417,7 @@ namespace Model.Test
         [Fact]
         public async Task Update_given_non_existing_SubredditConnection_does_not_call_SaveChangesAsync()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
             context.Setup(c => c.SubredditConnections.FindAsync("name", "TestSub")).ReturnsAsync(default(SubredditConnection));
 
             using (var repository = new SubredditConnectionRepository(context.Object))
@@ -449,10 +442,10 @@ namespace Model.Test
             {
                 connection.Open();
 
-                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
                                   .UseSqlite(connection);
 
-                var context = new RedditDBContext(builder.Options);
+                var context = new RedditDbContext(builder.Options);
                 await context.Database.EnsureCreatedAsync();
 
                 var entity = new SubredditConnection()
@@ -460,7 +453,7 @@ namespace Model.Test
                     SubredditFromName = "name",
                     SubredditToName = "TestSub"
                 };
-                var Subreddit = new Subreddit()
+                var subreddit = new Subreddit()
                 {
                     SubredditName = "name"
                 };
@@ -469,7 +462,7 @@ namespace Model.Test
                     SubredditName = "TestSub"
                 };
                 context.Add(subredit);
-                context.Add(Subreddit);
+                context.Add(subreddit);
                 context.SubredditConnections.Add(entity);
 
                 await context.SaveChangesAsync();
@@ -494,10 +487,10 @@ namespace Model.Test
             {
                 connection.Open();
 
-                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
                                   .UseSqlite(connection);
 
-                var context = new RedditDBContext(builder.Options);
+                var context = new RedditDbContext(builder.Options);
                 await context.Database.EnsureCreatedAsync();
 
                 var entity = new SubredditConnection()
@@ -505,7 +498,7 @@ namespace Model.Test
                     SubredditFromName = "name",
                     SubredditToName = "TestSub"
                 };
-                var Subreddit = new Subreddit()
+                var subreddit = new Subreddit()
                 {
                     SubredditName = "name"
                 };
@@ -514,7 +507,7 @@ namespace Model.Test
                     SubredditName = "TestSub"
                 };
                 context.Add(subredit);
-                context.Add(Subreddit);
+                context.Add(subreddit);
                 context.SubredditConnections.Add(entity);
 
 
@@ -539,10 +532,10 @@ namespace Model.Test
             {
                 connection.Open();
 
-                var builder = new DbContextOptionsBuilder<RedditDBContext>()
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
                                   .UseSqlite(connection);
 
-                var context = new RedditDBContext(builder.Options);
+                var context = new RedditDbContext(builder.Options);
                 await context.Database.EnsureCreatedAsync();
 
 
@@ -562,11 +555,9 @@ namespace Model.Test
         [Fact]
         public void Dispose_disposes_context()
         {
-            var context = new Mock<IRedditDBContext>();
+            var context = new Mock<IRedditDbContext>();
 
-            using (var repository = new SubredditConnectionRepository(context.Object))
-            {
-            }
+            new SubredditConnectionRepository(context.Object).Dispose();
 
             context.Verify(c => c.Dispose());
         }
