@@ -49,7 +49,7 @@ namespace UITEST.ViewModel
         }
         public async void GetCurrentPost(Post post)
         {
-            CurrentPost = await _redditApiConsumer.GetPostAndCommentsByIdAsync(post.id);
+            CurrentPost = (await _redditApiConsumer.GetPostAndCommentsByIdAsync(post.id)).Item2;
             await _repository.CreateAsync(new Entities.GorillaEntities.Post { Id = post.id, username = UserFactory.GetInfo().name });
 
             CommentsReadyEvent?.Invoke();
@@ -69,8 +69,8 @@ namespace UITEST.ViewModel
         {
             var old = new DateTime(1970, 1, 1);
             var totaltime = DateTime.Now - old;
-            int timeInSeconds = (int)totaltime.TotalSeconds;
-            string username = UserFactory.GetInfo().name;
+            var timeInSeconds = (int)totaltime.TotalSeconds;
+            var username = UserFactory.GetInfo().name;
             var newComment = new Comment()
             {
                 body = newCommentText,

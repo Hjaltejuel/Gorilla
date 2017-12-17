@@ -57,13 +57,11 @@ namespace UITEST.View
         }
         private void TextButton_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
-            var btn = sender as Button;
-            btn.FontWeight = FontWeights.Bold;
+            if (sender is Button btn) btn.FontWeight = FontWeights.Bold;
         }
         private void TextButton_PointerLeaved(object sender, PointerRoutedEventArgs e)
         {
-            var btn = sender as Button;
-            btn.FontWeight = FontWeights.SemiBold;
+            if (sender is Button btn) btn.FontWeight = FontWeights.SemiBold;
         }
         private void PostTextComment_Click(object sender, RoutedEventArgs e)
         {
@@ -88,7 +86,7 @@ namespace UITEST.View
             {
                 CommentPanel.Visibility = Visibility.Collapsed;
                 var newComment = await _vm.AddCommentAsync(abstractCommentableToCommentOn, text);
-                PostView.Items.Insert(2, new CommentControl(newComment));
+                PostView.Items?.Insert(2, new CommentControl(newComment));
             }
         }
         private void DrawComments()
@@ -96,7 +94,7 @@ namespace UITEST.View
             foreach (var _comment in _vm.CurrentPost.Replies)
             {
                 var comment = _comment as Comment;
-                if (comment.body == null) { continue; }
+                if (comment?.body == null) { continue; }
                 var topCommentPanel = new CommentControl(comment);
                 PostView.Items.Add(topCommentPanel);
             }

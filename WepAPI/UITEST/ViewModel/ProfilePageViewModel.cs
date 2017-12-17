@@ -102,7 +102,7 @@ namespace UITEST.ViewModel
             Posts = new ObservableCollection<Post>();
             foreach (var post in postIds)
             {
-                Posts.Add(await _consumer.GetPostAndCommentsByIdAsync(post.Id));
+                Posts.Add((await _consumer.GetPostAndCommentsByIdAsync(post.Id)).Item2);
             }
             PostsReadyEvent?.Invoke();
         }
@@ -110,10 +110,11 @@ namespace UITEST.ViewModel
         private async Task GetCurrentProfile()
         {
             var redditUser = UserFactory.GetInfo();
-            var subscriptions = await _consumer.GetSubscribedSubredditsAsync();
-            var userPosts = await _consumer.GetUserPosts(redditUser.name);
+            var subscriptions = (await _consumer.GetSubscribedSubredditsAsync()).Item2;
+            var userPosts = (await _consumer.GetUserPosts(redditUser.name)).Item2;
+            var userComments = (await _consumer.GetUserComments(redditUser.name)).Item2;
+
             var numberOfPosts = userPosts.Count > 25 ? "25+" : userPosts.Count.ToString();
-            var userComments = await _consumer.GetUserComments(redditUser.name);
             var numberOfComments = userComments.Count > 25 ? "25+" : userComments.Count.ToString();
             var unix = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             var time = unix.AddSeconds(redditUser.created);

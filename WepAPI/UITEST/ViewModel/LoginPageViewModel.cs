@@ -1,5 +1,6 @@
 ﻿using UITEST.Authentication;
 using UITEST.Model;
+using UITEST.Model.RedditRepositories;
 using UITEST.View;
 
 namespace UITEST.ViewModel

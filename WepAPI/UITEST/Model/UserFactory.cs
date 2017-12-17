@@ -11,7 +11,7 @@ namespace UITEST.Model
 
         public static async Task Initialize(IRedditApiConsumer consumer)
         {
-            _user = await consumer.GetAccountDetailsAsync();
+            _user = (await consumer.GetAccountDetailsAsync()).Item2;
         }
         public static User GetInfo()
         {

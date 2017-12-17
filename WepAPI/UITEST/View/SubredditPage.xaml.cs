@@ -48,16 +48,15 @@ namespace UITEST.View
         {
             await _vm.GeneratePosts(subredditSearchString);
             SubsribeToSubredditButton.Visibility = Visibility.Visible;
-            if (_vm._Subreddit?.name == null)
-            {
-                NothingFoundTextBlock.Visibility = Visibility.Visible;
-                NothingFoundTextBlock.Text = $"Nothing Found on r/{subredditSearchString}";
-                SubsribeToSubredditButton.Visibility = Visibility.Collapsed;
-                PostsList.Visibility = Visibility.Collapsed;
-                SortBy.Visibility = Visibility.Collapsed;
-                CreatePostButton.Visibility = Visibility.Collapsed;
-                PageTitleText.Visibility = Visibility.Collapsed;
-            }
+            if (_vm._Subreddit?.name != null) return;
+
+            NothingFoundTextBlock.Visibility = Visibility.Visible;
+            NothingFoundTextBlock.Text = $"Nothing Found on r/{subredditSearchString}";
+            SubsribeToSubredditButton.Visibility = Visibility.Collapsed;
+            PostsList.Visibility = Visibility.Collapsed;
+            SortBy.Visibility = Visibility.Collapsed;
+            CreatePostButton.Visibility = Visibility.Collapsed;
+            PageTitleText.Visibility = Visibility.Collapsed;
         }
 
         private async void SubsribeToSubredditButton_Click(object sender, RoutedEventArgs e)

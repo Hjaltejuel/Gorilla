@@ -53,7 +53,8 @@ namespace UITEST.ViewModel
         public async Task GeneratePosts(string subredditName, string sort = "hot")
         {
             InvokeLoadSwitchEvent();
-            _Subreddit = await Consumer.GetSubredditAsync(subredditName, sort);
+            _Subreddit = (await Consumer.GetSubredditAsync(subredditName)).Item2;
+            _Subreddit = (await Consumer.GetSubredditPostsAsync(_Subreddit, sort)).Item2;
             if (_Subreddit?.name == null)
             {
                 InvokeLoadSwitchEvent();
@@ -67,7 +68,7 @@ namespace UITEST.ViewModel
 
         private async Task IsUserSubscribed()
         {
-            List<Subreddit> subs = await Consumer.GetSubscribedSubredditsAsync();
+            List<Subreddit> subs = (await Consumer.GetSubscribedSubredditsAsync()).Item2;
             UserIsSubscribed = (from b in subs
                                 where b.display_name.Equals(_Subreddit.display_name)
                                 select b).Any();

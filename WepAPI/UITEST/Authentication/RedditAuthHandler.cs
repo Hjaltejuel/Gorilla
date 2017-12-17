@@ -95,6 +95,11 @@ namespace UITEST.Authentication
             return null;
         }
 
+        public void LogOut()
+        {
+            _appSettings.Values.Remove("reddit_refresh_token");
+        }
+
         public async Task RefreshToken()
         {
             var consumer = App.ServiceProvider.GetService<IRedditApiConsumer>();

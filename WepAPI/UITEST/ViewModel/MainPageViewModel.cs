@@ -20,7 +20,7 @@ namespace UITEST.ViewModel
             InvokeLoadSwitchEvent();
             await UserFactory.Initialize(Consumer);
             await Repository.CreateAsync(new User { Username = UserFactory.GetInfo().name, PathToProfilePicture = "profilePicture.jpg" });
-            Posts = await Consumer.GetHomePageContent();
+            Posts = (await Consumer.GetHomePageContent()).Item2;
             InvokeLoadSwitchEvent();
         }
         public async Task Initialize()
