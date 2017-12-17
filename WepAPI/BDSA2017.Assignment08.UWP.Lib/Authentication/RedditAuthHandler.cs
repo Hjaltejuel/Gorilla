@@ -28,6 +28,7 @@ namespace UI.Lib.Authentication
 
         public async Task BeginAuth()
         {
+           
             var appSettingsValue = _appSettings.Values["reddit_refresh_token"];
 
             if (appSettingsValue != null) //If the refresh token exists, just login right away

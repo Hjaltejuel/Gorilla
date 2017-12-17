@@ -24,10 +24,10 @@ namespace UI.Lib.ViewModel
         {
             get => posts; set { posts = value; OnPropertyChanged(); }
         }
-        protected SearchableViewModel(IAuthenticationHelper helper, INavigationService service, IRedditApiConsumer consumer) : base(service)
+        protected SearchableViewModel( INavigationService service, IRedditApiConsumer consumer) : base(service)
         {
             Consumer = consumer;
-            Helper = helper;
+         
         }
 
         public void SearchQuerySubmitted()

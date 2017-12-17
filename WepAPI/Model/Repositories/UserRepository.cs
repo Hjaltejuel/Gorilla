@@ -49,6 +49,7 @@ namespace Model.Repositories
             if (userTest != null)
             {
                 userTest.PathToProfilePicture = user.PathToProfilePicture;
+                userTest.StartUpQuestionAnswered = user.StartUpQuestionAnswered;
                 await _context.SaveChangesAsync();
                 return true;
             }

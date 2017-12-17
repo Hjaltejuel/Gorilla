@@ -41,11 +41,11 @@ namespace UI.Lib.ViewModel
         }
         private readonly IRestUserPreferenceRepository _repository;
 
-        public CreatePostPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditApiConsumer consumer, IRestUserPreferenceRepository repository) : base(service)
+        public CreatePostPageViewModel(INavigationService service, IRedditApiConsumer consumer, IRestUserPreferenceRepository repository) : base(service)
         {
             _repository = repository;
             _consumer = consumer;
-            Helper = helper;
+           
             SubmitPostCommand = new RelayCommand(async o => { await CreateNewPostAsync(Title, Body); });
         }
 

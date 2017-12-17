@@ -20,7 +20,7 @@ namespace UI.Lib.Authentication.GorillaAuthentication
         public async Task<WebAccount> SignInAsync()
         {
 
-          
+         
 
             var webAccountProvider = await WebAuthenticationCoreManager.FindAccountProviderAsync(_settings.WebAccountProviderId, _settings.Authority);
 

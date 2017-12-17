@@ -24,9 +24,10 @@ namespace UI.Lib.ViewModel
         public static Type LoginPage { get; set; }
         public static Type SubredditPage { get; set; }
         public static Type CreatePostPage { get; set; }
+        public static Type StartupQuestionsPage { get; set; }
 
 
-        protected IAuthenticationHelper Helper;
+        protected IAuthenticationHelper _gorillaAuthHelper;
         protected INavigationService Service;
 
 
@@ -58,7 +59,11 @@ namespace UI.Lib.ViewModel
             }
             else
             {
-                _account = await Helper.SignInAsync();
+                _account = await _gorillaAuthHelper.SignInAsync();
+                if(_account == null)
+                {
+                    await Authorize();
+                }
             }
             return _account;
         }

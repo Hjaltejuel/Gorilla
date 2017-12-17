@@ -49,7 +49,7 @@ namespace UI.Lib.ViewModel
             set { if (value != _selectedSort) { _selectedSort = value; } }
         }
 
-        public SubredditPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditApiConsumer consumer, IRestUserPreferenceRepository repository ) : base(helper, service, consumer)
+        public SubredditPageViewModel( INavigationService service, IRedditApiConsumer consumer, IRestUserPreferenceRepository repository ) : base( service, consumer)
         {
             _repository = repository;
             GoToCreatePostPageCommand = new RelayCommand(o => Service.Navigate(CreatePostPage, _Subreddit));

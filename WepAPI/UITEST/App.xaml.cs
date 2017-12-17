@@ -32,6 +32,7 @@ namespace UITEST
             BaseViewModel.SubredditPage = typeof(SubredditPage);
             BaseViewModel.DiscoverPage = typeof(DiscoverPage);
             BaseViewModel.CreatePostPage = typeof(CreatePostPage);
+            BaseViewModel.StartupQuestionsPage = typeof(StartupQuestions);
             
 
             InitializeComponent();
