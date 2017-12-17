@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.Security.Authentication.Web;
 
-namespace UITEST.Authentication.RedditAuthentication
+namespace UI.Lib.Authentication.RedditAuthentication
 {
     public class Settings : ISettings
     {

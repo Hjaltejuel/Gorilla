@@ -7,13 +7,13 @@ using System.Net;
 using Windows.UI.Xaml;
 using System.Windows.Input;
 using Entities.GorillaEntities;
-using UITEST.Misc;
-using UITEST.Model;
-using UITEST.Model.GorillaRestInterfaces;
-using UITEST.Model.RedditRestInterfaces;
+using UI.Lib.Misc;
+using UI.Lib.Model;
+using UI.Lib.Model.GorillaRestInterfaces;
+using UI.Lib.Model.RedditRestInterfaces;
 using Post = Entities.RedditEntities.Post;
 
-namespace UITEST.ViewModel
+namespace UI.Lib.ViewModel
 {
     public class PostPageViewModel : CommentableViewModel
     {

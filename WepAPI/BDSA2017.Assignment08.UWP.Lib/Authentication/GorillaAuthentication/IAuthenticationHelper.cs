@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Windows.Security.Credentials;
 
-namespace UITEST.Authentication.GorillaAuthentication
+namespace UI.Lib.Authentication.GorillaAuthentication
 {
     public interface IAuthenticationHelper
     {

@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Entities.RedditEntities;
-using UITEST.Model.RedditRestInterfaces;
+using UI.Lib.Model.RedditRestInterfaces;
 
-namespace UITEST.Model
+namespace UI.Lib.Model
 {
     public static class UserFactory
     {

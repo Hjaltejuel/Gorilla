@@ -1,27 +1,27 @@
 ﻿using Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using UI.Lib.Authentication.GorillaAuthentication;
 using UI.Lib.Model;
 using UI.Lib.Model.GorillaRestInterfaces;
 using UI.Lib.Model.RedditRestInterfaces;
-using UI.Lib.ViewModel;
 using Xunit;
 
-namespace BDSA2017.Assignment08.UWP.Tests.ViewModels
+namespace UI.Tests.ViewModels
 {
-    public class TrackPageViewModelTest
+    public class SubredditPageViewModelTests
     {
-        [Fact]
-        public void TestThatThereIsAlways1()
+        [Fact(DisplayName = "GeneratePost Test")]
+        public void GeneratePostsTest()
         {
-            
             var mock = new Mock<INavigationService>();
             var auth = new Mock<IAuthenticationHelper>();
             var PostMock = new Mock<IRestUserRepository>();
             var redditMock = new Mock<IRedditApiConsumer>();
-            MainPageViewModel view = new MainPageViewModel(auth.Object, mock.Object, redditMock.Object, PostMock.Object);
             Assert.True(true);
-            
         }
-
     }
 }

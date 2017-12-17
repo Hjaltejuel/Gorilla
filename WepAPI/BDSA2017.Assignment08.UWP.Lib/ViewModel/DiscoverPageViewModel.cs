@@ -7,12 +7,12 @@ using System.Windows.Input;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using UITEST.Model;
-using UITEST.Model.GorillaRestInterfaces;
-using UITEST.Model.RedditRestInterfaces;
+using UI.Lib.Model;
+using UI.Lib.Model.GorillaRestInterfaces;
+using UI.Lib.Model.RedditRestInterfaces;
 
 
-namespace UITEST.ViewModel
+namespace UI.Lib.ViewModel
 {
     public class DiscoverPageViewModel : BaseViewModel
     {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net;
-using UITEST.Model;
+using UI.Lib.Model;
 using UITEST.View;
-using UITEST.ViewModel;
+using UI.Lib.ViewModel;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Core;
@@ -28,6 +28,7 @@ namespace UITEST
         {
             BaseViewModel.MainPage = typeof(MainPage);
             BaseViewModel.ProfilePage = typeof(ProfilePage);
+            BaseViewModel.LoginPage = typeof(LoginPage);
             BaseViewModel.SubredditPage = typeof(SubredditPage);
             BaseViewModel.DiscoverPage = typeof(DiscoverPage);
             BaseViewModel.CreatePostPage = typeof(CreatePostPage);

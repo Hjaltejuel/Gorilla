@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Entities.GorillaEntities;
 using Entities.RedditEntities;
-using UITEST.Model;
-using UITEST.Model.GorillaRestInterfaces;
-using UITEST.Model.RedditRestInterfaces;
+using UI.Lib.Model;
+using UI.Lib.Model.GorillaRestInterfaces;
+using UI.Lib.Model.RedditRestInterfaces;
 using Windows.UI.Core;
 
-namespace UITEST.ViewModel
+namespace UI.Lib.ViewModel
 {
     public class CommentableViewModel : BaseViewModel
     {

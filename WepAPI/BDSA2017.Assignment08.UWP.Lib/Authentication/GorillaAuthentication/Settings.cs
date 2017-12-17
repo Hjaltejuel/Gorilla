@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.Security.Authentication.Web;
 
-namespace UITEST.Authentication.GorillaAuthentication
+namespace UI.Lib.Authentication.GorillaAuthentication
 {
     public class Settings : ISettings
     {

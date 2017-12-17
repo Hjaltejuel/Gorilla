@@ -3,9 +3,9 @@ using System.Collections.ObjectModel;
 using System.Net;
 using System.Threading.Tasks;
 using Entities.RedditEntities;
-using UITEST.Authentication;
+using UI.Lib.Authentication;
 
-namespace UITEST.Model.RedditRestInterfaces
+namespace UI.Lib.Model.RedditRestInterfaces
 {
     public interface IRedditApiConsumer
     {

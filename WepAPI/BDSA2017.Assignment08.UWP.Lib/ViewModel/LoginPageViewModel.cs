@@ -1,11 +1,11 @@
-﻿using BDSA2017.Assignment08.UWP.Authentication;
+﻿using UI.Lib.Authentication;
 
-using UITEST.Authentication;
-using UITEST.Model;
-using UITEST.Model.RedditRepositories;
+using UI.Lib.Authentication;
+using UI.Lib.Model;
+using UI.Lib.Model.RedditRepositories;
 
 
-namespace UITEST.ViewModel
+namespace UI.Lib.ViewModel
 {
     public class LoginPageViewModel : BaseViewModel
     {

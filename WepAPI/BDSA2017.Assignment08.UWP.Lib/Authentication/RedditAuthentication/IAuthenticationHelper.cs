@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Windows.Security.Credentials;
 
-namespace UITEST.Authentication.RedditAuthentication
+namespace UI.Lib.Authentication.RedditAuthentication
 {
     public interface IAuthenticationHelper
     {

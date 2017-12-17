@@ -4,7 +4,7 @@ using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace UITEST.Authentication.GorillaAuthentication
+namespace UI.Lib.Authentication.GorillaAuthentication
 {
     public class AuthorizedHandler : DelegatingHandler
     {

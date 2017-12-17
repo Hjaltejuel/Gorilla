@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
-using UITEST.Authentication.GorillaAuthentication;
-using UITEST.Model.GorillaRepositories;
-using UITEST.Model.GorillaRestInterfaces;
-using UITEST.Model.RedditRepositories;
-using UITEST.Model.RedditRestInterfaces;
-using UITEST.ViewModel;
-using BDSA2017.Assignment08.UWP.Authentication;
-using UITEST.Authentication;
+using UI.Lib.Authentication.GorillaAuthentication;
+using UI.Lib.Model.GorillaRepositories;
+using UI.Lib.Model.GorillaRestInterfaces;
+using UI.Lib.Model.RedditRepositories;
+using UI.Lib.Model.RedditRestInterfaces;
+using UI.Lib.ViewModel;
+using UI.Lib.Authentication;
+using UI.Lib.ViewModel;
 
-namespace UITEST.Model
+namespace UI.Lib.Model
 {
     public class IoCContainer
     {

@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 using Castle.Core.Internal;
 using Entities.RedditEntities;
 using Newtonsoft.Json.Linq;
-using UITEST.Authentication;
-using UITEST.Model.RedditRestInterfaces;
+using UI.Lib.Authentication;
+using UI.Lib.Model.RedditRestInterfaces;
 
-namespace UITEST.Model.RedditRepositories
+namespace UI.Lib.Model.RedditRepositories
 {
     public class RedditConsumerController : IRedditApiConsumer
     {

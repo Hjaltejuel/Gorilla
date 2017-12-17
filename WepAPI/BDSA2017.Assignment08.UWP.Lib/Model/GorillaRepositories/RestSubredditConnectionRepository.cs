@@ -7,10 +7,10 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Entities.GorillaEntities;
-using UITEST.Authentication.GorillaAuthentication;
-using UITEST.Model.GorillaRestInterfaces;
+using UI.Lib.Model.GorillaRestInterfaces;
+using UI.Lib.Authentication.GorillaAuthentication;
 
-namespace UITEST.Model.GorillaRepositories
+namespace UI.Lib.Model.GorillaRepositories
 {
     public class RestSubredditConnectionRepository: IRestSubredditConnectionRepository
     {

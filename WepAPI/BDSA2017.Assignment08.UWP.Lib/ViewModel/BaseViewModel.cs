@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 
 using Windows.Security.Credentials;
-using UITEST.Authentication.GorillaAuthentication;
-using UITEST.Model;
+using UI.Lib.Authentication.GorillaAuthentication;
+using UI.Lib.Model;
 
 using System;
 
-namespace UITEST.ViewModel
+namespace UI.Lib.ViewModel
 {
     public abstract class BaseViewModel : INotifyPropertyChanged
     {

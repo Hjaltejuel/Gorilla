@@ -1,7 +1,7 @@
 ﻿using System;
 using Entities.RedditEntities;
 
-namespace UITEST.Misc
+namespace UI.Lib.Misc
 {
     public static class TimeHelper
     {

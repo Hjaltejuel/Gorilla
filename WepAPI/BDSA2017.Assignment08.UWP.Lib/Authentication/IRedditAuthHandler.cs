@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BDSA2017.Assignment08.UWP.Authentication
+namespace UI.Lib.Authentication
 {
     public interface IRedditAuthHandler
     {

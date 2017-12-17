@@ -3,7 +3,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace UITEST.Model.GorillaRepositories
+namespace UI.Lib.Model.GorillaRepositories
 {
     public static class Extensions
     {
