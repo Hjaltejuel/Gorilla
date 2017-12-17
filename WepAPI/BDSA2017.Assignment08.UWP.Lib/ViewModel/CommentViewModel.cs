@@ -11,8 +11,8 @@ namespace UI.Lib.ViewModel
     public class CommentViewModel : CommentableViewModel
     {
         readonly IRedditApiConsumer _redditApiConsumer;
-        public CommentViewModel(INavigationService service, IRestUserPreferenceRepository restUserPreferenceRepository, IRedditApiConsumer redditApiConsumer) 
-            : base(service,restUserPreferenceRepository,redditApiConsumer)
+        public CommentViewModel(INavigationService service, IRestUserPreferenceRepository restUserPreferenceRepository, IRedditApiConsumer redditApiConsumer, IUserHandler userHandler) 
+            : base(service,restUserPreferenceRepository,redditApiConsumer, userHandler)
         {
             _redditApiConsumer = redditApiConsumer;
         }

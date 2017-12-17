@@ -8,7 +8,6 @@ using UI.Lib.Model.RedditRepositories;
 using UI.Lib.Model.RedditRestInterfaces;
 using UI.Lib.ViewModel;
 using UI.Lib.Authentication;
-using UI.Lib.ViewModel;
 
 namespace UI.Lib.Model
 {
@@ -32,13 +31,12 @@ namespace UI.Lib.Model
             services.AddScoped<IRestPostRepository, RestPostRepository>();
             services.AddScoped<IRedditApiConsumer, RedditConsumerController>();
             services.AddScoped<IRedditAuthHandler, RedditAuthHandler>();
+            services.AddScoped<IUserHandler, UserHandler>();
+
             services.AddScoped<MainPageViewModel>();
-            
-           
             services.AddScoped<DiscoverPageViewModel>();
             services.AddScoped<PostPageViewModel>();
             services.AddScoped<ProfilePageViewModel>();
-            services.AddScoped<TrendingPageViewModel>();
             services.AddScoped<CreatePostPageViewModel>();
             services.AddScoped<LoginPageViewModel>();
             services.AddScoped<SubredditPageViewModel>();

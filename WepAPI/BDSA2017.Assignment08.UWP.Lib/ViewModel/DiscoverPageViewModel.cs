@@ -1,16 +1,14 @@
-﻿using Entities.RedditEntities;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Input;
-
-using System.Threading.Tasks;
-using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Entities.RedditEntities;
 using UI.Lib.Model;
 using UI.Lib.Model.GorillaRestInterfaces;
 using UI.Lib.Model.RedditRestInterfaces;
-
 
 namespace UI.Lib.ViewModel
 {
@@ -25,28 +23,32 @@ namespace UI.Lib.ViewModel
         public event DiscoverReady DiscoverReadyEvent;
         public delegate void NoElements();
         public event NoElements NoElementsEvent;
+        private readonly IUserHandler _userHandler;
 
-        public DiscoverPageViewModel(INavigationService service, IRedditApiConsumer consumer,
+        public DiscoverPageViewModel(
+            INavigationService service, IRedditApiConsumer consumer,
             IRestSubredditConnectionRepository repository,
-            IRestUserPreferenceRepository userPreferenceRepository) : base(service)
+            IRestUserPreferenceRepository userPreferenceRepository, 
+            IUserHandler userHandler) 
+            : base(service)
         {
             UserPreferenceRepository = userPreferenceRepository;
             _consumer = consumer;
             _repository = repository;
+            _userHandler = userHandler;
 
             GoToSubRedditPage = new RelayCommand(o => Service.Navigate(SubredditPage, o));
         }
 
         public async void Initialize()
         {
-            var user = UserFactory.GetInfo();
+            var user = _userHandler.GetUser();
 
             var result = (await UserPreferenceRepository.FindAsync(user.name));
 
             if (result == null)
             {
                 NoElementsEvent?.Invoke();
-                DiscoverReadyEvent?.Invoke();
             }
             else
             {
@@ -64,9 +66,9 @@ namespace UI.Lib.ViewModel
                 await Task.WhenAll(taskList);
 
                 SubReddits = new ObservableCollection<Subreddit>(subs);
-                DiscoverReadyEvent?.Invoke();
                 OnPropertyChanged("SubReddits");
             }
+            DiscoverReadyEvent?.Invoke();
         }
         public async Task Add(int k, int reps, ConcurrentBag<string> subreddits, string subredditFromName)
         {
@@ -88,8 +90,7 @@ namespace UI.Lib.ViewModel
             }
         }
 
-        public async Task Finalize(int i, string subreddit, Subreddit[] subs,
-            string subredditFromName)
+        public async Task Finalize(int i, string subreddit, Subreddit[] subs, string subredditFromName)
         {
             var sub = (await _consumer.GetSubredditAsync(subreddit)).Item2;
             sub.interest = subredditFromName;
