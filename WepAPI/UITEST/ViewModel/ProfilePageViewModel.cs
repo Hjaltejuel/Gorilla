@@ -89,7 +89,7 @@ namespace UITEST.ViewModel
 
         public async Task Initialize()
         {
-            GetCurrentProfile();
+            await GetCurrentProfile();
 
             if (UserFactory.GetInfo().ProfilePic == null)
             {
