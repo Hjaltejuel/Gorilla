@@ -15,12 +15,10 @@ namespace Entities.RedditEntities
         public int score
         {
             get => Score;
-            set {
-                if (value != Score)
-                {
-                    Score = value;
-                    OnPropertyChanged("Score");
-                }
+            set
+            {
+                Score = value;
+                OnPropertyChanged("Score");
             }
         }
 

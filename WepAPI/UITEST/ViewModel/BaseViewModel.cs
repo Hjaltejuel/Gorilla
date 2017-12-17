@@ -14,8 +14,9 @@ namespace UITEST.ViewModel
         public ICommand GoToHomePageCommand { get; set; }
         public ICommand GoToDiscoverPageCommand { get; set; }
         public ICommand GoToProfilePageCommand { get; set; }
+        public ICommand LogOutPageCommand { get; set; }
 
-        
+
         protected IAuthenticationHelper Helper;
         protected INavigationService Service;
 
@@ -27,6 +28,7 @@ namespace UITEST.ViewModel
             GoToHomePageCommand = new RelayCommand(o => Service.Navigate(typeof(MainPage), o));
             GoToDiscoverPageCommand = new RelayCommand(o => Service.Navigate(typeof(DiscoverPage), o));
             GoToProfilePageCommand = new RelayCommand(o => Service.Navigate(typeof(ProfilePage), o));
+            LogOutPageCommand = new RelayCommand(o => Service.Navigate(typeof(LoginPage), "logout"));
             Service = service;
         }
 

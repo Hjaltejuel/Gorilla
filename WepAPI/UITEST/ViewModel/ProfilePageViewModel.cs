@@ -1,6 +1,7 @@
 ﻿using Entities.RedditEntities;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -97,23 +98,20 @@ namespace UITEST.ViewModel
             {
                 ImageBytes = UserFactory.GetInfo().ProfilePic;
             }
-            var postIds = await _restPostRepository.ReadAsync(Username);
-           
-            Posts = new ObservableCollection<Post>();
-            foreach (var post in postIds)
-            {
-                Posts.Add(await _consumer.GetPostAndCommentsByIdAsync(post.Id));
-            }
+            var visitedPosts = await _restPostRepository.ReadAsync(Username);
+            var ids = visitedPosts.Aggregate("", (current, post) => "t3_"+current + ",t3_" + post.Id);
+            Posts = (await _consumer.GetPostsByIdAsync(ids)).Item2;
             PostsReadyEvent?.Invoke();
         }
 
         private async Task GetCurrentProfile()
         {
             var redditUser = UserFactory.GetInfo();
-            var subscriptions = await _consumer.GetSubscribedSubredditsAsync();
-            var userPosts = await _consumer.GetUserPosts(redditUser.name);
+            var subscriptions = (await _consumer.GetSubscribedSubredditsAsync()).Item2;
+            var userPosts = (await _consumer.GetUserPosts(redditUser.name)).Item2;
+            var userComments = (await _consumer.GetUserComments(redditUser.name)).Item2;
+
             var numberOfPosts = userPosts.Count > 25 ? "25+" : userPosts.Count.ToString();
-            var userComments = await _consumer.GetUserComments(redditUser.name);
             var numberOfComments = userComments.Count > 25 ? "25+" : userComments.Count.ToString();
             var unix = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             var time = unix.AddSeconds(redditUser.created);

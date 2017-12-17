@@ -90,7 +90,7 @@ namespace UITEST.ViewModel
         public async Task Finalize(int i, string subreddit, Subreddit[] subs,
             string subredditFromName)
         {
-            var sub = await _consumer.GetSubredditAsync(subreddit);
+            var sub = (await _consumer.GetSubredditAsync(subreddit)).Item2;
             sub.interest = subredditFromName;
             subs[i] = sub;
             if (sub.banner_img.Equals(""))
