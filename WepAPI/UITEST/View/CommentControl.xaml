@@ -31,7 +31,7 @@
                 </RelativePanel>
 
                 <RelativePanel Name="TextInfoPanel" RelativePanel.Below="TextPanel" RelativePanel.RightOf="VotePanel" Margin="0,0,0,0">
-                    <Button Name="SaveButton" Content="comment" Style="{StaticResource MiniNavigationButton}" Click="CommentButton_Click" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
+                    <Button Name="SaveButton" Content="reply" Style="{StaticResource MiniNavigationButton}" Click="CommentButton_Click" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
                 </RelativePanel>
 
             </RelativePanel>

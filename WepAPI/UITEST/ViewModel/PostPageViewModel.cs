@@ -65,6 +65,7 @@ namespace UITEST.ViewModel
             LikeButton = Application.Current.Resources["LikeButton"] as Style;
             DislikeButton = Application.Current.Resources["DislikeButton"] as Style;
         }
+
         public async Task PostLikedAsync()
         {
             int direction;

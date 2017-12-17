@@ -24,7 +24,7 @@
                             <TextBlock Text="{Binding author}" RelativePanel.Below ="Title" RelativePanel.RightOf="Box" Style="{StaticResource AuthorText}" Name="Author"/>
                             <TextBlock Text="{Binding subreddit_name_prefixed}" RelativePanel.RightOf="Author" RelativePanel.Below ="Title" Style="{StaticResource AuthorText}" Margin="4, 0, 0, 0"/>
                             <TextBlock Text="{Binding num_comments}" RelativePanel.Below ="Author" RelativePanel.RightOf="Box" FontSize="10" Name="CommentsAmount"/>
-                            <TextBlock Text="comments" RelativePanel.Below ="Author" RelativePanel.RightOf="CommentsAmount" FontSize="10" Margin="5, 0, 0, 0"/>
+                            <TextBlock Text="comments" Name="comments" RelativePanel.Below ="Author" RelativePanel.RightOf="CommentsAmount" FontSize="10" Margin="5, 0, 0, 0"/>
                         </RelativePanel>
                     </RelativePanel>
                 </DataTemplate>
