@@ -28,6 +28,7 @@ namespace UITEST
         {
             BaseViewModel.MainPage = typeof(MainPage);
             BaseViewModel.ProfilePage = typeof(ProfilePage);
+            BaseViewModel.LoginPage = typeof(LoginPage);
             BaseViewModel.SubredditPage = typeof(SubredditPage);
             BaseViewModel.DiscoverPage = typeof(DiscoverPage);
             BaseViewModel.CreatePostPage = typeof(CreatePostPage);
