@@ -12,6 +12,7 @@ using UITEST.Model;
 using UITEST.Model.GorillaRestInterfaces;
 using UITEST.Model.RedditRestInterfaces;
 using UITEST.View;
+using Windows.UI.Core;
 
 namespace UITEST.ViewModel
 {
@@ -43,6 +44,15 @@ namespace UITEST.ViewModel
             await _redditApiConsumer.VoteAsync(commentable, direction);
             if (direction == 0) return;
             await _restUserPreferenceRepository.UpdateAsync(new UserPreference { Username = UserFactory.GetInfo().name, SubredditName = commentable.subreddit, PriorityMultiplier = 1 });
+        }
+
+        public void SetHandCursor()
+        {
+            Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Hand, 1);
+        }
+        public void SetArrowCursor()
+        {
+            Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Arrow, 1);
         }
     }
 }

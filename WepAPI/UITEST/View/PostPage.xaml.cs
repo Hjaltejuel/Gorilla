@@ -55,10 +55,12 @@ namespace UITEST.View
         private void TextButton_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
             if (sender is Button btn) btn.FontWeight = FontWeights.Bold;
+            _vm.SetHandCursor();
         }
         private void TextButton_PointerLeaved(object sender, PointerRoutedEventArgs e)
         {
             if (sender is Button btn) btn.FontWeight = FontWeights.SemiBold;
+            _vm.SetArrowCursor();
         }
         private void PostTextComment_Click(object sender, RoutedEventArgs e)
         {
