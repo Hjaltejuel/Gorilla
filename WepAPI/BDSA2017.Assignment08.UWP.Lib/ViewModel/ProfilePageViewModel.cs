@@ -82,7 +82,6 @@ namespace UI.Lib.ViewModel
         public ProfilePageViewModel(INavigationService service, IRestUserRepository repository, IRedditApiConsumer consumer, IRestPostRepository restPostRepository) : base(service)
         {
             _restPostRepository = restPostRepository;
-
             _repository = repository;
             _consumer = consumer;
         }

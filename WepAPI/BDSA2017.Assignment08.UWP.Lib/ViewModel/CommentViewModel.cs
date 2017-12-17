@@ -11,8 +11,8 @@ namespace UI.Lib.ViewModel
     public class CommentViewModel : CommentableViewModel
     {
         readonly IRedditApiConsumer _redditApiConsumer;
-        public CommentViewModel(INavigationService service, IRestPostRepository repository, IRestUserPreferenceRepository restUserPreferenceRepository, IRedditApiConsumer redditApiConsumer) 
-            : base(service,repository,restUserPreferenceRepository,redditApiConsumer)
+        public CommentViewModel(INavigationService service, IRestUserPreferenceRepository restUserPreferenceRepository, IRedditApiConsumer redditApiConsumer) 
+            : base(service,restUserPreferenceRepository,redditApiConsumer)
         {
             _redditApiConsumer = redditApiConsumer;
         }
@@ -29,6 +29,7 @@ namespace UI.Lib.ViewModel
             }
             foreach (var comment in list)
             {
+                if (comment.parent_id == null) { continue;}
                 if (dict.TryGetValue(comment.parent_id, out var c))
                 {
                     c.Replies.Add(comment);
@@ -36,6 +37,5 @@ namespace UI.Lib.ViewModel
             }
             return finalList;
         }
-
     }
 }

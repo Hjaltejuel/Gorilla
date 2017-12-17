@@ -13,7 +13,6 @@ namespace BDSA2017.Assignment08.UWP.Tests.ViewModels
         [Fact]
         public void TestThatThereIsAlways1()
         {
-            
             var mock = new Mock<INavigationService>();
             var auth = new Mock<IAuthenticationHelper>();
             var PostMock = new Mock<IRestUserRepository>();

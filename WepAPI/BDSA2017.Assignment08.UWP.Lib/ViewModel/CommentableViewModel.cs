@@ -19,7 +19,7 @@ namespace UI.Lib.ViewModel
     {
         private readonly IRedditApiConsumer _redditApiConsumer;
         private readonly IRestUserPreferenceRepository _restUserPreferenceRepository;
-        public CommentableViewModel(INavigationService service, IRestPostRepository repository, IRestUserPreferenceRepository restUserPreferenceRepository, IRedditApiConsumer redditApiConsumer) : base(service)
+        public CommentableViewModel(INavigationService service, IRestUserPreferenceRepository restUserPreferenceRepository, IRedditApiConsumer redditApiConsumer) : base(service)
         {
             _redditApiConsumer = redditApiConsumer;
             _restUserPreferenceRepository = restUserPreferenceRepository;

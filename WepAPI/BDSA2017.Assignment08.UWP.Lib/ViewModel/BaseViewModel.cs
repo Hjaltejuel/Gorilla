@@ -25,7 +25,6 @@ namespace UI.Lib.ViewModel
         public static Type SubredditPage { get; set; }
         public static Type CreatePostPage { get; set; }
 
-
         protected IAuthenticationHelper Helper;
         protected INavigationService Service;
 

@@ -43,7 +43,7 @@ namespace UI.Lib.ViewModel
             set { _timeSinceCreation = value; OnPropertyChanged(); }}
 
         public PostPageViewModel(INavigationService service, IRestPostRepository repository, IRestUserPreferenceRepository restUserPreferenceRepository, IRedditApiConsumer redditApiConsumer) 
-            : base(service,repository,restUserPreferenceRepository,redditApiConsumer)
+            : base(service,restUserPreferenceRepository,redditApiConsumer)
         {
             _redditApiConsumer = redditApiConsumer;
             _repository = repository;
