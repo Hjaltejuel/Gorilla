@@ -17,14 +17,13 @@ namespace UITEST.Model.RedditRepositories
     public class RedditConsumerController : IRedditApiConsumer
     {
         public string BaseUrl => "https://oauth.reddit.com/";
-
         private const string CommentUrl = "api/comment";
         private const string MeUrl = "api/v1/me";
         private const string VoteUrl = "api/vote";
         private const string CreatePostUrl = "api/submit";
         private const string SubscribeUrl = "api/subscribe";
         private const string SubscribedSubredditsUrl = "subreddits/mine/subscriber";
-
+        private const string GetByIdUrl = "by_id/{0}";
         RedditAuthHandler _authHandler;
 
         //"51999737725-OYI8KJ5T56KSO4xAyvoVhA8t5TM";
@@ -33,6 +32,7 @@ namespace UITEST.Model.RedditRepositories
         {
             _authHandler = handler;
         }
+
 
         private HttpRequestMessage CreateRequest(string stringUri, string method, string data = "")
         {
@@ -82,6 +82,19 @@ namespace UITEST.Model.RedditRepositories
                 }
                 return (HttpStatusCode.OK, json);
             }
+        }
+        public async Task<(HttpStatusCode, ObservableCollection<Post>)> GetPostsByIdAsync(string things)
+        {
+            var request = CreateRequest(string.Format(GetByIdUrl, things), "GET");
+            var response = await SendRequest(request);
+            if (response.Item1 != HttpStatusCode.OK) return (response.Item1, null);
+
+            var list = new ObservableCollection<Post>();
+            foreach (var child in response.Item2.ToObject<Listing>().data.children)
+            {
+                list.Add(child.data.ToObject<Post>());
+            }
+            return (response.Item1, list);
         }
 
         public async Task<(HttpStatusCode, Subreddit)> GetSubredditAsync(string subredditName)
@@ -297,7 +310,6 @@ namespace UITEST.Model.RedditRepositories
 
         public List<Comment> BuildCommentList(List<Comment> commentList, int depth)
         {
-
             var dict = new Dictionary<string, Comment>();
             var finalList = new List<Comment>();
             foreach(var comment in commentList)

@@ -1,6 +1,7 @@
 ﻿using Entities.RedditEntities;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -97,13 +98,9 @@ namespace UITEST.ViewModel
             {
                 ImageBytes = UserFactory.GetInfo().ProfilePic;
             }
-            var postIds = await _restPostRepository.ReadAsync(Username);
-           
-            Posts = new ObservableCollection<Post>();
-            foreach (var post in postIds)
-            {
-                Posts.Add((await _consumer.GetPostAndCommentsByIdAsync(post.Id)).Item2);
-            }
+            var visitedPosts = await _restPostRepository.ReadAsync(Username);
+            var ids = visitedPosts.Aggregate("", (current, post) => "t3_"+current + ",t3_" + post.Id);
+            Posts = (await _consumer.GetPostsByIdAsync(ids)).Item2;
             PostsReadyEvent?.Invoke();
         }
 

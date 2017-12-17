@@ -10,6 +10,7 @@ namespace UITEST.Model.RedditRestInterfaces
     public interface IRedditApiConsumer
     {
         void Authenticate(RedditAuthHandler code);
+        Task<(HttpStatusCode, ObservableCollection<Post>)> GetPostsByIdAsync(string things);
         Task<(HttpStatusCode, Post)> GetPostAndCommentsByIdAsync(string nameId);
         Task<(HttpStatusCode, Subreddit)> GetSubredditAsync(string subredditName);
         Task<(HttpStatusCode, Subreddit)> GetSubredditPostsAsync(Subreddit subreddit, string sortBy = "hot");
