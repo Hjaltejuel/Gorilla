@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Net;
+using UITEST.Model;
 using UITEST.View;
+using UITEST.ViewModel;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using UITEST.Model;
+
 
 namespace UITEST
 {
@@ -24,7 +26,13 @@ namespace UITEST
         /// </summary>
         public App()
         {
+            BaseViewModel.MainPage = typeof(MainPage);
+            BaseViewModel.ProfilePage = typeof(ProfilePage);
+            BaseViewModel.SubredditPage = typeof(SubredditPage);
+            BaseViewModel.DiscoverPage = typeof(DiscoverPage);
+            BaseViewModel.CreatePostPage = typeof(CreatePostPage);
             
+
             InitializeComponent();
             Suspending += OnSuspending;
         }
@@ -38,6 +46,7 @@ namespace UITEST
         {
             Frame rootFrame = Window.Current.Content as Frame;
             ServicePointManager.DefaultConnectionLimit = 100;
+
             
 
             // Do not repeat app initialization when the Window already has content,

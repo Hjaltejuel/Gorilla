@@ -6,6 +6,7 @@ using UITEST.ViewModel;
 using Entities.RedditEntities;
 using Windows.UI.Core;
 
+
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 namespace UITEST.View
 {
@@ -21,6 +22,7 @@ namespace UITEST.View
             InitializeComponent();
             _vm = App.ServiceProvider.GetService<MainPageViewModel>();
             DataContext = _vm;
+        
             SizeChanged += ChangeListViewWhenSizedChanged;
             _vm.LoadSwitch += LoadingRingSwitch;
             PostsList.OnNagivated += PostsList_OnNagivated;
