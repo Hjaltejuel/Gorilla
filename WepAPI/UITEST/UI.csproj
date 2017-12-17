@@ -105,31 +105,6 @@
     <Compile Include="View\CommentControl.xaml.cs">
       <DependentUpon>CommentControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CustomUI\CustomButton.cs" />
-    <Compile Include="Authentication\GorillaAuthentication\AuthenticationHelper.cs" />
-    <Compile Include="Authentication\GorillaAuthentication\AuthorizedHandler.cs" />
-    <Compile Include="Authentication\GorillaAuthentication\IAuthenticationHelper.cs" />
-    <Compile Include="Authentication\GorillaAuthentication\ISettings.cs" />
-    <Compile Include="Authentication\GorillaAuthentication\Settings.cs" />
-    <Compile Include="Model\GorillaRepositories\Extensions.cs" />
-    <Compile Include="Model\GorillaRepositories\RestPostRepository.cs" />
-    <Compile Include="Model\GorillaRepositories\RestSubredditConnectionRepository.cs" />
-    <Compile Include="Model\GorillaRepositories\RestSubredditRepository.cs" />
-    <Compile Include="Model\GorillaRepositories\RestUserPreferenceRepository.cs" />
-    <Compile Include="Model\GorillaRepositories\RestUserRepository.cs" />
-    <Compile Include="Model\GorillaRestInterfaces\IRestPostRepository.cs" />
-    <Compile Include="Model\GorillaRestInterfaces\IRestSubredditConnectionRepository.cs" />
-    <Compile Include="Model\GorillaRestInterfaces\IRestSubredditRepository.cs" />
-    <Compile Include="Model\GorillaRestInterfaces\IRestUserPreferenceRepository.cs" />
-    <Compile Include="Model\GorillaRestInterfaces\IRestUserRepository.cs" />
-    <Compile Include="Model\INavigationService.cs" />
-    <Compile Include="Model\IoCContainer.cs" />
-    <Compile Include="Model\NavigationService.cs" />
-    <Compile Include="Misc\TimeHelper.cs" />
-    <Compile Include="Model\RedditRepositories\RedditConsumerController.cs" />
-    <Compile Include="Model\RedditRestInterfaces\IRedditAPIConsumer.cs" />
-    <Compile Include="Model\UserFactory.cs" />
-    <Compile Include="ViewModel\SubredditPageViewModel.cs" />
     <Compile Include="View\ChooseYourCategories.xaml.cs">
       <DependentUpon>ChooseYourCategories.xaml</DependentUpon>
     </Compile>
@@ -197,7 +172,7 @@
     <Content Include="Assets\photographylols.jpeg" />
     <Content Include="Assets\Travel.jpeg" />
     <Content Include="Assets\gaming.jpeg" />
-	<Content Include="Assets\LockScreenLogo.scale-200.png" />
+    <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\picturepost.png" />
     <Content Include="Assets\purpledown.png" />
     <Content Include="Assets\purpleup.png" />
