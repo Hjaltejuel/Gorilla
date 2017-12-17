@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Popups;
 using Entities.GorillaEntities;
-using UITEST.Authentication.GorillaAuthentication;
-using UITEST.Model;
-using UITEST.Model.GorillaRestInterfaces;
-using UITEST.Model.RedditRestInterfaces;
+using UI.Lib.Authentication.GorillaAuthentication;
+using UI.Lib.Model;
+using UI.Lib.Model.GorillaRestInterfaces;
+using UI.Lib.Model.RedditRestInterfaces;
 using Subreddit = Entities.RedditEntities.Subreddit;
 
-namespace UITEST.ViewModel
+namespace UI.Lib.ViewModel
 {
     public class CreatePostPageViewModel : BaseViewModel
     {

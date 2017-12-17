@@ -3,7 +3,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Entities.RedditEntities;
 using Microsoft.Extensions.DependencyInjection;
-using UITEST.ViewModel;
+using UI.Lib.ViewModel;
 
 
 

@@ -1,14 +1,14 @@
 ﻿using Entities.RedditEntities;
 using Microsoft.Extensions.DependencyInjection;
-using UITEST.ViewModel;
+using UI.Lib.ViewModel;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 using Castle.Core.Internal;
-using UITEST.Model;
-using UITEST.Model.GorillaRestInterfaces;
+using UI.Lib.Model;
+using UI.Lib.Model.GorillaRestInterfaces;
 using System;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238

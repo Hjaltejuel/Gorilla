@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UITEST.Authentication.RedditAuthentication
+namespace UI.Lib.Authentication.RedditAuthentication
 {
     public interface ISettings
     {

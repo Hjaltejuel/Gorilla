@@ -1,17 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using Entities.GorillaEntities;
+using Entities.RedditEntities;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Entities.GorillaEntities;
-using UITEST.Authentication.GorillaAuthentication;
-using UITEST.Model;
-using UITEST.Model.GorillaRestInterfaces;
-using UITEST.Model.RedditRestInterfaces;
+using UI.Lib.Authentication.GorillaAuthentication;
+using UI.Lib.Model;
+using UI.Lib.Model.GorillaRestInterfaces;
+using UI.Lib.Model.RedditRestInterfaces;
+using UI.Lib.ViewModel;
 
-using Subreddit = Entities.RedditEntities.Subreddit;
-
-
-namespace UITEST.ViewModel
+namespace UI.Lib.ViewModel
 {
     public class SubredditPageViewModel : SearchableViewModel
     {
@@ -19,7 +18,7 @@ namespace UITEST.ViewModel
         public ICommand SubscribeToSubredditCommand { get; set; }
 
         private readonly IRestUserPreferenceRepository _repository;
-        public Subreddit _Subreddit;
+        public Entities.RedditEntities.Subreddit _Subreddit;
         private List<string> _SortTypes;
         public List<string> SortTypes{ get => _SortTypes;
             set { _SortTypes = value; OnPropertyChanged(); }
@@ -75,7 +74,7 @@ namespace UITEST.ViewModel
 
         private async Task IsUserSubscribed()
         {
-            List<Subreddit> subs = (await Consumer.GetSubscribedSubredditsAsync()).Item2;
+            List<Entities.RedditEntities.Subreddit> subs = (await Consumer.GetSubscribedSubredditsAsync()).Item2;
             UserIsSubscribed = (from b in subs
                                 where b.display_name.Equals(_Subreddit.display_name)
                                 select b).Any();

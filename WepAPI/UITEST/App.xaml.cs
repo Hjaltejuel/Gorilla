@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net;
-using UITEST.Model;
+using UI.Lib.Model;
 using UITEST.View;
-using UITEST.ViewModel;
+using UI.Lib.ViewModel;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Core;

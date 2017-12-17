@@ -2,7 +2,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace UITEST.Model
+namespace UI.Lib.Model
 {
     public class NavigationService : INavigationService
     {

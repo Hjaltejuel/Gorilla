@@ -1,7 +1,7 @@
 ﻿using Entities.RedditEntities;
 using Windows.UI.Xaml.Controls;
 
-namespace UITEST.CustomUI
+namespace UI.Lib.CustomUI
 {
     public class CustomButton : Button
     {

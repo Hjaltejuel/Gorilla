@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Entities.GorillaEntities;
 
-namespace UITEST.Model.GorillaRestInterfaces
+namespace UI.Lib.Model.GorillaRestInterfaces
 {
     public interface IRestPostRepository
     {

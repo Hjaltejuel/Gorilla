@@ -1,13 +1,13 @@
 ﻿using System.Collections.ObjectModel;
 using Entities.RedditEntities;
-using UITEST.Authentication.GorillaAuthentication;
-using UITEST.Model;
-using UITEST.Model.GorillaRestInterfaces;
-using UITEST.Model.RedditRestInterfaces;
+using UI.Lib.Authentication.GorillaAuthentication;
+using UI.Lib.Model;
+using UI.Lib.Model.GorillaRestInterfaces;
+using UI.Lib.Model.RedditRestInterfaces;
 
 
-namespace UITEST.ViewModel
-{
+namespace UI.Lib.ViewModel
+{ 
     public abstract class SearchableViewModel : BaseViewModel
     {
         public delegate void LoadingEvent();

@@ -4,7 +4,7 @@ using Windows.Security.Authentication.Web.Core;
 using Windows.Security.Credentials;
 using Windows.Storage;
 
-namespace UITEST.Authentication.RedditAuthentication
+namespace UI.Lib.Authentication.RedditAuthentication
 {
     public class AuthenticationHelper: IAuthenticationHelper
     {

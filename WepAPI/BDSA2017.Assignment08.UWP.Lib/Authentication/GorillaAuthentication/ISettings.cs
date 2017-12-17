@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UITEST.Authentication.GorillaAuthentication
+namespace UI.Lib.Authentication.GorillaAuthentication
 {
     public interface ISettings
     {

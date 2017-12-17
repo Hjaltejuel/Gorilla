@@ -5,12 +5,10 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
-using Microsoft.Extensions.DependencyInjection;
 using Windows.Storage;
-using UITEST.Model.RedditRestInterfaces;
-using BDSA2017.Assignment08.UWP.Authentication;
+using UI.Lib.Model.RedditRestInterfaces;
 
-namespace UITEST.Authentication
+namespace UI.Lib.Authentication
 {
     public class RedditAuthHandler : IRedditAuthHandler
     {

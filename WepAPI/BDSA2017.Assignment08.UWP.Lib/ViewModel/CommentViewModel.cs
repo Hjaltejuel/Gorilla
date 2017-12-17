@@ -2,11 +2,11 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Entities.RedditEntities;
-using UITEST.Model;
-using UITEST.Model.GorillaRestInterfaces;
-using UITEST.Model.RedditRestInterfaces;
+using UI.Lib.Model;
+using UI.Lib.Model.GorillaRestInterfaces;
+using UI.Lib.Model.RedditRestInterfaces;
 
-namespace UITEST.ViewModel
+namespace UI.Lib.ViewModel
 {
     public class CommentViewModel : CommentableViewModel
     {

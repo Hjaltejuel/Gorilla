@@ -4,7 +4,7 @@ using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace UITEST.Authentication.RedditAuthentication
+namespace UI.Lib.Authentication.RedditAuthentication
 {
     public class AuthorizedHandler : DelegatingHandler
     {

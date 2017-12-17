@@ -1,6 +1,6 @@
-﻿using UITEST.Model;
+﻿using UI.Lib.Model;
 
-namespace UITEST.ViewModel
+namespace UI.Lib.ViewModel
 {
     public class TrendingPageViewModel : BaseViewModel
     {

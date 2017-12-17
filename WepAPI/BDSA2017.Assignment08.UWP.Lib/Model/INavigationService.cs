@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UITEST.Model
+namespace UI.Lib.Model
 {
     public interface INavigationService
     {

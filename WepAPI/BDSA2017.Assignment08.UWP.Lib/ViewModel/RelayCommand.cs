@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace UITEST.ViewModel
+namespace UI.Lib.ViewModel
 {
     public class RelayCommand : ICommand
     {

@@ -4,7 +4,7 @@ using Windows.Security.Authentication.Web.Core;
 using Windows.Security.Credentials;
 using Windows.Storage;
 
-namespace UITEST.Authentication.GorillaAuthentication
+namespace UI.Lib.Authentication.GorillaAuthentication
 {
     public class AuthenticationHelper: IAuthenticationHelper
     {
