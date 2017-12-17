@@ -1,6 +1,8 @@
 ﻿using Entities.RedditEntities;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI;
 using Windows.UI.Text;
@@ -23,15 +25,11 @@ namespace UITEST.View
     {
         private readonly CommentViewModel _vm;
         private readonly Comment _currentComment;
-        private readonly IRedditApiConsumer _redditApiConsumer;
-        private readonly IRestUserPreferenceRepository _repository;
         private bool _isLiked;
         private bool _isDisliked;
 
         public CommentControl(Comment comment)
         {
-            _redditApiConsumer = App.ServiceProvider.GetService<IRedditApiConsumer>();
-            _repository = App.ServiceProvider.GetService<IRestUserPreferenceRepository>();
             InitializeComponent();
             _currentComment = comment;
             _vm = App.ServiceProvider.GetService<CommentViewModel>();
@@ -39,6 +37,10 @@ namespace UITEST.View
             //If the comment is a 'more' type
             if (comment.body == null)
             {
+
+                TextPanel.Visibility = Visibility.Collapsed;
+                VotePanel.Visibility = Visibility.Collapsed;
+                TextInfoPanel.Visibility = Visibility.Collapsed;
                 var b = new Button()
                 {
                     Content = "Load more comments",
@@ -92,14 +94,14 @@ namespace UITEST.View
             }
         }
 
-        private void B_Click(object sender, RoutedEventArgs e)
+        private async void B_Click(object sender, RoutedEventArgs e)
         {
-            var parentPanel = Parent as StackPanel;
+            var parentPanel = this.Parent as StackPanel;
+            await LoadMoreComments();
             parentPanel?.Children.Remove(this);
-            LoadMoreComments();
         }
 
-        private async void LoadMoreComments()
+        private async Task LoadMoreComments()
         {
             var parentPanel = Parent as StackPanel;
             var parentGrid = parentPanel?.Parent as Grid;
@@ -112,7 +114,7 @@ namespace UITEST.View
                 //parentCommentControl.CommentStackPanel.Children.Remove(parentCommentControl);
                 if (postId != null && children.Length != 0)
                 {
-                    var list = (await _redditApiConsumer.GetMoreComments(postId, children, _currentComment.depth)).Item2;
+                    var list = await _vm.GetChildComments(postId, children, _currentComment);
                     foreach (var comment in list)
                     {
                         parentPanel.Children.Add(new CommentControl(comment));
@@ -121,26 +123,14 @@ namespace UITEST.View
             }
         }
 
-        private async void UpvoteButton_Click(object sender, RoutedEventArgs e)
+        private void UpvoteButton_Click(object sender, RoutedEventArgs e)
         {
-            await CommentLikedAsync();
-            await _repository.UpdateAsync(new UserPreference
-            {
-                Username = UserFactory.GetInfo().name,
-                SubredditName = _currentComment.subreddit,
-                PriorityMultiplier = 1
-            });
+            CommentLikedAsync();
         }
 
-        private async void DownvoteButton_Click(object sender, RoutedEventArgs e)
+        private void DownvoteButton_Click(object sender, RoutedEventArgs e)
         {
-            await CommentDislikedAsync();
-            await _repository.UpdateAsync(new UserPreference
-            {
-                Username = UserFactory.GetInfo().name,
-                SubredditName = _currentComment.subreddit,
-                PriorityMultiplier = 1
-            });
+            CommentDislikedAsync();
         }
 
         private int GetNewVoteDirection(int voteDirection) // 1 = upvote | -1 = downvote
@@ -191,18 +181,18 @@ namespace UITEST.View
 
         //Hvor skal det her stå? vi har ikke en viewmodel
         //TODO hvis vi ikke kan få observer pattern til at virke kan vi slette de der currentcomment.score - og + statements
-        public async Task CommentLikedAsync()
+        public void CommentLikedAsync()
         {
             var newDirection = GetNewVoteDirection(1);
             UpdateVoteUi(newDirection);
-            await _redditApiConsumer.VoteAsync(_currentComment, newDirection);
+            _vm.LikeCommentableAsync(_currentComment, newDirection);
         }
 
-        public async Task CommentDislikedAsync()
+        public void CommentDislikedAsync()
         {
             var newDirection = GetNewVoteDirection(-1);
             UpdateVoteUi(newDirection);
-            await _redditApiConsumer.VoteAsync(_currentComment, newDirection);
+            _vm.LikeCommentableAsync(_currentComment, newDirection);
         }
 
         //Grimt i know.. what to do? det er et midlertidligt workaround
@@ -223,6 +213,11 @@ namespace UITEST.View
 
         private void CommentButton_Click(object sender, RoutedEventArgs e)
         {
+            var firstChild = TextInfoPanel.Children.First();
+            if (typeof(CommentPanel) == firstChild.GetType())
+            {
+                TextInfoPanel.Children.Remove(firstChild);
+            }
             var commentPanel = new CommentPanel();
             TextInfoPanel.Children.Add(commentPanel);
             commentPanel.OnCommentCreated += CommentPanel_OnCommentCreated;

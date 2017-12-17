@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 using Entities.GorillaEntities;
 using Entities.RedditEntities;
 using UITEST.Model;
@@ -23,18 +26,23 @@ namespace UITEST.ViewModel
         }
         public async Task<Comment> CreateComment(AbstractCommentable abstractCommentableToCommentOn, string newCommentBody)
         {
-            var newComment = (await _redditApiConsumer.CreateCommentAsync(abstractCommentableToCommentOn, newCommentBody)).Item2;
-            if (newComment == null) return null;
+            var commentResponse = await _redditApiConsumer.CreateCommentAsync(abstractCommentableToCommentOn, newCommentBody);
+            if (commentResponse.Item1 != HttpStatusCode.OK) return null;
 
-            abstractCommentableToCommentOn.Replies.Insert(0, newComment);
-            //No need to await this
+            var newComment = commentResponse.Item2;
             _restUserPreferenceRepository.UpdateAsync(new UserPreference
             {
-                Username = UserFactory.GetInfo().name,
+                Username = newComment.author,
                 SubredditName = newComment.subreddit,
                 PriorityMultiplier = 3
             });
             return newComment;
+        }
+        public async Task LikeCommentableAsync(AbstractCommentable commentable, int direction)
+        {
+            await _redditApiConsumer.VoteAsync(commentable, direction);
+            if (direction == 0) return;
+            await _restUserPreferenceRepository.UpdateAsync(new UserPreference { Username = UserFactory.GetInfo().name, SubredditName = commentable.subreddit, PriorityMultiplier = 1 });
         }
     }
 }

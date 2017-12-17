@@ -18,14 +18,11 @@ namespace UITEST.View
     public sealed partial class PostPage : Page
     {
         private readonly PostPageViewModel _vm;
-        private readonly IRestPostRepository _repository;
         
         public PostPage()
         {
             InitializeComponent();
             LoadingRing.IsActive = true;
-           
-            _repository = App.ServiceProvider.GetService<IRestPostRepository>();
             _vm = App.ServiceProvider.GetService<PostPageViewModel>();
             DataContext = _vm;
             SetEventMethods();
@@ -46,9 +43,8 @@ namespace UITEST.View
             var post = e.Parameter as Post;
             if (post.selftext == null)
             {
-                PostText.Visibility = Visibility.Collapsed;
+                TextPanel.Visibility = Visibility.Collapsed;
             }
-            _repository.CreateAsync(new Entities.GorillaEntities.Post { Id = post.id, username = UserFactory.GetInfo().name });
             _vm.Initialize(post);
         }
         private void ChangeListViewWhenSizedChanged(object sender, SizeChangedEventArgs e)
@@ -70,12 +66,7 @@ namespace UITEST.View
             CommentPanel.Visibility = CommentPanel.Visibility.Equals(Visibility.Visible) ? Visibility.Collapsed : Visibility.Visible;
         }
 
-        private void CommentSaveClick(object sender, RoutedEventArgs e)
-        {
-            InsertCommentAsync(_vm.CurrentPost);
-        }
-
-        private async void InsertCommentAsync(AbstractCommentable abstractCommentableToCommentOn)
+        private async void CommentSaveClick(object sender, RoutedEventArgs e)
         {
             var text = CommentTextBox.Text;
             if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
@@ -85,7 +76,7 @@ namespace UITEST.View
             else
             {
                 CommentPanel.Visibility = Visibility.Collapsed;
-                var newComment = await _vm.AddCommentAsync(abstractCommentableToCommentOn, text);
+                var newComment = await _vm.CreateComment(_vm.CurrentPost, text);
                 PostView.Items?.Insert(2, new CommentControl(newComment));
             }
         }

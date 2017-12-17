@@ -179,7 +179,7 @@ namespace UITEST.Model.RedditRepositories
             var responseComment = BuildCommentFromResponse(response.Item2["jquery"]);
             if (thing.GetType() == typeof(Comment))
             {
-                responseComment.depth = ((Comment) thing).depth + 1;
+                responseComment.depth = ((Comment)thing).depth + 1;
             }
             return (response.Item1, responseComment);
         }
@@ -196,7 +196,7 @@ namespace UITEST.Model.RedditRepositories
 
                 if (lastElement.GetType() == typeof(JArray))
                 {
-                    var comment = lastElement.First.ToObject<ChildNode>().data.ToObject<Comment>();
+                    return lastElement.First.ToObject<ChildNode>().data.ToObject<Comment>();
                 }
             }
             return null;
@@ -258,8 +258,7 @@ namespace UITEST.Model.RedditRepositories
             
             l.AddRange(
             response.Item2["json"]["data"]["things"].Select(child => child["data"].ToObject<Comment>()));
-            var list = BuildCommentList(l, depth);
-            var o = new ObservableCollection<Comment>(list);
+            var o = new ObservableCollection<Comment>(l);
             return (response.Item1, o);
         }
 
@@ -306,25 +305,6 @@ namespace UITEST.Model.RedditRepositories
 
             var o = new ObservableCollection<AbstractableComment>(list);
             return o;
-        }
-
-        public List<Comment> BuildCommentList(List<Comment> commentList, int depth)
-        {
-            var dict = new Dictionary<string, Comment>();
-            var finalList = new List<Comment>();
-            foreach(var comment in commentList)
-            {
-                dict.Add(comment.name, comment);
-                if (comment.depth == depth) finalList.Add(comment);
-            }
-            foreach (var comment in commentList)
-            {
-                if(dict.TryGetValue(comment.parent_id, out var c))
-                {
-                    c.Replies.Add(comment);
-                }
-            }
-            return finalList;
         }
     }
 }
