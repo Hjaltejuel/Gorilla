@@ -104,6 +104,7 @@
     <Compile Include="ViewModels\CommentViewModelTest.cs" />
     <Compile Include="ViewModels\MainPageViewModelTest.cs" />
     <Compile Include="ViewModels\ProfilePageViewModelTests.cs" />
+    <Compile Include="ViewModels\LoginPageViewModelTests.cs" />
     <Compile Include="ViewModels\SubredditPageViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
