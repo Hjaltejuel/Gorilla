@@ -40,13 +40,13 @@ namespace UITEST.View
         {
             LoadingRing.IsActive = false;
         }
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             Storyboard fadeIn = this.Resources["FadeIn"] as Storyboard;
             fadeIn.Begin();
             var strings = e.Parameter as string[];
-            _vm.load(strings);
+            await _vm.load(strings);
             
 
         }

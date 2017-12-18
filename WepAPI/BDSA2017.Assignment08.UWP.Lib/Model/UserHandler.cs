@@ -17,6 +17,7 @@ namespace UI.Lib.Model
             if (accountDetailsResponse.Item1 == HttpStatusCode.OK)
             {
                 _user = accountDetailsResponse.Item2;
+                _user.icon_img = _user.icon_img.Replace("amp;", "");
             }
             else
             {

@@ -1,4 +1,4 @@
-﻿using Entities.RedditEntities;
+﻿ using Entities.RedditEntities;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
