@@ -1,7 +1,10 @@
-﻿using Moq;
+﻿using Entities.RedditEntities;
+using Moq;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using UI.Lib.Model;
@@ -9,6 +12,7 @@ using UI.Lib.Model.GorillaRestInterfaces;
 using UI.Lib.Model.RedditRestInterfaces;
 using UI.Lib.ViewModel;
 using xunit;
+using Xunit;
 
 namespace UI.Test.ViewModels
 {
@@ -37,5 +41,33 @@ namespace UI.Test.ViewModels
                 _userHandler.Object
             );
         }
+
+        [Fact(DisplayName = "GetCurrentPost Test")]
+        public async void GetCurrentPostTest()
+        {
+            //Arrange
+            var returnResult = Task.FromResult((HttpStatusCode.OK, new Post() { id = "t5_a221", title = "TitleA", Replies = new ObservableCollection<AbstractCommentable>() { new Comment(), new Comment() } }));
+            _redditApiConsumer.Setup(o => o.GetPostAndCommentsByIdAsync(It.IsAny<string>()))
+                                            .Returns(returnResult);
+            //Act
+            _postPageViewModel.GetCurrentPost(new Post() { id = "t5_a221" });
+
+            //Assert
+            var expectedTitle = "TitleA";
+            var actualTitle = _postPageViewModel.CurrentPost.title;
+            Assert.Equal(expectedTitle, actualTitle);
+            var expectedRepliesCount = 2;
+            var actualRepliesCount = _postPageViewModel.CurrentPost.Replies.Count;
+            Assert.Equal(expectedRepliesCount, actualRepliesCount);
+        }
+
+        //[Fact(DisplayName = "PostLikedAsync Test")]
+        //public async void PostLikedAsyncTest()
+        //{
+        //    _redditApiConsumer.Setup(o => o.VoteAsync(It.IsAny<AbstractCommentable>(), It.IsAny<int>()));
+        //    _postPageViewModel.PostLikedAsync();
+
+        //    _redditApiConsumer.Verify(o => o.VoteAsync(It.IsAny<AbstractCommentable>(), It.IsAny<int>()));
+        //}
     }
 }
