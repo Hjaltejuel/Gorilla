@@ -130,7 +130,7 @@ namespace UI.Lib.Model.RedditRepositories
         //t3 = comments on link / post & t5 = subreddit & t1 = comment
         public async Task<(HttpStatusCode, Post)> GetPostAndCommentsByIdAsync(string postId)
         {
-            var uri = $"https://www.reddit.com/comments/{postId}.json?json_raw=1&limit=10";
+            var uri = $"https://www.reddit.com/comments/{postId}.json?json_raw=1&limit=5";
 
             var request = await CreateRequest(uri, "GET");
             var response = await SendRequest(request);

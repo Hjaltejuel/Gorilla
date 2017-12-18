@@ -99,7 +99,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CommentPanel.xaml.cs">
+    <Compile Include="View\CommentPanel.xaml.cs">
       <DependentUpon>CommentPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\CommentControl.xaml.cs">
@@ -227,7 +227,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="CommentPanel.xaml">
+    <Page Include="View\CommentPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

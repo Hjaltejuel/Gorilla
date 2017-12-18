@@ -42,8 +42,8 @@ namespace UI.Test.ViewModels
             );
         }
 
-        [Fact(DisplayName = "GetCurrentPost Test")]
-        public async void GetCurrentPostTest()
+        [Fact(DisplayName = "SetCurrentPost Test")]
+        public async void SetCurrentPostTest()
         {
             //Arrange
             var returnResult = Task.FromResult((HttpStatusCode.OK, new Post()

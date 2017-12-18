@@ -10,6 +10,8 @@ using Castle.Core.Internal;
 using UI.Lib.Model;
 using UI.Lib.Model.GorillaRestInterfaces;
 using System;
+using Windows.UI;
+using Windows.UI.Xaml.Media;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 namespace UITEST.View
@@ -37,7 +39,7 @@ namespace UITEST.View
         private void CommentsReadyEvent()
         {
             LoadingRing.IsActive = false;
-            DrawComments();
+            DrawRootComments();
             SetNumberOfCommentsTextInSingularOrPlural();
 
         }
@@ -91,15 +93,26 @@ namespace UITEST.View
                 PostView.Items?.Insert(2, new CommentControl(newComment));
             }
         }
-        private void DrawComments()
+        private void DrawRootComments()
         {
             foreach (var _comment in _vm.CurrentPost.Replies)
             {
                 var comment = _comment as Comment;
                 if (comment?.body == null) { continue; }
                 var topCommentPanel = new CommentControl(comment);
+                topCommentPanel.BorderThickness = new Thickness(1);
+                topCommentPanel.BorderBrush = new SolidColorBrush(Colors.Gray);
+                topCommentPanel.Margin = new Thickness(0, 0, 0, 10);
+                
+                //Make root comment bordered
+
                 PostView.Items.Add(topCommentPanel);
             }
+        }
+
+        private void FrameworkElement_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+
         }
     }
 }
