@@ -42,25 +42,14 @@ namespace UI.Test.ViewModels
             );
         }
 
-        //[Fact(DisplayName = "Generate Posts test if posts is assigned correctly")]
-        //public async void GeneratePostsTestIfPostIsAssignedCorrectly()
-        //{
-        //    //Arrange
-        //    var returnResult = Task.FromResult((HttpStatusCode.OK, new ObservableCollection<Post>()
-        //    {
-        //        new Post(){title = "TitleA"},
-        //        new Post(){title = "TitleB"}
-        //    }));
-        //    _redditApiConsumer.Setup(o => o.GetHomePageContent())
-        //                        .Returns(returnResult);
-        //    //_restUserPreferenceRepository.Setup(o => o.CreateAsync(It.IsAny<Entities.GorillaEntities.User>()));
-        //    //Act
-        //    await _commentableViewModel.GeneratePosts();
+        [Fact(DisplayName = "Generate Posts test homepage content is called correctly and checks/creates a user in the database")]
+        public async void GeneratePostsTest()
+        {
+            await _commentableViewModel.GeneratePosts();
 
-        //    //Assert
-        //    var expectedCount = 2;
-        //    var actualCount = _commentableViewModel.Posts.Count;
-        //    Assert.Equal(expectedCount, actualCount);
-        //}
+            _restUserPreferenceRepository.Verify(o => o.CreateAsync(It.IsAny<Entities.GorillaEntities.User>()));
+            _redditApiConsumer.Verify(o => o.GetHomePageContent());
+           
+        }
     }
 }

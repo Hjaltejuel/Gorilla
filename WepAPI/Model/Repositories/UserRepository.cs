@@ -22,6 +22,10 @@ namespace Model.Repositories
             {
                 throw new AlreadyThereException("A user witht that username alreay exist");
             }
+            if(user.PathToProfilePicture == null)
+            {
+                user.PathToProfilePicture = "profilePicture.jpg";
+            }
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return user.Username;
@@ -48,7 +52,8 @@ namespace Model.Repositories
             User userTest = await _context.Users.FindAsync(user.Username);
             if (userTest != null)
             {
-                userTest.PathToProfilePicture = user.PathToProfilePicture;
+               
+                userTest.StartUpQuestionAnswered = user.StartUpQuestionAnswered;
                 await _context.SaveChangesAsync();
                 return true;
             }

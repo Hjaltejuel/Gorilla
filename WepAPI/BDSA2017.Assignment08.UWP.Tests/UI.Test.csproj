@@ -102,6 +102,7 @@
     </Compile>
     <Compile Include="ViewModels\CommentableViewModelTest.cs" />
     <Compile Include="ViewModels\CommentViewModelTest.cs" />
+    <Compile Include="ViewModels\CreatePostPageViewModelTests.cs" />
     <Compile Include="ViewModels\MainPageViewModelTest.cs" />
     <Compile Include="ViewModels\PostPageViewModelTests.cs" />
     <Compile Include="ViewModels\ProfilePageViewModelTests.cs" />
@@ -188,7 +189,7 @@
       <Version>2.0.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.0.4</Version>
+      <Version>6.0.5</Version>
     </PackageReference>
     <PackageReference Include="Moq">
       <Version>4.7.145</Version>

@@ -220,6 +220,7 @@ namespace UITEST.View
             if (newComment == null) return;
             _currentComment.Replies.Insert(0, newComment);
             CommentStackPanel.Children.Insert(1, new CommentControl(newComment));
+
         }
     }
 }
