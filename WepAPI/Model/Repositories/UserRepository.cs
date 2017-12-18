@@ -21,15 +21,12 @@ namespace Model.Repositories
             User found = await FindAsync(user.Username);
             if (found != null)
             {
-                    found.PathToProfilePicture = user.PathToProfilePicture;
-                    await _context.SaveChangesAsync();
+                   
+             
                 
                 throw new AlreadyThereException("A user witht that username alreay exist");
             }
-            if(user.PathToProfilePicture == null)
-            {
-                user.PathToProfilePicture = "images/profilePicture.jpg";
-            }
+          
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return user.Username;

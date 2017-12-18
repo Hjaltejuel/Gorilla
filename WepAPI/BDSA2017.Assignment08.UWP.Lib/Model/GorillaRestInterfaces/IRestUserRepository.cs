@@ -12,6 +12,6 @@ namespace UI.Lib.Model.GorillaRestInterfaces
         Task<bool> DeleteAsync(string username);
         Task<IReadOnlyCollection<User>> ReadAsync();
         Task<bool> UpdateAsync(User user);
-        Task<byte[]> FindImageAsync(string username);
+  
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Entities.RedditEntities;
 using Windows.UI.Core;
 using UI.Lib.ViewModel;
+using System;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -24,7 +25,7 @@ namespace UITEST.View
             DataContext = _vm;
         
             SizeChanged += ChangeListViewWhenSizedChanged;
-            _vm.LoadSwitch += LoadingRingSwitch;
+            _vm.MainReadyEvent += LoadingRingSwitch;
             PostsList.OnNagivated += PostsList_OnNagivated;
         }
 
@@ -38,12 +39,15 @@ namespace UITEST.View
         }
         private void LoadingRingSwitch()
         {
-            LoadingRing.IsActive = !LoadingRing.IsActive;
+            LoadingRing.IsActive = false;
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
         }
+
+
+        
     }
 }

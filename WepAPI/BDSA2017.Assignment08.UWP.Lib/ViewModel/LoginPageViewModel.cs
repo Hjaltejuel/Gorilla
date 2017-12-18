@@ -29,7 +29,7 @@ namespace UI.Lib.ViewModel
         public async Task StartupQuestionsAsync()
         {
           
-            await _repository.CreateAsync(new User { Username = _userHandler.GetUserName(), PathToProfilePicture = _userHandler.GetUser().icon_img});
+            await _repository.CreateAsync(new User { Username = _userHandler.GetUserName()});
             if ((await _repository.FindAsync(_userHandler.GetUserName())).StartUpQuestionAnswered==0)
             {
                 Service.Navigate(StartupQuestionsPage, null);
