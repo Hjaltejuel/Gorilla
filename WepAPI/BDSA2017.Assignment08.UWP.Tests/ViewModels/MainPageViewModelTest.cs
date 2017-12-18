@@ -20,6 +20,7 @@ namespace UI.Test.ViewModels
 
         public MainPageViewModelTest()
         {
+            _restSubredditRepository = new Mock<IRestSubredditRepository>();
             _authenticationHelper = new Mock<IAuthenticationHelper>();
             _navigationService = new Mock<INavigationService>();
             _redditApiConsumer = new Mock<IRedditApiConsumer>();

@@ -292,96 +292,47 @@ namespace Model.Test
         [Fact]
         public async Task Update_given_existing_UserPreference_returns_true()
         {
-            var context = new Mock<IRedditDbContext>();
-            var entity = new UserPreference { Username = "name", SubredditName = "TestSub" };
-            context.Setup(c => c.UserPreferences.FindAsync("name","TestSub")).ReturnsAsync(entity);
-
-            using (var repository = new UserPreferenceRepository(context.Object))
+            using (var connection = new SqliteConnection("DataSource=:memory:"))
             {
-                var userPreference = new UserPreference { Username = "name", SubredditName = "TestSub" };
+                connection.Open();
 
-                var success = await repository.UpdateAsync(userPreference);
+                var builder = new DbContextOptionsBuilder<RedditDbContext>()
+                                  .UseSqlite(connection);
 
-                Assert.True(success);
-            }
-        }
+                var context = new RedditDbContext(builder.Options);
+                await context.Database.EnsureCreatedAsync();
 
-        [Fact]
-        public async Task Update_given_non_existing_UserPreference_returns_false()
-        {
-            var context = new Mock<IRedditDbContext>();
-            context.Setup(c => c.UserPreferences.FindAsync("name","TestSub")).ReturnsAsync(default(UserPreference));
-
-            using (var repository = new UserPreferenceRepository(context.Object))
-            {
-                var userPreference = new UserPreference { Username = "name", SubredditName = "TestSub" };
-
-                var success = await repository.UpdateAsync(userPreference);
-
-                Assert.False(success);
-            }
-        }
-
-        [Fact]
-        public async Task Update_given_existing_UserPreference_Updates_properties()
-        {
-            var context = new Mock<IRedditDbContext>();
-            var entity = new UserPreference { Username = "name" , SubredditName = "TestSub", PriorityMultiplier = 5 };
-            context.Setup(c => c.UserPreferences.FindAsync("name","TestSub")).ReturnsAsync(entity);
-
-            using (var repository = new UserPreferenceRepository(context.Object))
-            {
-                var userPreference = new UserPreference
+                var entity = new UserPreference()
                 {
-                    Username = "name",
-                    SubredditName = "TestSub",
-                    PriorityMultiplier = 1
-
+                    SubredditName = "Test",
+                    Username = "Hjalte"
                 };
-
-                await repository.UpdateAsync(userPreference);
-            }
-
-            Assert.Equal(1, entity.PriorityMultiplier);
-
-        }
-
-        [Fact]
-        public async Task Update_given_existing_UserPreference_calls_SaveChangesAsync()
-        {
-            var context = new Mock<IRedditDbContext>();
-            var entity = new UserPreference { Username = "name" , SubredditName = "TestSub" };
-            context.Setup(c => c.UserPreferences.FindAsync("name","TestSub")).ReturnsAsync(entity);
-
-            using (var repository = new UserPreferenceRepository(context.Object))
-            {
-                var userPreference = new UserPreference { Username = "name", SubredditName = "TestSub" };
-
-                await repository.UpdateAsync(userPreference);
-            }
-
-            context.Verify(c => c.SaveChangesAsync(default(CancellationToken)));
-        }
-
-        [Fact]
-        public async Task Update_given_non_existing_UserPreference_does_not_call_SaveChangesAsync()
-        {
-            var context = new Mock<IRedditDbContext>();
-            context.Setup(c => c.UserPreferences.FindAsync("name","TestSub")).ReturnsAsync(default(UserPreference));
-
-            using (var repository = new UserPreferenceRepository(context.Object))
-            {
-                var userPreference = new UserPreference
+                var subreddit = new Subreddit()
                 {
-                    Username = "name" ,
-                    SubredditName = "TestSub"
+                    SubredditName = "Test"
                 };
+                var user = new User()
+                {
+                    Username = "Hjalte"
+                };
+                context.Users.Add(user);
+                context.Subreddits.Add(subreddit);
+                context.UserPreferences.Add(entity);
 
-                await repository.UpdateAsync(userPreference);
+                await context.SaveChangesAsync();
+
+                using (var repository = new UserPreferenceRepository(context))
+                {
+                    await repository.UpdateAsync(entity);
+                    Assert.Equal(0, context.SubredditConnections.Count());
+
+                }
+
+
             }
-
-            context.Verify(c => c.SaveChangesAsync(default(CancellationToken)), Times.Never);
         }
+
+       
 
 
         [Fact]

@@ -112,14 +112,14 @@ namespace UITEST.View
             }
         }
 
-        private void UpvoteButton_Click(object sender, RoutedEventArgs e)
+        private async void UpvoteButton_Click(object sender, RoutedEventArgs e)
         {
-            CommentLikedAsync();
+            await CommentLikedAsync();
         }
 
-        private void DownvoteButton_Click(object sender, RoutedEventArgs e)
+        private async void DownvoteButton_Click(object sender, RoutedEventArgs e)
         {
-            CommentDislikedAsync();
+           await CommentDislikedAsync();
         }
 
         private int GetNewVoteDirection(int voteDirection) // 1 = upvote | -1 = downvote
@@ -170,18 +170,18 @@ namespace UITEST.View
 
         //Hvor skal det her stå? vi har ikke en viewmodel
         //TODO hvis vi ikke kan få observer pattern til at virke kan vi slette de der currentcomment.score - og + statements
-        public void CommentLikedAsync()
+        public async Task CommentLikedAsync()
         {
             var newDirection = GetNewVoteDirection(1);
             UpdateVoteUi(newDirection);
-            _vm.LikeCommentableAsync(_currentComment, newDirection);
+            await _vm.LikeCommentableAsync(_currentComment, newDirection);
         }
 
-        public void CommentDislikedAsync()
+        public async Task CommentDislikedAsync()
         {
             var newDirection = GetNewVoteDirection(-1);
             UpdateVoteUi(newDirection);
-            _vm.LikeCommentableAsync(_currentComment, newDirection);
+            await _vm.LikeCommentableAsync(_currentComment, newDirection);
         }
 
         //Grimt i know.. what to do? det er et midlertidligt workaround

@@ -52,10 +52,10 @@ namespace UITEST.View
             LoadingRing.IsActive = false;
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            _vm.Initialize();
+            await _vm.Initialize();
         }
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

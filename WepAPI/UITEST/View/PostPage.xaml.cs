@@ -49,7 +49,7 @@ namespace UITEST.View
             SizeChanged += ChangeListViewWhenSizedChanged;
             _vm.CommentsReadyEvent += CommentsReadyEvent;
         }
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             var post = e.Parameter as Post;
@@ -57,7 +57,7 @@ namespace UITEST.View
             {
                 TextPanel.Visibility = Visibility.Collapsed;
             }
-            _vm.Initialize(post);
+            await _vm.Initialize(post);
         }
         private void ChangeListViewWhenSizedChanged(object sender, SizeChangedEventArgs e)
         {

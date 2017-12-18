@@ -75,11 +75,12 @@ namespace UI.Lib.ViewModel
                 }
             }
         }
-        public void Initialize()
+        public async Task Initialize()
         {
-            GetCurrentProfile();
-            GetProfilePicture();
-            GetVisistedPosts();
+            var task1 =  GetCurrentProfile();
+            var task2 = GetProfilePicture();
+            var task3 = GetVisistedPosts();
+            await Task.WhenAll(task1, task2, task3);
         }
         public async Task LoadImageAsync()
         {

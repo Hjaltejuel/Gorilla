@@ -42,7 +42,7 @@ namespace UI.Lib.ViewModel
         }
     
 
-        public async void BeginAuthentication()
+        public async Task BeginAuthentication()
         {
             await _authHandler.BeginAuth();
             await Authorize();
@@ -57,6 +57,7 @@ namespace UI.Lib.ViewModel
 
         public void LogOut()
         {
+           
             _authHandler.LogOut();
         }
     }

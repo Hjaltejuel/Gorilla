@@ -35,12 +35,12 @@ namespace UITEST.View
         {
             PostsList.Height = e.NewSize.Height - (commandBar.ActualHeight + 75);
         }
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             
             LoadingRing.IsActive = true;
-            _vm.Initialize();
+            await _vm.Initialize();
         }
         private void PostReadyEvent()
         {

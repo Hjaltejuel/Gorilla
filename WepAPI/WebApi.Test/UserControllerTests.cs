@@ -39,7 +39,7 @@ namespace Gorilla.Test
 
             Assert.IsType<NoContentResult>(result); 
         }
-        
+
         [Fact(DisplayName = "Get given existing username returns Ok with user")]
         public async Task Get_given_existing_id_returns_Ok_with_track()
         {

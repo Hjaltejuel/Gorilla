@@ -61,6 +61,8 @@ namespace UI.Test.ViewModels
             _redditApiConsumer.Verify(v => v.GetPostsByIdAsync(aggregatedIdsString), Times.Once);
         }
 
+   
+
         [Fact(DisplayName = "Profile page - GetCurrentProfile() (No user found)")]
         public async void GetCurrentUser_Test_Fail_No_User()
         {
