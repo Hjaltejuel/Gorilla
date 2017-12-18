@@ -22,7 +22,7 @@ namespace Entities.GorillaEntities
 
             modelBuilder.Entity<Subreddit>().HasKey(c => new { c.SubredditName });
 
-            modelBuilder.Entity<User>().HasKey(c => new { c.Username });
+            
 
             modelBuilder.Entity<SubredditConnection>().HasKey(c => new { c.SubredditFromName, c.SubredditToName });
 

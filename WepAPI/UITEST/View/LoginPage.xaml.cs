@@ -25,7 +25,7 @@ namespace UITEST.View
         {
             Frame.Navigate(typeof(StartupQuestions));
         }
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             Storyboard fadeIn = Resources["FadeIn"] as Storyboard;
             fadeIn.Begin();
@@ -38,13 +38,13 @@ namespace UITEST.View
             else
             {
                 LoginButton.Visibility = Visibility.Collapsed;
-                _vm.BeginAuthentication();
+                await _vm.BeginAuthentication();
             }
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        private async void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            _vm.BeginAuthentication();
+            await _vm.BeginAuthentication();
         }
     }
 }

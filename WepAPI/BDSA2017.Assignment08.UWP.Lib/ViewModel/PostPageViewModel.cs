@@ -53,7 +53,7 @@ namespace UI.Lib.ViewModel
             PostLiked = new RelayCommand(async o => { await PostLikedAsync(); });
             PostDisliked = new RelayCommand(async o => { await PostDislikedAsync(); });
         }
-        public async void SetCurrentPost(Post post)
+        public async Task SetCurrentPost(Post post)
         {
             var redditResult = await _redditApiConsumer.GetPostAndCommentsByIdAsync(post.id);
             if (redditResult.Item1 == HttpStatusCode.OK) {
@@ -67,11 +67,11 @@ namespace UI.Lib.ViewModel
             }
         }
 
-        public void Initialize(Post post)
+        public async Task Initialize(Post post)
         {
             CurrentPost = post;
             Votes = CurrentPost.score;
-            SetCurrentPost(post);
+            await SetCurrentPost(post);
             TimeSinceCreation = TimeHelper.CalcCreationDateByUser(CurrentPost);
             LikeButton = Application.Current.Resources["LikeButton"] as Style;
             DislikeButton = Application.Current.Resources["DislikeButton"] as Style;
@@ -98,7 +98,7 @@ namespace UI.Lib.ViewModel
             _isDisliked = false;
             _isLiked = !_isLiked;
             DislikeButton = Application.Current.Resources["DislikeButton"] as Style;
-            LikeCommentableAsync(_currentComment, direction);
+            await LikeCommentableAsync(_currentComment, direction);
         }
 
         public async Task PostDislikedAsync()
@@ -123,7 +123,7 @@ namespace UI.Lib.ViewModel
             _isLiked = false;
             _isDisliked = !_isDisliked;
             LikeButton = Application.Current.Resources["LikeButton"] as Style;
-            LikeCommentableAsync(_currentComment, direction);
+           await LikeCommentableAsync(_currentComment, direction);
         }
     }
 }

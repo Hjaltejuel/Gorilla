@@ -19,7 +19,11 @@ namespace Model.Repositories
         }
         public async Task<string> CreateAsync(Post post)
         {
-            if (_context.Posts.Find(post.Id,post.username) != null)
+            var postTest = await (from a in _context.Posts
+                              where a.username.Equals(post.username) && a.Id.Equals(post.Id)
+                              select a).FirstOrDefaultAsync();
+                              
+            if (postTest != null)
             {
                 throw new AlreadyThereException("");
             }

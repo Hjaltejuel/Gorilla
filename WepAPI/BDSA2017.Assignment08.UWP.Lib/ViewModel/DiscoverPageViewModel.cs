@@ -40,7 +40,7 @@ namespace UI.Lib.ViewModel
             GoToSubRedditPage = new RelayCommand(o => Service.Navigate(SubredditPage, o));
         }
 
-        public async void Initialize()
+        public async Task Initialize()
         {
             var user = _userHandler.GetUser();
 

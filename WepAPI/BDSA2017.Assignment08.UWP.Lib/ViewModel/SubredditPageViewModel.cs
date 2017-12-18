@@ -95,7 +95,7 @@ namespace UI.Lib.ViewModel
             }
         }
 
-        public async void SortBy()
+        public async Task SortBy()
         {
             await GeneratePosts(_Subreddit.display_name, selectedSort);
         }
