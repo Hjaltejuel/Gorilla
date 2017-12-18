@@ -59,6 +59,5 @@ namespace UI.Test.ViewModels
             _restPostRepository.Verify(v => v.ReadAsync(username), Times.Once);
             _redditApiConsumer.Verify(v => v.GetPostsByIdAsync(It.IsAny<string>()), Times.Once);
         }
-
     }
 }

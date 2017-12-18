@@ -46,10 +46,8 @@ namespace UI.Lib.ViewModel
 
             var result = (await UserPreferenceRepository.FindAsync(user.name));
 
-            if (result == null)
-            {
-                NoElementsEvent?.Invoke();
-            }
+            if (result == null) NoElementsEvent?.Invoke();
+
             else
             {
                 var connections = await _repository.GetAllPrefs(result.Select(a => a.SubredditName).ToArray());
@@ -70,26 +68,6 @@ namespace UI.Lib.ViewModel
             }
             DiscoverReadyEvent?.Invoke();
         }
-        public async Task Add(int k, int reps, ConcurrentBag<string> subreddits, string subredditFromName)
-        {
-            var subredditConnections = await _repository.FindAsync(subredditFromName);
-            Debug.WriteLine(subredditFromName);
-            if (subredditConnections != null)
-            {
-                subreddits.Add(subredditConnections.ElementAt(reps).SubredditToName);
-            }
-        }
-
-        public async Task AddOver(int i, ConcurrentBag<string> subreddits, string subredditFromName)
-        {
-            Debug.WriteLine(subredditFromName);
-            var sub = await (_repository.FindAsync(subredditFromName));
-            if (sub != null)
-            {
-                subreddits.Add(sub.FirstOrDefault()?.SubredditToName);
-            }
-        }
-
         public async Task Finalize(int i, string subreddit, Subreddit[] subs, string subredditFromName)
         {
             var sub = (await _consumer.GetSubredditAsync(subreddit)).Item2;
