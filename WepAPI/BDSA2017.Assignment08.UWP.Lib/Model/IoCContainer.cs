@@ -8,6 +8,10 @@ using UI.Lib.Model.RedditRepositories;
 using UI.Lib.Model.RedditRestInterfaces;
 using UI.Lib.ViewModel;
 using UI.Lib.Authentication;
+using UI.Lib.ViewModel;
+using BDSA2017.Assignment08.UWP.ViewModel;
+using BDSA2017.Assignment08.UWP.Model.GorillaRestInterfaces;
+using BDSA2017.Assignment08.UWP.Model.GorillaRepositories;
 
 namespace UI.Lib.Model
 {
@@ -31,9 +35,12 @@ namespace UI.Lib.Model
             services.AddScoped<IRestPostRepository, RestPostRepository>();
             services.AddScoped<IRedditApiConsumer, RedditConsumerController>();
             services.AddScoped<IRedditAuthHandler, RedditAuthHandler>();
+            services.AddScoped<IRestCategoryRepository, RestCategoryRepository>();
             services.AddScoped<IUserHandler, UserHandler>();
 
             services.AddScoped<MainPageViewModel>();
+            services.AddScoped<ThankYouForChoosingViewModel>();
+            services.AddScoped<ChooseYourCategoriesViewModel>();
             services.AddScoped<DiscoverPageViewModel>();
             services.AddScoped<PostPageViewModel>();
             services.AddScoped<ProfilePageViewModel>();

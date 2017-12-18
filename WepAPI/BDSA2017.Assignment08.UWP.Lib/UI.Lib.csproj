@@ -110,11 +110,13 @@
     <Compile Include="CustomUI\CustomButton.cs" />
     <Compile Include="Misc\TimeHelper.cs" />
     <Compile Include="Model\GorillaRepositories\Extensions.cs" />
+    <Compile Include="Model\GorillaRepositories\RestCategoryRepository.cs" />
     <Compile Include="Model\GorillaRepositories\RestPostRepository.cs" />
     <Compile Include="Model\GorillaRepositories\RestSubredditConnectionRepository.cs" />
     <Compile Include="Model\GorillaRepositories\RestSubredditRepository.cs" />
     <Compile Include="Model\GorillaRepositories\RestUserPreferenceRepository.cs" />
     <Compile Include="Model\GorillaRepositories\RestUserRepository.cs" />
+    <Compile Include="Model\GorillaRestInterfaces\IRestCategoryRepository.cs" />
     <Compile Include="Model\GorillaRestInterfaces\IRestPostRepository.cs" />
     <Compile Include="Model\GorillaRestInterfaces\IRestSubredditConnectionRepository.cs" />
     <Compile Include="Model\GorillaRestInterfaces\IRestSubredditRepository.cs" />
@@ -135,6 +137,7 @@
     <Compile Include="Authentication\GorillaAuthentication\Settings.cs" />
     <Compile Include="Authentication\RedditAuthHandler.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\ChooseYourCategoriesViewModel.cs" />
     <Compile Include="ViewModel\CommentableViewModel.cs" />
     <Compile Include="ViewModel\CommentViewModel.cs" />
     <Compile Include="ViewModel\CreatePostPageViewModel.cs" />
@@ -146,6 +149,8 @@
     <Compile Include="ViewModel\RelayCommand.cs" />
     <Compile Include="ViewModel\SearchableViewModel.cs" />
     <Compile Include="ViewModel\SubredditPageViewModel.cs" />
+    <Compile Include="ViewModel\ThankYouForChoosingViewModel.cs" />
+
     <EmbeddedResource Include="Properties\BDSA2017.Assignment08.UWP.Lib.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -156,7 +161,7 @@
       <Version>2.0.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.0.4</Version>
+      <Version>6.0.5</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestAdapter">
       <Version>1.2.0</Version>

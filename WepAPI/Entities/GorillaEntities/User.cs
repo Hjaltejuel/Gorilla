@@ -18,6 +18,8 @@ namespace Entities.GorillaEntities
         [JsonProperty("pathToProfilePicture")]
         public string PathToProfilePicture { get; set; }
 
+        public int StartUpQuestionAnswered { get; set; }
+
    
 
     }
