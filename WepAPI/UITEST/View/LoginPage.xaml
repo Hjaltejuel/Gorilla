@@ -9,12 +9,15 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <RelativePanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <Image Name="Logo" Source="/Assets/GorillaTextLogo.png" Width="500" Opacity="0"/>
+            <Button Name="LoginButton" Content="Log in" Height="40" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.Below="Logo" Click="ButtonBase_OnClick" Opacity="0"/>
         </RelativePanel>
+        
     </Grid>
 
     <Page.Resources>
         <Storyboard x:Key="FadeIn">
-           <DoubleAnimation From="0" To="1" Storyboard.TargetName="Logo" Storyboard.TargetProperty="(UIElement.Opacity)" Duration="0:0:3"/>
+            <DoubleAnimation From="0" To="1" Storyboard.TargetName="Logo" Storyboard.TargetProperty="(UIElement.Opacity)" Duration="0:0:2"/>
+            <DoubleAnimation From="0" To="1" Storyboard.TargetName="LoginButton" Storyboard.TargetProperty="(UIElement.Opacity)" Duration="0:0:2"/>
         </Storyboard>
     </Page.Resources>
 </Page>

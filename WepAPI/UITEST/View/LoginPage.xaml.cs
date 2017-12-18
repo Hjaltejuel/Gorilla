@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,8 +32,18 @@ namespace UITEST.View
             var navParam = e.Parameter as string;
             if (navParam.Equals("logout"))
             {
+                LoginButton.Visibility = Visibility.Visible;
                 _vm.LogOut();
             }
+            else
+            {
+                LoginButton.Visibility = Visibility.Collapsed;
+                _vm.BeginAuthentication();
+            }
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
             _vm.BeginAuthentication();
         }
     }
