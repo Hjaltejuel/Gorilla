@@ -55,13 +55,10 @@ namespace UI.Lib.ViewModel
                 var connections = await _repository.GetAllPrefs(result.Select(a => a.SubredditName).ToArray());
 
                 var taskList = new List<Task>();
-                var subs = new Subreddit[connections.Count];
-                var j = 0;
-                foreach (var subreddit in connections.Select(a => a.SubredditToName))
+                var subs = new List<Subreddit>();
+                foreach (var subreddit in connections)
                 {
-                    taskList.Add(Finalize(j, subreddit, subs, connections.ElementAt(j).SubredditFromName));
-
-                    j++;
+                    taskList.Add(Finalize(subreddit.SubredditToName, subs, subreddit.SubredditFromName));
                 }
                 await Task.WhenAll(taskList);
 
@@ -90,15 +87,18 @@ namespace UI.Lib.ViewModel
             }
         }
 
-        public async Task Finalize(int i, string subreddit, Subreddit[] subs, string subredditFromName)
+        public async Task Finalize(string subreddit, List<Subreddit> subs, string subredditFromName)
         {
-            var sub = (await _consumer.GetSubredditAsync(subreddit)).Item2;
-            sub.interest = subredditFromName;
-            subs[i] = sub;
-            if (sub.banner_img.Equals(""))
+            var getSubredditResult = await _consumer.GetSubredditAsync(subreddit);
+            if (getSubredditResult.Item1 == System.Net.HttpStatusCode.OK)
             {
-                sub.banner_img = sub.header_img;
-
+                var sub = (getSubredditResult).Item2;
+                sub.interest = subredditFromName;
+                subs.Add(sub);
+                if (string.IsNullOrEmpty(sub.banner_img))
+                {
+                    sub.banner_img = "";
+                }
             }
         }
     }
