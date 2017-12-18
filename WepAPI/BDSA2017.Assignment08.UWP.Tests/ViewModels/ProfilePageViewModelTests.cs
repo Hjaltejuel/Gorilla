@@ -49,6 +49,7 @@ namespace UI.Test.ViewModels
                 new Entities.GorillaEntities.Post(){ Id="B"},
                 new Entities.GorillaEntities.Post(){ Id="C"}
             };
+            var aggregatedIdsString = ",t3_A,t3_B,t3_C";
             _userHandler.Setup(o => o.GetUserName()).Returns(username);
             _restPostRepository.Setup(o => o.ReadAsync(username)).Returns(Task.FromResult(returnList));
             //Act
@@ -57,7 +58,106 @@ namespace UI.Test.ViewModels
             //Assert
             _userHandler.Verify(v => v.GetUserName(), Times.Once);
             _restPostRepository.Verify(v => v.ReadAsync(username), Times.Once);
-            _redditApiConsumer.Verify(v => v.GetPostsByIdAsync(It.IsAny<string>()), Times.Once);
+            _redditApiConsumer.Verify(v => v.GetPostsByIdAsync(aggregatedIdsString), Times.Once);
+        }
+
+        [Fact(DisplayName = "Profile page - GetProfilePicture (Picture does not exist)")]
+        public async void GetProfilePicture_Test_Fail()
+        {
+            //Arrange
+            var username = "Username";
+            _userHandler.Setup(o => o.GetProfilePic()).Returns((byte[])null);
+            _userHandler.Setup(o => o.GetUserName()).Returns(username);
+
+            //Act
+            await _profilePageViewModel.GetProfilePicture();
+
+            //Assert
+            _userHandler.Verify(v => v.GetProfilePic(), Times.Once);
+            _restUserPreferenceRepository.Verify(v => v.FindImageAsync(username), Times.Once);
+        }
+
+        [Fact(DisplayName = "Profile page - GetProfilePicture (Picture exists)")]
+        public async void GetProfilePicture_Test_Success()
+        {
+            //Arrange
+            var username = "Username";
+            _userHandler.Setup(o => o.GetProfilePic()).Returns(new byte[1]);
+            _userHandler.Setup(o => o.GetUserName()).Returns(username);
+
+            //Act
+            await _profilePageViewModel.GetProfilePicture();
+
+            //Assert
+            _userHandler.Verify(v => v.GetProfilePic(), Times.Exactly(2));
+            _restUserPreferenceRepository.Verify(v => v.FindImageAsync(username), Times.Never);
+        }
+
+        [Fact(DisplayName = "Profile page - GetCurrentProfile() (No user found)")]
+        public async void GetCurrentUser_Test_Fail_No_User()
+        {
+            //Arrange
+            var user = (User)null;
+            _userHandler.Setup(o => o.GetUser()).Returns(user);
+
+            //Act
+            await _profilePageViewModel.GetCurrentProfile();
+
+            //Assert
+            _redditApiConsumer.Verify(v => v.GetSubscribedSubredditsAsync(), Times.Never);
+            _redditApiConsumer.Verify(v => v.GetUserPosts(It.IsAny<string>()), Times.Never);
+            _redditApiConsumer.Verify(v => v.GetUserComments(It.IsAny<string>()), Times.Never);
+        }
+
+        [Fact(DisplayName = "Profile page - GetCurrentProfile() (No Subscriptions, posts or comments)")]
+        public async void GetCurrentUser_Test_Fail_No_Subscriptions_Posts_Comments()
+        {
+            //Arrange
+            var user = new User() { name = "Username" };
+
+            var subcriptionResult = Task.FromResult((HttpStatusCode.BadRequest, (List<Subreddit>)null));
+            var postsResult = Task.FromResult((HttpStatusCode.BadRequest, (ObservableCollection<Post>)null));
+            var commentsResult = Task.FromResult((HttpStatusCode.BadRequest, (ObservableCollection<Comment>)null));
+
+            _userHandler.Setup(o => o.GetUser()).Returns(user);
+
+            _redditApiConsumer.Setup(o => o.GetSubscribedSubredditsAsync()).Returns(subcriptionResult);
+            _redditApiConsumer.Setup(o => o.GetUserPosts(user.name)).Returns(postsResult);
+            _redditApiConsumer.Setup(o => o.GetUserComments(user.name)).Returns(commentsResult);
+
+            //Act
+            await _profilePageViewModel.GetCurrentProfile();
+
+            //Assert
+            _redditApiConsumer.Verify(v => v.GetSubscribedSubredditsAsync(), Times.Once);
+            _redditApiConsumer.Verify(v => v.GetUserPosts(user.name), Times.Once);
+            _redditApiConsumer.Verify(v => v.GetUserComments(user.name), Times.Once);
+        }
+
+
+        [Fact(DisplayName = "Profile page - GetCurrentProfile() (Sucess)")]
+        public async void GetCurrentUser_Test_Success()
+        {
+            //Arrange
+            var user = new User() { name = "Username" };
+
+            var subcriptionResult = Task.FromResult((HttpStatusCode.BadRequest, new List<Subreddit>()));
+            var postsResult = Task.FromResult((HttpStatusCode.BadRequest, new ObservableCollection<Post>()));
+            var commentsResult = Task.FromResult((HttpStatusCode.BadRequest, new ObservableCollection<Comment>()));
+
+            _userHandler.Setup(o => o.GetUser()).Returns(user);
+
+            _redditApiConsumer.Setup(o => o.GetSubscribedSubredditsAsync()).Returns(subcriptionResult);
+            _redditApiConsumer.Setup(o => o.GetUserPosts(user.name)).Returns(postsResult);
+            _redditApiConsumer.Setup(o => o.GetUserComments(user.name)).Returns(commentsResult);
+
+            //Act
+            await _profilePageViewModel.GetCurrentProfile();
+
+            //Assert
+            _redditApiConsumer.Verify(v => v.GetSubscribedSubredditsAsync(), Times.Once);
+            _redditApiConsumer.Verify(v => v.GetUserPosts(user.name), Times.Once);
+            _redditApiConsumer.Verify(v => v.GetUserComments(user.name), Times.Once);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace UI.Lib.ViewModel
             INavigationService service, IRedditApiConsumer consumer,
             IRestSubredditConnectionRepository repository,
             IRestUserPreferenceRepository userPreferenceRepository, 
-            IUserHandler userHandler) 
+            IUserHandler userHandler)
             : base(service)
         {
             UserPreferenceRepository = userPreferenceRepository;
@@ -47,7 +47,6 @@ namespace UI.Lib.ViewModel
             var result = (await UserPreferenceRepository.FindAsync(user.name));
 
             if (result == null) NoElementsEvent?.Invoke();
-
             else
             {
                 var connections = await _repository.GetAllPrefs(result.Select(a => a.SubredditName).ToArray());
@@ -65,15 +64,14 @@ namespace UI.Lib.ViewModel
             }
             DiscoverReadyEvent?.Invoke();
         }
-        public async Task Finalize(int i, string subreddit, Subreddit[] subs, string subredditFromName)
+        public async Task Finalize(string subreddit, List<Subreddit> subs, string subredditFromName)
         {
             var sub = (await _consumer.GetSubredditAsync(subreddit)).Item2;
             sub.interest = subredditFromName;
-            subs[i] = sub;
+            subs.Add(sub);
             if (sub.banner_img.Equals(""))
             {
                 sub.banner_img = sub.header_img;
-
             }
         }
     }

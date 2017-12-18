@@ -53,18 +53,25 @@ namespace UI.Lib.ViewModel
             PostLiked = new RelayCommand(async o => { await PostLikedAsync(); });
             PostDisliked = new RelayCommand(async o => { await PostDislikedAsync(); });
         }
-        public async void GetCurrentPost(Post post)
+        public async void SetCurrentPost(Post post)
         {
-            CurrentPost = (await _redditApiConsumer.GetPostAndCommentsByIdAsync(post.id)).Item2;
-            await _repository.CreateAsync(new Entities.GorillaEntities.Post { Id = post.id, username = _userHandler.GetUserName() });
-            CommentsReadyEvent?.Invoke();
+            var redditResult = await _redditApiConsumer.GetPostAndCommentsByIdAsync(post.id);
+            if (redditResult.Item1 == HttpStatusCode.OK) {
+                CurrentPost = (redditResult).Item2;
+                await _repository.CreateAsync(new Entities.GorillaEntities.Post
+                {
+                    Id = post.id,
+                    username = _userHandler.GetUserName()
+                });
+                CommentsReadyEvent?.Invoke();
+            }
         }
 
         public void Initialize(Post post)
         {
             CurrentPost = post;
             Votes = CurrentPost.score;
-            GetCurrentPost(post);
+            SetCurrentPost(post);
             TimeSinceCreation = TimeHelper.CalcCreationDateByUser(CurrentPost);
             LikeButton = Application.Current.Resources["LikeButton"] as Style;
             DislikeButton = Application.Current.Resources["DislikeButton"] as Style;

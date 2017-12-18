@@ -46,11 +46,20 @@ namespace UI.Test.ViewModels
         public async void GetCurrentPostTest()
         {
             //Arrange
-            var returnResult = Task.FromResult((HttpStatusCode.OK, new Post() { id = "t5_a221", title = "TitleA", Replies = new ObservableCollection<AbstractCommentable>() { new Comment(), new Comment() } }));
+            var returnResult = Task.FromResult((HttpStatusCode.OK, new Post()
+            {
+                id = "t5_a221",
+                title = "TitleA",
+                Replies = new ObservableCollection<AbstractCommentable>() {
+                    new Comment(),
+                    new Comment()
+                }
+            }));
             _redditApiConsumer.Setup(o => o.GetPostAndCommentsByIdAsync(It.IsAny<string>()))
-                                            .Returns(returnResult);
+                .Returns(returnResult);
+
             //Act
-            _postPageViewModel.GetCurrentPost(new Post() { id = "t5_a221" });
+            _postPageViewModel.SetCurrentPost(new Post() { id = "t5_a221" });
 
             //Assert
             var expectedTitle = "TitleA";
@@ -61,13 +70,13 @@ namespace UI.Test.ViewModels
             Assert.Equal(expectedRepliesCount, actualRepliesCount);
         }
 
-        //[Fact(DisplayName = "PostLikedAsync Test")]
-        //public async void PostLikedAsyncTest()
-        //{
-        //    _redditApiConsumer.Setup(o => o.VoteAsync(It.IsAny<AbstractCommentable>(), It.IsAny<int>()));
-        //    _postPageViewModel.PostLikedAsync();
+        [Fact(DisplayName = "PostLikedAsync Test")]
+        public async void PostLikedAsyncTest()
+        {
+            _redditApiConsumer.Setup(o => o.VoteAsync(It.IsAny<AbstractCommentable>(), It.IsAny<int>()));
+            _postPageViewModel.PostLikedAsync();
 
-        //    _redditApiConsumer.Verify(o => o.VoteAsync(It.IsAny<AbstractCommentable>(), It.IsAny<int>()));
-        //}
+            _redditApiConsumer.Verify(o => o.VoteAsync(It.IsAny<AbstractCommentable>(), It.IsAny<int>()));
+        }
     }
 }
