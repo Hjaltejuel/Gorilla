@@ -52,23 +52,23 @@ namespace UI.Lib.ViewModel
                 var connections = await _repository.GetAllPrefs(result.Select(a => a.SubredditName).ToArray());
 
                 var taskList = new List<Task>();
-                var subs = new List<Subreddit>();
+                var subs = new Dictionary<string,Subreddit>();
                 foreach (var subreddit in connections)
                 {
                     taskList.Add(Finalize(subreddit.SubredditToName, subs, subreddit.SubredditFromName));
                 }
                 await Task.WhenAll(taskList);
 
-                SubReddits = new ObservableCollection<Subreddit>(subs);
+                SubReddits = new ObservableCollection<Subreddit>(subs.Values);
                 OnPropertyChanged("SubReddits");
             }
             DiscoverReadyEvent?.Invoke();
         }
-        public async Task Finalize(string subreddit, List<Subreddit> subs, string subredditFromName)
+        public async Task Finalize(string subreddit, Dictionary<string,Subreddit> subs, string subredditFromName)
         {
             var sub = (await _consumer.GetSubredditAsync(subreddit)).Item2;
             sub.interest = subredditFromName;
-            subs.Add(sub);
+            subs.Add(sub.display_name,sub);
             if (sub.banner_img.Equals(""))
             {
                 sub.banner_img = sub.header_img;
