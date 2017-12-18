@@ -30,7 +30,7 @@ namespace UI.Lib.Model.RedditRepositories
         public void Authenticate(RedditAuthHandler handler)
         {
             _authHandler = handler;
-        }
+    }
 
         private HttpRequestMessage CreateRequest(string stringUri, string method, string data = "")
         {

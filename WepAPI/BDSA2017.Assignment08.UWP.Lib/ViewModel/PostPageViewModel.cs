@@ -22,6 +22,7 @@ namespace UI.Lib.ViewModel
         readonly IRedditApiConsumer _redditApiConsumer;
         readonly IRestUserPreferenceRepository _restUserPreferenceRepository;
         readonly IRestPostRepository _repository;
+        private readonly IUserHandler _userHandler;
         public ICommand PostLiked;
         public ICommand PostDisliked;
         private bool _isLiked;
@@ -42,19 +43,20 @@ namespace UI.Lib.ViewModel
         public string TimeSinceCreation { get => _timeSinceCreation;
             set { _timeSinceCreation = value; OnPropertyChanged(); }}
 
-        public PostPageViewModel(INavigationService service, IRestPostRepository repository, IRestUserPreferenceRepository restUserPreferenceRepository, IRedditApiConsumer redditApiConsumer) 
-            : base(service,restUserPreferenceRepository,redditApiConsumer)
+        public PostPageViewModel(INavigationService service, IRestPostRepository repository, IRestUserPreferenceRepository restUserPreferenceRepository, IRedditApiConsumer redditApiConsumer, IUserHandler userHandler) 
+            : base(service,restUserPreferenceRepository,redditApiConsumer, userHandler)
         {
             _redditApiConsumer = redditApiConsumer;
             _repository = repository;
             _restUserPreferenceRepository = restUserPreferenceRepository;
+            _userHandler = userHandler;
             PostLiked = new RelayCommand(async o => { await PostLikedAsync(); });
             PostDisliked = new RelayCommand(async o => { await PostDislikedAsync(); });
         }
         public async void GetCurrentPost(Post post)
         {
             CurrentPost = (await _redditApiConsumer.GetPostAndCommentsByIdAsync(post.id)).Item2;
-            await _repository.CreateAsync(new Entities.GorillaEntities.Post { Id = post.id, username = UserFactory.GetInfo().name });
+            await _repository.CreateAsync(new Entities.GorillaEntities.Post { Id = post.id, username = _userHandler.GetUserName() });
             CommentsReadyEvent?.Invoke();
         }
 

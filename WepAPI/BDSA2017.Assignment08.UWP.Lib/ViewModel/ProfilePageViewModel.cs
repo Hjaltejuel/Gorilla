@@ -16,7 +16,6 @@ namespace UI.Lib.ViewModel
 {
     public class ProfilePageViewModel : BaseViewModel
     {
-        
         private ObservableCollection<Post> _posts;
 
         public ObservableCollection<Post> Posts
@@ -50,6 +49,7 @@ namespace UI.Lib.ViewModel
         private readonly IRestUserRepository _repository;
         private readonly IRestPostRepository _restPostRepository;
         private readonly IRedditApiConsumer _consumer;
+        private readonly IUserHandler _userHandler;
         private ImageSource _image;
         public ImageSource Image
         {
@@ -79,23 +79,24 @@ namespace UI.Lib.ViewModel
             }
         }
 
-        public ProfilePageViewModel(INavigationService service, IRestUserRepository repository, IRedditApiConsumer consumer, IRestPostRepository restPostRepository) : base(service)
+        public ProfilePageViewModel(INavigationService service, IRestUserRepository repository, IRedditApiConsumer consumer, IRestPostRepository restPostRepository, IUserHandler userHandler) : base(service)
         {
             _restPostRepository = restPostRepository;
             _repository = repository;
             _consumer = consumer;
+            _userHandler = userHandler;
         }
 
         public async Task Initialize()
         {
             await GetCurrentProfile();
 
-            if (UserFactory.GetInfo().ProfilePic == null)
+            if (_userHandler.GetProfilePic() == null)
             {
                 ImageBytes = await _repository.FindImageAsync(Username);
             } else
             {
-                ImageBytes = UserFactory.GetInfo().ProfilePic;
+                ImageBytes = _userHandler.GetProfilePic();
             }
             var visitedPosts = await _restPostRepository.ReadAsync(Username);
             var ids = visitedPosts.Aggregate("", (current, post) => "t3_"+current + ",t3_" + post.Id);
@@ -105,7 +106,7 @@ namespace UI.Lib.ViewModel
 
         private async Task GetCurrentProfile()
         {
-            var redditUser = UserFactory.GetInfo();
+            var redditUser = _userHandler.GetUser();
             var subscriptions = (await _consumer.GetSubscribedSubredditsAsync()).Item2;
             var userPosts = (await _consumer.GetUserPosts(redditUser.name)).Item2;
             var userComments = (await _consumer.GetUserComments(redditUser.name)).Item2;

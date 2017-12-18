@@ -7,8 +7,8 @@
     <ProjectGuid>{0D77CC78-F88C-4C05-A0DA-6D105D0D07FE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BDSA2017.Assignment08.UWP</RootNamespace>
-    <AssemblyName>BDSA2017.Assignment08.UWP.Lib</AssemblyName>
+    <RootNamespace>UI.Lib</RootNamespace>
+    <AssemblyName>UI.Lib</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.16299.0</TargetPlatformVersion>
@@ -122,21 +122,17 @@
     <Compile Include="Model\GorillaRestInterfaces\IRestUserRepository.cs" />
     <Compile Include="Model\INavigationService.cs" />
     <Compile Include="Model\IoCContainer.cs" />
+    <Compile Include="Model\IUserHandler.cs" />
     <Compile Include="Model\NavigationService.cs" />
     <Compile Include="Model\RedditRepositories\RedditConsumerController.cs" />
     <Compile Include="Model\RedditRestInterfaces\IRedditAPIConsumer.cs" />
-    <Compile Include="Model\UserFactory.cs" />
+    <Compile Include="Model\UserHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Authentication\GorillaAuthentication\AuthenticationHelper.cs" />
     <Compile Include="Authentication\GorillaAuthentication\AuthorizedHandler.cs" />
     <Compile Include="Authentication\GorillaAuthentication\IAuthenticationHelper.cs" />
     <Compile Include="Authentication\GorillaAuthentication\ISettings.cs" />
     <Compile Include="Authentication\GorillaAuthentication\Settings.cs" />
-    <Compile Include="Authentication\RedditAuthentication\AuthenticationHelper.cs" />
-    <Compile Include="Authentication\RedditAuthentication\AuthorizedHandler.cs" />
-    <Compile Include="Authentication\RedditAuthentication\IAuthenticationHelper.cs" />
-    <Compile Include="Authentication\RedditAuthentication\ISettings.cs" />
-    <Compile Include="Authentication\RedditAuthentication\Settings.cs" />
     <Compile Include="Authentication\RedditAuthHandler.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\CommentableViewModel.cs" />
@@ -150,7 +146,6 @@
     <Compile Include="ViewModel\RelayCommand.cs" />
     <Compile Include="ViewModel\SearchableViewModel.cs" />
     <Compile Include="ViewModel\SubredditPageViewModel.cs" />
-    <Compile Include="ViewModel\TrendingPageViewModel.cs" />
     <EmbeddedResource Include="Properties\BDSA2017.Assignment08.UWP.Lib.rd.xml" />
   </ItemGroup>
   <ItemGroup>

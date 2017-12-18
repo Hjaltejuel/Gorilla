@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Windows.Storage;
+using UI.Lib.Model;
 using UI.Lib.Model.RedditRestInterfaces;
 
 namespace UI.Lib.Authentication
@@ -18,8 +19,10 @@ namespace UI.Lib.Authentication
         private const string AccessTokenUrl = "https://www.reddit.com/api/v1/access_token";
         private const string ClientId = "ephxxGR7ZA77nA";
         private readonly IRedditApiConsumer _consumer;
-        public RedditAuthHandler(IRedditApiConsumer consumer)
+        private readonly IUserHandler _userHandler;
+        public RedditAuthHandler(IRedditApiConsumer consumer, IUserHandler userHandler)
         {
+            _userHandler = userHandler;
             _consumer = consumer;
             _appSettings = ApplicationData.Current.RoamingSettings;
         }
@@ -96,6 +99,11 @@ namespace UI.Lib.Authentication
             return null;
         }
 
+        public async Task FinishAuth()
+        {
+            await _userHandler.SetUser(_consumer);
+        }
+
         public void LogOut()
         {
             _appSettings.Values.Remove("reddit_refresh_token");
@@ -103,10 +111,10 @@ namespace UI.Lib.Authentication
 
         public async Task RefreshToken()
         {
-           
             var contentBody = await SendRequest($"grant_type=refresh_token&refresh_token={_refreshToken}");
             _token = contentBody["access_token"].ToObject<string>();
             _consumer.Authenticate(this);
+            await FinishAuth();
         }
         public async Task Authenticate(string data)
         {
@@ -117,6 +125,7 @@ namespace UI.Lib.Authentication
             _refreshToken = contentBody["refresh_token"].ToObject<string>();
             _appSettings.Values["reddit_refresh_token"] = _refreshToken;
             _consumer.Authenticate(this);
+            await FinishAuth();
         }
 
         public string GetAuthCode(string data)

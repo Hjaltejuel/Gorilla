@@ -16,6 +16,7 @@ namespace UI.Test.ViewModels
         private readonly Mock<IRestPostRepository> _restPostRepository;
         private readonly Mock<IRestUserPreferenceRepository> _restUserPreferenceRepository;
         private readonly Mock<IRedditApiConsumer> _redditApiConsumer;
+        private readonly Mock<IUserHandler> _userHandler;
         private readonly CommentableViewModel _commentableViewModel;
 
         public CommentableViewModelTest()
@@ -24,11 +25,13 @@ namespace UI.Test.ViewModels
             _restPostRepository = new Mock<IRestPostRepository>();
             _restUserPreferenceRepository = new Mock<IRestUserPreferenceRepository>();
             _redditApiConsumer = new Mock<IRedditApiConsumer>();
+            _userHandler = new Mock<IUserHandler>();
 
             _commentableViewModel = new CommentableViewModel(
                 _navigationService.Object,
                 _restUserPreferenceRepository.Object,
-                _redditApiConsumer.Object
+                _redditApiConsumer.Object,
+                _userHandler.Object
             );
         }
 

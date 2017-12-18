@@ -9,17 +9,18 @@ namespace UI.Lib.ViewModel
 {
     public class MainPageViewModel : SearchableViewModel
     {
-        public MainPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditApiConsumer consumer, IRestUserRepository repository) : base(helper, service, consumer)
+        private readonly IUserHandler _userHandler;
+        public MainPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditApiConsumer consumer, IRestUserRepository repository, IUserHandler userHandler) : base(helper, service, consumer)
         {
             Repository = repository;
+            _userHandler = userHandler;
             Initialize();
         }
 
         public async Task GeneratePosts()
         {
             InvokeLoadSwitchEvent();
-            await UserFactory.Initialize(Consumer);
-            await Repository.CreateAsync(new User { Username = UserFactory.GetInfo().name, PathToProfilePicture = "profilePicture.jpg" });
+            await Repository.CreateAsync(new User { Username = _userHandler.GetUser().name, PathToProfilePicture = "profilePicture.jpg" });
             Posts = (await Consumer.GetHomePageContent()).Item2;
             InvokeLoadSwitchEvent();
         }

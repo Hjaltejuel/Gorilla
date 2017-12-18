@@ -1,5 +1,6 @@
-﻿using Entities.GorillaEntities;
-using Entities.RedditEntities;
+﻿using System.Collections.ObjectModel;
+using System.Net;
+using System.Threading.Tasks;
 using Moq;
 using UI.Lib.Authentication.GorillaAuthentication;
 using UI.Lib.Model;
@@ -16,6 +17,7 @@ namespace UI.Test.ViewModels
         private readonly Mock<IAuthenticationHelper> helper;
         private readonly Mock<IRestUserPreferenceRepository> repository;
         private readonly Mock<IRedditApiConsumer> consumer;
+        private readonly Mock<IUserHandler> _userHandler;
 
         public SubredditPageViewModelTests()
         {
@@ -23,7 +25,7 @@ namespace UI.Test.ViewModels
             helper = new Mock<IAuthenticationHelper>();
             repository = new Mock<IRestUserPreferenceRepository>();
             consumer = new Mock<IRedditApiConsumer>();
-
+            _userHandler = new Mock<IUserHandler>();
         }
         [Fact(DisplayName = "GeneratePost Test given subredditName PUBG sets _Subreddit with display name pubg")]
         public async void GeneratePostsTest()
@@ -35,7 +37,7 @@ namespace UI.Test.ViewModels
             }));
             consumer.Setup(o => o.GetSubredditPostsAsync(It.IsAny<Entities.RedditEntities.Subreddit>(), "hot"))
                                     .Returns(returnResult);
-            var vm = new SubredditPageViewModel(helper.Object, service.Object, consumer.Object, repository.Object);
+            var vm = new SubredditPageViewModel(helper.Object, service.Object, consumer.Object, repository.Object, _userHandler.Object);
 
             //Act
             await vm.GeneratePosts("Pubg");
@@ -58,7 +60,7 @@ namespace UI.Test.ViewModels
             consumer.Setup(o => o.GetSubredditPostsAsync(It.IsAny<Entities.RedditEntities.Subreddit>(), "hot"))
                                      .Returns(returnResult);
 
-            var vm = new SubredditPageViewModel(helper.Object, service.Object, consumer.Object, repository.Object);
+            var vm = new SubredditPageViewModel(helper.Object, service.Object, consumer.Object, repository.Object, _userHandler.Object);
 
             //Act
             await vm.GeneratePosts("Pubg");

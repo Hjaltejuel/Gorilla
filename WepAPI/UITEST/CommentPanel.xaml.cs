@@ -35,7 +35,7 @@ namespace UITEST
                 //var newComment = new Comment()
                 //{
                 //    body = commentText,
-                //    author = UserFactory.GetInfo().name,
+                //    author = UserHandler.GetUser().name,
                 //    created_utc = utcNow
                 //};
                 ////Send to listener

@@ -19,10 +19,12 @@ namespace UI.Lib.ViewModel
     {
         private readonly IRedditApiConsumer _redditApiConsumer;
         private readonly IRestUserPreferenceRepository _restUserPreferenceRepository;
-        public CommentableViewModel(INavigationService service, IRestUserPreferenceRepository restUserPreferenceRepository, IRedditApiConsumer redditApiConsumer) : base(service)
+        private readonly IUserHandler _userHandler;
+        public CommentableViewModel(INavigationService service, IRestUserPreferenceRepository restUserPreferenceRepository, IRedditApiConsumer redditApiConsumer, IUserHandler userHandler) : base(service)
         {
             _redditApiConsumer = redditApiConsumer;
             _restUserPreferenceRepository = restUserPreferenceRepository;
+            _userHandler = userHandler;
         }
         public async Task<Comment> CreateComment(AbstractCommentable abstractCommentableToCommentOn, string newCommentBody)
         {
@@ -42,7 +44,7 @@ namespace UI.Lib.ViewModel
         {
             await _redditApiConsumer.VoteAsync(commentable, direction);
             if (direction == 0) return;
-            await _restUserPreferenceRepository.UpdateAsync(new UserPreference { Username = UserFactory.GetInfo().name, SubredditName = commentable.subreddit, PriorityMultiplier = 1 });
+            await _restUserPreferenceRepository.UpdateAsync(new UserPreference { Username = _userHandler.GetUserName(), SubredditName = commentable.subreddit, PriorityMultiplier = 1 });
         }
         public void SetHandCursor()
         {

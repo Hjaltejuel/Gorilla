@@ -16,7 +16,7 @@ namespace UI.Lib.ViewModel
     {
         public ICommand GoToCreatePostPageCommand { get; set; }
         public ICommand SubscribeToSubredditCommand { get; set; }
-
+        private IUserHandler _userHandler;
         private readonly IRestUserPreferenceRepository _repository;
         public Entities.RedditEntities.Subreddit _Subreddit;
         private List<string> _SortTypes;
@@ -49,8 +49,9 @@ namespace UI.Lib.ViewModel
             set { if (value != _selectedSort) { _selectedSort = value; } }
         }
 
-        public SubredditPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditApiConsumer consumer, IRestUserPreferenceRepository repository ) : base(helper, service, consumer)
+        public SubredditPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditApiConsumer consumer, IRestUserPreferenceRepository repository, IUserHandler userHandler) : base(helper, service, consumer)
         {
+            _userHandler = userHandler;
             _repository = repository;
             GoToCreatePostPageCommand = new RelayCommand(o => Service.Navigate(CreatePostPage, _Subreddit));
             SubscribeToSubredditCommand = new RelayCommand(async o => { await SubscribeToSubreddit(); });
@@ -86,11 +87,11 @@ namespace UI.Lib.ViewModel
             await Consumer.SubscribeToSubreddit(_Subreddit, UserIsSubscribed);
             if (UserIsSubscribed)
             {
-                await _repository.UpdateAsync(new UserPreference { Username = UserFactory.GetInfo().name, SubredditName = _Subreddit.display_name, PriorityMultiplier = 10 });
+                await _repository.UpdateAsync(new UserPreference { Username = _userHandler.GetUser().name, SubredditName = _Subreddit.display_name, PriorityMultiplier = 10 });
 
             } else
             {
-                await _repository.UpdateAsync(new UserPreference { Username = UserFactory.GetInfo().name, SubredditName = _Subreddit.display_name, PriorityMultiplier = -10 });
+                await _repository.UpdateAsync(new UserPreference { Username = _userHandler.GetUser().name, SubredditName = _Subreddit.display_name, PriorityMultiplier = -10 });
             }
         }
 

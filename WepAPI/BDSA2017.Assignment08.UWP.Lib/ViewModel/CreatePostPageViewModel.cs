@@ -14,6 +14,7 @@ namespace UI.Lib.ViewModel
     public class CreatePostPageViewModel : BaseViewModel
     {
         private readonly IRedditApiConsumer _consumer;
+        private readonly IUserHandler _userHandler;
         private Subreddit _currentSubreddit;
 
         public delegate void LoadingRingSwitch();
@@ -41,10 +42,11 @@ namespace UI.Lib.ViewModel
         }
         private readonly IRestUserPreferenceRepository _repository;
 
-        public CreatePostPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditApiConsumer consumer, IRestUserPreferenceRepository repository) : base(service)
+        public CreatePostPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditApiConsumer consumer, IRestUserPreferenceRepository repository, IUserHandler userHandler) : base(service)
         {
             _repository = repository;
             _consumer = consumer;
+            _userHandler = userHandler;
             Helper = helper;
             SubmitPostCommand = new RelayCommand(async o => { await CreateNewPostAsync(Title, Body); });
         }
@@ -69,7 +71,7 @@ namespace UI.Lib.ViewModel
                     messageDialog.Commands.Add(new UICommand("Ok", BackToSubreddit));
                     await _repository.UpdateAsync(new UserPreference
                     {
-                        Username = UserFactory.GetInfo().name,
+                        Username = _userHandler.GetUser().name,
                         SubredditName = _currentSubreddit.display_name,
                         PriorityMultiplier = 5
                     });
