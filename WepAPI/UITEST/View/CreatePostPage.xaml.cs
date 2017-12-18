@@ -21,6 +21,7 @@ namespace UITEST.View
             _vm = App.ServiceProvider.GetService<CreatePostPageViewModel>();
             this.InitializeComponent();
             _vm.LoadingRingOnOf += SwitchLoadingRingIsActive;
+            DataContext = _vm;
         }
         
         private void SwitchLoadingRingIsActive()
