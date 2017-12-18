@@ -39,22 +39,7 @@ namespace Gorilla.Test
 
             Assert.IsType<NoContentResult>(result); 
         }
-
-        [Fact(DisplayName = "GetImage given existing username returns Ok with Image")]
-        public async Task GetImage_given_existing_id_returns_Ok_with_Image()
-        {
-            var user = new User {Username = "test", PathToProfilePicture = "profilePicture.jpg" };
-
-            var repository = new Mock<IUserRepository>();
-            repository.Setup(r => r.FindAsync("test")).ReturnsAsync(user);
-
-            var controller = new UserController(repository.Object);
-
-            var result = await controller.GetImageAsync("test") as VirtualFileResult;
-
-            Assert.Equal("images/profilePicture.jpg", result.FileName);
-            Assert.Equal("image/png", result.ContentType);
-        }
+        
         [Fact(DisplayName = "Get given existing username returns Ok with user")]
         public async Task Get_given_existing_id_returns_Ok_with_track()
         {
