@@ -47,6 +47,7 @@ namespace UITEST.View
         }
         private async void ShowSubreddit(string subredditSearchString)
         {
+            _vm._Subreddit = null;
             await _vm.GeneratePosts(subredditSearchString);
             SubsribeToSubredditButton.Visibility = Visibility.Visible;
             if (_vm._Subreddit?.name != null) return;

@@ -24,7 +24,7 @@ namespace UI.Lib.ViewModel
             set { _SortTypes = value; OnPropertyChanged(); }
         }
 
-        private string  _subscribeString;
+        private string _subscribeString = "Subscribe";
         public string SubscribeString { get => _subscribeString;
             set { if (value != _subscribeString) { _subscribeString = value; OnPropertyChanged(); } }
         }
@@ -59,7 +59,6 @@ namespace UI.Lib.ViewModel
         }
         public async Task GeneratePosts(string subredditName, string sort = "hot")
         {
-            InvokeLoadSwitchEvent();
             _Subreddit = (await Consumer.GetSubredditAsync(subredditName)).Item2;
             _Subreddit = (await Consumer.GetSubredditPostsAsync(_Subreddit, sort)).Item2;
             if (_Subreddit?.name == null)
