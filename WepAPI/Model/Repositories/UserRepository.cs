@@ -18,13 +18,17 @@ namespace Model.Repositories
         }
         public async Task<string> CreateAsync(User user) 
         {
-            if ((await FindAsync(user.Username)) != null)
+            User found = await FindAsync(user.Username);
+            if (found != null)
             {
+                    found.PathToProfilePicture = user.PathToProfilePicture;
+                    await _context.SaveChangesAsync();
+                
                 throw new AlreadyThereException("A user witht that username alreay exist");
             }
             if(user.PathToProfilePicture == null)
             {
-                user.PathToProfilePicture = "profilePicture.jpg";
+                user.PathToProfilePicture = "images/profilePicture.jpg";
             }
             _context.Users.Add(user);
             await _context.SaveChangesAsync();

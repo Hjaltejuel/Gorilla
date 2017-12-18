@@ -5,6 +5,9 @@ using Entities.GorillaAPI.Interfaces;
 using Entities.GorillaEntities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using System.IO;
+using System;
 
 namespace Gorilla.Controllers
 {
@@ -52,14 +55,19 @@ namespace Gorilla.Controllers
         public async Task<IActionResult> GetImageAsync (string username)
         {
 
-            var character = await _repository.FindAsync(username);
+            var user = await _repository.FindAsync(username);
 
-            if (character?.PathToProfilePicture == null)
+            if (user?.PathToProfilePicture == null)
             {
                 return NotFound();
             }
-
-            return File($"images/{character.PathToProfilePicture}", "image/png");
+            if (user.PathToProfilePicture.Equals("images/profilePicture.Jpg")){
+                return File(user.PathToProfilePicture, "image/png");
+            }
+            WebRequest req = WebRequest.Create(new Uri(user.PathToProfilePicture, UriKind.Relative));
+            WebResponse response = req.GetResponse();
+            Stream stream = response.GetResponseStream();
+            return  File(stream,"image/png");
         }
 
         // POST: api/User
