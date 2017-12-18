@@ -69,9 +69,9 @@ namespace UI.Lib.ViewModel
             var sub = (await _consumer.GetSubredditAsync(subreddit)).Item2;
             sub.interest = subredditFromName;
             subs.TryAdd(sub.display_name,sub);
-            if (sub.banner_img.Equals(""))
+            if (string.IsNullOrEmpty(sub.banner_img))
             {
-                sub.banner_img = sub.header_img;
+                sub.banner_img = "";
             }
         }
     }
