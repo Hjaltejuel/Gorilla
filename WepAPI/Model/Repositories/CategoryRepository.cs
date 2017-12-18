@@ -23,7 +23,7 @@ namespace Model.Repositories
             {
                 if(CategoryName == c.Name)
                 {
-                    _context.UserPreferences.Update(new UserPreference {Username = Username, SubredditName = CategoryName });
+                    _context.UserPreferences.Update(new UserPreference {Username = Username, SubredditName = CategoryName, PriorityMultiplier = 1 });
                 }
             }
             return true;
