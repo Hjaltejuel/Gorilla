@@ -21,7 +21,7 @@
             <Image Source="/Assets/Picks.png" Stretch="Uniform" Name="pic"/>
 
         </RelativePanel>
-        
+        <ProgressRing Name="LoadingRing" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4" Height="100" Width="100"/>
     </Grid>
     <Page.Resources>
         <Storyboard x:Key="FadeIn">

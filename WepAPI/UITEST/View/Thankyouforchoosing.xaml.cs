@@ -31,7 +31,14 @@ namespace UITEST.View
         {
            
             this.InitializeComponent();
+            LoadingRing.IsActive = true;
             _vm = App.ServiceProvider.GetService<ThankYouForChoosingViewModel>();
+            _vm.ChoosingReadyEvent += LoadingRingSwitch;
+        }
+
+        private void LoadingRingSwitch()
+        {
+            LoadingRing.IsActive = false;
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {

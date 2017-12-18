@@ -74,7 +74,7 @@
                 <CheckBox Name="technology" Content="Technology" Unchecked="Unchecked" Checked="Checked" IsChecked ="{Binding Technology,Mode=TwoWay}"  RelativePanel.Below="Technologypicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
 
             </RelativePanel>
-            <Button Click="Onwards" Content="Set me up!"  RelativePanel.Below="PhotoPanel" Width="100" Height="50" HorizontalAlignment="Center" />
+            <Button Click="Onwards" Content="Set me up!" HorizontalAlignment="Center" RelativePanel.Below="FoodPanel" Width="100" Height="50"  />
 
         </RelativePanel>
 

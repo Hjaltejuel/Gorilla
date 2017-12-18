@@ -18,7 +18,6 @@ namespace UI.Lib.ViewModel
         public async Task GeneratePosts()
         {
             InvokeLoadSwitchEvent();
-            
             Posts = (await Consumer.GetHomePageContent()).Item2;
             InvokeLoadSwitchEvent();
         }

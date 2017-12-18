@@ -18,7 +18,7 @@ namespace BDSA2017.Assignment08.UWP.Tests.ViewModels
             var auth = new Mock<IAuthenticationHelper>();
             var PostMock = new Mock<IRestUserRepository>();
             var redditMock = new Mock<IRedditApiConsumer>();
-            MainPageViewModel view = new MainPageViewModel(auth.Object, mock.Object, redditMock.Object, PostMock.Object);
+            MainPageViewModel view = new MainPageViewModel( mock.Object, redditMock.Object, PostMock.Object);
             Assert.True(true);
             
         }

@@ -23,8 +23,11 @@ namespace Gorilla.Controllers
         [HttpPut]
         public async Task<IActionResult> PutAsync([FromBody] CategoryObject categoryObject  )
         {
-
-            var result = await _repository.GetAsync(categoryObject._username,categoryObject._names);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await _repository.UpdateAsync(categoryObject._username,categoryObject._names);
             
             return Ok(result);
         }

@@ -11,25 +11,25 @@ namespace Model.Repositories
     public class CategoryRepository : ICategoryRepository
     {
         private readonly IRedditDbContext _context;
-
-        public CategoryRepository(IRedditDbContext context)
+        private readonly IUserPreferenceRepository _repository;
+        
+        public CategoryRepository(IRedditDbContext context, IUserPreferenceRepository repository)
         {
+            _repository = repository;
             _context = context;
         }
 
 
-        public async Task<bool> GetAsync(string Username, string[] CategoryNames)
+        public async Task<bool> UpdateAsync(string Username, string[] CategoryNames)
         {
-            var user = _context.Users.FindAsync(Username);
+            var user = await _context.Users.FindAsync(Username);
             List<string> listOfCategories = await (from a in _context.CategorySubreddits
                                                    where CategoryNames.Contains(a.Name)
                                                    select a.SubredditName).ToListAsync();
 
             foreach (string c in listOfCategories)
             {
-          
-               
-                    _context.UserPreferences.Update(new UserPreference {Username = Username, SubredditName = c, PriorityMultiplier = 1 });
+                    await _repository.UpdateAsync(new UserPreference {Username = Username, SubredditName = c, PriorityMultiplier = 1 });
                 
             }
             await _context.SaveChangesAsync();

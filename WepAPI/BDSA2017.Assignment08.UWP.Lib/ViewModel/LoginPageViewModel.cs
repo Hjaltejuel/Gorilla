@@ -23,13 +23,12 @@ namespace UI.Lib.ViewModel
             _repository = repository;
             _authHandler = authHandler;
             _gorillaAuthHelper = helper;
-            BeginAuthentication();
         }
 
         public async Task StartupQuestionsAsync()
         {
             await UserFactory.Initialize(_redditAPIConsumer);
-            await _repository.CreateAsync(new User { Username = UserFactory.GetInfo().name, PathToProfilePicture = "profilePicture.jpg" });
+            await _repository.CreateAsync(new User { Username = UserFactory.GetInfo().name});
             if ((await _repository.FindAsync(UserFactory.GetInfo().name)).StartUpQuestionAnswered==0)
             {
                 Service.Navigate(StartupQuestionsPage, null);
