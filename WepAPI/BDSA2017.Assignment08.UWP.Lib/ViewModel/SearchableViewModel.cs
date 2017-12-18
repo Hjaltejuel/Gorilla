@@ -16,13 +16,28 @@ namespace UI.Lib.ViewModel
         public IRedditApiConsumer Consumer;
         public IRestUserRepository Repository;
         private string _queryText;
-        public string QueryText { get => _queryText;
-            set { if (_queryText != value) { _queryText = value; OnPropertyChanged(); } } }
+        public string QueryText
+        {
+            get => _queryText;
+            set
+            {
+                if (_queryText != value)
+                {
+                    _queryText = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         private ObservableCollection<Post> posts;
         public ObservableCollection<Post> Posts
         {
-            get => posts; set { posts = value; OnPropertyChanged(); }
+            get => posts;
+            set
+            {
+                posts = value;
+                OnPropertyChanged();
+            }
         }
         protected SearchableViewModel(IAuthenticationHelper helper, INavigationService service, IRedditApiConsumer consumer) : base(service)
         {

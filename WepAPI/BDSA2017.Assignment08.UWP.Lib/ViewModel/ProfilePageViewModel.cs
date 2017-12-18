@@ -63,7 +63,6 @@ namespace UI.Lib.ViewModel
                 }
             }
         }
-
         private byte[] _imageBytes;
         public byte[] ImageBytes
         {
@@ -78,7 +77,27 @@ namespace UI.Lib.ViewModel
                 }
             }
         }
-
+        public void Initialize()
+        {
+            GetCurrentProfile();
+            GetProfilePicture();
+            GetVisistedPosts();
+        }
+        public async Task LoadImageAsync()
+        {
+            if (ImageBytes == null)
+            {
+                Image = null;
+            }
+            var image = new BitmapImage();
+            using (var stream = new InMemoryRandomAccessStream())
+            {
+                await stream.WriteAsync(ImageBytes.AsBuffer());
+                stream.Seek(0);
+                await image.SetSourceAsync(stream);
+            }
+            Image = image;
+        }
         public ProfilePageViewModel(INavigationService service, IRestUserRepository repository, IRedditApiConsumer consumer, IRestPostRepository restPostRepository, IUserHandler userHandler) : base(service)
         {
             _restPostRepository = restPostRepository;
@@ -86,24 +105,24 @@ namespace UI.Lib.ViewModel
             _consumer = consumer;
             _userHandler = userHandler;
         }
-
-        public async Task Initialize()
+        public async Task GetVisistedPosts()
         {
-            await GetCurrentProfile();
-
-            if (_userHandler.GetProfilePic() == null)
-            {
-                ImageBytes = await _repository.FindImageAsync(Username);
-            } else
-            {
-                ImageBytes = _userHandler.GetProfilePic();
-            }
-            var visitedPosts = await _restPostRepository.ReadAsync(Username);
-            var ids = visitedPosts.Aggregate("", (current, post) => "t3_"+current + ",t3_" + post.Id);
+            var visitedPosts = await _restPostRepository.ReadAsync(_userHandler.GetUserName());
+            var ids = visitedPosts.Aggregate("", (current, post) => "t3_" + current + ",t3_" + post.Id);
             Posts = (await _consumer.GetPostsByIdAsync(ids)).Item2;
             PostsReadyEvent?.Invoke();
         }
-
+        public async Task GetProfilePicture()
+        {
+            if (_userHandler.GetProfilePic() == null)
+            {
+                ImageBytes = await _repository.FindImageAsync(_userHandler.GetUserName());
+            }
+            else
+            {
+                ImageBytes = _userHandler.GetProfilePic();
+            }
+        }
         private async Task GetCurrentProfile()
         {
             var redditUser = _userHandler.GetUser();
@@ -123,21 +142,6 @@ namespace UI.Lib.ViewModel
             LinkKarma = redditUser.link_karma;
             PostsCreated = numberOfPosts;
             CommentsCreated = numberOfComments;
-        }
-        public async Task LoadImageAsync()
-        {
-            if (ImageBytes == null)
-            {
-                Image = null;
-            }
-            var image = new BitmapImage();
-            using (var stream = new InMemoryRandomAccessStream())
-            {
-                await stream.WriteAsync(ImageBytes.AsBuffer());
-                stream.Seek(0);
-                await image.SetSourceAsync(stream);
-            }
-            Image = image;
         }
        
     }

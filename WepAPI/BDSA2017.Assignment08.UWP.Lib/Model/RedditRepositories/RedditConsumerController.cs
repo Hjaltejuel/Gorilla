@@ -25,14 +25,14 @@ namespace UI.Lib.Model.RedditRepositories
         private const string SubscribeUrl = "api/subscribe";
         private const string SubscribedSubredditsUrl = "subreddits/mine/subscriber";
         private const string GetByIdUrl = "by_id/{0}";
-        RedditAuthHandler _authHandler;
+        IRedditAuthHandler _authHandler;
         
-        public void Authenticate(RedditAuthHandler handler)
+        public void Authenticate(IRedditAuthHandler handler)
         {
             _authHandler = handler;
     }
 
-        private HttpRequestMessage CreateRequest(string stringUri, string method, string data = "")
+        private async Task<HttpRequestMessage> CreateRequest(string stringUri, string method, string data = "")
         {
             Uri uri;
             var isOAuth = false;
@@ -49,7 +49,7 @@ namespace UI.Lib.Model.RedditRepositories
                 RequestUri = uri
             };
             if (isOAuth)
-                request = _authHandler.AuthenticateRequest(request);
+                request = await _authHandler.AuthenticateRequest(request);
 
             request.Method = new HttpMethod(method);
             if (!data.IsNullOrEmpty())
@@ -80,7 +80,7 @@ namespace UI.Lib.Model.RedditRepositories
         }
         public async Task<(HttpStatusCode, ObservableCollection<Post>)> GetPostsByIdAsync(string things)
         {
-            var request = CreateRequest(string.Format(GetByIdUrl, things), "GET");
+            var request = await CreateRequest(string.Format(GetByIdUrl, things), "GET");
             var response = await SendRequest(request);
             if (response.Item1 != HttpStatusCode.OK) return (response.Item1, null);
 
@@ -95,7 +95,7 @@ namespace UI.Lib.Model.RedditRepositories
         public async Task<(HttpStatusCode, Subreddit)> GetSubredditAsync(string subredditName)
         {
             var aboutUri = $"https://www.reddit.com/r/{subredditName}/about";
-            var request = CreateRequest(aboutUri, "GET");
+            var request = await CreateRequest(aboutUri, "GET");
             var response = await SendRequest(request);
             if (response.Item1 != HttpStatusCode.OK) return (response.Item1, null);
 
@@ -107,7 +107,7 @@ namespace UI.Lib.Model.RedditRepositories
         public async Task<(HttpStatusCode, Subreddit)> GetSubredditPostsAsync(Subreddit subreddit, string sortBy = "hot")
         {
             var postsUri = $"https://www.reddit.com/r/{subreddit.display_name}/{sortBy}";
-            var request = CreateRequest(postsUri, "GET");
+            var request = await CreateRequest(postsUri, "GET");
             var response = await SendRequest(request);
             if (response.Item1 != HttpStatusCode.OK) return (response.Item1, null);
 
@@ -130,9 +130,9 @@ namespace UI.Lib.Model.RedditRepositories
         //t3 = comments on link / post & t5 = subreddit & t1 = comment
         public async Task<(HttpStatusCode, Post)> GetPostAndCommentsByIdAsync(string postId)
         {
-            var uri = $"https://www.reddit.com/comments/{postId}.json?json_raw=1";
+            var uri = $"https://www.reddit.com/comments/{postId}.json?json_raw=1&limit=10";
 
-            var request = CreateRequest(uri, "GET");
+            var request = await CreateRequest(uri, "GET");
             var response = await SendRequest(request);
             if (response.Item1 != HttpStatusCode.OK) return (response.Item1, null);
 
@@ -143,7 +143,7 @@ namespace UI.Lib.Model.RedditRepositories
         }
         public async Task<(HttpStatusCode, User)> GetAccountDetailsAsync()
         {
-            var request = CreateRequest(MeUrl, "GET");
+            var request = await CreateRequest(MeUrl, "GET");
             var response = await SendRequest(request);
             if (response.Item1 != HttpStatusCode.OK) return (response.Item1, null);
 
@@ -154,7 +154,7 @@ namespace UI.Lib.Model.RedditRepositories
         public async Task<(HttpStatusCode, string)> VoteAsync(AbstractCommentable thing, int direction)
         {
             var data = $"id={thing.name}&dir={direction}";
-            var request = CreateRequest(VoteUrl, "POST", data);
+            var request = await CreateRequest(VoteUrl, "POST", data);
             var response = await SendRequest(request);
             if (response.Item1 != HttpStatusCode.OK) return (response.Item1, "Could not vote");
 
@@ -163,7 +163,7 @@ namespace UI.Lib.Model.RedditRepositories
         public async Task<(HttpStatusCode, Comment)> CreateCommentAsync(AbstractCommentable thing, string commentText)
         {
             var data = $"thing_id={thing.name}&text={commentText}";
-            var request = CreateRequest(CommentUrl, "POST", data);
+            var request = await CreateRequest(CommentUrl, "POST", data);
             var response = await SendRequest(request);
 
             if (response.Item1 != HttpStatusCode.OK) return (response.Item1, null);
@@ -201,7 +201,7 @@ namespace UI.Lib.Model.RedditRepositories
         {
             var action = isSubscribing ? "sub" : "unsub";
             var data = $"action={action}&sr={subreddit.name}";
-            var request = CreateRequest(SubscribeUrl, "POST", data);
+            var request = await CreateRequest(SubscribeUrl, "POST", data);
             var response = await SendRequest(request);
 
             if (response.Item1 != HttpStatusCode.OK) return (response.Item1, null);
@@ -212,7 +212,7 @@ namespace UI.Lib.Model.RedditRepositories
         {
             var subscribedSubreddits = new List<Subreddit>();
 
-            var request = CreateRequest(SubscribedSubredditsUrl, "GET");
+            var request = await CreateRequest(SubscribedSubredditsUrl, "GET");
             var response = await SendRequest(request);
             if (response.Item1 != HttpStatusCode.OK) return (response.Item1, null);
 
@@ -232,7 +232,7 @@ namespace UI.Lib.Model.RedditRepositories
             else
                 data = $"&text={text}";
 
-            var request = CreateRequest(CreatePostUrl, "POST", data);
+            var request = await CreateRequest(CreatePostUrl, "POST", data);
             var response = await SendRequest(request);
             if (response.Item1 != HttpStatusCode.OK) return (response.Item1, "Could not create post");
 
@@ -246,7 +246,7 @@ namespace UI.Lib.Model.RedditRepositories
         {
             var childrenString = string.Join(",", children);
             var moreChildrenUrl = $"/api/morechildren.json?api_type=json&link_id={parentPostId}&sort=hot&children={childrenString}&depth=20";
-            var request = CreateRequest(moreChildrenUrl, "GET");
+            var request = await CreateRequest(moreChildrenUrl, "GET");
             var response = await SendRequest(request);
             if (response.Item1 != HttpStatusCode.OK) return (response.Item1, null);
             var l = new List<Comment>();
@@ -259,7 +259,7 @@ namespace UI.Lib.Model.RedditRepositories
 
         public async Task<(HttpStatusCode, ObservableCollection<Post>)> GetHomePageContent()
         {
-            var request = CreateRequest("/", "GET");
+            var request = await CreateRequest("/", "GET");
             var response = await SendRequest(request);
             if (response.Item1 != HttpStatusCode.OK) return (response.Item1, null);
 
@@ -271,7 +271,7 @@ namespace UI.Lib.Model.RedditRepositories
         public async Task<(HttpStatusCode, ObservableCollection<Post>)> GetUserPosts(string user)
         {
             var url = $"https://reddit.com/user/{user}/submitted/";
-            var request = CreateRequest(url, "GET");
+            var request = await CreateRequest(url, "GET");
             var response = await SendRequest(request);
             if (response.Item1 != HttpStatusCode.OK) return (response.Item1, null);
             return (response.Item1, CreateUserInfoCollection<Post>(response.Item2));
@@ -280,7 +280,7 @@ namespace UI.Lib.Model.RedditRepositories
         public async Task<(HttpStatusCode, ObservableCollection<Comment>)> GetUserComments(string user)
         {
             var url = $"https://reddit.com/user/{user}/comments/";
-            var request = CreateRequest(url, "GET");
+            var request = await CreateRequest(url, "GET");
             var response = await SendRequest(request);
             if (response.Item1 != HttpStatusCode.OK) return (response.Item1, null);
             return (response.Item1, CreateUserInfoCollection<Comment>(response.Item2));

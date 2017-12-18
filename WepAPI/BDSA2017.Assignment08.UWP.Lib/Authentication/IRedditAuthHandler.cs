@@ -11,7 +11,7 @@ namespace UI.Lib.Authentication
     public interface IRedditAuthHandler
     {
         Task BeginAuth();
-        HttpRequestMessage AuthenticateRequest(HttpRequestMessage request);
+        Task<HttpRequestMessage> AuthenticateRequest(HttpRequestMessage request);
         Task<JToken> SendRequest(string body);
         void LogOut();
         Task RefreshToken();

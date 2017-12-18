@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
+using Entities.GorillaEntities;
 using Entities.RedditEntities;
 using Moq;
 using UI.Lib.Model;
@@ -40,12 +41,8 @@ namespace UI.Test.ViewModels
         {
             //Arrange
             var parentObject = new Comment();
-
             var returnResult = Task.FromResult((HttpStatusCode.OK, new Comment { body = "CommentBody" }));
-
-            _redditApiConsumer.Setup(o => o.CreateCommentAsync(parentObject, "CommentBody"))
-                .Returns(returnResult);
-
+            _redditApiConsumer.Setup(o => o.CreateCommentAsync(parentObject, "CommentBody")).Returns(returnResult);
             var expected = new Comment { body = "CommentBody" };
 
             //Act
@@ -78,36 +75,36 @@ namespace UI.Test.ViewModels
             Assert.Equal(expected, actual);
         }
 
-        //[Fact(DisplayName = "Like comment test")]
-        //public async void Like_Comment_Test()
-        //{
-        //    //Arrange
-        //    var parentObject = new Comment() { subreddit = "A" };
-        //    var likeDirection = 1;
+        [Fact(DisplayName = "Like comment test")]
+        public async void Like_Comment_Test()
+        {
+            //Arrange
+            var parentObject = new Comment() { subreddit = "A" };
+            var likeDirection = 1;
 
-        //    _restUserPreferenceRepository.Setup(v => v.UpdateAsync(new UserPreference())).Returns(Task.FromResult(true));
+            _restUserPreferenceRepository.Setup(v => v.UpdateAsync(new UserPreference())).Returns(Task.FromResult(true));
 
-        //    //Act
-        //    await _commentableViewModel.LikeCommentableAsync(parentObject, likeDirection);
+            //Act
+            await _commentableViewModel.LikeCommentableAsync(parentObject, likeDirection);
 
-        //    //Assert
-        //    _redditApiConsumer.Verify(v => v.VoteAsync(parentObject, likeDirection));
-        //    _restUserPreferenceRepository.Verify(v => v.UpdateAsync(It.IsAny<UserPreference>()));
-        //}
+            //Assert
+            _redditApiConsumer.Verify(v => v.VoteAsync(parentObject, likeDirection), Times.Once);
+            _restUserPreferenceRepository.Verify(v => v.UpdateAsync(It.IsAny<UserPreference>()), Times.Once);
+        }
 
-        //[Fact(DisplayName = "Unlike comment test")]
-        //public async void Unlike_Comment_Test()
-        //{
-        //    //Arrange
-        //    var parentObject = new Comment();
-        //    var likeDirection = 1;
+        [Fact(DisplayName = "Unlike comment test")]
+        public async void Unlike_Comment_Test()
+        {
+            //Arrange
+            var parentObject = new Comment();
+            var likeDirection = 0;
 
-        //    //Act
-        //    await _commentableViewModel.LikeCommentableAsync(parentObject, likeDirection);
+            //Act
+            await _commentableViewModel.LikeCommentableAsync(parentObject, likeDirection);
 
-        //    //Assert
-        //    _redditApiConsumer.Verify(v => v.VoteAsync(parentObject, likeDirection));
-        //    _restUserPreferenceRepository.Verify(v => v.UpdateAsync(It.IsAny<UserPreference>()), Times.Never);
-        //}
+            //Assert
+            _redditApiConsumer.Verify(v => v.VoteAsync(parentObject, likeDirection), Times.Once);
+            _restUserPreferenceRepository.Verify(v => v.UpdateAsync(It.IsAny<UserPreference>()), Times.Never);
+        }
     }
 }

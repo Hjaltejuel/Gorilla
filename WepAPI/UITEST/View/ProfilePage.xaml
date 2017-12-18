@@ -43,7 +43,7 @@
                 <RelativePanel Name="InfoPanelLeft" RelativePanel.Below="ProfilePicture" Margin="20, 20, 0, 0">
                     <TextBlock Name="Info" Text="Info" Style="{StaticResource SubTitle}"/>
                     <TextBlock Name="Username" Text="Username" Style="{StaticResource StandardText}" RelativePanel.Below="Info"/>
-
+                    
                     <TextBlock Name="Statistics" Text="Statistics" Style="{StaticResource SubTitle}" RelativePanel.Below="Username"/>
                     <TextBlock Name="LinkKarma" Text="Karma from posts" Style="{StaticResource StandardText}" RelativePanel.Below="Statistics"/>
                     <TextBlock Name="CommentKarma" Text="Karma from comments" Style="{StaticResource StandardText}" RelativePanel.Below="LinkKarma"/>

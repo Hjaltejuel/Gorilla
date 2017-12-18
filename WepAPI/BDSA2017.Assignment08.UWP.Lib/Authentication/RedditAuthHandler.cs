@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Windows.Storage;
+using Castle.Core.Internal;
 using UI.Lib.Model;
 using UI.Lib.Model.RedditRestInterfaces;
 
@@ -56,12 +57,16 @@ namespace UI.Lib.Authentication
                 }
                 else
                 {
-                    await BeginAuth();
+                    throw new Exception($"Could not login. Error code: {webAuthenticationResult.ResponseStatus}");
                 }
             }
         }
-        public HttpRequestMessage AuthenticateRequest(HttpRequestMessage request)
+        public async Task<HttpRequestMessage> AuthenticateRequest(HttpRequestMessage request)
         {
+            if (_token.IsNullOrEmpty())
+            {
+                await BeginAuth();
+            }
             request.Headers.Authorization = new AuthenticationHeaderValue("bearer", _token);
             return request;
         }
