@@ -16,6 +16,7 @@ namespace UI.Test.ViewModels
         private readonly Mock<IRestUserRepository> _restUserPreferenceRepository;
         private readonly Mock<IUserHandler> _userHandler;
         private readonly Mock<IRestSubredditRepository> _subredditRepository;
+        private readonly Mock<IRestSubredditRepository> _restSubredditRepository;
         private readonly MainPageViewModel _commentableViewModel;
 
         public MainPageViewModelTest()

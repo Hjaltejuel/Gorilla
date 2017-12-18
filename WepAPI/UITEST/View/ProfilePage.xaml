@@ -17,7 +17,7 @@
         <CommandBar Name="commandBar" OverflowButtonVisibility="Collapsed" Grid.Row="0" Style="{StaticResource StandardCommandBar}">
             <AppBarButton Icon="Home" Label="Home" Command="{Binding GoToHomePageCommand}"/>
             <AppBarButton Icon="OutlineStar" Label="Discover" Command="{Binding GoToDiscoverPageCommand}"/>
-            <AppBarButton Icon="Contact" Label="Profile" Command="{Binding GoToProfilePageCommand}"/>
+            <AppBarButton Icon="Contact" Label="Profile"/>
             <AppBarButton Icon="Cancel" Label="Log out" Command="{Binding LogOutPageCommand}"/>
         </CommandBar>
 
