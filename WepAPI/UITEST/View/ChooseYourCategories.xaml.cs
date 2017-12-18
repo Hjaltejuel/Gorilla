@@ -29,7 +29,7 @@ namespace UITEST.View
         private readonly ChooseYourCategoriesViewModel _vm;
         public ChooseYourCategories()
         {
-            
+
             this.InitializeComponent();
             _vm = App.ServiceProvider.GetService<ChooseYourCategoriesViewModel>();
 
@@ -43,9 +43,23 @@ namespace UITEST.View
 
         }
 
+       
+
         private void Onwards(Object sender, RoutedEventArgs e)
         {
             _vm.GoToLoading();
+        }
+
+        private void Checked(object sender, RoutedEventArgs e)
+        {
+            var checkbox = sender as CheckBox;
+            _vm.add(checkbox.Content.ToString());
+        }
+
+        private void Unchecked(object sender, RoutedEventArgs e)
+        {
+            var checkbox = sender as CheckBox;
+            _vm.remove(checkbox.Content.ToString());
         }
     }
 }

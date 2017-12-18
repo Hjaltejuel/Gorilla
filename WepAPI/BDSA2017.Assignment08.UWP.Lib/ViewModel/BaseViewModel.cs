@@ -25,6 +25,7 @@ namespace UI.Lib.ViewModel
         public static Type SubredditPage { get; set; }
         public static Type CreatePostPage { get; set; }
         public static Type StartupQuestionsPage { get; set; }
+        public static Type ThankYouForChoosing { get; set; }
 
 
         protected IAuthenticationHelper _gorillaAuthHelper;

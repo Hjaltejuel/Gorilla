@@ -8,24 +8,31 @@ using Entities.GorillaEntities;
 
 namespace Model.Repositories
 {
-    class CategoryRepository : ICategoryRepository
+    public class CategoryRepository : ICategoryRepository
     {
         private readonly IRedditDbContext _context;
 
+        public CategoryRepository(IRedditDbContext context)
+        {
+            _context = context;
+        }
 
 
-        public async Task<bool> GetAsync(string Username, string CategoryName)
+        public async Task<bool> GetAsync(string Username, string[] CategoryNames)
         {
             var user = _context.Users.FindAsync(Username);
-            List<CategorySubreddit> listOfCategories = await (from a in _context.CategorySubreddits where a.Name == CategoryName select a).ToListAsync();
+            List<string> listOfCategories = await (from a in _context.CategorySubreddits
+                                                   where CategoryNames.Contains(a.Name)
+                                                   select a.SubredditName).ToListAsync();
 
-            foreach (CategorySubreddit c in listOfCategories)
+            foreach (string c in listOfCategories)
             {
-                if(CategoryName == c.Name)
-                {
-                    _context.UserPreferences.Update(new UserPreference {Username = Username, SubredditName = CategoryName, PriorityMultiplier = 1 });
-                }
+          
+               
+                    _context.UserPreferences.Update(new UserPreference {Username = Username, SubredditName = c, PriorityMultiplier = 1 });
+                
             }
+            await _context.SaveChangesAsync();
             return true;
            
         }

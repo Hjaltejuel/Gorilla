@@ -37,7 +37,7 @@ namespace UI.Lib.Model
             services.AddScoped<IRedditAuthHandler, RedditAuthHandler>();
             services.AddScoped<IRestCategoryRepository, RestCategoryRepository>();
             services.AddScoped<MainPageViewModel>();
-
+            services.AddScoped<ThankYouForChoosingViewModel>();
             services.AddScoped<ChooseYourCategoriesViewModel>();
             services.AddScoped<DiscoverPageViewModel>();
             services.AddScoped<PostPageViewModel>();

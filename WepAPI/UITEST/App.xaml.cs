@@ -33,6 +33,7 @@ namespace UITEST
             BaseViewModel.DiscoverPage = typeof(DiscoverPage);
             BaseViewModel.CreatePostPage = typeof(CreatePostPage);
             BaseViewModel.StartupQuestionsPage = typeof(StartupQuestions);
+            BaseViewModel.ThankYouForChoosing = typeof(ThankYouForChoosing);
             
 
             InitializeComponent();

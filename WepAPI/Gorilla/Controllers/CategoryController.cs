@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Entities.GorillaAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Entities.GorillaEntities;
 
 namespace Gorilla.Controllers
 {
@@ -19,19 +20,12 @@ namespace Gorilla.Controllers
         }
 
         // GET: api/Category
-        [HttpGet]
-        public async Task<IActionResult> PutAsync([FromBody] )
+        [HttpPut]
+        public async Task<IActionResult> PutAsync([FromBody] CategoryObject categoryObject  )
         {
 
-            var result = await _repository.;
-            if (result == null)
-            {
-                return NotFound();
-            }
-            else if (!result.Any())
-            {
-                return NoContent();
-            }
+            var result = await _repository.GetAsync(categoryObject._username,categoryObject._names);
+            
             return Ok(result);
         }
 

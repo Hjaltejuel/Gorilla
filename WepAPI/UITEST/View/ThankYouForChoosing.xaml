@@ -18,9 +18,17 @@
         </Grid.Background>
         <RelativePanel >
 
-            <Image Source="/Assets/Picks.png" Stretch="Uniform"/>
+            <Image Source="/Assets/Picks.png" Stretch="Uniform" Name="pic"/>
 
         </RelativePanel>
+        
     </Grid>
-    
+    <Page.Resources>
+        <Storyboard x:Key="FadeIn">
+
+            <DoubleAnimation From="0" To="1" Storyboard.TargetName="pic" Storyboard.TargetProperty="(UIElement.Opacity)" Duration="0:0:3"/>
+
+
+        </Storyboard>
+    </Page.Resources>
 </Page>

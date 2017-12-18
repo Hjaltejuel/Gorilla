@@ -5,6 +5,8 @@ using Entities.RedditEntities;
 using UI.Lib.Model;
 using UI.Lib.Model.GorillaRestInterfaces;
 using UI.Lib.Model.RedditRestInterfaces;
+using Windows.UI.Xaml;
+using Windows.UI.Core;
 
 namespace UI.Lib.ViewModel
 {
@@ -36,6 +38,8 @@ namespace UI.Lib.ViewModel
             }
             return finalList;
         }
+        
+        }
 
     }
-}
+

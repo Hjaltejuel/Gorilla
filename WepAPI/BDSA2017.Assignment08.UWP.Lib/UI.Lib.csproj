@@ -109,7 +109,6 @@
     <Compile Include="Authentication\IRedditAuthHandler.cs" />
     <Compile Include="CustomUI\CustomButton.cs" />
     <Compile Include="Misc\TimeHelper.cs" />
-    <Compile Include="Model\CategoryObject.cs" />
     <Compile Include="Model\GorillaRepositories\Extensions.cs" />
     <Compile Include="Model\GorillaRepositories\RestCategoryRepository.cs" />
     <Compile Include="Model\GorillaRepositories\RestPostRepository.cs" />
