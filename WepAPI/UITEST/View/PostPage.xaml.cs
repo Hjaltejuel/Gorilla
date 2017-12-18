@@ -91,8 +91,23 @@ namespace UITEST.View
             {
                 CommentPanel.Visibility = Visibility.Collapsed;
                 var newComment = await _vm.CreateComment(_vm.CurrentPost, text);
-                PostView.Items?.Insert(2, new CommentControl(newComment));
+                var topCommentPanel = CreateBorderedCommentPanel(newComment);
+
+                PostView.Items?.Insert(2, topCommentPanel);
             }
+        }
+        private Border CreateBorderedCommentPanel(Comment comment)
+        {
+            var topCommentPanel = new CommentControl(comment);
+            topCommentPanel.Margin = new Thickness(10, 0, 0, 10);
+            var border = new Border
+            {
+                BorderThickness = new Thickness(1),
+                BorderBrush = new SolidColorBrush(Colors.Black),
+                Margin = new Thickness(0, 10, 0, 0)
+            };
+            border.Child = topCommentPanel;
+            return border;
         }
         private void DrawRootComments()
         {
@@ -100,18 +115,10 @@ namespace UITEST.View
             {
                 var comment = _comment as Comment;
                 if (comment?.body == null) { continue; }
-                var topCommentPanel = new CommentControl(comment);
-                topCommentPanel.Margin=new Thickness(10, 0, 0, 10);
-                var border = new Border
-                {
-                    BorderThickness = new Thickness(1),
-                    BorderBrush = new SolidColorBrush(Colors.Black)
-                };
-
-                border.Child = topCommentPanel;
+                var topCommentPanel = CreateBorderedCommentPanel(comment);
                 //Make root comment bordered
 
-                PostView.Items.Add(border);
+                PostView.Items.Add(topCommentPanel);
             }
         }
     }
