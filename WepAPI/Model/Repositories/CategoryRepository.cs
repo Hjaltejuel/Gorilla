@@ -27,13 +27,18 @@ namespace Model.Repositories
                                                    where CategoryNames.Contains(a.Name)
                                                    select a.SubredditName).ToListAsync();
 
-            foreach (string c in listOfCategories)
+            if (user!=null)
             {
-                    await _repository.UpdateAsync(new UserPreference {Username = Username, SubredditName = c, PriorityMultiplier = 1 });
-                
+                foreach (string c in listOfCategories)
+                {
+                    await _repository.UpdateAsync(new UserPreference { Username = Username, SubredditName = c, PriorityMultiplier = 1 });
+
+                }
+                await _context.SaveChangesAsync();
+                return true;
             }
-            await _context.SaveChangesAsync();
-            return true;
+            return false;
+            
            
         }
 

@@ -12,7 +12,7 @@ namespace Model.Repositories
     {
 
         private readonly IRedditDbContext _context;
-
+ 
         public PostRepository(IRedditDbContext context)
         {
             _context = context;
@@ -40,7 +40,7 @@ namespace Model.Repositories
             return post.Id;
         }
 
-        public async Task<IReadOnlyCollection<Post>> ReadAsync(string username)
+        public virtual async Task<IReadOnlyCollection<Post>> ReadAsync(string username)
         {
             return await (from s in _context.Posts
                           where username.Equals(s.username) 

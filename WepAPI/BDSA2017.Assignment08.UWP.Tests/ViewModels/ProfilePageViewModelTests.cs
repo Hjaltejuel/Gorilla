@@ -61,37 +61,7 @@ namespace UI.Test.ViewModels
             _redditApiConsumer.Verify(v => v.GetPostsByIdAsync(aggregatedIdsString), Times.Once);
         }
 
-        [Fact(DisplayName = "Profile page - GetProfilePicture (Picture does not exist)")]
-        public async void GetProfilePicture_Test_Fail()
-        {
-            //Arrange
-            var username = "Username";
-            _userHandler.Setup(o => o.GetProfilePic()).Returns((byte[])null);
-            _userHandler.Setup(o => o.GetUserName()).Returns(username);
-
-            //Act
-            await _profilePageViewModel.GetProfilePicture();
-
-            //Assert
-            _userHandler.Verify(v => v.GetProfilePic(), Times.Once);
-            _restUserPreferenceRepository.Verify(v => v.FindImageAsync(username), Times.Once);
-        }
-
-        [Fact(DisplayName = "Profile page - GetProfilePicture (Picture exists)")]
-        public async void GetProfilePicture_Test_Success()
-        {
-            //Arrange
-            var username = "Username";
-            _userHandler.Setup(o => o.GetProfilePic()).Returns(new byte[1]);
-            _userHandler.Setup(o => o.GetUserName()).Returns(username);
-
-            //Act
-            await _profilePageViewModel.GetProfilePicture();
-
-            //Assert
-            _userHandler.Verify(v => v.GetProfilePic(), Times.Exactly(2));
-            _restUserPreferenceRepository.Verify(v => v.FindImageAsync(username), Times.Never);
-        }
+   
 
         [Fact(DisplayName = "Profile page - GetCurrentProfile() (No user found)")]
         public async void GetCurrentUser_Test_Fail_No_User()

@@ -57,6 +57,7 @@ namespace UI.Lib.ViewModel
 
         public void LogOut()
         {
+           
             _authHandler.LogOut();
         }
     }
