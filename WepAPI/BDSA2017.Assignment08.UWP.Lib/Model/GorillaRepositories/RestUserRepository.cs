@@ -80,20 +80,7 @@ namespace UI.Lib.Model.GorillaRepositories
             return null;
         }
 
-        public async Task<byte[]> FindImageAsync(string username)
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get, $"api/user/get/{username}/image");
-            request.Headers.Accept.Clear();
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("image/png"));
-            var response = await _client.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
-            {
-                return await response.Content.ReadAsByteArrayAsync();
-            }
-
-            return null;
-        }
+    
 
         public async Task<IReadOnlyCollection<User>> ReadAsync()
         {

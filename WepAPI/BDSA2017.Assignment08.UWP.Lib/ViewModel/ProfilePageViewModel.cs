@@ -114,7 +114,7 @@ namespace UI.Lib.ViewModel
         {
             if (_userHandler.GetProfilePic() == null)
             {
-                ImageBytes = await _repository.FindImageAsync(_userHandler.GetUserName());
+                await LoadImageAsync();
             }
             else
             {

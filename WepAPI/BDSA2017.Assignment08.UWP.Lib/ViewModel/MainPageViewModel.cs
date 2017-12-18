@@ -10,6 +10,8 @@ namespace UI.Lib.ViewModel
     public class MainPageViewModel : SearchableViewModel
     {
         private readonly IUserHandler _userHandler;
+        public delegate void MainReady();
+        public event MainReady MainReadyEvent;
         public MainPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditApiConsumer consumer, IRestUserRepository repository, IUserHandler userHandler) : base( service, consumer)
         {
             Repository = repository;
@@ -19,9 +21,9 @@ namespace UI.Lib.ViewModel
 
         public async Task GeneratePosts()
         {
-            InvokeLoadSwitchEvent();
+         
             Posts = (await Consumer.GetHomePageContent()).Item2;
-            InvokeLoadSwitchEvent();
+            MainReadyEvent.Invoke();
         }
         public async Task Initialize()
         {

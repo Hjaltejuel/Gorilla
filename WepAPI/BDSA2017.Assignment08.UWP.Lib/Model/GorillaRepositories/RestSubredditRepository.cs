@@ -28,6 +28,9 @@ namespace UI.Lib.Model.GorillaRepositories
 
             _client = client;
         }
+
+        
+
         public async Task<string> CreateAsync(Subreddit subreddit)
         {
             using (var h = new HttpClient())
@@ -89,6 +92,18 @@ namespace UI.Lib.Model.GorillaRepositories
 
             return null;
         }
+        public async Task<IReadOnlyCollection<Subreddit>> GetLikeAsync(string like)
+        {
+            var response = await _client.GetAsync($"api/subreddit/like/{like}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.To<IReadOnlyCollection<Subreddit>>();
+            }
+
+            return null;
+        }
+
 
 
         #region IDisposable Support
@@ -126,6 +141,7 @@ namespace UI.Lib.Model.GorillaRepositories
             // GC.SuppressFinalize(this);
         }
 
+       
 
 
 

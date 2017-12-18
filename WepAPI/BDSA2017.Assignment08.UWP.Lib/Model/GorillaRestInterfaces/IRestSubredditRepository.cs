@@ -10,6 +10,7 @@ namespace UI.Lib.Model.GorillaRestInterfaces
         Task<Subreddit> FindAsync(string subredditName);
         Task<string> CreateAsync(Subreddit subreddit);
         Task<bool> DeleteAsync(string subredditName);
+        Task<IReadOnlyCollection<Subreddit>> GetLikeAsync(string like);
         Task<IReadOnlyCollection<Subreddit>> ReadAsync();
 
     }

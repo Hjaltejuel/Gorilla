@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UI.Lib.Authentication;
 using UI.Lib.Authentication.GorillaAuthentication;
-using UI.Lib.Model;
+using UI.Lib.Model; 
 using UI.Lib.Model.GorillaRestInterfaces;
 using UI.Lib.Model.RedditRestInterfaces;
 using UI.Lib.ViewModel;
@@ -17,17 +17,29 @@ namespace UI.Test.ViewModels
     public class LoginPageViewModelTests
     {
         private readonly Mock<INavigationService> _navigationService;
-        private readonly Mock<IRedditAuthHandler> _handler;
-        private readonly LoginPageViewModel _lpvm;
+        private readonly Mock<IRedditAuthHandler> _authHandler;
+        private readonly Mock<IAuthenticationHelper> _authHelper;
+        private readonly Mock<IRedditApiConsumer> _redditAPIConsumer;
+        private readonly Mock<IRestUserRepository> _repository;
+        private readonly Mock<IUserHandler> _userHandler;
+        private readonly LoginPageViewModel _loginPageViewModel;
         
         public LoginPageViewModelTests()
         {
-
             _navigationService = new Mock<INavigationService>();
-            _handler = new Mock<IRedditAuthHandler>();
-            _lpvm = new LoginPageViewModel(
+            _authHandler = new Mock<IRedditAuthHandler>();
+            _authHelper = new Mock<IAuthenticationHelper>();
+            _redditAPIConsumer = new Mock<IRedditApiConsumer>();
+            _repository = new Mock<IRestUserRepository>();
+            _userHandler = new Mock<IUserHandler>();
+
+            _loginPageViewModel = new LoginPageViewModel(
                 _navigationService.Object,
-                _handler.Object
+                _authHandler.Object,
+                _authHelper.Object,
+                _repository.Object,
+                _redditAPIConsumer.Object,
+                _userHandler.Object
             );
         }
 
@@ -35,20 +47,20 @@ namespace UI.Test.ViewModels
         public void Is_AuthHandler_And_HasAuthenticated_Called()
         {
             //Act
-            _lpvm.BeginAuthentication();
+            _loginPageViewModel.BeginAuthentication();
 
             //Assert
-            _handler.Verify(v => v.BeginAuth(), Times.Once());
+            _authHandler.Verify(v => v.BeginAuth(), Times.Once());
         }
 
         [Fact(DisplayName = "Is Logout called")]
         public void Is_Logout_Called()
         {
             //Act
-            _lpvm.LogOut();
+            _loginPageViewModel.LogOut();
 
             //Assert
-            _handler.Verify(v => v.LogOut(), Times.Once());
+            _authHandler.Verify(v => v.LogOut(), Times.Once());
         }
     }
 }

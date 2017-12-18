@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Entities.RedditEntities;
 using UI.Lib.Model.RedditRestInterfaces;
+using System.IO;
 
 namespace UI.Lib.Model
 {
@@ -34,7 +35,15 @@ namespace UI.Lib.Model
         }
         public byte[] GetProfilePic()
         {
-            return _user?.ProfilePic;
+            
+           
+            using (var webClient = new WebClient())
+            {
+                byte[] imageBytes = webClient.DownloadData(_user.icon_img);
+                return imageBytes;
+            }
+
+           
         }
     }
 }

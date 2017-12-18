@@ -7,28 +7,25 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
-
-    <Grid>
-        <ListView Grid.Row="3" x:Name="PostsList" Height="Auto" SelectionMode="None" ItemsSource="{Binding Posts}" ScrollViewer.VerticalScrollBarVisibility="Auto">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <RelativePanel Margin="20, 20, 0, 0">
-                        <RelativePanel  Name="OpOgNed" Margin="0, 10, 0, 0" Width="50">
-                            <TextBlock Text="{Binding score}" RelativePanel.AlignHorizontalCenterWithPanel="True"/>
-                        </RelativePanel>
-
-                        <RelativePanel RelativePanel.RightOf="OpOgNed" Margin="10,0,0,0 ">
-                            <Image Source="{Binding thumbnail}" Height="40" Width="40" Name="Box" Margin="0, 10, 5, 0"/>
-
-                            <Button Name="Title" Content="{Binding title}" Style="{StaticResource TitleText}" RelativePanel.RightOf="Box" Click="Title_Click" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
-                            <TextBlock Text="{Binding author}" RelativePanel.Below ="Title" RelativePanel.RightOf="Box" Style="{StaticResource AuthorText}" Name="Author"/>
-                            <TextBlock Text="{Binding subreddit_name_prefixed}" RelativePanel.RightOf="Author" RelativePanel.Below ="Title" Style="{StaticResource AuthorText}" Margin="4, 0, 0, 0"/>
-                            <TextBlock Text="{Binding num_comments}" RelativePanel.Below ="Author" RelativePanel.RightOf="Box" FontSize="10" Name="CommentsAmount"/>
-                            <TextBlock Text="comments" Name="comments" RelativePanel.Below ="Author" RelativePanel.RightOf="CommentsAmount" FontSize="10" Margin="5, 0, 0, 0"/>
-                        </RelativePanel>
+    <ListView x:Name="PostsList" Height="Auto" SelectionMode="None" ItemsSource="{Binding Posts}" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <RelativePanel Margin="20, 20, 0, 0">
+                    <RelativePanel  Name="OpOgNed" Margin="0, 10, 0, 0" Width="50">
+                        <TextBlock Text="{Binding score}" RelativePanel.AlignHorizontalCenterWithPanel="True"/>
                     </RelativePanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </Grid>
+
+                    <RelativePanel RelativePanel.RightOf="OpOgNed" Margin="10,0,0,0 ">
+                        <Image Source="{Binding thumbnail}" Height="40" Width="40" Name="Box" Margin="0, 10, 5, 0"/>
+
+                        <Button Name="Title" Content="{Binding title}" Style="{StaticResource TitleText}" RelativePanel.RightOf="Box" Click="Title_Click" PointerEntered="TextButton_PointerEntered" PointerExited="TextButton_PointerLeaved"/>
+                        <TextBlock Text="{Binding author}" RelativePanel.Below ="Title" RelativePanel.RightOf="Box" Style="{StaticResource AuthorText}" Name="Author"/>
+                        <TextBlock Text="{Binding subreddit_name_prefixed}" RelativePanel.RightOf="Author" RelativePanel.Below ="Title" Style="{StaticResource AuthorText}" Margin="4, 0, 0, 0"/>
+                        <TextBlock Text="{Binding num_comments}" RelativePanel.Below ="Author" RelativePanel.RightOf="Box" FontSize="10" Name="CommentsAmount"/>
+                        <TextBlock Text="comments" Name="comments" RelativePanel.Below ="Author" RelativePanel.RightOf="CommentsAmount" FontSize="10" Margin="5, 0, 0, 0"/>
+                    </RelativePanel>
+                </RelativePanel>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
 </UserControl>
