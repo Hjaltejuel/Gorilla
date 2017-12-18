@@ -23,6 +23,8 @@ namespace Model.Repositories
             
         }
 
+
+
         public async Task<string> CreateAsync(Subreddit subreddit)
         {
             if((await FindAsync(subreddit.SubredditName)) != null)
@@ -53,6 +55,13 @@ namespace Model.Repositories
         {
             return await (from s in _context.Subreddits
                    select s).ToListAsync();
+        }
+
+        public async Task<IReadOnlyCollection<Subreddit>> GetLikeAsync(string like)
+        {
+            return await (from s in _context.Subreddits
+                          .Where(a => a.SubredditName.StartsWith($"{like}"))
+                          select s).ToListAsync();
         }
 
 

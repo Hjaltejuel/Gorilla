@@ -51,35 +51,19 @@ namespace Gorilla.Controllers
             return Ok(result);
         }
 
-        [HttpGet("get/{username}/image")]
-        public async Task<IActionResult> GetImageAsync (string username)
-        {
-
-            var user = await _repository.FindAsync(username);
-
-            if (user?.PathToProfilePicture == null)
-            {
-                return NotFound();
-            }
-            if (user.PathToProfilePicture.Equals("images/profilePicture.Jpg")){
-                return File(user.PathToProfilePicture, "image/png");
-            }
-            WebRequest req = WebRequest.Create(new Uri(user.PathToProfilePicture, UriKind.Relative));
-            WebResponse response = req.GetResponse();
-            Stream stream = response.GetResponseStream();
-            return  File(stream,"image/png");
-        }
+      
 
         // POST: api/User
         
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody ]User user)
+        public async Task<IActionResult> PostAsync([FromBody] User user)
         {
-
+            
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            
             try
             {
                

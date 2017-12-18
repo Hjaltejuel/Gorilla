@@ -48,6 +48,20 @@ namespace Gorilla.Controllers
             }
         }
 
+        // GET api/Reddit/5
+        [HttpGet("like/{like}")]
+        public async Task<IActionResult> GetLike(string like)
+        {
+            {
+                var result = await _repository.GetLikeAsync(like);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                return Ok(result);
+            }
+        }
+
         // POST api/Reddit
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody]Subreddit subreddit)
