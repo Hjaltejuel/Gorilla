@@ -13,18 +13,20 @@ namespace Entities.GorillaEntities
 
         public RedditDbContext(DbContextOptions<RedditDbContext> options) : base(options)
         {
-            Database.EnsureCreated();
-        
-
+            Database.EnsureCreated(); 
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CategorySubreddit>().HasKey(c => new { c.Name });
 
+
+            modelBuilder.Entity<Subreddit>().HasKey(c => new { c.SubredditName });
+
+            modelBuilder.Entity<User>().HasKey(c => new { c.Username });
 
             modelBuilder.Entity<SubredditConnection>().HasKey(c => new { c.SubredditFromName, c.SubredditToName });
 
+            modelBuilder.Entity<CategorySubreddit>().HasKey(c => new { c.Name, c.SubredditName });
 
             modelBuilder.Entity<Post>().HasKey(c => new { c.username, c.Id });
 

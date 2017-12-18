@@ -38,6 +38,7 @@ namespace Gorilla
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<IUserPreferenceRepository, UserPreferenceRepository>();
             services.AddScoped<ISubredditConnectionRepository, SubredditConnectionRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
 
             var policy = new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()

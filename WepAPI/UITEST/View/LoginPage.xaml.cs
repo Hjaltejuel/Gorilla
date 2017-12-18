@@ -20,7 +20,10 @@ namespace UITEST.View
             DataContext = _vm;
             InitializeComponent();
         }
-        
+        public void HasAuthenticated()
+        {
+            Frame.Navigate(typeof(StartupQuestions));
+        }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             Storyboard fadeIn = Resources["FadeIn"] as Storyboard;

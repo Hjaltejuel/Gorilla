@@ -20,27 +20,12 @@ namespace UI.Lib.ViewModel
         public async Task GeneratePosts()
         {
             InvokeLoadSwitchEvent();
-            await Repository.CreateAsync(new User { Username = _userHandler.GetUser().name, PathToProfilePicture = "profilePicture.jpg" });
             Posts = (await Consumer.GetHomePageContent()).Item2;
             InvokeLoadSwitchEvent();
         }
         public async Task Initialize()
         {
-            if (await Authorize() != null)
-            {
-                await GeneratePosts();
-            }
-            else
-            {
-                if(FirstTime)
-                {
-                    FirstTime = false;
-                }
-                else
-                {
-                    await Initialize();
-                }
-            }
+            await GeneratePosts();
         }
     }
 }
