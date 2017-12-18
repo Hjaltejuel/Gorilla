@@ -16,10 +16,18 @@
                 <GradientStop Color="DimGray" Offset="1" />
             </LinearGradientBrush>
         </Grid.Background>
-        <Image Source="/Assets/Welcome.png"/>
-        <Button Click="nextpage_Click" RelativePanel.Below="greeting" x:Name="nextpage"  Background="LightGray" Foreground="#603BBF" Margin="690,619,0,345" Height="36" Width="130" RenderTransformOrigin="0.574,4.444">
-        Let's go!
-        </Button>
+        <StackPanel>
 
+            <Image  Name="pic" Source="/Assets/Welcome.png"/>
+            <Button Click="nextpage_Click" x:Name="nextpage"  HorizontalAlignment="Center" Background="LightGray" Foreground="#603BBF" Height="36" Width ="150" Content="Let's go!"  />
+        </StackPanel>
     </Grid>
+    <Page.Resources>
+        <Storyboard x:Key="FadeIn">
+
+            <DoubleAnimation From="0" To="1" Storyboard.TargetName="pic" Storyboard.TargetProperty="(UIElement.Opacity)" Duration="0:0:3"/>
+
+            <DoubleAnimation From="0" To="1" Storyboard.TargetName="nextpage" Storyboard.TargetProperty="(UIElement.Opacity)" Duration="0:0:3"/>
+        </Storyboard>
+    </Page.Resources>
 </Page>

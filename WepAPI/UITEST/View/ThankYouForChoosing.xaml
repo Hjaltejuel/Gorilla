@@ -18,8 +18,9 @@
         </Grid.Background>
         <RelativePanel >
 
-            <Image Source="/Assets/Picks.png" Margin="50,30,-50,-30"/>
+            <Image Source="/Assets/Picks.png" Stretch="Uniform"/>
 
         </RelativePanel>
     </Grid>
+    
 </Page>

@@ -109,12 +109,15 @@
     <Compile Include="Authentication\IRedditAuthHandler.cs" />
     <Compile Include="CustomUI\CustomButton.cs" />
     <Compile Include="Misc\TimeHelper.cs" />
+    <Compile Include="Model\CategoryObject.cs" />
     <Compile Include="Model\GorillaRepositories\Extensions.cs" />
+    <Compile Include="Model\GorillaRepositories\RestCategoryRepository.cs" />
     <Compile Include="Model\GorillaRepositories\RestPostRepository.cs" />
     <Compile Include="Model\GorillaRepositories\RestSubredditConnectionRepository.cs" />
     <Compile Include="Model\GorillaRepositories\RestSubredditRepository.cs" />
     <Compile Include="Model\GorillaRepositories\RestUserPreferenceRepository.cs" />
     <Compile Include="Model\GorillaRepositories\RestUserRepository.cs" />
+    <Compile Include="Model\GorillaRestInterfaces\IRestCategoryRepository.cs" />
     <Compile Include="Model\GorillaRestInterfaces\IRestPostRepository.cs" />
     <Compile Include="Model\GorillaRestInterfaces\IRestSubredditConnectionRepository.cs" />
     <Compile Include="Model\GorillaRestInterfaces\IRestSubredditRepository.cs" />
@@ -139,6 +142,7 @@
     <Compile Include="Authentication\RedditAuthentication\Settings.cs" />
     <Compile Include="Authentication\RedditAuthHandler.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\ChooseYourCategoriesViewModel.cs" />
     <Compile Include="ViewModel\CommentableViewModel.cs" />
     <Compile Include="ViewModel\CommentViewModel.cs" />
     <Compile Include="ViewModel\CreatePostPageViewModel.cs" />
@@ -150,6 +154,7 @@
     <Compile Include="ViewModel\RelayCommand.cs" />
     <Compile Include="ViewModel\SearchableViewModel.cs" />
     <Compile Include="ViewModel\SubredditPageViewModel.cs" />
+    <Compile Include="ViewModel\ThankYouForChoosingViewModel.cs" />
     <Compile Include="ViewModel\TrendingPageViewModel.cs" />
     <EmbeddedResource Include="Properties\BDSA2017.Assignment08.UWP.Lib.rd.xml" />
   </ItemGroup>

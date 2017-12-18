@@ -38,6 +38,7 @@ namespace UITEST.View
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            base.OnNavigatedTo(e);
             Storyboard fadeIn = this.Resources["FadeIn"] as Storyboard;
             fadeIn.Begin();
            

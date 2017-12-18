@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BDSA2017.Assignment08.UWP.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,6 +12,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Microsoft.Extensions.DependencyInjection;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
@@ -23,14 +25,22 @@ namespace UITEST.View
     /// </summary>
     public sealed partial class ThankYouForChoosing : Page
     {
+        private readonly ThankYouForChoosingViewModel _vm;
+
         public ThankYouForChoosing()
         {
+           
             this.InitializeComponent();
+            _vm = App.ServiceProvider.GetService<ThankYouForChoosingViewModel>();
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            base.OnNavigatedTo(e);
             Storyboard fadeIn = this.Resources["FadeIn"] as Storyboard;
             fadeIn.Begin();
+            var strings = e.Parameter as string[];
+            _vm.load(strings);
+            
 
         }
     }

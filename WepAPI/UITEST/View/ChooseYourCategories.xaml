@@ -19,65 +19,73 @@
         <Grid.ColumnDefinitions>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            
         </Grid.RowDefinitions>
 
 
 
-        <Image Source="/Assets/dontworry.png" Margin="-20,-110,20,-640" Grid.RowSpan="4"></Image>
-        <RelativePanel Name="OuterPanel" Grid.Column="0" Grid.Row="3" Margin="330,295,-330,-769">
+        <Image Source="/Assets/dontworry2.png" Stretch="Uniform"></Image>
+        <RelativePanel Name="OuterPanel" Grid.Column="0" Grid.Row="1" Grid.RowSpan ="2" HorizontalAlignment="Center">
             <RelativePanel Name="CarsPanel"  Padding="10">
                 <Image Name="carsPicture"  Source="/Assets/Cars.jpg" Width="150" Height="150" />
-                <CheckBox Name="cars" Content=" Cars" Checked="Button_Click" RelativePanel.Below="carsPicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <CheckBox Name="cars" Content=" Cars" IsChecked ="{Binding Cars}"  RelativePanel.Below="carsPicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
 
             </RelativePanel >
             <RelativePanel Name="SciencePanel"  RelativePanel.RightOf="CarsPanel" Padding="10">
                 <Image Name="sciencepicture"  Source="/Assets/science.jpg" Width="150" Height="150" />
-                <CheckBox Name="science" Content=" Science" Checked="Button_Click" RelativePanel.Below="sciencepicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <CheckBox Name="science" Content="Science" IsChecked ="{Binding Science}"  RelativePanel.Below="sciencepicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
 
             </RelativePanel>
             <RelativePanel Name="GamesPanel"  RelativePanel.RightOf="SciencePanel" Padding="10">
                 <Image Name="Gamepicture"  Source="/Assets/gaming.jpeg" Width="150" Height="150" />
-                <CheckBox Name="Games" Content=" Games" Checked="Button_Click"  RelativePanel.Below="Gamepicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <CheckBox Name="Games" Content="Games" IsChecked ="{Binding Games}"   RelativePanel.Below="Gamepicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
 
             </RelativePanel>
             <RelativePanel Name="NewsPanel"  RelativePanel.RightOf="GamesPanel" Padding="10">
                 <Image Name="Newspicture"  Source="/Assets/phonenews.jpg" Width="150" Height="150" />
-                <CheckBox Name="News" Content="News" Checked="Button_Click" RelativePanel.Below="Newspicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <CheckBox Name="News" Content="News" IsChecked ="{Binding News}"  RelativePanel.Below="Newspicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
 
             </RelativePanel>
             <RelativePanel Name="TravelPanel"  RelativePanel.RightOf="NewsPanel" Padding="10">
                 <Image Name="Travelpicture"  Source="/Assets/Travel.jpeg" Width="150" Height="150" />
-                <CheckBox Name="travel" Content=" Travel" Checked="Button_Click" RelativePanel.Below="Travelpicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <CheckBox Name="travel" Content=" Travel" IsChecked ="{Binding Travel}"  RelativePanel.Below="Travelpicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
 
             </RelativePanel>
             <RelativePanel Name="SportPanel"  RelativePanel.Below="CarsPanel" Padding="10" Margin="80,0,0,0">
                 <Image Name="sportpicture"  Source="/Assets/Soccer-Ball.jpg" Width="150" Height="150" />
-                <CheckBox Name="sport" Content=" Sport" Checked="Button_Click" RelativePanel.Below="sportpicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <CheckBox Name="sport" Content=" Sport" IsChecked ="{Binding Sport}"  RelativePanel.Below="sportpicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
 
             </RelativePanel>
             <RelativePanel Name="PhotoPanel"  RelativePanel.RightOf="SportPanel" RelativePanel.Below="SciencePanel" Padding="10">
                 <Image Name="photopicture"  Source="/Assets/photographylols.jpeg" Width="150" Height="150" />
-                <CheckBox Name="Photo" Content="Photography" Checked="Button_Click" RelativePanel.Below="photopicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <CheckBox Name="Photo" Content="Photography" IsChecked ="{Binding Photography}" RelativePanel.Below="photopicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
 
             </RelativePanel>
             <RelativePanel Name="FoodPanel"  RelativePanel.RightOf="PhotoPanel" RelativePanel.Below="GamesPanel" Padding="10">
                 <Image Name="Foodpicture"  Source="/Assets/food.jpeg" Width="150" Height="150" />
-                <CheckBox Name="food" Content=" Food" Checked="Button_Click" RelativePanel.Below="Foodpicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <CheckBox Name="food" Content=" Food" IsChecked ="{Binding Food}" RelativePanel.Below="Foodpicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
 
             </RelativePanel>
             <RelativePanel Name ="TechnologyPanel"  RelativePanel.RightOf ="FoodPanel" RelativePanel.Below="NewsPanel" Padding="10">
                 <Image Name="Technologypicture"  Source="/Assets/tech.jpg" Width="150" Height="150" />
-                <CheckBox Name="technology" Content="Technology" Checked="Button_Click" RelativePanel.Below="Technologypicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <CheckBox Name="technology" Content="Technology" IsChecked ="{Binding Technology}"  RelativePanel.Below="Technologypicture"  HorizontalAlignment="Center" VerticalAlignment="Center" />
 
             </RelativePanel>
-            <Button Click="Button_Click"  Content="Set me up!"  RelativePanel.Below="7" Width="100" Height="50" Margin="380,20,-80,0" />
+            <Button Click="Button_Click" Content="Set me up!"  RelativePanel.Below="PhotoPanel" Width="100" Height="50" HorizontalAlignment="Center" />
 
         </RelativePanel>
 
     </Grid>
+    <Page.Resources>
+        <Storyboard x:Key="FadeIn">
+
+            <DoubleAnimation From="0" To="1" Storyboard.TargetName="OuterPanel" Storyboard.TargetProperty="(UIElement.Opacity)" Duration="0:0:3"/>
+
+          
+        </Storyboard>
+    </Page.Resources>
 </Page>
 

@@ -1,8 +1,11 @@
-﻿using System;
+﻿using BDSA2017.Assignment08.UWP.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Microsoft.Extensions.DependencyInjection;
+using UI.Lib.ViewModel;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -23,9 +26,15 @@ namespace UITEST.View
     /// </summary>
     public sealed partial class ChooseYourCategories : Page
     {
+        private readonly ChooseYourCategoriesViewModel _vm;
         public ChooseYourCategories()
         {
+            
             this.InitializeComponent();
+            _vm = App.ServiceProvider.GetService<ChooseYourCategoriesViewModel>();
+
+
+
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -34,9 +43,9 @@ namespace UITEST.View
 
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Onwards(Object sender, RoutedEventArgs e)
         {
-
+            _vm.GoToLoading();
         }
     }
 }
