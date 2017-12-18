@@ -11,7 +11,6 @@ namespace BDSA2017.Assignment08.UWP.Tests.GorillaRepoTests
 {
     public class CreatePostPageViewModelTests
     {
-        private readonly Mock<IAuthenticationHelper> helper;
         private readonly Mock<INavigationService> service;
         private readonly Mock<IRestUserPreferenceRepository> repository;
         private readonly Mock<IRedditApiConsumer> consumer;
@@ -21,11 +20,10 @@ namespace BDSA2017.Assignment08.UWP.Tests.GorillaRepoTests
         public CreatePostPageViewModelTests()
         {
             service = new Mock<INavigationService>();
-            helper = new Mock<IAuthenticationHelper>();
             repository = new Mock<IRestUserPreferenceRepository>();
             consumer = new Mock<IRedditApiConsumer>();
             userHandler = new Mock<IUserHandler>();
-            _createPostPageViewModel = new CreatePostPageViewModel(helper.Object, service.Object, consumer.Object, repository.Object, userHandler.Object);
+            _createPostPageViewModel = new CreatePostPageViewModel(service.Object, consumer.Object, repository.Object, userHandler.Object);
         }
 
         [Fact(DisplayName = "CreateNewPost Test With a title")]
