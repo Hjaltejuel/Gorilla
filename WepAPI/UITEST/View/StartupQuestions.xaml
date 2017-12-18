@@ -11,11 +11,11 @@
         <Grid.Background>
             <SolidColorBrush Color="White"/>
         </Grid.Background>
-        <StackPanel>
+        <RelativePanel>
 
             <Image  Name="pic" Source="/Assets/Welcome.png"/>
-            <Button Click="nextpage_Click" x:Name="nextpage"  HorizontalAlignment="Center" Background="LightGray" Foreground="#603BBF" Height="36" Width ="150" Content="Let's go!"  />
-        </StackPanel>
+            <Button Click="nextpage_Click" x:Name="nextpage" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.Below="pic" Background="LightGray" Margin="0, -150, 0, 0" Foreground="#603BBF" Height="36" Width ="150" Content="Let's go!"  />
+        </RelativePanel>
     </Grid>
     <Page.Resources>
         <Storyboard x:Key="FadeIn">
