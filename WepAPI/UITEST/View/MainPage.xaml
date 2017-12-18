@@ -21,7 +21,8 @@
             <AppBarButton Icon="Cancel" Label="Log out" Command="{Binding LogOutPageCommand}"/>
         </CommandBar>
         <TextBlock Name="PageTitleText" Grid.Column="0" Grid.Row="1" Text="Home" Style="{StaticResource PageTitleText}"/>
-        <SearchBox Name="SearchBox" Grid.Column="0" Grid.Row="1"  Width="200" Height="32" HorizontalAlignment="Right" QuerySubmitted="{x:Bind _vm.SearchQuerySubmitted}" QueryText="{x:Bind _vm.QueryText, Mode=TwoWay}"/>
+
+        <AutoSuggestBox Name="SearchBox" Grid.Column="0" Grid.Row="1"  Width="200" Height="32" HorizontalAlignment="Right" QuerySubmitted="SearchBox_QuerySubmitted" TextChanged="SearchBox_TextChanged" SuggestionChosen="SearchBox_SuggestionChosen"/>
         <Rectangle Name="HorizontalSplitter" Grid.Row="2" HorizontalAlignment="Stretch" Fill="Gray" Height="1"/>
         <local:PostViewControl x:Name="PostsList" Posts="{Binding _vm._Subreddit.posts}" Grid.Row="3"/>
         <ProgressRing Name="LoadingRing" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4" Height="100" Width="100"/>

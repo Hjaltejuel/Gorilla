@@ -9,7 +9,7 @@ namespace Entities.GorillaAPI.Interfaces
     {
         Task<Subreddit> FindAsync(string subredditName);
         Task<string> CreateAsync(Subreddit subreddit);
-        Task<IReadOnlyCollection<Subreddit>> GetLikeAsync(string like);
+        Task<IReadOnlyCollection<string>> GetLikeAsync(string like);
         Task<bool> DeleteAsync(string subredditName);
         Task<IReadOnlyCollection<Subreddit>> ReadAsync();
 

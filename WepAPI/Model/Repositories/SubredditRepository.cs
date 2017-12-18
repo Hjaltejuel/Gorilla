@@ -57,11 +57,11 @@ namespace Model.Repositories
                    select s).ToListAsync();
         }
 
-        public async Task<IReadOnlyCollection<Subreddit>> GetLikeAsync(string like)
+        public async Task<IReadOnlyCollection<string>> GetLikeAsync(string like)
         {
             return await (from s in _context.Subreddits
-                          .Where(a => a.SubredditName.StartsWith($"{like}"))
-                          select s).ToListAsync();
+                          .Where(a => a.SubredditName.StartsWith($"{like}")).Take(5)
+                          select s.SubredditName).ToListAsync();
         }
 
 
