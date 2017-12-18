@@ -48,7 +48,30 @@ namespace UITEST.View
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
         }
 
+        private async void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            // Only get results when it was a user typing,
+            // otherwise assume the value got filled in by TextMemberPath
+            // or the handler for SuggestionChosen.
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                //Set the ItemsSource to be your filtered dataset
+                //sender.ItemsSource = dataset;
+                var data = await _vm.GetFiltered(sender.Text);
+                sender.ItemsSource = data;
+            }
 
-        
+        }
+
+        private void SearchBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            sender.Text = (string) args.SelectedItem;
+        }
+
+        private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            _vm.QueryText = sender.Text;
+            _vm.SearchQuerySubmitted();
+        }
     }
 }

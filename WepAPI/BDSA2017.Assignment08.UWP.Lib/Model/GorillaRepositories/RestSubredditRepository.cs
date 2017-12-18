@@ -92,13 +92,13 @@ namespace UI.Lib.Model.GorillaRepositories
 
             return null;
         }
-        public async Task<IReadOnlyCollection<Subreddit>> GetLikeAsync(string like)
+        public async Task<IReadOnlyCollection<string>> GetLikeAsync(string like)
         {
             var response = await _client.GetAsync($"api/subreddit/like/{like}");
 
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.To<IReadOnlyCollection<Subreddit>>();
+                return await response.Content.To<IReadOnlyCollection<string>>();
             }
 
             return null;
