@@ -12,8 +12,5 @@ namespace Entities.GorillaEntities
         [ForeignKey("Subreddit")]
         [StringLength(100)]
         public string SubredditName { get; set; }
-
-        
-        public virtual Subreddit Subreddit { get; set; }
     }
 }
