@@ -100,17 +100,19 @@ namespace UITEST.View
                 var comment = _comment as Comment;
                 if (comment?.body == null) { continue; }
                 var topCommentPanel = new CommentControl(comment);
-                var borderedPanel = new RelativePanel()
-                {
-                    BorderThickness = new Thickness(1),
-                    BorderBrush = new SolidColorBrush(Colors.Gray),
-                    Margin = new Thickness(0, 0, 0, 10)
-                };
+                topCommentPanel.BorderThickness = new Thickness(1);
+                topCommentPanel.BorderBrush = new SolidColorBrush(Colors.Gray);
+                topCommentPanel.Margin = new Thickness(0, 0, 0, 10);
+                
                 //Make root comment bordered
-                borderedPanel.Children.Add(topCommentPanel);
 
-                PostView.Items.Add(borderedPanel);
+                PostView.Items.Add(topCommentPanel);
             }
+        }
+
+        private void FrameworkElement_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+
         }
     }
 }
