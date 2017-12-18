@@ -9,14 +9,9 @@
 
     <Grid>
         <Grid.Background>
-
-            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                <GradientStop Color="Gray" Offset="0.2" />
-
-                <GradientStop Color="DimGray" Offset="1" />
-            </LinearGradientBrush>
+            <SolidColorBrush Color="White"/>
         </Grid.Background>
-        <RelativePanel >
+        <RelativePanel>
 
             <Image Source="/Assets/Picks.png" Stretch="Uniform" Name="pic"/>
 
