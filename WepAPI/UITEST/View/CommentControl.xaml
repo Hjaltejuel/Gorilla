@@ -2,7 +2,7 @@
     x:Class="UITEST.View.CommentControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <StackPanel Name="CommentStackPanel" Margin = "20, 5, 0, 5"  DataContext="{x:Bind Path = _currentComment}">
+    <StackPanel Name="CommentStackPanel" Margin = "20, 5, 0, 5"  DataContext="{x:Bind Path = _currentComment}" >
         <RelativePanel Margin="10,10,15,0" Name="CommentRelativePanel">
             <Button Content="Like" Style="{StaticResource LikeButton}" Name="Upvote" Click="UpvoteButton_Click" Width="20" Height="20" PointerEntered="{x:Bind _vm.SetHandCursor}" PointerExited="{x:Bind _vm.SetArrowCursor}"/>
 

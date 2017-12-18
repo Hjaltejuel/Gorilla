@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UI.Lib.Authentication;
 using UI.Lib.Authentication.GorillaAuthentication;
-using UI.Lib.Model;
+using UI.Lib.Model; 
 using UI.Lib.Model.GorillaRestInterfaces;
 using UI.Lib.Model.RedditRestInterfaces;
 using UI.Lib.ViewModel;

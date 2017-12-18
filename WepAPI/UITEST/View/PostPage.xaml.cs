@@ -12,6 +12,7 @@ using UI.Lib.Model.GorillaRestInterfaces;
 using System;
 using Windows.UI;
 using Windows.UI.Xaml.Media;
+using Border = Windows.UI.Xaml.Controls.Border;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 namespace UITEST.View
@@ -100,19 +101,18 @@ namespace UITEST.View
                 var comment = _comment as Comment;
                 if (comment?.body == null) { continue; }
                 var topCommentPanel = new CommentControl(comment);
-                topCommentPanel.BorderThickness = new Thickness(1);
-                topCommentPanel.BorderBrush = new SolidColorBrush(Colors.Gray);
-                topCommentPanel.Margin = new Thickness(0, 0, 0, 10);
-                
+                var border = new Border
+                {
+                    BorderThickness = new Thickness(1),
+                    BorderBrush = new SolidColorBrush(Colors.Black),
+                    Margin = new Thickness(0,0,0,10)
+                };
+
+                border.Child = topCommentPanel;
                 //Make root comment bordered
 
-                PostView.Items.Add(topCommentPanel);
+                PostView.Items.Add(border);
             }
-        }
-
-        private void FrameworkElement_OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-
         }
     }
 }
