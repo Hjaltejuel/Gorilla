@@ -27,19 +27,16 @@ namespace UI.Lib.ViewModel
 
         protected IAuthenticationHelper Helper;
         protected INavigationService Service;
-
-
+        
         private WebAccount _account;
 
         protected BaseViewModel(INavigationService service)
         {
-            
             GoToHomePageCommand = new RelayCommand(o => Service.Navigate(MainPage, o));
             GoToDiscoverPageCommand = new RelayCommand(o => Service.Navigate(DiscoverPage, o));
             GoToProfilePageCommand = new RelayCommand(o => Service.Navigate(ProfilePage, o));
             LogOutPageCommand = new RelayCommand(o => Service.Navigate(LoginPage, "logout"));
             Service = service;
-            
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

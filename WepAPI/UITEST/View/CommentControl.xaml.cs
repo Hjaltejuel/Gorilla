@@ -37,10 +37,7 @@ namespace UITEST.View
             //If the comment is a 'more' type
             if (comment.body == null)
             {
-
-                TextPanel.Visibility = Visibility.Collapsed;
-                VotePanel.Visibility = Visibility.Collapsed;
-                TextInfoPanel.Visibility = Visibility.Collapsed;
+                CommentRelativePanel.Visibility = Visibility.Collapsed;
                 var b = new Button()
                 {
                     Content = "Load more comments",
@@ -51,14 +48,6 @@ namespace UITEST.View
             }
             else
             {
-                //Make root comment bordered
-                if (comment.depth == 0)
-                {
-                    CommentStackPanel.BorderThickness = new Thickness(1);
-                    CommentStackPanel.BorderBrush = new SolidColorBrush(Colors.Gray);
-                    CommentStackPanel.Margin = new Thickness(0, 0, 0, 10);
-                }
-
                 if (comment.depth % 2 == 0)
                 {
                     if (CommentStackPanel != null)
@@ -215,13 +204,13 @@ namespace UITEST.View
 
         private void CommentButton_Click(object sender, RoutedEventArgs e)
         {
-            var firstChild = TextInfoPanel.Children.First();
+            var firstChild = CommentRelativePanel.Children.First();
             if (typeof(CommentPanel) == firstChild.GetType())
             {
-                TextInfoPanel.Children.Remove(firstChild);
+                CommentRelativePanel.Children.Remove(firstChild);
             }
             var commentPanel = new CommentPanel();
-            TextInfoPanel.Children.Add(commentPanel);
+            CommentRelativePanel.Children.Add(commentPanel);
             commentPanel.OnCommentCreated += CommentPanel_OnCommentCreated;
         }
 
