@@ -68,7 +68,7 @@ namespace UI.Lib.ViewModel
         {
             var sub = (await _consumer.GetSubredditAsync(subreddit)).Item2;
             sub.interest = subredditFromName;
-            subs.Add(sub.display_name,sub);
+            subs.TryAdd(sub.display_name,sub);
             if (sub.banner_img.Equals(""))
             {
                 sub.banner_img = sub.header_img;

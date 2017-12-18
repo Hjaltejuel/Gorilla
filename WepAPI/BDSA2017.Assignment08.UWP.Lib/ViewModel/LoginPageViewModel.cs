@@ -16,9 +16,10 @@ namespace UI.Lib.ViewModel
         private readonly IRedditAuthHandler _authHandler;
         private readonly IRedditApiConsumer _redditAPIConsumer;
         private readonly IRestUserRepository _repository;
-
-        public LoginPageViewModel(INavigationService service, IRedditAuthHandler authHandler, IAuthenticationHelper helper, IRestUserRepository repository, IRedditApiConsumer redditAPIConsumer) : base(service)
+        private readonly IUserHandler _userHandler;
+        public LoginPageViewModel(INavigationService service, IRedditAuthHandler authHandler, IAuthenticationHelper helper, IRestUserRepository repository, IRedditApiConsumer redditAPIConsumer,IUserHandler userHandler) : base(service)
         {
+            _userHandler = userHandler;
             _redditAPIConsumer = redditAPIConsumer;
             _repository = repository;
             _authHandler = authHandler;
@@ -27,9 +28,9 @@ namespace UI.Lib.ViewModel
 
         public async Task StartupQuestionsAsync()
         {
-            await UserFactory.Initialize(_redditAPIConsumer);
-            await _repository.CreateAsync(new User { Username = UserFactory.GetInfo().name});
-            if ((await _repository.FindAsync(UserFactory.GetInfo().name)).StartUpQuestionAnswered==0)
+          
+            await _repository.CreateAsync(new User { Username = _userHandler.GetUserName()});
+            if ((await _repository.FindAsync(_userHandler.GetUserName())).StartUpQuestionAnswered==0)
             {
                 Service.Navigate(StartupQuestionsPage, null);
 

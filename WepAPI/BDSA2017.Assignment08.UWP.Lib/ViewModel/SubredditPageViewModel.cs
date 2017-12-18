@@ -49,7 +49,7 @@ namespace UI.Lib.ViewModel
             set { if (value != _selectedSort) { _selectedSort = value; } }
         }
 
-        public SubredditPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditApiConsumer consumer, IRestUserPreferenceRepository repository, IUserHandler userHandler) : base(helper, service, consumer)
+        public SubredditPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditApiConsumer consumer, IRestUserPreferenceRepository repository, IUserHandler userHandler) : base(service, consumer)
         {
             _userHandler = userHandler;
             _repository = repository;

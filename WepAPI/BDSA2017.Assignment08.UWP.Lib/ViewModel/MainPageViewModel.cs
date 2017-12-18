@@ -10,7 +10,7 @@ namespace UI.Lib.ViewModel
     public class MainPageViewModel : SearchableViewModel
     {
         private readonly IUserHandler _userHandler;
-        public MainPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditApiConsumer consumer, IRestUserRepository repository, IUserHandler userHandler) : base(helper, service, consumer)
+        public MainPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditApiConsumer consumer, IRestUserRepository repository, IUserHandler userHandler) : base( service, consumer)
         {
             Repository = repository;
             _userHandler = userHandler;
