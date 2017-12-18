@@ -29,7 +29,7 @@ namespace UI.Lib.ViewModel
             INavigationService service, IRedditApiConsumer consumer,
             IRestSubredditConnectionRepository repository,
             IRestUserPreferenceRepository userPreferenceRepository, 
-            IUserHandler userHandler) 
+            IUserHandler userHandler)
             : base(service)
         {
             UserPreferenceRepository = userPreferenceRepository;
@@ -46,10 +46,7 @@ namespace UI.Lib.ViewModel
 
             var result = (await UserPreferenceRepository.FindAsync(user.name));
 
-            if (result == null)
-            {
-                NoElementsEvent?.Invoke();
-            }
+            if (result == null) NoElementsEvent?.Invoke();
             else
             {
                 var connections = await _repository.GetAllPrefs(result.Select(a => a.SubredditName).ToArray());
@@ -67,38 +64,14 @@ namespace UI.Lib.ViewModel
             }
             DiscoverReadyEvent?.Invoke();
         }
-        public async Task Add(int k, int reps, ConcurrentBag<string> subreddits, string subredditFromName)
-        {
-            var subredditConnections = await _repository.FindAsync(subredditFromName);
-            Debug.WriteLine(subredditFromName);
-            if (subredditConnections != null)
-            {
-                subreddits.Add(subredditConnections.ElementAt(reps).SubredditToName);
-            }
-        }
-
-        public async Task AddOver(int i, ConcurrentBag<string> subreddits, string subredditFromName)
-        {
-            Debug.WriteLine(subredditFromName);
-            var sub = await (_repository.FindAsync(subredditFromName));
-            if (sub != null)
-            {
-                subreddits.Add(sub.FirstOrDefault()?.SubredditToName);
-            }
-        }
-
         public async Task Finalize(string subreddit, List<Subreddit> subs, string subredditFromName)
         {
-            var getSubredditResult = await _consumer.GetSubredditAsync(subreddit);
-            if (getSubredditResult.Item1 == System.Net.HttpStatusCode.OK)
+            var sub = (await _consumer.GetSubredditAsync(subreddit)).Item2;
+            sub.interest = subredditFromName;
+            subs.Add(sub);
+            if (sub.banner_img.Equals(""))
             {
-                var sub = (getSubredditResult).Item2;
-                sub.interest = subredditFromName;
-                subs.Add(sub);
-                if (string.IsNullOrEmpty(sub.banner_img))
-                {
-                    sub.banner_img = "";
-                }
+                sub.banner_img = sub.header_img;
             }
         }
     }

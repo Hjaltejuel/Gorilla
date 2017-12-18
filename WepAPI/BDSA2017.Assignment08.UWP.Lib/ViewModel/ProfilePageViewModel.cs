@@ -17,13 +17,11 @@ namespace UI.Lib.ViewModel
     public class ProfilePageViewModel : BaseViewModel
     {
         private ObservableCollection<Post> _posts;
-
         public ObservableCollection<Post> Posts
         {
             get => _posts;
             set { _posts = value; OnPropertyChanged(); }
         }
-
         //ProfileInformation i region
         #region
 
@@ -108,7 +106,7 @@ namespace UI.Lib.ViewModel
         public async Task GetVisistedPosts()
         {
             var visitedPosts = await _restPostRepository.ReadAsync(_userHandler.GetUserName());
-            var ids = visitedPosts.Aggregate("", (current, post) => "t3_" + current + ",t3_" + post.Id);
+            var ids = visitedPosts.Aggregate("", (current, post) => current + ",t3_" + post.Id);
             Posts = (await _consumer.GetPostsByIdAsync(ids)).Item2;
             PostsReadyEvent?.Invoke();
         }
@@ -123,25 +121,42 @@ namespace UI.Lib.ViewModel
                 ImageBytes = _userHandler.GetProfilePic();
             }
         }
-        private async Task GetCurrentProfile()
+        public async Task GetCurrentProfile()
         {
-            var redditUser = _userHandler.GetUser();
-            var subscriptions = (await _consumer.GetSubscribedSubredditsAsync()).Item2;
-            var userPosts = (await _consumer.GetUserPosts(redditUser.name)).Item2;
-            var userComments = (await _consumer.GetUserComments(redditUser.name)).Item2;
+            var redditUser = _userHandler.GetUser();    
 
-            var numberOfPosts = userPosts.Count > 25 ? "25+" : userPosts.Count.ToString();
-            var numberOfComments = userComments.Count > 25 ? "25+" : userComments.Count.ToString();
+            if (redditUser == null) { return; }
+
+            var subRes = await _consumer.GetSubscribedSubredditsAsync();
+            if (subRes.Item1 == System.Net.HttpStatusCode.OK)
+            {
+                var subscriptions = (subRes).Item2;
+                AmountOfSubRedditsSubscribedTo = subscriptions.Count;
+            }
+
+            var postsRes = await _consumer.GetUserPosts(redditUser.name);
+            if (postsRes.Item1 == System.Net.HttpStatusCode.OK)
+            {
+                var userPosts = (postsRes).Item2;
+                var numberOfPosts = userPosts.Count > 25 ? "25+" : userPosts.Count.ToString();
+                PostsCreated = numberOfPosts;
+            }
+
+            var commentsRes = await _consumer.GetUserComments(redditUser.name);
+            if (commentsRes.Item1 == System.Net.HttpStatusCode.OK)
+            {
+                var userComments = (commentsRes).Item2;
+                var numberOfComments = userComments.Count > 25 ? "25+" : userComments.Count.ToString();
+                CommentsCreated = numberOfComments;
+            }
+
             var unix = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             var time = unix.AddSeconds(redditUser.created);
             
             Username = redditUser.name;
-            AmountOfSubRedditsSubscribedTo = subscriptions.Count;
             JoinDate = time;
             CommentKarma = redditUser.comment_karma;
             LinkKarma = redditUser.link_karma;
-            PostsCreated = numberOfPosts;
-            CommentsCreated = numberOfComments;
         }
        
     }

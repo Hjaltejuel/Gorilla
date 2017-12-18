@@ -205,7 +205,6 @@ namespace UI.Test.RedditConsumerTests
             Assert.Equal(typeof(Comment), list.Item2[0].GetType());
         }
 
-
         [Fact(DisplayName = "Get any children value")]
         public async Task Get_Value_More_Children()
         {

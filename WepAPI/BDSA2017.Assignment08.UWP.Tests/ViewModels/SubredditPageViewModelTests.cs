@@ -115,7 +115,6 @@ namespace UI.Test.ViewModels
             var userToReturn = new Entities.RedditEntities.User() { name = "UserOne" };
             _userHandler.Setup(o => o.GetUser())
                                     .Returns(userToReturn);
-
             //Act
             await vm.SubscribeToSubreddit();
 
@@ -123,7 +122,6 @@ namespace UI.Test.ViewModels
             repository.Verify(o => o.UpdateAsync(It.IsAny<UserPreference>()), Times.Once);
             Assert.False(vm.UserIsSubscribed);
         }
-
 
         [Fact(DisplayName = "SortBy Test where it sorts by new")]
         public async void SortByTest()
