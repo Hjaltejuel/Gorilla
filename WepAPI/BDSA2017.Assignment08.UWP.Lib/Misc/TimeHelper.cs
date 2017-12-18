@@ -9,7 +9,7 @@ namespace UI.Lib.Misc
         {
             var creationInfo = "Added ";
             var timeInt = commentable.created_utc;
-            var unix = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            var unix = new DateTime(1970, 1, 1, 1, 0, 0, 0);
             var time = unix.AddSeconds(timeInt);
 
             int daysSince = (int)(DateTime.Now - time).TotalDays;

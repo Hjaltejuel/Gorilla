@@ -38,7 +38,7 @@ namespace Gorilla.Controllers
         }
         [HttpGet("GetAllPrefs")]
         public async Task<IActionResult> GetAllPrefs([FromBody]string[] listOfPrefs)
-            {
+        {
             var result = await _repository.GetAllPrefs(listOfPrefs);
             if (result == null)
             {

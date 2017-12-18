@@ -1,4 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Net;
+using System.Threading.Tasks;
 using Entities.RedditEntities;
 using UI.Lib.Authentication.GorillaAuthentication;
 using UI.Lib.Model;
@@ -15,20 +18,9 @@ namespace UI.Lib.ViewModel
         public bool FirstTime = true;
         public IRedditApiConsumer Consumer;
         public IRestUserRepository Repository;
-        private string _queryText;
-        public string QueryText
-        {
-            get => _queryText;
-            set
-            {
-                if (_queryText != value)
-                {
-                    _queryText = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+        private IRestSubredditRepository _restSubredditRepository;
 
+        public Subreddit _Subreddit;
         private ObservableCollection<Post> posts;
         public ObservableCollection<Post> Posts
         {
@@ -39,20 +31,42 @@ namespace UI.Lib.ViewModel
                 OnPropertyChanged();
             }
         }
-        protected SearchableViewModel( INavigationService service, IRedditApiConsumer consumer) : base(service)
+        protected SearchableViewModel(INavigationService service, IRedditApiConsumer consumer, IRestSubredditRepository restSubredditRepository) : base(service)
         {
             Consumer = consumer;
-         
+            _restSubredditRepository = restSubredditRepository;
         }
 
-        public void SearchQuerySubmitted()
+        private async Task<Subreddit> GetSubredditAndPostsFromName(string QueryText)
         {
-            Service.Navigate(SubredditPage, QueryText);
+            var searchForSubredditResult = await Consumer.GetSubredditAsync(QueryText);
+            if (searchForSubredditResult.Item1 == HttpStatusCode.OK)
+            {
+                var subreddit = (searchForSubredditResult).Item2;
+                var subredditPostsResult = await Consumer.GetSubredditPostsAsync(subreddit);
+                if (subredditPostsResult.Item1 == HttpStatusCode.OK)
+                {
+                    subreddit = (subredditPostsResult).Item2;
+                    return subreddit;
+                }
+            }
+            return null;
+        }
+
+        public async Task SearchQuerySubmitted(string QueryText)
+        {
+            var searchedSubreddit = await GetSubredditAndPostsFromName(QueryText);
+            Service.Navigate(SubredditPage, (searchedSubreddit, QueryText));
         }
 
         public void InvokeLoadSwitchEvent()
         {
             LoadSwitch?.Invoke();
+        }
+        
+        public async Task<IReadOnlyCollection<string>> GetFiltered(string like)
+        {
+            return await _restSubredditRepository.GetLikeAsync(like);
         }
     }
 }

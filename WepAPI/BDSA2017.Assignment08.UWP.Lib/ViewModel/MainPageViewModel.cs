@@ -14,7 +14,7 @@ namespace UI.Lib.ViewModel
         private readonly IRestSubredditRepository _restSubredditRepository;
         public delegate void MainReady();
         public event MainReady MainReadyEvent;
-        public MainPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditApiConsumer consumer, IRestUserRepository repository, IUserHandler userHandler, IRestSubredditRepository restSubredditRepository) : base( service, consumer)
+        public MainPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditApiConsumer consumer, IRestUserRepository repository, IUserHandler userHandler, IRestSubredditRepository restSubredditRepository) : base(service, consumer, restSubredditRepository)
         {
             _restSubredditRepository = restSubredditRepository;
             Repository = repository;
@@ -31,12 +31,6 @@ namespace UI.Lib.ViewModel
         public async Task Initialize()
         {
             await GeneratePosts();
-        }
-
-        public async Task<IReadOnlyCollection<string>> GetFiltered(string like)
-        {
-            return await _restSubredditRepository.GetLikeAsync(like);
-                
         }
     }
 }

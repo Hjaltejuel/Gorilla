@@ -35,7 +35,7 @@ namespace UITEST.View
             _vm = App.ServiceProvider.GetService<CommentViewModel>();
 
             //If the comment is a 'more' type
-            if (comment.body == null)
+            if (comment?.body == null)
             {
                 CommentRelativePanel.Visibility = Visibility.Collapsed;
                 var b = new Button()
@@ -204,13 +204,18 @@ namespace UITEST.View
 
         private void CommentButton_Click(object sender, RoutedEventArgs e)
         {
-            var firstChild = CommentRelativePanel.Children.First();
-            if (typeof(CommentPanel) == firstChild.GetType())
+            for (var i = 0; i < CommentStackPanel.Children.Count; i++)
             {
-                CommentRelativePanel.Children.Remove(firstChild);
+                var child = CommentStackPanel.Children[i];
+                if (child is CommentPanel)
+                {
+                    CommentStackPanel.Children.RemoveAt(i);
+                    return;
+                }
             }
+
             var commentPanel = new CommentPanel();
-            CommentRelativePanel.Children.Add(commentPanel);
+            CommentStackPanel.Children.Insert(1, commentPanel);
             commentPanel.OnCommentCreated += CommentPanel_OnCommentCreated;
         }
 

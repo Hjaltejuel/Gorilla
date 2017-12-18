@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using Entities.RedditEntities;
-using Moq;
+﻿using Moq;
 using UI.Lib.Authentication.GorillaAuthentication;
 using UI.Lib.Model;
 using UI.Lib.Model.GorillaRestInterfaces;

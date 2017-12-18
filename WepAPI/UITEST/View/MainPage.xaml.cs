@@ -70,8 +70,8 @@ namespace UITEST.View
 
         private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            _vm.QueryText = sender.Text;
-            _vm.SearchQuerySubmitted();
+            string QueryString = sender.Text;
+            _vm.SearchQuerySubmitted(QueryString);
         }
     }
 }

@@ -42,23 +42,57 @@ namespace UITEST.View
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            var subredditSearchString = e.Parameter as string;
-            ShowSubreddit(subredditSearchString);
-        }
-        private async void ShowSubreddit(string subredditSearchString)
-        {
-            _vm._Subreddit = null;
-            await _vm.GeneratePosts(subredditSearchString);
-            SubsribeToSubredditButton.Visibility = Visibility.Visible;
-            if (_vm._Subreddit?.name != null) return;
+            var navigationParameterTuple = e.Parameter as (Subreddit, string)?;
+            if (navigationParameterTuple == null) { return; }
+            var subreddit = navigationParameterTuple?.Item1;
+            var queryString = navigationParameterTuple?.Item2;   
 
-            NothingFoundTextBlock.Visibility = Visibility.Visible;
-            NothingFoundTextBlock.Text = $"Nothing Found on r/{subredditSearchString}";
-            SubsribeToSubredditButton.Visibility = Visibility.Collapsed;
-            PostsList.Visibility = Visibility.Collapsed;
-            SortBy.Visibility = Visibility.Collapsed;
-            CreatePostButton.Visibility = Visibility.Collapsed;
-            PageTitleText.Visibility = Visibility.Collapsed;
+            if (!string.IsNullOrEmpty(subreddit?.name))
+            {
+                _vm._Subreddit = subreddit;
+                _vm.Posts = subreddit.posts;
+                _vm.SubredditName = subreddit.display_name_prefixed;
+            }
+            else
+            {
+                NothingFoundTextBlock.Visibility = Visibility.Visible;
+                NothingFoundTextBlock.Text = $"Nothing Found on r/{queryString}";
+                SubsribeToSubredditButton.Visibility = Visibility.Collapsed;
+                PostsList.Visibility = Visibility.Collapsed;
+                SortBy.Visibility = Visibility.Collapsed;
+                CreatePostButton.Visibility = Visibility.Collapsed;
+                PageTitleText.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private async void SearchBox_OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            var QueryString = sender.Text;
+            await _vm.SearchQuerySubmitted(QueryString);
+        }
+
+        private async void SearchBox_OnTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            // Only get results when it was a user typing,
+            // otherwise assume the value got filled in by TextMemberPath
+            // or the handler for SuggestionChosen.
+            if (args.Reason != AutoSuggestionBoxTextChangeReason.UserInput) return;
+            //Set the ItemsSource to be your filtered dataset
+            //sender.ItemsSource = dataset;
+            var data = await _vm.GetFiltered(sender.Text);
+            sender.ItemsSource = data;
+        }
+
+        private void SearchBox_OnSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            sender.Text = (string)args.SelectedItem;
+        }
+
+        private void SortBy_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var obj = sender as ComboBox;
+            var selectedValue = obj.SelectedValue as string;
+            _vm.SortBy(selectedValue);
         }
     }
 }

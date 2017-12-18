@@ -8,7 +8,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <RelativePanel Margin="0, 40, 0, 0">
+    <RelativePanel Margin="35, 10, 0, 10">
         <TextBox Name="CommentTextBox" Height="200" Width="600" TextWrapping="Wrap" AcceptsReturn="True" IsSpellCheckEnabled="True" Language="en-US"/>
         <Button Name="SaveButton" Content="Save" Click="ButtonBase_OnClick" Margin="0, 10, 10, 0" RelativePanel.Below="CommentTextBox" PointerEntered="SaveButton_PointerEntered" PointerExited="SaveButton_PointerExited"/>
         <TextBlock Name="ErrorText" Visibility="Collapsed" Margin="10, 7, 0, 0" FontSize="14" RelativePanel.AlignVerticalCenterWith="SaveButton" RelativePanel.RightOf="SaveButton" RelativePanel.Below="CommentTextBox"/>

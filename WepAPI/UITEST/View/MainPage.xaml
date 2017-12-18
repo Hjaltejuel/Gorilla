@@ -22,7 +22,7 @@
         </CommandBar>
         <TextBlock Name="PageTitleText" Grid.Column="0" Grid.Row="1" Text="Home" Style="{StaticResource PageTitleText}"/>
 
-        <AutoSuggestBox Name="SearchBox" Grid.Column="0" Grid.Row="1"  Width="200" Height="32" HorizontalAlignment="Right" QuerySubmitted="SearchBox_QuerySubmitted" TextChanged="SearchBox_TextChanged" SuggestionChosen="SearchBox_SuggestionChosen"/>
+        <AutoSuggestBox Name="SearchBox" Grid.Column="0" Grid.Row="1"  Width="200" Height="32" HorizontalAlignment="Right" QuerySubmitted="SearchBox_QuerySubmitted" TextChanged="SearchBox_TextChanged" SuggestionChosen="SearchBox_SuggestionChosen" VerticalAlignment="Center"/>
         <Rectangle Name="HorizontalSplitter" Grid.Row="2" HorizontalAlignment="Stretch" Fill="Gray" Height="1"/>
         <local:PostViewControl x:Name="PostsList" Posts="{Binding _vm.Posts}" Grid.Row="3"/>
         <ProgressRing Name="LoadingRing" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4" Height="100" Width="100"/>

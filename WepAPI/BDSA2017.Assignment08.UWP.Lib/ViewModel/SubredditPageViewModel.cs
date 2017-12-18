@@ -16,9 +16,9 @@ namespace UI.Lib.ViewModel
     {
         public ICommand GoToCreatePostPageCommand { get; set; }
         public ICommand SubscribeToSubredditCommand { get; set; }
-        private IUserHandler _userHandler;
+        private readonly IUserHandler _userHandler;
         private readonly IRestUserPreferenceRepository _repository;
-        public Entities.RedditEntities.Subreddit _Subreddit;
+        private IRestSubredditRepository _restSubredditRepository;
         private List<string> _SortTypes;
         public List<string> SortTypes{ get => _SortTypes;
             set { _SortTypes = value; OnPropertyChanged(); }
@@ -43,38 +43,29 @@ namespace UI.Lib.ViewModel
             }
         }
 
-        private string _selectedSort;
-
-        public string selectedSort { get { return _selectedSort; }
-            set { if (value != _selectedSort) { _selectedSort = value; } }
-        }
-
-        public SubredditPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditApiConsumer consumer, IRestUserPreferenceRepository repository, IUserHandler userHandler) : base(service, consumer)
+        public SubredditPageViewModel(IAuthenticationHelper helper, INavigationService service, IRedditApiConsumer consumer, IRestUserPreferenceRepository repository, IUserHandler userHandler, IRestSubredditRepository restSubredditRepository) : base(service, consumer, restSubredditRepository)
         {
+            _restSubredditRepository = restSubredditRepository;
             _userHandler = userHandler;
             _repository = repository;
             GoToCreatePostPageCommand = new RelayCommand(o => Service.Navigate(CreatePostPage, _Subreddit));
             SubscribeToSubredditCommand = new RelayCommand(async o => { await SubscribeToSubreddit(); });
             SortTypes = new List<string>() { "hot", "new", "rising", "top", "controversial" };
         }
-        public async Task GeneratePosts(string subredditName, string sort = "hot")
+        public async Task GeneratePosts(string sort = "hot")
         {
-            _Subreddit = (await Consumer.GetSubredditAsync(subredditName)).Item2;
             _Subreddit = (await Consumer.GetSubredditPostsAsync(_Subreddit, sort)).Item2;
-            if (_Subreddit?.name == null)
+            if (!string.IsNullOrEmpty(_Subreddit?.name))
             {
-                InvokeLoadSwitchEvent();
-                return;
+                Posts = _Subreddit.posts;
+                await IsUserSubscribed();
             }
-            SubredditName = _Subreddit.display_name_prefixed;
-            Posts = _Subreddit.posts;
-            await IsUserSubscribed();
             InvokeLoadSwitchEvent();
         }
 
         private async Task IsUserSubscribed()
         {
-            List<Entities.RedditEntities.Subreddit> subs = (await Consumer.GetSubscribedSubredditsAsync()).Item2;
+            var subs = (await Consumer.GetSubscribedSubredditsAsync()).Item2;
             UserIsSubscribed = (from b in subs
                                 where b.display_name.Equals(_Subreddit.display_name)
                                 select b).Any();
@@ -94,9 +85,9 @@ namespace UI.Lib.ViewModel
             }
         }
 
-        public async void SortBy()
+        public async void SortBy(string sortMethod)
         {
-            await GeneratePosts(_Subreddit.display_name, selectedSort);
+            await GeneratePosts(sortMethod);
         }
     }
 }

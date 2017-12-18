@@ -128,10 +128,10 @@ namespace UI.Test.ViewModels
         {
             //Arrange
             var vm = new SubredditPageViewModel(helper.Object, service.Object, consumer.Object, repository.Object, _userHandler.Object);
-            vm.selectedSort = "new";
+            var selectedSort = "new";
             vm._Subreddit = new Entities.RedditEntities.Subreddit() { };
             //Act
-            vm.SortBy();
+            vm.SortBy(selectedSort);
 
             //Assert
             consumer.Verify(o => o.GetSubredditPostsAsync(It.IsAny<Entities.RedditEntities.Subreddit>(), "new"));

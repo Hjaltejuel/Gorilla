@@ -43,7 +43,8 @@ namespace UI.Lib.ViewModel
         public string TimeSinceCreation { get => _timeSinceCreation;
             set { _timeSinceCreation = value; OnPropertyChanged(); }}
 
-        public PostPageViewModel(INavigationService service, IRestPostRepository repository, IRestUserPreferenceRepository restUserPreferenceRepository, IRedditApiConsumer redditApiConsumer, IUserHandler userHandler) 
+        public PostPageViewModel(INavigationService service, IRestPostRepository repository, 
+            IRestUserPreferenceRepository restUserPreferenceRepository, IRedditApiConsumer redditApiConsumer, IUserHandler userHandler) 
             : base(service,restUserPreferenceRepository,redditApiConsumer, userHandler)
         {
             _redditApiConsumer = redditApiConsumer;
@@ -56,15 +57,16 @@ namespace UI.Lib.ViewModel
         public async void SetCurrentPost(Post post)
         {
             var redditResult = await _redditApiConsumer.GetPostAndCommentsByIdAsync(post.id);
-            if (redditResult.Item1 == HttpStatusCode.OK) {
+            if (redditResult.Item1 == HttpStatusCode.OK)
+            {
                 CurrentPost = (redditResult).Item2;
                 await _repository.CreateAsync(new Entities.GorillaEntities.Post
                 {
                     Id = post.id,
                     username = _userHandler.GetUserName()
                 });
-                CommentsReadyEvent?.Invoke();
             }
+            CommentsReadyEvent?.Invoke();
         }
 
         public void Initialize(Post post)

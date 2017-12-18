@@ -101,11 +101,11 @@ namespace UITEST.View
                 var comment = _comment as Comment;
                 if (comment?.body == null) { continue; }
                 var topCommentPanel = new CommentControl(comment);
+                topCommentPanel.Margin=new Thickness(10, 0, 0, 10);
                 var border = new Border
                 {
                     BorderThickness = new Thickness(1),
-                    BorderBrush = new SolidColorBrush(Colors.Black),
-                    Margin = new Thickness(0,0,0,10)
+                    BorderBrush = new SolidColorBrush(Colors.Black)
                 };
 
                 border.Child = topCommentPanel;
