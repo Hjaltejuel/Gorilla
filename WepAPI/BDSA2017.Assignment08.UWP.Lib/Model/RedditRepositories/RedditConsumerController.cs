@@ -230,7 +230,7 @@ namespace UI.Lib.Model.RedditRepositories
             if (kind.Equals("link"))
                 data += $"&url={url}";
             else
-                data = $"&text={text}";
+                data += $"&text={text}";
 
             var request = await CreateRequest(CreatePostUrl, "POST", data);
             var response = await SendRequest(request);

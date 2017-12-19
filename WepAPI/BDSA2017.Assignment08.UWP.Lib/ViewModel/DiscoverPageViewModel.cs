@@ -43,24 +43,30 @@ namespace UI.Lib.ViewModel
             var user = _userHandler.GetUser();
 
             var result = (await UserPreferenceRepository.FindAsync(user.name));
-
             if (result == null) NoElementsEvent?.Invoke();
+            var top15Result = result.OrderBy(e => e.PriorityMultiplier).Take(15);
+            if (top15Result == null)
+            {
+                NoElementsEvent?.Invoke();
+            }
             else
             {
-                var connections = await _repository.GetAllPrefs(result.Select(a => a.SubredditName).ToArray());
-
-                var taskList = new List<Task>();
-                var subs = new Dictionary<string,Subreddit>();
-                foreach (var subreddit in connections)
+                var connections = await _repository.GetAllPrefs(top15Result.Select(a => a.SubredditName).ToArray());
+                if (connections == null) NoElementsEvent?.Invoke();
                 {
-                    taskList.Add(Finalize(subreddit.SubredditToName, subs, subreddit.SubredditFromName));
-                }
-                await Task.WhenAll(taskList);
+                    var taskList = new List<Task>();
+                    var subs = new Dictionary<string, Subreddit>();
+                    foreach (var subreddit in connections)
+                    {
+                        taskList.Add(Finalize(subreddit.SubredditToName, subs, subreddit.SubredditFromName));
+                    }
+                    await Task.WhenAll(taskList);
 
-                SubReddits = new ObservableCollection<Subreddit>(subs.Values);
-                OnPropertyChanged("SubReddits");
+                    SubReddits = new ObservableCollection<Subreddit>(subs.Values);
+                    OnPropertyChanged("SubReddits");
+                    DiscoverReadyEvent?.Invoke();
+                }
             }
-            DiscoverReadyEvent?.Invoke();
         }
         public async Task Finalize(string subreddit, Dictionary<string,Subreddit> subs, string subredditFromName)
         {

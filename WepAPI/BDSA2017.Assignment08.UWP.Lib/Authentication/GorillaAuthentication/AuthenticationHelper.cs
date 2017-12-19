@@ -19,9 +19,6 @@ namespace UI.Lib.Authentication.GorillaAuthentication
 
         public async Task<WebAccount> SignInAsync()
         {
-            _appSettings.Values.Remove("userId");
-            _appSettings.Values.Remove("login_hint");
-
             var webAccountProvider = await WebAuthenticationCoreManager.FindAccountProviderAsync(_settings.WebAccountProviderId, _settings.Authority);
 
             var webTokenRequest = new WebTokenRequest(webAccountProvider, string.Empty, _settings.ClientId);

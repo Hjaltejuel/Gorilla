@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml;
+﻿using System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Entities.RedditEntities;
@@ -55,7 +56,13 @@ namespace UITEST.View
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            await _vm.Initialize();
+            try
+            {
+                await _vm.Initialize();
+            }
+            catch{
+                
+            }
         }
         
         private async void DiscoverList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
