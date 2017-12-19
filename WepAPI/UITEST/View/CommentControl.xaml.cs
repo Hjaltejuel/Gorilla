@@ -24,7 +24,7 @@ namespace UITEST.View
     public sealed partial class CommentControl
     {
         private readonly CommentViewModel _vm;
-        private readonly Comment _currentComment;
+        public readonly Comment _currentComment;
         private bool _isLiked;
         private bool _isDisliked;
 
@@ -92,15 +92,13 @@ namespace UITEST.View
 
         private async Task LoadMoreComments()
         {
-            var parentPanel = Parent as StackPanel;
-            var parentGrid = parentPanel?.Parent as Grid;
-            if (parentGrid?.Parent is CommentControl parentCommentControl)
+            if (Parent is StackPanel parentPanel)
             {
-                var parentComment = parentCommentControl._currentComment;
+                var _comment = parentPanel.DataContext as Comment;
+                var parentComment = _comment;
                 var postId = parentComment.link_id;
                 var children = _currentComment.children;
 
-                //parentCommentControl.CommentStackPanel.Children.Remove(parentCommentControl);
                 if (postId != null && children.Length != 0)
                 {
                     var list = await _vm.GetChildComments(postId, children, _currentComment);

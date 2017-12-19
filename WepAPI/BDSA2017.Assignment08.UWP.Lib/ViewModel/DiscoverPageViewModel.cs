@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Entities.RedditEntities;
@@ -15,7 +16,6 @@ namespace UI.Lib.ViewModel
     public class DiscoverPageViewModel : BaseViewModel
     {
         public ObservableCollection<Subreddit> SubReddits { get; private set; }
-        public ICommand GoToSubRedditPage { get; set; }
         private readonly IRestSubredditConnectionRepository _repository;
         private readonly IRedditApiConsumer _consumer;
         public readonly IRestUserPreferenceRepository UserPreferenceRepository;
@@ -36,8 +36,6 @@ namespace UI.Lib.ViewModel
             _consumer = consumer;
             _repository = repository;
             _userHandler = userHandler;
-
-            GoToSubRedditPage = new RelayCommand(o => Service.Navigate(SubredditPage, o));
         }
 
         public async Task Initialize()
@@ -73,6 +71,18 @@ namespace UI.Lib.ViewModel
             {
                 sub.banner_img = "";
             }
+        }
+
+
+        public async Task<Subreddit> GetSubredditPosts(Subreddit subreddit)
+        {
+            var subredditPostsResult = await _consumer.GetSubredditPostsAsync(subreddit);
+            if (subredditPostsResult.Item1 == HttpStatusCode.OK)
+            {
+                subreddit = (subredditPostsResult).Item2;
+                return subreddit;
+            }
+            return null;
         }
     }
 }

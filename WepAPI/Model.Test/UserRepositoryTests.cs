@@ -361,8 +361,7 @@ namespace Model.Test
         public void Dispose_disposes_context()
         {
             var context = new Mock<IRedditDbContext>();
-
-            new UserRepository(context.Object);
+            new UserRepository(context.Object).Dispose();
 
             context.Verify(c => c.Dispose());
         }

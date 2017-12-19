@@ -10,24 +10,30 @@ using UI.Lib.ViewModel;
 using Xunit;
 using Entities.RedditEntities;
 using Entities.GorillaEntities;
+using Subreddit = Entities.RedditEntities.Subreddit;
 
 namespace UI.Test.ViewModels
 {
     public class SubredditPageViewModelTests
     {
-        private readonly Mock<INavigationService> service;
-        private readonly Mock<IAuthenticationHelper> helper;
-        private readonly Mock<IRestUserPreferenceRepository> repository;
-        private readonly Mock<IRedditApiConsumer> consumer;
-        private readonly Mock<IUserHandler> _userHandler;
+        private readonly Mock<INavigationService> _navigationServiceMock;
+        private readonly Mock<IAuthenticationHelper> _authenticationHelperMock;
+        private readonly Mock<IRestUserPreferenceRepository> _restRepositoryMock;
+        private readonly Mock<IRedditApiConsumer> _redditApiConsumerMock;
+        private readonly Mock<IUserHandler> _userHandlerMock;
+        private readonly Mock<IRestSubredditRepository> _subredditRepositoryMock;
 
+        private SubredditPageViewModel _vm;
         public SubredditPageViewModelTests()
         {
-            service = new Mock<INavigationService>();
-            helper = new Mock<IAuthenticationHelper>();
-            repository = new Mock<IRestUserPreferenceRepository>();
-            consumer = new Mock<IRedditApiConsumer>();
-            _userHandler = new Mock<IUserHandler>();
+            _navigationServiceMock = new Mock<INavigationService>();
+            _authenticationHelperMock = new Mock<IAuthenticationHelper>();
+            _restRepositoryMock = new Mock<IRestUserPreferenceRepository>();
+            _redditApiConsumerMock = new Mock<IRedditApiConsumer>();
+            _userHandlerMock = new Mock<IUserHandler>();
+            _subredditRepositoryMock = new Mock<IRestSubredditRepository>();
+            _vm = new SubredditPageViewModel(_authenticationHelperMock.Object, _navigationServiceMock.Object, _redditApiConsumerMock.Object, _restRepositoryMock.Object, _userHandlerMock.Object, _subredditRepositoryMock.Object);
+            _vm._Subreddit = new Subreddit() { name = "Pubg" };
         }
         [Fact(DisplayName = "GeneratePost Test given subredditName PUBG sets _Subreddit with display name pubg")]
         public async void GeneratePostsTest()
@@ -37,18 +43,17 @@ namespace UI.Test.ViewModels
                     display_name = "Pubg",
                     posts = new ObservableCollection<Entities.RedditEntities.Post>() { new Entities.RedditEntities.Post() { title = "GOTY"} }
             }));
-            consumer.Setup(o => o.GetSubredditPostsAsync(It.IsAny<Entities.RedditEntities.Subreddit>(), "hot"))
+            _redditApiConsumerMock.Setup(o => o.GetSubredditPostsAsync(It.IsAny<Entities.RedditEntities.Subreddit>(), "hot"))
                                     .Returns(returnResult);
-            var vm = new SubredditPageViewModel(helper.Object, service.Object, consumer.Object, repository.Object, _userHandler.Object);
 
             //Act
-            await vm.GeneratePosts("Pubg");
+            await _vm.GeneratePosts("hot");
 
             //Assert
             var expected = "Pubg";
-            var actual = vm._Subreddit.display_name;
+            var actual = _vm._Subreddit.display_name;
             Assert.Equal(expected, actual);
-            Assert.NotEmpty(vm._Subreddit.posts);
+            Assert.NotEmpty(_vm._Subreddit.posts);
         }
 
         [Fact(DisplayName = "GeneratePost Test given subredditName PUBG sets _Subreddit.display_name is null")]
@@ -59,16 +64,14 @@ namespace UI.Test.ViewModels
             {
                 display_name = null
             }));
-            consumer.Setup(o => o.GetSubredditPostsAsync(It.IsAny<Entities.RedditEntities.Subreddit>(), "hot"))
+            _redditApiConsumerMock.Setup(o => o.GetSubredditPostsAsync(It.IsAny<Entities.RedditEntities.Subreddit>(), "hot"))
                                      .Returns(returnResult);
 
-            var vm = new SubredditPageViewModel(helper.Object, service.Object, consumer.Object, repository.Object, _userHandler.Object);
-
             //Act
-            await vm.GeneratePosts("Pubg");
+            await _vm.GeneratePosts("hot");
 
             //Assert
-            var actual = vm._Subreddit.display_name;
+            var actual = _vm._Subreddit.display_name;
             Assert.Null(actual);
         }
 
@@ -76,65 +79,61 @@ namespace UI.Test.ViewModels
         public async void GeneratePostsTestSortsByHotGivenNoSortParameter()
         {
             //Arrange
-            var vm = new SubredditPageViewModel(helper.Object, service.Object, consumer.Object, repository.Object, _userHandler.Object);
-            vm._Subreddit = new Entities.RedditEntities.Subreddit() { display_name = "Pubg" };
+            _vm._Subreddit = new Entities.RedditEntities.Subreddit() { display_name = "Pubg" };
 
             //Act
-            await vm.GeneratePosts(vm._Subreddit.display_name);
+            await _vm.GeneratePosts("hot");
 
             //Assert
-            consumer.Verify(o => o.GetSubredditPostsAsync(It.IsAny<Entities.RedditEntities.Subreddit>(), "hot"));
+            _redditApiConsumerMock.Verify(o => o.GetSubredditPostsAsync(It.IsAny<Entities.RedditEntities.Subreddit>(), "hot"));
         }
 
         [Fact(DisplayName = "SubscribeToSubreddit Test where user is not already subscribed")]
         public async void SubscribeToSubredditTestNotAlreadySubscribed()
         {
             //Arrange
-            var vm = new SubredditPageViewModel(helper.Object, service.Object, consumer.Object, repository.Object, _userHandler.Object);
-            vm.UserIsSubscribed = false;
-            vm._Subreddit = new Entities.RedditEntities.Subreddit() { display_name = "Pubg" };
+            _vm.UserIsSubscribed = false;
+            _vm._Subreddit = new Entities.RedditEntities.Subreddit() { display_name = "Pubg" };
             var userToReturn = new Entities.RedditEntities.User() { name = "UserOne" };
-            _userHandler.Setup(o => o.GetUser())
+            _userHandlerMock.Setup(o => o.GetUser())
                                     .Returns(userToReturn);
 
             //Act
-            await vm.SubscribeToSubreddit();
+            await _vm.SubscribeToSubreddit();
 
             //Assert
-            repository.Verify(o => o.UpdateAsync(It.IsAny<UserPreference>()), Times.Once);
-            Assert.True(vm.UserIsSubscribed);
+            _restRepositoryMock.Verify(o => o.UpdateAsync(It.IsAny<UserPreference>()), Times.Once);
+            Assert.True(_vm.UserIsSubscribed);
         }
 
         [Fact(DisplayName = "SubscribeToSubreddit Test where user is already subscribed")]
         public async void SubscribeToSubredditTestAlreadySubscribed()
         {
             //Arrange
-            var vm = new SubredditPageViewModel(helper.Object, service.Object, consumer.Object, repository.Object, _userHandler.Object);
-            vm.UserIsSubscribed = true;
-            vm._Subreddit = new Entities.RedditEntities.Subreddit() { display_name = "Pubg" };
+            _vm.UserIsSubscribed = true;
+            _vm._Subreddit = new Entities.RedditEntities.Subreddit() { display_name = "Pubg" };
             var userToReturn = new Entities.RedditEntities.User() { name = "UserOne" };
-            _userHandler.Setup(o => o.GetUser())
+            _userHandlerMock.Setup(o => o.GetUser())
                                     .Returns(userToReturn);
             //Act
-            await vm.SubscribeToSubreddit();
+            await _vm.SubscribeToSubreddit();
 
             //Assert
-            repository.Verify(o => o.UpdateAsync(It.IsAny<UserPreference>()), Times.Once);
-            Assert.False(vm.UserIsSubscribed);
+            _restRepositoryMock.Verify(o => o.UpdateAsync(It.IsAny<UserPreference>()), Times.Once);
+            Assert.False(_vm.UserIsSubscribed);
         }
 
         [Fact(DisplayName = "SortBy Test where it sorts by new")]
         public async void SortByTest()
         {
             //Arrange
-            var vm = new SubredditPageViewModel(helper.Object, service.Object, consumer.Object, repository.Object, _userHandler.Object);
             var selectedSort = "new";
-            vm._Subreddit = new Entities.RedditEntities.Subreddit() { };
+            _vm._Subreddit = new Entities.RedditEntities.Subreddit() { };
             //Act
-            vm.SortBy(selectedSort);
+            _vm.SortBy(selectedSort);
 
             //Assert
-            consumer.Verify(o => o.GetSubredditPostsAsync(It.IsAny<Entities.RedditEntities.Subreddit>(), "new"));
+            _redditApiConsumerMock.Verify(o => o.GetSubredditPostsAsync(It.IsAny<Entities.RedditEntities.Subreddit>(), "new"));
         }
     }
 }

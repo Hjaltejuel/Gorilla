@@ -37,7 +37,7 @@ namespace UITEST.View
         {
             DiscoverList = null;
 
-            TextBlock block = new TextBlock
+            var block = new TextBlock
             {
                 Height = 100,
                 Width = 200,
@@ -57,13 +57,21 @@ namespace UITEST.View
             base.OnNavigatedTo(e);
             await _vm.Initialize();
         }
-
-        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        
+        private async void DiscoverList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var list = sender as ListView;
             _selectedSubReddit = list.SelectedItem as Subreddit;
-            if(_selectedSubReddit != null)
-                _vm.GoToSubRedditPage.Execute(_selectedSubReddit.display_name);
+            if (_selectedSubReddit == null)
+            {
+                return;
+            }
+            var subredditName = _selectedSubReddit.display_name_prefixed;
+            _selectedSubReddit = await _vm.GetSubredditPosts(_selectedSubReddit); //Update subreddit with posts
+            if (_selectedSubReddit != null)
+            {
+                Frame.Navigate(typeof(SubredditPage), (_selectedSubReddit, subredditName));
+            }
         }
     }
 }

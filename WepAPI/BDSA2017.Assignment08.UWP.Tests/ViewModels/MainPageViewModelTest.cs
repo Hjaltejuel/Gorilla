@@ -43,8 +43,7 @@ namespace UI.Test.ViewModels
         public async void GeneratePostsTest()
         {
             await _commentableViewModel.GeneratePosts();
-
-            _restUserPreferenceRepository.Verify(o => o.CreateAsync(It.IsAny<Entities.GorillaEntities.User>()));
+            
             _redditApiConsumer.Verify(o => o.GetHomePageContent());
            
         }

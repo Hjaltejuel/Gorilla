@@ -5,6 +5,7 @@ using UI.Lib.Model;
 using UI.Lib.Model.GorillaRestInterfaces;
 using UI.Lib.Model.RedditRestInterfaces;
 using System.Collections.Generic;
+using System.Net;
 
 namespace UI.Lib.ViewModel
 {
@@ -24,9 +25,12 @@ namespace UI.Lib.ViewModel
 
         public async Task GeneratePosts()
         {
-         
-            Posts = (await Consumer.GetHomePageContent()).Item2;
-            MainReadyEvent.Invoke();
+            var postsResult = await Consumer.GetHomePageContent();
+            if (postsResult.Item1 == HttpStatusCode.OK)
+            {
+                Posts = (postsResult).Item2;
+                MainReadyEvent.Invoke();
+            }
         }
         public async Task Initialize()
         {

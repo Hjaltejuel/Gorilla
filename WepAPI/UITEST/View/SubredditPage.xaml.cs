@@ -88,11 +88,12 @@ namespace UITEST.View
             sender.Text = (string)args.SelectedItem;
         }
 
-        private void SortBy_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void SortBy_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var obj = sender as ComboBox;
             var selectedValue = obj.SelectedValue as string;
-            _vm.SortBy(selectedValue);
+            await _vm.SortBy(selectedValue);
+            LoadingRing.IsActive = false;
         }
     }
 }

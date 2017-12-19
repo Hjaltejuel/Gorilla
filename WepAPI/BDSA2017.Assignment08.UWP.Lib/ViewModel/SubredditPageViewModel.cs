@@ -2,6 +2,7 @@
 using Entities.RedditEntities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using UI.Lib.Authentication.GorillaAuthentication;
@@ -9,6 +10,7 @@ using UI.Lib.Model;
 using UI.Lib.Model.GorillaRestInterfaces;
 using UI.Lib.Model.RedditRestInterfaces;
 using UI.Lib.ViewModel;
+using Subreddit = Entities.RedditEntities.Subreddit;
 
 namespace UI.Lib.ViewModel
 {
@@ -54,11 +56,15 @@ namespace UI.Lib.ViewModel
         }
         public async Task GeneratePosts(string sort = "hot")
         {
-            _Subreddit = (await Consumer.GetSubredditPostsAsync(_Subreddit, sort)).Item2;
-            if (!string.IsNullOrEmpty(_Subreddit?.name))
+            var result = await Consumer.GetSubredditPostsAsync(_Subreddit, sort);
+            if (result.Item1 == HttpStatusCode.OK)
             {
-                Posts = _Subreddit.posts;
-                await IsUserSubscribed();
+                _Subreddit = (result).Item2;
+                if (!string.IsNullOrEmpty(_Subreddit?.name))
+                {
+                    Posts = _Subreddit.posts;
+                    await IsUserSubscribed();
+                }
             }
             InvokeLoadSwitchEvent();
         }
@@ -70,7 +76,6 @@ namespace UI.Lib.ViewModel
                                 where b.display_name.Equals(_Subreddit.display_name)
                                 select b).Any();
         }
-
         public async Task SubscribeToSubreddit()
         {
             UserIsSubscribed = !UserIsSubscribed;
@@ -85,7 +90,7 @@ namespace UI.Lib.ViewModel
             }
         }
 
-        public async void SortBy(string sortMethod)
+        public async Task SortBy(string sortMethod)
         {
             await GeneratePosts(sortMethod);
         }

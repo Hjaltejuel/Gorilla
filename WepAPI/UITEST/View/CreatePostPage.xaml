@@ -19,10 +19,11 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <CommandBar Style="{StaticResource StandardCommandBar}">
+        <CommandBar OverflowButtonVisibility="Collapsed" Style="{StaticResource StandardCommandBar}">
             <AppBarButton Icon="Home" Label="Home" Command="{Binding GoToHomePageCommand}"/>
             <AppBarButton Icon="OutlineStar" Label="Discover" Command="{Binding GoToDiscoverPageCommand}"/>
             <AppBarButton Icon="Contact" Label="Profile" Command="{Binding GoToProfilePageCommand}"/>
+            <AppBarButton Icon="Cancel" Label="Log out" Command="{Binding LogOutPageCommand}"/>
         </CommandBar>
         <RelativePanel Grid.Column="0" Grid.Row="1">
             <TextBlock Name="Title" Text="Title" FontSize="20" Margin="10, 10, 0, 0"/>

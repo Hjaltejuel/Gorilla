@@ -1,4 +1,6 @@
-﻿using Windows.UI.Xaml;
+﻿using System.Threading.Tasks;
+using Windows.UI.Core;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
@@ -27,6 +29,7 @@ namespace UITEST.View
         }
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
             Storyboard fadeIn = Resources["FadeIn"] as Storyboard;
             fadeIn.Begin();
             var navParam = e.Parameter as string;
@@ -38,13 +41,21 @@ namespace UITEST.View
             else
             {
                 LoginButton.Visibility = Visibility.Collapsed;
-                await _vm.BeginAuthentication();
+                await AuthenticateUser();
+            }
+        }
+
+        private async Task AuthenticateUser()
+        {
+            if (!await _vm.BeginAuthentication())
+            {
+                LoginButton.Visibility = Visibility.Visible;
             }
         }
 
         private async void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            await _vm.BeginAuthentication();
+            await AuthenticateUser();
         }
     }
 }

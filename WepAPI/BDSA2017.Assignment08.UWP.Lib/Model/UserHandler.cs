@@ -35,15 +35,11 @@ namespace UI.Lib.Model
         }
         public byte[] GetProfilePic()
         {
-            
-           
             using (var webClient = new WebClient())
             {
                 byte[] imageBytes = webClient.DownloadData(_user.icon_img);
                 return imageBytes;
-            }
-
-           
+            }  
         }
     }
 }

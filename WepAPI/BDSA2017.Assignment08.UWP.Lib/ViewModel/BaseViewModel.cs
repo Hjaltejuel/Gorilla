@@ -60,7 +60,7 @@ namespace UI.Lib.ViewModel
                 _account = await _gorillaAuthHelper.SignInAsync();
                 if(_account == null)
                 {
-                    await Authorize();
+                    throw new Exception("Could not login to Gorilla API");
                 }
             }
             return _account;

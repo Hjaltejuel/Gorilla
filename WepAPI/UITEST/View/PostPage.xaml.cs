@@ -53,7 +53,7 @@ namespace UITEST.View
         {
             base.OnNavigatedTo(e);
             var post = e.Parameter as Post;
-            if (post != null && post.selftext.IsNullOrEmpty())
+            if (post == null || post.selftext.IsNullOrEmpty())
             {
                 TextPanel.Visibility = Visibility.Collapsed;
             }
@@ -98,15 +98,17 @@ namespace UITEST.View
         }
         private Border CreateBorderedCommentPanel(Comment comment)
         {
-            var topCommentPanel = new CommentControl(comment);
-            topCommentPanel.Margin = new Thickness(10, 0, 0, 10);
+            var topCommentPanel = new CommentControl(comment)
+            {
+                Margin = new Thickness(10, 0, 0, 10)
+            };
             var border = new Border
             {
                 BorderThickness = new Thickness(1),
                 BorderBrush = new SolidColorBrush(Colors.Black),
-                Margin = new Thickness(0, 10, 0, 0)
+                Margin = new Thickness(0, 10, 0, 0),
+                Child = topCommentPanel
             };
-            border.Child = topCommentPanel;
             return border;
         }
         private void DrawRootComments()

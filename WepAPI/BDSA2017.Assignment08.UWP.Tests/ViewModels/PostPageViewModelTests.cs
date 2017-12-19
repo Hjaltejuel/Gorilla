@@ -69,14 +69,5 @@ namespace UI.Test.ViewModels
             var actualRepliesCount = _postPageViewModel.CurrentPost.Replies.Count;
             Assert.Equal(expectedRepliesCount, actualRepliesCount);
         }
-
-        [Fact(DisplayName = "PostLikedAsync Test")]
-        public async void PostLikedAsyncTest()
-        {
-            _redditApiConsumer.Setup(o => o.VoteAsync(It.IsAny<AbstractCommentable>(), It.IsAny<int>()));
-            _postPageViewModel.PostLikedAsync();
-
-            _redditApiConsumer.Verify(o => o.VoteAsync(It.IsAny<AbstractCommentable>(), It.IsAny<int>()));
-        }
     }
 }

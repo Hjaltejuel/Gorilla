@@ -25,7 +25,7 @@
             <RelativePanel Name="TopInfo" Margin="20, 20, 0, 0" Height="Auto">
                 <RelativePanel Name="OpOgNed" Width="Auto" Margin="0,0,10,0">
                     <Button Content="Like" Height="20" Width="20" Name="Upvote" RelativePanel.AlignHorizontalCenterWith="Votes" Style="{Binding LikeButton}" Command="{x:Bind _vm.PostLiked}" PointerEntered="{x:Bind _vm.SetHandCursor}" PointerExited="{x:Bind _vm.SetArrowCursor}"/>
-                    <TextBlock Text="{Binding Votes}" Name="Votes" HorizontalAlignment="Left" Margin="0, 8, 0, 0"/>
+                    <TextBlock Text="{Binding Votes}" TextAlignment="Center" MinWidth="20" Name="Votes" HorizontalAlignment="Left" Margin="0, 8, 0, 0"/>
                     <Button Content="Dislike" Height="20" FontSize="30" Name="Downvote" RelativePanel.AlignHorizontalCenterWith="Votes" RelativePanel.Below="Upvote" Style="{Binding DislikeButton}" Command="{x:Bind _vm.PostDisliked}" PointerEntered="{x:Bind _vm.SetHandCursor}" PointerExited="{x:Bind _vm.SetArrowCursor}"/>
                     <Image Source="{x:Bind Path = _vm.CurrentPost.thumbnail}" Height="40" Width="40" Name="Box" Margin="20, 0, 0, 0" RelativePanel.RightOf="Upvote"/>
                 </RelativePanel>
@@ -40,8 +40,11 @@
                     <Border BorderThickness="1" BorderBrush="Gray" Padding="10, 10, 10, 10">
                         <TextBlock Text="{x:Bind Path = _vm.CurrentPost.selftext}" Name="PostText" TextWrapping="Wrap"/>
                     </Border>
-                    
-
+                    <Image Name="PostImage" Visibility="Visible">
+                        <Image.Source>
+                            <BitmapImage UriSource="{Binding _vm.CurrentPost.url}" />
+                        </Image.Source>
+                    </Image>
                 </RelativePanel>
 
                 <RelativePanel Name="ExtraStuff" RelativePanel.RightOf="OpOgNed" RelativePanel.Below="TextPanel">
